@@ -15,7 +15,7 @@ namespace Cryptos.Runtime.Ingame
             _text = FindAnyObjectByType<TextMeshProUGUI>();
 
             var buffer = ServiceLocator.GetInstance<InputBuffer>();
-            buffer.OnKeyPressed += OnPressOnKey;
+            buffer.OnAlphabetKeyPressed += OnPressOnKey;
         }
 
         private void OnPressOnKey(char key)

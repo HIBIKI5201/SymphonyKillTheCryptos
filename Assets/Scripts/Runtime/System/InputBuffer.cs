@@ -8,9 +8,12 @@ namespace Cryptos.Runtime.System
     [RequireComponent(typeof(PlayerInput))]
     public class InputBuffer : MonoBehaviour
     {
-        PlayerInput _input;
+        public event Action<char> OnAlphabetKeyPressed;
+        public event Action<int> OnNumericKeyPressed;
 
-        public event Action<char> OnKeyPressed;
+        private const string NUMRIC_PREFIX = "Digit";
+
+        private PlayerInput _input;
 
         private void Awake()
         {
@@ -25,7 +28,8 @@ namespace Cryptos.Runtime.System
 
         private void Start()
         {
-            OnKeyPressed += DebugLog;
+            OnAlphabetKeyPressed += DebugLogAlphabet;
+            OnNumericKeyPressed += DebugLogNumric;
         }
 
         private void Update()
@@ -34,7 +38,7 @@ namespace Cryptos.Runtime.System
         }
 
         /// <summary>
-        ///     新たに押されたアルファベットのキーがあればイベントを発行する
+        ///     新たに押されたキーがあればイベントを発行する
         /// </summary>
         private void ReadKey()
         {
@@ -44,21 +48,36 @@ namespace Cryptos.Runtime.System
             {
                 if (key == null) continue;
                 
-                if (key.wasPressedThisFrame)
+                if (key.wasPressedThisFrame) //押されているか判定
                 {
                     string keyName = key.keyCode.ToString();
 
-                    if (keyName.Length == 1) //アルファベット以外を除外
+                    if (keyName.Length == 1) //アルファベットのみ
                     {
-                        OnKeyPressed?.Invoke(keyName[0]);
+                        OnAlphabetKeyPressed?.Invoke(keyName[0]);
                     }
+
+                    if (keyName.StartsWith(NUMRIC_PREFIX)) //Digitキーのみ
+                    {
+                        //キーコードから数値部分を取り出す
+                        string numberString = keyName.Substring(NUMRIC_PREFIX.Length, 1);
+                        int number = int.Parse(numberString);
+
+                        OnNumericKeyPressed?.Invoke(number);
+                    }
+
                 }
             }
         }
         
-        private void DebugLog(char key)
+        private void DebugLogAlphabet(char key)
         {
             Debug.Log($"pressed {key}");
+        }
+
+        private void DebugLogNumric(int  num)
+        {
+            Debug.Log($"pressed {num}");
         }
     }
 }
