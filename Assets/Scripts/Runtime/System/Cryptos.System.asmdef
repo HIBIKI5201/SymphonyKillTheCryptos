@@ -1,0 +1,18 @@
+{
+    "name": "Cryptos.System",
+    "rootNamespace": "",
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:68a532f43eeefd5408e4e8871b769ee4",
+        "GUID:b38aa02eab36b2942bc0bf2b2fbeabc4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
