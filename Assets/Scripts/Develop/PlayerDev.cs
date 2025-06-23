@@ -1,20 +1,26 @@
+using BeatKeeper.Runtime.System;
 using Cryptos.Runtime.System;
-using SymphonyFrameWork.Attribute;
 using SymphonyFrameWork.System;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Ingame
 {
-    public class PlayerDev : MonoBehaviour
+    public class PlayerDev : MonoBehaviour, IInitializeAsync
     {
         private TextMeshProUGUI _text;
-        
+
+        Task IInitializeAsync.InitializeTask { get; set; }
+
         private void Start()
         {
             _text = FindAnyObjectByType<TextMeshProUGUI>();
+        }
 
-            var buffer = ServiceLocator.GetInstance<InputBuffer>();
+        async Task IInitializeAsync.InitializeAsync()
+        {
+            var buffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             buffer.OnAlphabetKeyPressed += OnPressOnKey;
         }
 
@@ -26,8 +32,9 @@ namespace Cryptos.Runtime.Ingame
             {
                 text = text.Substring(1);
             }
-            
+
             _text.text = text;
         }
+
     }
 }
