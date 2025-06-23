@@ -65,7 +65,6 @@ namespace Cryptos.Runtime.System
 
                         OnNumericKeyPressed?.Invoke(number);
                     }
-
                 }
             }
         }
