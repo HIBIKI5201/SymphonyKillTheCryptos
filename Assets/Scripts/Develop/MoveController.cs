@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Cryptos.Runtime
+namespace Cryptos.Runtime.Develop
 {
     [RequireComponent(typeof(SymphonyAnimeManager))]
     public class MoveController : MonoBehaviour

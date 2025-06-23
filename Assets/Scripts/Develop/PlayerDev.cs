@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Ingame
+namespace Cryptos.Runtime.Develop
 {
     public class PlayerDev : MonoBehaviour, IInitializeAsync
     {
