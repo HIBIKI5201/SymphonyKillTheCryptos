@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.Ingame.UI
     [UxmlElement]
     public partial class UIElementDeck : SymphonyVisualElement
     {
-        public UIElementDeck() : base("Assets/Resources/UIToolKit/UXML/Ingame/Deck") { }
+        public UIElementDeck() : base("UIToolKit/UXML/Ingame/Deck") { }
 
         protected override Task Initialize_S(TemplateContainer container)
         {
