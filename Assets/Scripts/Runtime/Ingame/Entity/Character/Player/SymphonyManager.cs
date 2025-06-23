@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Cryptos.Runtime
+namespace Cryptos.Runtime.Ingame.Entity
 {
     /// <summary>
     ///     プレイヤーのマネージャークラス
