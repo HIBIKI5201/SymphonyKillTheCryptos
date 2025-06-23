@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a5411e1611cc54fa2c5b274c50edd5, type: 3}
   m_Name: AutoEnumGeneratorConfig
   m_EditorClassIdentifier: 
-  _autoSceneListUpdate: 1
+  _autoSceneListUpdate: 0
   _autoTagsUpdate: 0
   _autoLayersUpdate: 0
