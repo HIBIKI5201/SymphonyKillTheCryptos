@@ -75,6 +75,7 @@ namespace Cryptos.Runtime.Ingame.Entity
                 if (_remainDifficulty <= 0) //進捗が終わったか
                 {
                     OnCompleteInput?.Invoke();
+                    _wordManager.RemoveWord(_wordData);
                     return true;
                 }
                 else
@@ -101,12 +102,13 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// </summary>
         private void SetNewWord()
         {
+            _wordManager.RemoveWord(_wordData);
+
             //ランダムなワードを取得する
-            WordData word = _wordManager.GetOnlyWord(_candidateWordDatas);
+            WordData word = _wordManager.GetAvailableWord(_candidateWordDatas);
             if (word == null) return;
 
             //新しいワードを登録しなおす
-            _wordManager.RemoveWord(_wordData);
             _wordManager.AddWord(word);
             
             _wordData = word;
