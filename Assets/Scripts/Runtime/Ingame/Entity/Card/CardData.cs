@@ -1,4 +1,7 @@
 using Cryptos.Runtime.System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Ingame.Entity
@@ -15,6 +18,8 @@ namespace Cryptos.Runtime.Ingame.Entity
         public int CardDifficulty => _cardDifficulty;
         public Texture2D CardIcon => _cardIcon;
         public Vector2Int WordRange => _wordRange;
+        public ICardContent[] Contents => _contentsArray;
+        
 
         [Header("基本情報")]
         [SerializeField, Tooltip("カードの名前")]
@@ -23,12 +28,16 @@ namespace Cryptos.Runtime.Ingame.Entity
         [SerializeField, Tooltip("カードの説明"), TextArea]
         private string _cardExplanation;
 
+        [SerializeField, Tooltip("アイコン画像")]
+        private Texture2D _cardIcon;
+
         [SerializeField, Tooltip("カードの難易度"), Min(1)]
         private int _cardDifficulty;
+
         [SerializeField, Tooltip("ワードの範囲")]
         private Vector2Int _wordRange = new Vector2Int(0, 1);
 
-        [SerializeField, Tooltip("アイコン画像")]
-        private Texture2D _cardIcon;
+        [SerializeReference, SubclassSelector]
+        private ICardContent[] _contentsArray;
     }
 }
