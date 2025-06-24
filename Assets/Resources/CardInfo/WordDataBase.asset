@@ -13,24 +13,19 @@ MonoBehaviour:
   m_Name: WordDataBase
   m_EditorClassIdentifier: 
   _words:
-  - _wordDataArray:
-    - _word: aaaa
-      _difficulty: 1
-    - _word: aaa
-      _difficulty: 1
-    - _word: aa
-      _difficulty: 1
-  - _wordDataArray:
-    - _word: bbb
-      _difficulty: 2
-    - _word: bb
-      _difficulty: 2
-    - _word: b
-      _difficulty: 2
-  - _wordDataArray:
-    - _word: ccc
-      _difficulty: 3
-    - _word: cc
-      _difficulty: 3
-    - _word: c
-      _difficulty: 3
+  - _words:
+    - aaa
+    - aaaa
+    - aa
+    _difficulty: 1
+  - _words:
+    - bb
+    - bbbb
+    - bbb
+    _difficulty: 2
+  - _words:
+    - ccccc
+    - cc
+    - ccc
+    - c
+    _difficulty: 3
