@@ -14,18 +14,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _words:
   - _words:
-    - aaa
-    - aaaa
-    - aa
+    - int
+    - float
+    - string
+    - char
+    - private
+    - public
     _difficulty: 1
   - _words:
-    - bb
-    - bbbb
-    - bbb
+    - double
+    - byte
+    - short
+    - long
+    - protected
+    - class
+    - struct
     _difficulty: 2
   - _words:
-    - ccccc
-    - cc
-    - ccc
-    - c
+    - List
+    - Dictionary
+    - readonly
+    - const
+    - internal
+    - interface
     _difficulty: 3
+  - _words:
+    - Vector
+    - Transform
+    - GameObject
+    - MonoBehaviour
+    - sealed
+    - partial
+    - virtual
+    _difficulty: 4
+  - _words:
+    - Quaternion
+    - Queue
+    - Stack
+    _difficulty: 5
