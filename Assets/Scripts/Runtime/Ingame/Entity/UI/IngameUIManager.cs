@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Ingame.Entity;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,9 +10,14 @@ namespace Cryptos.Runtime.Ingame.UI
     [RequireComponent(typeof(UIDocument))]
     public class IngameUIManager : MonoBehaviour
     {
+        public UIElementDeck UIElementDeck => _deck;
+
         private UIDocument _document;
 
         private UIElementDeck _deck;
+
+        [SerializeField]
+        private CardData[] _cards;
 
         private void Awake()
         {
@@ -21,7 +27,10 @@ namespace Cryptos.Runtime.Ingame.UI
             _deck = root.Q<UIElementDeck>();
         }
 
-        [ContextMenu("AddCard")]
-        private void AddCard() => _deck.AddCard();
+        private void Start()
+        {
+            foreach (var card in _cards)
+                _deck.AddCard(card);
+        }
     }
 }
