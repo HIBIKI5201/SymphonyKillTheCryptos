@@ -4,6 +4,7 @@ using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -47,22 +48,11 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// <param name="data"></param>
         public void AddCardToDeck(CardData data)
         {
-            List<WordData> words = new();
-
-            //カードの難易度までのワードを追加
-            for (int i = 0; i < data.CardDifficulty; i++)
-            {
-                words.AddRange(_wordDatabase[i]);
-            }
-
-            if (words.Count <= 0)
-            {
-                Debug.LogError("ワードが一つもありません");
-                return;
-            }
+            //カードの難易度までのワードを取得
+            WordData[] words = _wordDatabase.WordData.Take(data.CardDifficulty).ToArray();
 
             //カードを生成
-            CardInstance instance = new(data, words.ToArray(), _wordManager);
+            CardInstance instance = new(data, words, _wordManager);
             _inputBuffer.OnAlphabetKeyPressed += instance.OnInputChar;
             _deckCard.Add(instance);
 
