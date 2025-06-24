@@ -27,7 +27,9 @@ namespace Cryptos.Runtime.Ingame.UI
             instance.OnWordInputed += OnWordUpdate;
             instance.OnProgressUpdate += OnProgressBarUpdate;
 
+            //初期値を入れる
             OnWordUpdate(instance.WordData.Word, 0);
+            OnProgressBarUpdate(0);
         }
 
         protected override Task Initialize_S(TemplateContainer container)
