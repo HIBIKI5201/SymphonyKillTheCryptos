@@ -23,6 +23,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         }
 
         public CardData CardData => _data;
+        public WordData WordData => _wordData;
 
         [Tooltip("ワード入力が終了した時")]public event Action OnCompleteInput;
         [Tooltip("ワードの入力が更新された時")]public event Action<string, int> OnWordInputed;
