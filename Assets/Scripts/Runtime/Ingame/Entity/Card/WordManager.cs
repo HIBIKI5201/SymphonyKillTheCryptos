@@ -1,42 +1,71 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Cryptos.Runtime.Ingame.Entity
 {
+    /// <summary>
+    ///     デッキのワードを管理するクラス
+    /// </summary>
     public class WordManager
     {
-        private HashSet<WordData> _existWords = new();
+        private HashSet<string> _existWords = new();
 
         /// <summary>
         ///     デッキにない唯一のワードを取得する
         /// </summary>
-        /// <param name="candidateWords">候補となるワード</param>
+        /// <param name="candidateWordDatas">候補となるワード</param>
         /// <returns></returns>
-        public WordData GetAvailableWord(IEnumerable<WordData> candidateWords)
+        public (int difficulty, string word) GetAvailableWord(IEnumerable<WordData> candidateWordDatas)
         {
-            //既にデッキ上に含まれているものを除外
+            (int difficulty, IEnumerable<string> words)[] dataArray =
+                new (int, IEnumerable<string>)[candidateWordDatas.Count()];
 
-            candidateWords = GetOnlyWords(candidateWords);
-            candidateWords = GetNonStartWithWords(candidateWords); 
-
-
-            if (candidateWords.Any()) //残っていたらランダムなワードを返す
+            //各ワードデータから条件外のものを除外
+            for (int i = 0; i < candidateWordDatas.Count(); i++)
             {
-                int random = Random.Range(0, candidateWords.Count());
-                return candidateWords.ElementAt(random);
+                WordData data = candidateWordDatas.ElementAt(i);
+                IEnumerable<string> candidateWords = Array.Empty<string>();
+
+                //除外処理
+                candidateWords = GetOnlyWords(data.Words);
+                candidateWords = GetNonStartWithWords(candidateWords);
+
+                dataArray[i] = (data.Difficulty, candidateWords);
             }
-            else
+
+            //中身をシャッフルする
+            int n = dataArray.Length;
+            Random rand = new();
+            while (n > 1)
             {
-                Debug.LogError("候補ワードがありません");
-                return null;
+                n--;
+                int k = rand.Next(n + 1);
+                // 要素を入れ替え
+                var temp = dataArray[k];
+                dataArray[k] = dataArray[n];
+                dataArray[n] = temp;
             }
+
+            foreach (var data in dataArray)
+            {
+                if (!data.words.Any()) continue; //中身が無ければ次にする 
+
+                //ランダムなワードを出す
+                int random = UnityEngine.Random.Range(0, data.words.Count());
+                return (data.difficulty, data.words.ElementAt(random));
+            }
+
+            Debug.LogError("候補ワードがありません");
+            return (-1, null);
         }
 
-        public void AddWord(WordData word) => _existWords.Add(word);
-        public void RemoveWord(WordData word) => _existWords.Remove(word);
+        public void AddWord(string word) => _existWords.Add(word);
+        public void RemoveWord(string word) => _existWords.Remove(word);
 
-        private IEnumerable<WordData> GetOnlyWords(IEnumerable<WordData> wordDatas)
+        private IEnumerable<string> GetOnlyWords(IEnumerable<string> wordDatas)
         {
             return wordDatas.Where(word => !_existWords.Contains(word));
         }
@@ -46,9 +75,9 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// </summary>
         /// <param name="wordDatas"></param>
         /// <returns></returns>
-        private IEnumerable<WordData> GetNonStartWithWords(IEnumerable<WordData> wordDatas)
+        private IEnumerable<string> GetNonStartWithWords(IEnumerable<string> wordDatas)
         {
-            List<WordData> result = new();
+            List<string> result = new();
 
             foreach (var candidate in wordDatas)
             {
@@ -56,7 +85,7 @@ namespace Cryptos.Runtime.Ingame.Entity
 
                 foreach (var exist in _existWords) //全てのワードと被らないか確認
                 {
-                    if (candidate.Word.StartsWith(exist.Word) || exist.Word.StartsWith(candidate.Word))
+                    if (candidate.StartsWith(exist) || exist.StartsWith(candidate))
                     {
                         isConflicting = true;
                         break;
