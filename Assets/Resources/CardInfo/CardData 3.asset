@@ -15,4 +15,5 @@ MonoBehaviour:
   _cardName: 
   _cardExplanation: 
   _cardDifficulty: 4
+  _wordRange: {x: 0, y: 1}
   _cardIcon: {fileID: 0}
