@@ -14,9 +14,9 @@ namespace Cryptos.Runtime.Ingame.Entity
     {
         public string[] this[int index] => _words[index].Words;
 
-        public List<WordData> WordData => _words;
+        public WordData[] WordData => _words;
 
         [SerializeField]
-        private List<WordData> _words;
+        private WordData[] _words;
     }
 }
