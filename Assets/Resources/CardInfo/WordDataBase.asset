@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _words:
   - _wordDataArray:
-    - _word: abca
+    - _word: aaaa
       _difficulty: 1
-    - _word: acas
+    - _word: aaa
       _difficulty: 1
-    - _word: gasd
+    - _word: aa
       _difficulty: 1
   - _wordDataArray:
     - _word: bbb
@@ -29,4 +29,8 @@ MonoBehaviour:
       _difficulty: 2
   - _wordDataArray:
     - _word: ccc
+      _difficulty: 3
+    - _word: cc
+      _difficulty: 3
+    - _word: c
       _difficulty: 3
