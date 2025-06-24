@@ -15,15 +15,19 @@ namespace Cryptos.Runtime.Ingame.UI
 
         private const int SIDE_MARGIN = 10;
 
-        private CardData _cardData;
+        private CardInstance _cardInstance;
+
+        private Label _wordLabel;
 
         /// <summary>
         ///     データをセットする
         /// </summary>
         /// <param name="data"></param>
-        public void SetData(CardData data)
+        public void SetData(CardInstance instance)
         {
-            _cardData = data;
+            _cardInstance = instance;
+            instance.OnWordInputed += OnWordUpdate;
+            OnWordUpdate(instance.WordData.Word, 0);
         }
 
         protected override Task Initialize_S(TemplateContainer container)
@@ -31,9 +35,14 @@ namespace Cryptos.Runtime.Ingame.UI
             style.marginRight = SIDE_MARGIN;
             style.marginLeft = SIDE_MARGIN;
 
+            _wordLabel = container.Q<Label>("word");
+
             return Task.CompletedTask;
         }
 
-
+        private void OnWordUpdate(string word, int index)
+        {
+            _wordLabel.text = word;
+        }
     }
 }
