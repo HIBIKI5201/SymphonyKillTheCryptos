@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8550076933737589049}
   - component: {fileID: 954954782330070615}
+  - component: {fileID: 3463416069888909988}
   m_Layer: 0
   m_Name: Symphony
   m_TagString: Untagged
@@ -45,6 +46,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 640bcd9207092a94a9f11f56f43517b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3463416069888909988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5930209661646628777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 954954782330070615}
+  _locateType: 1
+  _autoSet: 1
+  _autoDestroy: 1
 --- !u!1001 &6288560684759656518
 PrefabInstance:
   m_ObjectHideFlags: 0
