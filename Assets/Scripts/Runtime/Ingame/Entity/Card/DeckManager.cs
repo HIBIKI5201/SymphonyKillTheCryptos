@@ -22,6 +22,8 @@ namespace Cryptos.Runtime.Ingame.Entity
         private InputBuffer _inputBuffer;
         private WordManager _wordManager;
 
+        private SymphonyManager _playerManager;
+
         private readonly List<CardInstance> _deckCard = new();
 
         [SerializeField, Obsolete]
@@ -31,12 +33,13 @@ namespace Cryptos.Runtime.Ingame.Entity
         {
             _wordManager = new WordManager();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
+            _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
 
             RandomDraw();
             RandomDraw();
             RandomDraw();
 
-            void RandomDraw()
+            void RandomDraw(CardInstance ins = default)
             {
                 Debug.Log("draw");
                 var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
@@ -67,22 +70,41 @@ namespace Cryptos.Runtime.Ingame.Entity
             _inputBuffer.OnAlphabetKeyPressed += instance.OnInputChar;
             _deckCard.Add(instance);
 
-            //終わったら削除する
-            instance.OnComplete += () => RemoveCardFromDeck(instance);
+            //終了イベント
+            instance.OnComplete += CompletedEvent;
 
             OnAddCardInstance?.Invoke(instance);
             return instance;
         }
 
+        private void CompletedEvent(CardInstance instance)
+        {
+            InvokeContents(instance.CardData.Contents);
+            RemoveCardFromDeck(instance);
+        }
+
+
         /// <summary>
         ///     カードをデッキから削除する
         /// </summary>
         /// <param name="instance"></param>
-        public void RemoveCardFromDeck(CardInstance instance)
+        private void RemoveCardFromDeck(CardInstance instance)
         {
             _inputBuffer.OnAlphabetKeyPressed -= instance.OnInputChar;
             _deckCard.Remove(instance);
             OnRemoveCardInstance?.Invoke(instance);
+        }
+
+        /// <summary>
+        ///     全てのコンテンツを実行する
+        /// </summary>
+        /// <param name="contents"></param>
+        private void InvokeContents(ICardContent[] contents)
+        {
+            foreach (var card in contents)
+            {
+                card.TriggerEnterContent(_playerManager.gameObject);
+            }
         }
     }
 }
