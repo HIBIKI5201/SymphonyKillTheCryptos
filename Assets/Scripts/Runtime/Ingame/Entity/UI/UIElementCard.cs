@@ -26,7 +26,7 @@ namespace Cryptos.Runtime.Ingame.UI
             instance.OnProgressUpdate += OnProgressBarUpdate;
 
             //初期値を入れる
-            OnWordUpdate(instance.WordData.Word, 0);
+            OnWordUpdate(instance.CurrentWord, 0);
             OnProgressBarUpdate(0);
         }
 
@@ -48,7 +48,7 @@ namespace Cryptos.Runtime.Ingame.UI
         /// <param name="index"></param>
         private void OnWordUpdate(string word, int index)
         {
-            string newText = "<b>" + word.Substring(0, index) + "</b>" + word.Substring(index, word.Length - index);
+            string newText = $"<b><color=green>{word[..index]}</color></b>{word[index..]}";
             _wordLabel.text = newText;
         }
 
