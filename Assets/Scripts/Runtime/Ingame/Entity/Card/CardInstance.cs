@@ -19,14 +19,15 @@ namespace Cryptos.Runtime.Ingame.Entity
             _remainDifficulty = data.CardDifficulty;
             _wordDatas = wordDatas;
 
-            SetNewWord();
+            NextWord();
         }
 
         public CardData CardData => _data;
         public WordData WordData => _wordData;
 
-        [Tooltip("ワード入力が終了した時")]public event Action OnCompleteInput;
-        [Tooltip("ワードの入力が更新された時")]public event Action<string, int> OnWordInputed;
+        [Tooltip("ワード入力が終了した時")] public event Action OnCompleteInput;
+        [Tooltip("ワードの入力が更新された時")] public event Action<string, int> OnWordInputed;
+        [Tooltip("ワードコンプリート進捗率")] public event Action<float> OnProgressUpdate;
 
         private CardData _data;
         private WordData _wordData;
@@ -49,7 +50,7 @@ namespace Cryptos.Runtime.Ingame.Entity
                 {
                     OnCompleteInput?.Invoke();
                     return;
-                } 
+                }
             }
             else
             {
@@ -69,7 +70,7 @@ namespace Cryptos.Runtime.Ingame.Entity
             {
                 _remainDifficulty -= _wordData.Difficulty; //難易度に応じて進捗を更新
 
-                if (_remainDifficulty <= 0 ) //進捗が終わったか
+                if (_remainDifficulty <= 0) //進捗が終わったか
                 {
                     OnCompleteInput?.Invoke();
                     return true;
@@ -77,7 +78,7 @@ namespace Cryptos.Runtime.Ingame.Entity
                 else
                 {
                     //進捗が終わっていなかったら新しいワードをセット
-                    SetNewWord();
+                    NextWord();
                 }
             }
 
@@ -85,13 +86,32 @@ namespace Cryptos.Runtime.Ingame.Entity
         }
 
         /// <summary>
+        ///     次のワードに変更する
+        /// </summary>
+        private void NextWord()
+        {
+            SetNewWord();
+            InvokeProgressEvent();
+        }
+
+        /// <summary>
         ///     ランダムなワードをセットする
         /// </summary>
         private void SetNewWord()
         {
-            int random = UnityEngine.Random.Range( 0, _wordDatas.Length );
+            //ランダムなワードを取得する
+            int random = UnityEngine.Random.Range(0, _wordDatas.Length);
             _wordData = _wordDatas[random];
             _inputIndex = 0;
+        }
+
+        /// <summary>
+        ///     現在の進捗率を引数にイベントを発火する
+        /// </summary>
+        private void InvokeProgressEvent()
+        {
+            float progress = Mathf.Clamp01((float)_inputIndex / (float)_data.CardDifficulty);
+            OnProgressUpdate?.Invoke(progress);
         }
     }
 }
