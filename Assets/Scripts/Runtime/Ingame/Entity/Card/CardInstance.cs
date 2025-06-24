@@ -24,7 +24,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         }
 
         public CardData CardData => _data;
-        public WordData WordData => _wordData;
+        public string CurrentWord => _currentData.word;
 
         [Tooltip("ワード入力が終了した時")] public event Action OnCompleteInput;
         [Tooltip("ワードの入力が更新された時")] public event Action<string, int> OnWordInputed;
@@ -32,8 +32,10 @@ namespace Cryptos.Runtime.Ingame.Entity
 
         private CardData _data;
         private WordManager _wordManager;
-        private WordData _wordData;
+
         [Tooltip("候補となるワード一覧")] private WordData[] _candidateWordDatas;
+        private (int difficulty, string word) _currentData;
+
 
         private int _inputIndex;
         private int _remainDifficulty;
@@ -45,7 +47,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         public void OnInputChar(char input)
         {
             //次の文字が入力と同じか
-            if (_wordData.Word.ToUpper()[_inputIndex] == input)
+            if (_currentData.word.ToUpper()[_inputIndex] == input)
             {
                 _inputIndex++;
                 if (CheckCompleteWord())
@@ -59,7 +61,7 @@ namespace Cryptos.Runtime.Ingame.Entity
                 _inputIndex = 0; //入力が次の文字と同じじゃなければリセット
             }
 
-            OnWordInputed?.Invoke(_wordData.Word, _inputIndex);
+            OnWordInputed?.Invoke(_currentData.word, _inputIndex);
         }
 
         /// <summary>
@@ -68,14 +70,14 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// <returns></returns>
         private bool CheckCompleteWord()
         {
-            if (_wordData.Word.Length <= _inputIndex) //ワードが全部書き終わったか
+            if (_currentData.word.Length <= _inputIndex) //ワードが全部書き終わったか
             {
-                _remainDifficulty -= _wordData.Difficulty; //難易度に応じて進捗を更新
+                _remainDifficulty -= _currentData.difficulty; //難易度に応じて進捗を更新
 
                 if (_remainDifficulty <= 0) //進捗が終わったか
                 {
                     OnCompleteInput?.Invoke();
-                    _wordManager.RemoveWord(_wordData);
+                    _wordManager.RemoveWord(_currentData.word);
                     return true;
                 }
                 else
@@ -102,16 +104,15 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// </summary>
         private void SetNewWord()
         {
-            _wordManager.RemoveWord(_wordData);
+            _wordManager.RemoveWord(_currentData.word);
 
             //ランダムなワードを取得する
-            WordData word = _wordManager.GetAvailableWord(_candidateWordDatas);
-            if (word == null) return;
+            var data = _wordManager.GetAvailableWord(_candidateWordDatas);
+            if (data.word == null) return;
 
             //新しいワードを登録しなおす
-            _wordManager.AddWord(word);
-            
-            _wordData = word;
+            _wordManager.AddWord(data.word);
+            _currentData = data;
             _inputIndex = 0;
         }
 
