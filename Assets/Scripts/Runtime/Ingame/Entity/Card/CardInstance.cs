@@ -107,7 +107,7 @@ namespace Cryptos.Runtime.Ingame.Entity
 
             //ランダムなワードを取得する
             var data = _wordManager.GetAvailableWord(_candidateWordDatas);
-            if (data.word == null) return;
+            if (data.difficulty < 0) return;
 
             //新しいワードを登録しなおす
             _wordManager.AddWord(data.word);
