@@ -53,8 +53,15 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// <param name="data"></param>
         public CardInstance AddCardToDeck(CardData data)
         {
+            if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
+            {
+                Debug.LogWarning($"{data.name}のWordRnageが不適切です\n二つの距離は");
+                return null;
+            }
+
             //カードの難易度までのワードを取得
-            WordData[] words = _wordDatabase.WordData.Take(data.CardDifficulty).ToArray();
+            WordData[] words = _wordDatabase
+                .WordData[data.WordRange.x ..data.WordRange.y].ToArray();
 
             //カードを生成
             CardInstance instance = new(data, words, _wordManager);
