@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Ingame.Entity;
 using SymphonyFrameWork;
+using SymphonyFrameWork.System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,6 +18,7 @@ namespace Cryptos.Runtime.Ingame.UI
         Task IInitializeAsync.InitializeTask { get; set; }
 
         private UIDocument _document;
+        private DeckManager _deckManager;
 
         private UIElementDeck _deck;
 
@@ -28,6 +30,10 @@ namespace Cryptos.Runtime.Ingame.UI
             _deck = root.Q<UIElementDeck>();
 
             await _deck.InitializeTask;
+
+            _deckManager = await ServiceLocator.GetInstanceAsync<DeckManager>();
+            _deckManager.OnAddCardInstance += _deck.AddCard;
+            _deckManager.OnRemoveCardInstance += _deck.RemoveCard;
         }
     }
 }
