@@ -93,16 +93,8 @@ namespace Cryptos.Editor.Ingame
 
             if (field != null)
             {
-                // 値をセット
                 field.SetValue(db, wordDatas.ToArray());
-
-                EditorUtility.SetDirty(db);
-
-                Debug.Log("ワードをリフレクションで更新しました");
-            }
-            else
-            {
-                Debug.LogError("ワードフィールドが見つかりませんでした");
+                EditorUtility.SetDirty(db);           
             }
         }
     }
