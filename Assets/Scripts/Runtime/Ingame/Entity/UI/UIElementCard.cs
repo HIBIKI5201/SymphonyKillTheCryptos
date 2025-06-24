@@ -42,7 +42,8 @@ namespace Cryptos.Runtime.Ingame.UI
 
         private void OnWordUpdate(string word, int index)
         {
-            _wordLabel.text = word;
+            string newText = "<b>" + word.Substring(0, index) + "</b>" + word.Substring(index, word.Length - index);
+            _wordLabel.text = newText;
         }
     }
 }
