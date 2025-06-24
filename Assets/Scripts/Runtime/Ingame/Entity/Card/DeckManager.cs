@@ -20,6 +20,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         Task IInitializeAsync.InitializeTask { get; set; }
 
         private InputBuffer _inputBuffer;
+        private WordManager _wordManager;
 
         private readonly List<CardInstance> _deckCard = new();
 
@@ -28,6 +29,7 @@ namespace Cryptos.Runtime.Ingame.Entity
 
         async Task IInitializeAsync.InitializeAsync()
         {
+            _wordManager = new WordManager();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
         }
 
@@ -48,7 +50,7 @@ namespace Cryptos.Runtime.Ingame.Entity
             List<WordData> words = new();
 
             //カードの難易度までのワードを追加
-            for (int i = 0; i <= data.CardDifficulty; i++)
+            for (int i = 0; i < data.CardDifficulty; i++)
             {
                 words.AddRange(_wordDatabase[i]);
             }
@@ -60,7 +62,7 @@ namespace Cryptos.Runtime.Ingame.Entity
             }
 
             //カードを生成
-            CardInstance instance = new(data, words.ToArray());
+            CardInstance instance = new(data, words.ToArray(), _wordManager);
             _inputBuffer.OnAlphabetKeyPressed += instance.OnInputChar;
             _deckCard.Add(instance);
 
