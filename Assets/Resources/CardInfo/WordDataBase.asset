@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _words:
   - _wordDataArray:
-    - _word: aaa
+    - _word: abca
       _difficulty: 0
-    - _word: aa
+    - _word: acas
       _difficulty: 0
-    - _word: a
+    - _word: gasd
       _difficulty: 0
   - _wordDataArray:
     - _word: bbb
