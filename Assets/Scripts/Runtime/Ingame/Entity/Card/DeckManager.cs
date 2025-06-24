@@ -32,21 +32,26 @@ namespace Cryptos.Runtime.Ingame.Entity
         {
             _wordManager = new WordManager();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
-        }
 
-        private async void Start()
-        {
-            await SymphonyTask.WaitUntil(() => (this as IInitializeAsync).IsDone);
+            RandomDraw();
+            RandomDraw();
+            RandomDraw();
 
-            foreach (var item in _cardDatas) //開発用機能
-                AddCardToDeck(item);
+            void RandomDraw()
+            {
+                Debug.Log("draw");
+                var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
+                var instance = AddCardToDeck(cardData);
+
+                instance.OnComplete += RandomDraw;
+            }
         }
 
         /// <summary>
         ///     カードを追加する
         /// </summary>
         /// <param name="data"></param>
-        public void AddCardToDeck(CardData data)
+        public CardInstance AddCardToDeck(CardData data)
         {
             //カードの難易度までのワードを取得
             WordData[] words = _wordDatabase.WordData.Take(data.CardDifficulty).ToArray();
@@ -57,9 +62,10 @@ namespace Cryptos.Runtime.Ingame.Entity
             _deckCard.Add(instance);
 
             //終わったら削除する
-            instance.OnCompleteInput += () => RemoveCardFromDeck(instance);
+            instance.OnComplete += () => RemoveCardFromDeck(instance);
 
             OnAddCardInstance?.Invoke(instance);
+            return instance;
         }
 
         /// <summary>
