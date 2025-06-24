@@ -12,23 +12,11 @@ namespace Cryptos.Runtime.Ingame.Entity
         menuName = CryptosPathConstant.ASSET_PATH + nameof(WordDataBase))]
     public class WordDataBase : ScriptableObject
     {
-        public WordData[] this[int index] => _words[index].Array;
+        public string[] this[int index] => _words[index].Words;
 
-        public List<WordDataArray> WordData => _words;
+        public List<WordData> WordData => _words;
 
         [SerializeField]
-        private List<WordDataArray> _words;
-
-        /// <summary>
-        ///     ワードデータの配列
-        /// </summary>
-        [Serializable]
-        public class WordDataArray
-        {
-            public WordData[] Array => _wordDataArray;
-
-            [SerializeField]
-            private WordData[] _wordDataArray;
-        }
+        private List<WordData> _words;
     }
 }
