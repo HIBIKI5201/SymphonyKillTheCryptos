@@ -42,18 +42,21 @@ namespace Cryptos.Runtime.Ingame.Entity
         public void OnInputChar(char input)
         {
             //次の文字が入力と同じか
-            if (_wordData.Word[_inputIndex] == input)
+            if (_wordData.Word.ToUpper()[_inputIndex] == input)
             {
                 _inputIndex++;
                 if (CheckCompleteWord())
                 {
                     OnCompleteInput?.Invoke();
                     return;
-                }
-                OnWordInputed?.Invoke(_wordData.Word, _inputIndex);
+                } 
+            }
+            else
+            {
+                _inputIndex = 0; //入力が次の文字と同じじゃなければリセット
             }
 
-            _inputIndex = 0; //入力が次の文字と同じじゃなければリセット
+            OnWordInputed?.Invoke(_wordData.Word, _inputIndex);
         }
 
         /// <summary>
