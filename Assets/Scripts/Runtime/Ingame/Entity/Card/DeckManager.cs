@@ -1,10 +1,9 @@
-using Cryptos.Runtime.Ingame.UI;
+using Cryptos.Runtime.System;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -12,26 +11,32 @@ namespace Cryptos.Runtime.Ingame.Entity
 {
     public class DeckManager : MonoBehaviour, IInitializeAsync
     {
+        public event Action<CardInstance> OnAddCardInstance;
+        public event Action<CardInstance> OnRemoveCardInstance;
+
         [SerializeField, Tooltip("ワードのデータベース")]
         private WordDataBase _wordDatabase;
 
-        Task IInitializeAsync.InitializeTask { get;  set; }
-        private IngameUIManager _ingameUIManager;
+        Task IInitializeAsync.InitializeTask { get; set; }
+
+        private InputBuffer _inputBuffer;
 
         private readonly List<CardInstance> _deckCard = new();
 
         [SerializeField, Obsolete]
-        private CardData _cardData;
+        private CardData[] _cardDatas;
 
         async Task IInitializeAsync.InitializeAsync()
         {
-            _ingameUIManager = await ServiceLocator.GetInstanceAsync<IngameUIManager>();
+            _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
         }
 
         private async void Start()
         {
             await SymphonyTask.WaitUntil(() => (this as IInitializeAsync).IsDone);
-            AddCardToDeck(_cardData);
+
+            foreach (var item in _cardDatas) //開発用機能
+                AddCardToDeck(item);
         }
 
         /// <summary>
@@ -40,10 +45,10 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// <param name="data"></param>
         public void AddCardToDeck(CardData data)
         {
-            List<WordData> words = new ();
+            List<WordData> words = new();
 
             //カードの難易度までのワードを追加
-            for (int i = 0; i <= data.CardDifficulty; i++) 
+            for (int i = 0; i <= data.CardDifficulty; i++)
             {
                 words.AddRange(_wordDatabase[i]);
             }
@@ -54,10 +59,26 @@ namespace Cryptos.Runtime.Ingame.Entity
                 return;
             }
 
+            //カードを生成
             CardInstance instance = new(data, words.ToArray());
+            _inputBuffer.OnAlphabetKeyPressed += instance.OnInputChar;
             _deckCard.Add(instance);
 
-            _ingameUIManager?.UIElementDeck.AddCard(instance);
+            //終わったら削除する
+            instance.OnCompleteInput += () => RemoveCardFromDeck(instance);
+
+            OnAddCardInstance?.Invoke(instance);
+        }
+
+        /// <summary>
+        ///     カードをデッキから削除する
+        /// </summary>
+        /// <param name="instance"></param>
+        public void RemoveCardFromDeck(CardInstance instance)
+        {
+            _inputBuffer.OnAlphabetKeyPressed -= instance.OnInputChar;
+            _deckCard.Remove(instance);
+            OnRemoveCardInstance?.Invoke(instance);
         }
     }
 }
