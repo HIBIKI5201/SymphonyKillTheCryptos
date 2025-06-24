@@ -13,11 +13,12 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// </summary>
         /// <param name="data">カードのデータ</param>
         /// <param name="wordDatas">出てくるワードの候補</param>
-        public CardInstance(CardData data, WordData[] wordDatas)
+        public CardInstance(CardData data, WordData[] wordDatas, WordManager wordManager)
         {
             _data = data;
+            _wordManager = wordManager;
+            _candidateWordDatas = wordDatas;
             _remainDifficulty = data.CardDifficulty;
-            _wordDatas = wordDatas;
 
             NextWord();
         }
@@ -30,8 +31,9 @@ namespace Cryptos.Runtime.Ingame.Entity
         [Tooltip("ワードコンプリート進捗率")] public event Action<float> OnProgressUpdate;
 
         private CardData _data;
+        private WordManager _wordManager;
         private WordData _wordData;
-        private WordData[] _wordDatas;
+        [Tooltip("候補となるワード一覧")] private WordData[] _candidateWordDatas;
 
         private int _inputIndex;
         private int _remainDifficulty;
@@ -100,8 +102,14 @@ namespace Cryptos.Runtime.Ingame.Entity
         private void SetNewWord()
         {
             //ランダムなワードを取得する
-            int random = UnityEngine.Random.Range(0, _wordDatas.Length);
-            _wordData = _wordDatas[random];
+            WordData word = _wordManager.GetOnlyWord(_candidateWordDatas);
+            if (word == null) return;
+
+            //新しいワードを登録しなおす
+            _wordManager.RemoveWord(_wordData);
+            _wordManager.AddWord(word);
+            
+            _wordData = word;
             _inputIndex = 0;
         }
 
@@ -110,7 +118,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// </summary>
         private void InvokeProgressEvent()
         {
-            float progress = Mathf.Clamp01((float)_inputIndex / (float)_data.CardDifficulty);
+            float progress = 1f - Mathf.Clamp01((float)_remainDifficulty / (float)_data.CardDifficulty);
             OnProgressUpdate?.Invoke(progress);
         }
     }
