@@ -26,7 +26,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         public CardData CardData => _data;
         public string CurrentWord => _currentData.word;
 
-        [Tooltip("ワード入力が終了した時")] public event Action OnCompleteInput;
+        [Tooltip("ワード入力が終了した時")] public event Action OnComplete;
         [Tooltip("ワードの入力が更新された時")] public event Action<string, int> OnWordInputed;
         [Tooltip("ワードコンプリート進捗率")] public event Action<float> OnProgressUpdate;
 
@@ -52,7 +52,8 @@ namespace Cryptos.Runtime.Ingame.Entity
                 _inputIndex++;
                 if (CheckCompleteWord())
                 {
-                    OnCompleteInput?.Invoke();
+                    _wordManager.RemoveWord(_currentData.word);
+                    OnComplete?.Invoke();
                     return;
                 }
             }
@@ -76,8 +77,6 @@ namespace Cryptos.Runtime.Ingame.Entity
 
                 if (_remainDifficulty <= 0) //進捗が終わったか
                 {
-                    OnCompleteInput?.Invoke();
-                    _wordManager.RemoveWord(_currentData.word);
                     return true;
                 }
                 else
