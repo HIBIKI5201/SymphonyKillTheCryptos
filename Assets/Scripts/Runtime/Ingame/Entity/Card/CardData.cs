@@ -1,7 +1,4 @@
 using Cryptos.Runtime.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Ingame.Entity
@@ -19,7 +16,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         public Texture2D CardIcon => _cardIcon;
         public Vector2Int WordRange => _wordRange;
         public ICardContent[] Contents => _contentsArray;
-        
+
 
         [Header("基本情報")]
         [SerializeField, Tooltip("カードの名前")]

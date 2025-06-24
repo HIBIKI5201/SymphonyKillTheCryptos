@@ -1,7 +1,6 @@
 using Cryptos.Runtime.System;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
-using SymphonyFrameWork.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +60,7 @@ namespace Cryptos.Runtime.Ingame.Entity
 
             //カードの難易度までのワードを取得
             WordData[] words = _wordDatabase
-                .WordData[data.WordRange.x ..data.WordRange.y].ToArray();
+                .WordData[data.WordRange.x..data.WordRange.y].ToArray();
 
             //カードを生成
             CardInstance instance = new(data, words, _wordManager);
