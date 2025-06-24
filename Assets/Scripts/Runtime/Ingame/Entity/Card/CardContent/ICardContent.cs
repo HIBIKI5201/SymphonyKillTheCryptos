@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface ICardContent
+namespace Cryptos.Runtime.Ingame.Entity
 {
-    public void TriggerEnterContent(GameObject player, params GameObject[] target);
+    public interface ICardContent
+    {
+        public void TriggerEnterContent(GameObject player, params GameObject[] target);
+    }
 }

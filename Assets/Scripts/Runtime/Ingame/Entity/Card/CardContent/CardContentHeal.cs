@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class CardContentHeal : ICardContent
+namespace Cryptos.Runtime.Ingame.Entity
 {
-    [SerializeField]
-    private float _healAmount;
-
-    public void TriggerEnterContent(GameObject player, params GameObject[] target)
+    public class CardContentHeal : ICardContent
     {
-        //プレイヤーを回復する
+        [SerializeField]
+        private float _healAmount;
+
+        public void TriggerEnterContent(GameObject player, params GameObject[] target)
+        {
+            //プレイヤーを回復する
+        }
     }
 }

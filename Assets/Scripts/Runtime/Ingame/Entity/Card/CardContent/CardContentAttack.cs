@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class CardContentAttack : CardContentBase
+namespace Cryptos.Runtime.Ingame.Entity
 {
-    [SerializeField]
-    private float _damage;
-
-    public override void TriggerEnterContent(GameObject player, params GameObject[] target)
+    public class CardContentAttack : ICardContent
     {
-        
+        [SerializeField]
+        private float _damage;
+
+        public void TriggerEnterContent(GameObject player, params GameObject[] target)
+        {
+            //ターゲットにダメージを与える
+        }
     }
 }
