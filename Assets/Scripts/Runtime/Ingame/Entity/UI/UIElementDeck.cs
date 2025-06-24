@@ -14,7 +14,7 @@ namespace Cryptos.Runtime.Ingame.UI
         private const string DECK_NAME = "deck";
 
         private VisualElement _deck;
-        private readonly List<UIElementCard> _cards = new();
+        private readonly Dictionary<CardInstance, UIElementCard> _cards = new();
 
         protected override Task Initialize_S(TemplateContainer container)
         {
@@ -34,14 +34,20 @@ namespace Cryptos.Runtime.Ingame.UI
             card.SetData(instance);
 
             _deck.Add(card);
-            _cards.Add(card);
+            _cards.Add(instance, card);
+        }
 
-            //破棄する処理を登録
-            card.OnDispose += () =>
+        /// <summary>
+        ///     カードをデッキから削除する
+        /// </summary>
+        /// <param name="instance"></param>
+        public void RemoveCard(CardInstance instance)
+        {
+            if (_cards.TryGetValue(instance, out UIElementCard card))
             {
                 _deck.Remove(card);
-                _cards.Remove(card);
-            };
+                _cards.Remove(instance);
+            }
         }
     }
 }
