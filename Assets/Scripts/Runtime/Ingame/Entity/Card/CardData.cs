@@ -22,7 +22,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         [SerializeField, Tooltip("カードの説明"), TextArea]
         private string _cardExplanation;
 
-        [SerializeField, Tooltip("カードの難易度")]
+        [SerializeField, Tooltip("カードの難易度"), Min(1)]
         private int _cardDifficulty;
 
         [SerializeField, Tooltip("アイコン画像")]

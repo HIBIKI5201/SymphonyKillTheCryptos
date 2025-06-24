@@ -12,7 +12,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         [SerializeField, Tooltip("文字列")]
         private string _word;
 
-        [SerializeField, Tooltip("難易度")]
+        [SerializeField, Tooltip("難易度"), Min(1)]
         private int _difficulty;
     }
 }
