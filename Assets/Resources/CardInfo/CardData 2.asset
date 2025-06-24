@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: 
   _cardExplanation: 
-  _cardDifficulty: 0
+  _cardDifficulty: 3
   _cardIcon: {fileID: 0}

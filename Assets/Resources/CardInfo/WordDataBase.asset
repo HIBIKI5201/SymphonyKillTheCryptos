@@ -15,18 +15,18 @@ MonoBehaviour:
   _words:
   - _wordDataArray:
     - _word: abca
-      _difficulty: 0
+      _difficulty: 1
     - _word: acas
-      _difficulty: 0
+      _difficulty: 1
     - _word: gasd
-      _difficulty: 0
+      _difficulty: 1
   - _wordDataArray:
     - _word: bbb
-      _difficulty: 1
+      _difficulty: 2
     - _word: bb
-      _difficulty: 1
+      _difficulty: 2
     - _word: b
-      _difficulty: 1
+      _difficulty: 2
   - _wordDataArray:
     - _word: ccc
-      _difficulty: 2
+      _difficulty: 3
