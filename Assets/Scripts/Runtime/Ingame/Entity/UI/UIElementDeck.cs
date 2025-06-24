@@ -14,7 +14,7 @@ namespace Cryptos.Runtime.Ingame.UI
         private const string DECK_NAME = "deck";
 
         private VisualElement _deck;
-        private List<UIElementCard> _cards;
+        private readonly List<UIElementCard> _cards = new();
 
         protected override Task Initialize_S(TemplateContainer container)
         {
@@ -26,12 +26,12 @@ namespace Cryptos.Runtime.Ingame.UI
         /// <summary>
         ///     カードをデッキに追加する
         /// </summary>
-        /// <param name="data"></param>
-        public void AddCard(CardData data)
+        /// <param name="instance"></param>
+        public void AddCard(CardInstance instance)
         {
             //カードを追加
-            UIElementCard card = new UIElementCard();
-            card.SetData(data);
+            UIElementCard card = new ();
+            card.SetData(instance);
 
             _deck.Add(card);
             _cards.Add(card);
