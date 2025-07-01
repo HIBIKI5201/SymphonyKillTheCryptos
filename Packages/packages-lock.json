@@ -388,13 +388,13 @@
       "url": "https://packages.unity.com"
     },
     "symphony.framework": {
-      "version": "https://github.com/HIBIKI5201/SymphonyTemplate.git?path=Assets/SymphonyFrameWork",
+      "version": "https://github.com/HIBIKI5201/SymphonyFramework.git",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "61917b55eb72df16d614504bfddc6249c3f45211"
+      "hash": "d2f507c9746cc02dce6116b5e6ed07f9ddabaa06"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
