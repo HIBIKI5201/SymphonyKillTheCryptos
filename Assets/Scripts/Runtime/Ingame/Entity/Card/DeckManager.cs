@@ -101,9 +101,11 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// <param name="contents"></param>
         private void InvokeContents(ICardContent[] contents)
         {
-            foreach (var card in contents)
+            foreach (var content in contents)
             {
-                card.TriggerEnterContent(_playerManager.gameObject);
+                if (content == null) continue;
+
+                content.TriggerEnterContent(_playerManager.gameObject);
             }
         }
     }
