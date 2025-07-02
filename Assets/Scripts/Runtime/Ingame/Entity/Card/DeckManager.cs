@@ -14,6 +14,34 @@ namespace Cryptos.Runtime.Ingame.Entity
         public event Action<CardInstance> OnAddCardInstance;
         public event Action<CardInstance> OnRemoveCardInstance;
 
+        /// <summary>
+        ///     カードを追加する
+        /// </summary>
+        /// <param name="data"></param>
+        public CardInstance AddCardToDeck(CardData data)
+        {
+            if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
+            {
+                Debug.LogWarning($"{data.name}のWordRnageが不適切です\n二つの距離は");
+                return null;
+            }
+
+            //カードの難易度までのワードを取得
+            WordData[] words = _wordDatabase
+                .WordData[data.WordRange.x..data.WordRange.y].ToArray();
+
+            //カードを生成
+            CardInstance instance = new(data, words, _wordManager);
+            _inputBuffer.OnAlphabetKeyPressed += instance.OnInputChar;
+            _deckCard.Add(instance);
+
+            //終了イベント
+            instance.OnComplete += CompletedEvent;
+
+            OnAddCardInstance?.Invoke(instance);
+            return instance;
+        }
+
         [SerializeField, Tooltip("ワードのデータベース")]
         private WordDataBase _wordDatabase;
 
@@ -50,39 +78,14 @@ namespace Cryptos.Runtime.Ingame.Entity
         }
 
         /// <summary>
-        ///     カードを追加する
+        ///     カードの入力が完了した時のイベント
         /// </summary>
-        /// <param name="data"></param>
-        public CardInstance AddCardToDeck(CardData data)
-        {
-            if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
-            {
-                Debug.LogWarning($"{data.name}のWordRnageが不適切です\n二つの距離は");
-                return null;
-            }
-
-            //カードの難易度までのワードを取得
-            WordData[] words = _wordDatabase
-                .WordData[data.WordRange.x..data.WordRange.y].ToArray();
-
-            //カードを生成
-            CardInstance instance = new(data, words, _wordManager);
-            _inputBuffer.OnAlphabetKeyPressed += instance.OnInputChar;
-            _deckCard.Add(instance);
-
-            //終了イベント
-            instance.OnComplete += CompletedEvent;
-
-            OnAddCardInstance?.Invoke(instance);
-            return instance;
-        }
-
+        /// <param name="instance"></param>
         private void CompletedEvent(CardInstance instance)
         {
             InvokeContents(instance.CardData.Contents);
             RemoveCardFromDeck(instance);
         }
-
 
         /// <summary>
         ///     カードをデッキから削除する
