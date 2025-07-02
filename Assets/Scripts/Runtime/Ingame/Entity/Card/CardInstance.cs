@@ -23,12 +23,36 @@ namespace Cryptos.Runtime.Ingame.Entity
             NextWord();
         }
 
-        public CardData CardData => _data;
-        public string CurrentWord => _currentData.word;
-
         [Tooltip("ワード入力が終了した時")] public event Action<CardInstance> OnComplete;
         [Tooltip("ワードの入力が更新された時")] public event Action<string, int> OnWordInputed;
         [Tooltip("ワードコンプリート進捗率")] public event Action<float> OnProgressUpdate;
+
+        public CardData CardData => _data;
+        public string CurrentWord => _currentData.word;
+
+        /// <summary>
+        ///     アルファベット入力を受けた時
+        /// </summary>
+        /// <param name="input"></param>
+        public void OnInputChar(char input)
+        {
+            //次の文字が入力と同じか
+            if (IsMatch(input))
+            {
+                SuccessInput(); //同じなら成功入力
+            }
+            else
+            {
+                _inputIndex = 0; //入力が次の文字と同じじゃなければリセット
+
+                if (IsMatch(input)) //リセット後に最初の文字が同じなら成功
+                {
+                    SuccessInput();
+                }
+            }
+
+            OnWordInputed?.Invoke(_currentData.word, _inputIndex);
+        }
 
         private CardData _data;
         private WordManager _wordManager;
@@ -41,32 +65,20 @@ namespace Cryptos.Runtime.Ingame.Entity
         private int _remainDifficulty;
 
         /// <summary>
-        ///     アルファベット入力を受けた時
+        ///     ワードの入力が成功した時の処理
         /// </summary>
-        /// <param name="input"></param>
-        public void OnInputChar(char input)
+        private void SuccessInput()
         {
-            //次の文字が入力と同じか
-            if (_currentData.word.ToUpper()[_inputIndex] == input)
+            _inputIndex++;
+            if (CheckCompleteWord())
             {
-                _inputIndex++;
-                if (CheckCompleteWord())
-                {
-                    _wordManager.RemoveWord(_currentData.word);
-                    OnComplete?.Invoke(this);
-                    return;
-                }
+                _wordManager.RemoveWord(_currentData.word);
+                OnComplete?.Invoke(this);
             }
-            else
-            {
-                _inputIndex = 0; //入力が次の文字と同じじゃなければリセット
-            }
-
-            OnWordInputed?.Invoke(_currentData.word, _inputIndex);
         }
 
         /// <summary>
-        ///     ワードの入力が終了したか判定
+        ///     ワードの入力が全て終了したか判定
         /// </summary>
         /// <returns></returns>
         private bool CheckCompleteWord()
@@ -123,5 +135,7 @@ namespace Cryptos.Runtime.Ingame.Entity
             float progress = 1f - Mathf.Clamp01((float)_remainDifficulty / (float)_data.CardDifficulty);
             OnProgressUpdate?.Invoke(progress);
         }
+
+        private bool IsMatch(char input) => _currentData.word.ToUpper()[_inputIndex] == input;
     }
 }
