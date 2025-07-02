@@ -13,8 +13,6 @@ namespace Cryptos.Runtime.Ingame.UI
     [RequireComponent(typeof(UIDocument))]
     public class IngameUIManager : MonoBehaviour, IInitializeAsync
     {
-        public UIElementDeck UIElementDeck => _deck;
-
         Task IInitializeAsync.InitializeTask { get; set; }
 
         private UIDocument _document;
