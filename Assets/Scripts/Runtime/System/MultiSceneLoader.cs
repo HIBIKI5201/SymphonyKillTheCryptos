@@ -12,7 +12,7 @@ namespace Cryptos.Runtime.System
         ///     シーンを複数同時にロードして初期化処理も行う
         /// </summary>
         /// <param name="names"></param>
-        public static async Task LoadScene(params string[] names)
+        public static async Task LoadScenes(params string[] names)
         {
             Task[] tasks = new Task[names.Length];
 
