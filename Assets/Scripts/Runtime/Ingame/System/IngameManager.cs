@@ -16,7 +16,7 @@ namespace Cryptos.Runtime.Ingame.System
 
         async Task IInitializeAsync.InitializeAsync()
         {
-            await MultiSceneLoader.LoadScene(scenes);
+            await MultiSceneLoader.LoadScenes(scenes);
         }
     }
 }
