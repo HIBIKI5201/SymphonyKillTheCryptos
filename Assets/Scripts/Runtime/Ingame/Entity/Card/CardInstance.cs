@@ -6,6 +6,7 @@ namespace Cryptos.Runtime.Ingame.Entity
     /// <summary>
     ///     カードのインスタンスデータ
     /// </summary>
+    [Serializable]
     public class CardInstance
     {
         /// <summary>

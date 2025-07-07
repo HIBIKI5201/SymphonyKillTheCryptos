@@ -1,5 +1,6 @@
 using Cryptos.Runtime.System;
 using SymphonyFrameWork;
+using SymphonyFrameWork.Attribute;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
@@ -46,9 +47,6 @@ namespace Cryptos.Runtime.Ingame.Entity
 
         async Task IInitializeAsync.InitializeAsync()
         {
-            _wordManager = new WordManager();
-            _cardDrawer = new CardDrawer(_wordManager);
-
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
 
@@ -57,14 +55,15 @@ namespace Cryptos.Runtime.Ingame.Entity
             TestCardSpawn();
         }
 
-
+        [SerializeField]
         private CardDrawer _cardDrawer;
-        private InputBuffer _inputBuffer;
-        private WordManager _wordManager;
 
+        [SerializeField, ReadOnly]
+        private readonly List<CardInstance> _deckCardList = new();
+
+        private InputBuffer _inputBuffer;
         private SymphonyManager _playerManager;
 
-        private readonly List<CardInstance> _deckCardList = new();
 
         /// <summary>
         ///     アルファベット入力を受けた時のイベント
