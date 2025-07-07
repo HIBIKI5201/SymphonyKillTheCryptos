@@ -58,7 +58,6 @@ namespace Cryptos.Runtime.Ingame.Entity
         [SerializeField]
         private CardDrawer _cardDrawer;
 
-        [SerializeField, ReadOnly]
         private readonly List<CardInstance> _deckCardList = new();
 
         private InputBuffer _inputBuffer;
