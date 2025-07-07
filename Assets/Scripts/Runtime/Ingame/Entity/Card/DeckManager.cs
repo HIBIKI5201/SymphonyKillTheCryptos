@@ -3,16 +3,20 @@ using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Ingame.Entity
 {
+    /// <summary>
+    ///     デッキを管理するクラス
+    /// </summary>
     public class DeckManager : MonoBehaviour, IInitializeAsync
     {
         public event Action<CardInstance> OnAddCardInstance;
         public event Action<CardInstance> OnRemoveCardInstance;
+
+        Task IInitializeAsync.InitializeTask { get; set; }
 
         /// <summary>
         ///     カードを追加する
@@ -20,20 +24,18 @@ namespace Cryptos.Runtime.Ingame.Entity
         /// <param name="data"></param>
         public CardInstance AddCardToDeck(CardData data)
         {
-            if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
+            if (data == null)
             {
-                Debug.LogWarning($"{data.name}のWordRnageが不適切です\n二つの距離は");
+                Debug.LogWarning("カードデータがnullです");
                 return null;
             }
 
-            //カードの難易度までのワードを取得
-            WordData[] words = _wordDatabase
-                .WordData[data.WordRange.x..data.WordRange.y].ToArray();
+            //カードのデータを生成
+            var instance = _cardDrawer.GetNewCard(data);
 
-            //カードを生成
-            CardInstance instance = new(data, words, _wordManager);
-            _inputBuffer.OnAlphabetKeyPressed += instance.OnInputChar;
-            _deckCard.Add(instance);
+            if (instance == null) return null;
+
+            _deckCardList.Add(instance);
 
             //終了イベント
             instance.OnComplete += CompletedEvent;
@@ -42,39 +44,36 @@ namespace Cryptos.Runtime.Ingame.Entity
             return instance;
         }
 
-        [SerializeField, Tooltip("ワードのデータベース")]
-        private WordDataBase _wordDatabase;
+        async Task IInitializeAsync.InitializeAsync()
+        {
+            _wordManager = new WordManager();
+            _cardDrawer = new CardDrawer(_wordManager);
 
-        Task IInitializeAsync.InitializeTask { get; set; }
+            _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
+            _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
 
+            _inputBuffer.OnAlphabetKeyPressed += OnInputAlphabet;
+
+            TestCardSpawn();
+        }
+
+
+        private CardDrawer _cardDrawer;
         private InputBuffer _inputBuffer;
         private WordManager _wordManager;
 
         private SymphonyManager _playerManager;
 
-        private readonly List<CardInstance> _deckCard = new();
+        private readonly List<CardInstance> _deckCardList = new();
 
-        [SerializeField, Obsolete]
-        private CardData[] _cardDatas;
-
-        async Task IInitializeAsync.InitializeAsync()
+        /// <summary>
+        ///     アルファベット入力を受けた時のイベント
+        /// </summary>
+        /// <param name="alphabet"></param>
+        private void OnInputAlphabet(char alphabet)
         {
-            _wordManager = new WordManager();
-            _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
-            _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
-
-            RandomDraw();
-            RandomDraw();
-            RandomDraw();
-
-            void RandomDraw(CardInstance ins = default)
-            {
-                Debug.Log("draw");
-                var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
-                var instance = AddCardToDeck(cardData);
-
-                instance.OnComplete += RandomDraw;
-            }
+            for (int i = 0; i < _deckCardList.Count; i++)
+                _deckCardList[i].OnInputChar(alphabet);
         }
 
         /// <summary>
@@ -94,7 +93,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         private void RemoveCardFromDeck(CardInstance instance)
         {
             _inputBuffer.OnAlphabetKeyPressed -= instance.OnInputChar;
-            _deckCard.Remove(instance);
+            _deckCardList.Remove(instance);
             OnRemoveCardInstance?.Invoke(instance);
         }
 
@@ -109,6 +108,27 @@ namespace Cryptos.Runtime.Ingame.Entity
                 if (content == null) continue;
 
                 content.TriggerEnterContent(_playerManager.gameObject);
+            }
+        }
+
+        [Header("テストコード")]
+        [SerializeField, Obsolete]
+        private CardData[] _cardDatas;
+        [SerializeField, Min(1)]
+        private int _cardAmount = 3;
+
+        private void TestCardSpawn()
+        {
+            for (int i = 0; i < _cardAmount; i++)
+                RandomDraw();
+
+            void RandomDraw(CardInstance ins = default)
+            {
+                Debug.Log("draw");
+                var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
+                var instance = AddCardToDeck(cardData);
+
+                instance.OnComplete += RandomDraw;
             }
         }
     }
