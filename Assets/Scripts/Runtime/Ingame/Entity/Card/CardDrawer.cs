@@ -1,18 +1,18 @@
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Ingame.Entity
 {
+    /// <summary>
+    ///     カードを生成するクラス
+    /// </summary>
+    [Serializable]
     public class CardDrawer
     {
-        public CardDrawer(WordManager wordManager)
-        {
-            _wordManager = wordManager;
-        }
-
         [SerializeField, Tooltip("ワードのデータベース")]
         private WordDataBase _wordDatabase;
 
-        private readonly WordManager _wordManager;
+        private readonly WordManager _wordManager = new();
 
         /// <summary>
         ///     新しいカードを生成する
