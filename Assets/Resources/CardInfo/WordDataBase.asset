@@ -20,6 +20,7 @@ MonoBehaviour:
     - char
     - private
     - public
+    - void
     _difficulty: 1
   - _words:
     - double
@@ -29,12 +30,15 @@ MonoBehaviour:
     - protected
     - class
     - struct
+    - async
+    - await
     _difficulty: 2
   - _words:
     - List
     - Dictionary
-    - readonly
+    - readonry
     - const
+    - sealed
     - internal
     - interface
     _difficulty: 3
@@ -43,7 +47,7 @@ MonoBehaviour:
     - Transform
     - GameObject
     - MonoBehaviour
-    - sealed
+    - abstruct
     - partial
     - virtual
     _difficulty: 4
@@ -51,4 +55,5 @@ MonoBehaviour:
     - Quaternion
     - Queue
     - Stack
+    - ObjectPool
     _difficulty: 5
