@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Cryptos.Runtime.Ingame.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     public interface ICardContent
     {

@@ -1,8 +1,8 @@
-using SymphonyFrameWork.Attribute;
+using Cryptos.Runtime.Entity.Ingame.Word;
 using System;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Ingame.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     /// <summary>
     ///     カードのインスタンスデータ

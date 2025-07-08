@@ -1,7 +1,8 @@
+using Cryptos.Runtime.Entity.Ingame.Word;
 using System;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Ingame.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     /// <summary>
     ///     カードを生成するクラス

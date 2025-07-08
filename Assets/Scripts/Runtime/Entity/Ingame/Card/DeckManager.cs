@@ -1,13 +1,13 @@
+using Cryptos.Runtime.Entity.Ingame.Interface;
 using Cryptos.Runtime.System;
 using SymphonyFrameWork;
-using SymphonyFrameWork.Attribute;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Ingame.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     /// <summary>
     ///     デッキを管理するクラス
@@ -48,7 +48,6 @@ namespace Cryptos.Runtime.Ingame.Entity
         async Task IInitializeAsync.InitializeAsync()
         {
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
-            _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
 
             _inputBuffer.OnAlphabetKeyPressed += OnInputAlphabet;
 
@@ -61,7 +60,7 @@ namespace Cryptos.Runtime.Ingame.Entity
         private readonly List<CardInstance> _deckCardList = new();
 
         private InputBuffer _inputBuffer;
-        private SymphonyManager _playerManager;
+        private IPlayer _playerManager;
 
 
         /// <summary>

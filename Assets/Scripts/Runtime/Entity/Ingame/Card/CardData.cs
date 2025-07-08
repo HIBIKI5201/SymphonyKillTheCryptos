@@ -1,7 +1,7 @@
 using Cryptos.Runtime.System;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Ingame.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     /// <summary>
     ///     カードのデータ情報
