@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.Ingame.UI
+namespace Cryptos.Runtime.UI.Ingame
 {
     /// <summary>
     ///     インゲームのUIを管理する

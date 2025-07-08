@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.Ingame.UI
+namespace Cryptos.Runtime.UI.Ingame
 {
     [UxmlElement]
     public partial class UIElementCard : SymphonyVisualElement
