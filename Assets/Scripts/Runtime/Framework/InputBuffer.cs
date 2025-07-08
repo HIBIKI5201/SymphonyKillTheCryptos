@@ -3,7 +3,7 @@ using SymphonyFrameWork.Debugger;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Cryptos.Runtime.System
+namespace Cryptos.Runtime.Framework
 {
     [RequireComponent(typeof(PlayerInput))]
     public class InputBuffer : MonoBehaviour

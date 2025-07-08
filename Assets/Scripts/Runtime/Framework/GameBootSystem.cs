@@ -2,7 +2,7 @@ using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Cryptos.Runtime.System
+namespace Cryptos.Runtime.Framework
 {
     public class GameBootSystem : MonoBehaviour
     {

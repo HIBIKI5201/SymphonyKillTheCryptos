@@ -1,7 +1,7 @@
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
 
-namespace Cryptos.Runtime.System
+namespace Cryptos.Runtime.Framework
 {
     /// <summary>
     ///     シーンをロードする処理を担当する

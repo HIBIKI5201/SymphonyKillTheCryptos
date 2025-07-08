@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Cryptos.Runtime.System
+namespace Cryptos.Runtime.Framework
 {
     public static class CryptosPathConstant
     {
