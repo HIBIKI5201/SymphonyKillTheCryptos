@@ -1,4 +1,4 @@
-using Cryptos.Runtime.System;
+using Cryptos.Runtime.Framework;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Word

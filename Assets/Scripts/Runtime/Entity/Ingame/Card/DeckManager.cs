@@ -1,5 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Interface;
-using Cryptos.Runtime.System;
+using Cryptos.Runtime.Framework;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System;
