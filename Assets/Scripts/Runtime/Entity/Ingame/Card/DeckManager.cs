@@ -50,8 +50,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
 
             _inputBuffer.OnAlphabetKeyPressed += OnInputAlphabet;
-
-            TestCardSpawn();
         }
 
         [SerializeField]
@@ -100,32 +98,13 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// <param name="contents"></param>
         private void InvokeContents(ICardContent[] contents)
         {
+            if (contents == null || contents.Length == 0) return;
+
             foreach (var content in contents)
             {
                 if (content == null) continue;
 
                 content.TriggerEnterContent(_playerManager.gameObject);
-            }
-        }
-
-        [Header("テストコード")]
-        [SerializeField, Obsolete]
-        private CardData[] _cardDatas;
-        [SerializeField, Min(1)]
-        private int _cardAmount = 3;
-
-        private void TestCardSpawn()
-        {
-            for (int i = 0; i < _cardAmount; i++)
-                RandomDraw();
-
-            void RandomDraw(CardInstance ins = default)
-            {
-                Debug.Log("draw");
-                var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
-                var instance = AddCardToDeck(cardData);
-
-                instance.OnComplete += RandomDraw;
             }
         }
     }
