@@ -1,13 +1,12 @@
-using UnityEngine;
-using UnityEditor;
-using Cryptos.Runtime.Ingame.Entity;
-using UnityEngine.Networking;
+using Cryptos.Runtime.Entity.Ingame.Word;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using NUnit.Framework;
-using System.Collections.Generic;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Cryptos.Editor.Ingame
 {
@@ -28,7 +27,7 @@ namespace Cryptos.Editor.Ingame
             _sheetName = EditorPrefs.GetString(SHEET_NAME_KEY, string.Empty);
         }
 
-        public override void OnInspectorGUI ()
+        public override void OnInspectorGUI()
         {
             EditorGUILayout.LabelField("データベースURL");
             _url = EditorGUILayout.TextField("URL", _url);
@@ -53,7 +52,7 @@ namespace Cryptos.Editor.Ingame
         {
             //リクエストを待機
             UnityWebRequest request = UnityWebRequest.Get(
-                "https://docs.google.com/spreadsheets/d/" + _url 
+                "https://docs.google.com/spreadsheets/d/" + _url
                 + "/gviz/tq?tqx=out:csv&sheet=" + _sheetName);
 
             await request.SendWebRequest();
@@ -72,7 +71,7 @@ namespace Cryptos.Editor.Ingame
             int index = 0;
             List<WordData> wordDatas = new();
 
-            while(reader.Peek() != -1)
+            while (reader.Peek() != -1)
             {
                 index++;
                 string line = reader.ReadLine();
@@ -94,7 +93,7 @@ namespace Cryptos.Editor.Ingame
             if (field != null)
             {
                 field.SetValue(db, wordDatas.ToArray());
-                EditorUtility.SetDirty(db);           
+                EditorUtility.SetDirty(db);
             }
         }
     }
