@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace Cryptos.Runtime
+namespace Cryptos.Runtime.Presenter.Character.Player
 {
     [RequireComponent(typeof(Animator))]
     public class SymphonyAnimeManager : MonoBehaviour
@@ -16,7 +15,7 @@ namespace Cryptos.Runtime
         {
             _animator = GetComponent<Animator>();
         }
-        
+
         public void SetDirX(float value) => _animator.SetFloat(_dirXHash, value);
         public void SetDirY(float value) => _animator.SetFloat(_dirYHash, value);
         public void SetVelocity(float value) => _animator.SetFloat(_velocityHash, value);
