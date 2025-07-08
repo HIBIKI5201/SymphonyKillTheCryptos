@@ -119,6 +119,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &15127679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 15127681}
+  - component: {fileID: 15127680}
+  m_Layer: 0
+  m_Name: CardDeckDev
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &15127680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15127679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e0125afdfae4149bde29362e1f3273, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardDatas: []
+  _cardAmount: 3
+--- !u!4 &15127681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15127679}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.41819, y: 1.95513, z: -6.83541}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &82867839
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,13 +197,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardDrawer:
     _wordDatabase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
-  _cardDatas:
-  - {fileID: 11400000, guid: 1bf11a9e697d8e2408890191d194f0e1, type: 2}
-  - {fileID: 11400000, guid: 5f133e15ad993d141ad05589ec0d0163, type: 2}
-  - {fileID: 11400000, guid: db05b835f35190a4bbfa52a418b4a8fb, type: 2}
-  - {fileID: 11400000, guid: fca1eac7d2164c34a9dc8d88cfa90679, type: 2}
-  - {fileID: 11400000, guid: 4f81ac41041ba54418d48356df7b134e, type: 2}
-  _cardAmount: 3
 --- !u!4 &82867841
 Transform:
   m_ObjectHideFlags: 0
@@ -412,3 +451,4 @@ SceneRoots:
   - {fileID: 1025702765}
   - {fileID: 854485659}
   - {fileID: 82867841}
+  - {fileID: 15127681}
