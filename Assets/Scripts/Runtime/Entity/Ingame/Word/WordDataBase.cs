@@ -1,9 +1,7 @@
 using Cryptos.Runtime.System;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Ingame.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Word
 {
     /// <summary>
     ///     ワードのデータベース

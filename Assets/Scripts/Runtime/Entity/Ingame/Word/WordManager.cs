@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Cryptos.Runtime.Ingame.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Word
 {
     /// <summary>
     ///     デッキのワードを管理するクラス
