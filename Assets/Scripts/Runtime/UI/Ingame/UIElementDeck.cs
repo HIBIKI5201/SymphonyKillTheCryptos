@@ -1,4 +1,4 @@
-using Cryptos.Runtime.Ingame.Entity;
+using Cryptos.Runtime.Entity.Ingame.Card;
 using SymphonyFrameWork.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;

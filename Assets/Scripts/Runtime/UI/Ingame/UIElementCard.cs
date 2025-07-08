@@ -1,8 +1,7 @@
-using Cryptos.Runtime.Ingame.Entity;
 using SymphonyFrameWork.Utility;
-using System;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
+using Cryptos.Runtime.Entity.Ingame.Card;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
