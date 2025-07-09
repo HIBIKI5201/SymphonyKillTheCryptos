@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Interface;
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.Presenter.Character.Player;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System;
@@ -48,6 +49,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         async Task IInitializeAsync.InitializeAsync()
         {
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
+            _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
 
             _inputBuffer.OnAlphabetKeyPressed += OnInputAlphabet;
         }
@@ -58,8 +60,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private readonly List<CardInstance> _deckCardList = new();
 
         private InputBuffer _inputBuffer;
-        private IPlayer _playerManager;
-
+        private SymphonyManager _playerManager;
 
         /// <summary>
         ///     アルファベット入力を受けた時のイベント
