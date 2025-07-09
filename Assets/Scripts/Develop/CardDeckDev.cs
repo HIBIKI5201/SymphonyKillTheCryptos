@@ -2,7 +2,6 @@ using Cryptos.Runtime.Entity.Ingame.Card;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
-using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime
