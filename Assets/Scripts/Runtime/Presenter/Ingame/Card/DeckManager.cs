@@ -104,7 +104,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             {
                 if (content == null) continue;
 
-                content.TriggerEnterContent(_playerManager.gameObject);
+                try
+                {
+                    content.TriggerEnterContent(_playerManager.gameObject);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"コンテンツの実行に失敗しました: {content.GetType().Name}\n{e.Message}");
+                }
             }
         }
     }

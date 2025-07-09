@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 namespace Cryptos.Runtime.Framework
 {
+    /// <summary>
+    ///     入力をバッファリングするクラス
+    /// </summary>
     [RequireComponent(typeof(PlayerInput))]
     public class InputBuffer : MonoBehaviour
     {
