@@ -1,0 +1,19 @@
+{
+    "name": "Cryptos.Presenter.Ingame",
+    "rootNamespace": "Cryptos.Runtime.Presenter.Ingame",
+    "references": [
+        "GUID:83b371f8bd104ee45b1cb38cf205ac72",
+        "GUID:6f0c0ddbd4d96164c8b3b2d827c83f32",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:68a532f43eeefd5408e4e8871b769ee4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
