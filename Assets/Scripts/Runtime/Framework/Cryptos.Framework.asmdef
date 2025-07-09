@@ -1,8 +1,8 @@
 {
     "name": "Cryptos.Framework",
-    "rootNamespace": "",
+    "rootNamespace": "Cryptos.Runtime.Framework",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:6f0c0ddbd4d96164c8b3b2d827c83f32",
         "GUID:68a532f43eeefd5408e4e8871b769ee4",
         "GUID:b38aa02eab36b2942bc0bf2b2fbeabc4"
     ],

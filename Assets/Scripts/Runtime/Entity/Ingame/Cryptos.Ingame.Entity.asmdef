@@ -1,9 +1,9 @@
 {
     "name": "Cryptos.Ingame.Entity",
-    "rootNamespace": "",
+    "rootNamespace": "Cryptos.Runtime.Entity",
     "references": [
-        "GUID:68a532f43eeefd5408e4e8871b769ee4",
-        "GUID:bd27902e4ec02ec4a80a6774ff833f80"
+        "GUID:6f0c0ddbd4d96164c8b3b2d827c83f32",
+        "GUID:68a532f43eeefd5408e4e8871b769ee4"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
