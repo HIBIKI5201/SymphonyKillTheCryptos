@@ -15,8 +15,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// </summary>
     public class DeckManager : MonoBehaviour, IInitializeAsync
     {
-        public event Action<CardInstance> OnAddCardInstance;
-        public event Action<CardInstance> OnRemoveCardInstance;
+        public event Action<CardEntity> OnAddCardInstance;
+        public event Action<CardEntity> OnRemoveCardInstance;
 
         Task IInitializeAsync.InitializeTask { get; set; }
 
@@ -24,7 +24,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードを追加する
         /// </summary>
         /// <param name="data"></param>
-        public CardInstance AddCardToDeck(CardData data)
+        public CardEntity AddCardToDeck(CardData data)
         {
             if (data == null)
             {
@@ -57,7 +57,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField]
         private CardDrawer _cardDrawer;
 
-        private readonly List<CardInstance> _deckCardList = new();
+        private readonly List<CardEntity> _deckCardList = new();
 
         private InputBuffer _inputBuffer;
         private SymphonyManager _playerManager;
@@ -76,7 +76,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードの入力が完了した時のイベント
         /// </summary>
         /// <param name="instance"></param>
-        private void CompletedEvent(CardInstance instance)
+        private void CompletedEvent(CardEntity instance)
         {
             InvokeContents(instance.CardData.Contents);
             RemoveCardFromDeck(instance);
@@ -86,7 +86,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードをデッキから削除する
         /// </summary>
         /// <param name="instance"></param>
-        private void RemoveCardFromDeck(CardInstance instance)
+        private void RemoveCardFromDeck(CardEntity instance)
         {
             _inputBuffer.OnAlphabetKeyPressed -= instance.OnInputChar;
             _deckCardList.Remove(instance);

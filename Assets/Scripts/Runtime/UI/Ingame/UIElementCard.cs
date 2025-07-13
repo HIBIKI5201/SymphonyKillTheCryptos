@@ -19,7 +19,7 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     データをセットする
         /// </summary>
         /// <param name="data"></param>
-        public void SetData(CardInstance instance)
+        public void SetData(CardEntity instance)
         {
             instance.OnWordUpdated += OnWordUpdate;
             instance.OnProgressUpdate += OnProgressBarUpdate;

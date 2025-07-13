@@ -8,14 +8,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     ///     カードのインスタンスデータ
     /// </summary>
     [Serializable]
-    public class CardInstance
+    public class CardEntity
     {
         /// <summary>
         ///     インスタンスの初期化
         /// </summary>
         /// <param name="data">カードのデータ</param>
         /// <param name="wordDatas">出てくるワードの候補</param>
-        public CardInstance(CardData data, WordData[] wordDatas, WordManager wordManager)
+        public CardEntity(CardData data, WordData[] wordDatas, WordManager wordManager)
         {
             _data = data;
             _wordManager = wordManager;
@@ -25,7 +25,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             NextWord();
         }
 
-        [Tooltip("ワード入力が終了した時")] public event Action<CardInstance> OnComplete;
+        [Tooltip("ワード入力が終了した時")] public event Action<CardEntity> OnComplete;
         [Tooltip("ワードの入力が更新された時")] public event Action<string, int> OnWordUpdated;
         [Tooltip("ワードコンプリート進捗率")] public event Action<float> OnProgressUpdate;
 
@@ -38,21 +38,21 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// <param name="input"></param>
         public void OnInputChar(char input)
         {
-            //次の文字が入力と同じか
-            if (IsMatch(input))
+            // 入力が次の期待文字と一致しない場合は進捗をリセットする
+            if (!IsMatch(input))
             {
-                SuccessInput(); //同じなら成功入力
-            }
-            else
-            {
-                _inputIndex = 0; //入力が次の文字と同じじゃなければリセット
+                _inputIndex = 0;
 
-                if (IsMatch(input)) //リセット後に最初の文字が同じなら成功
+                // リセット後に先頭文字と一致しない場合は処理を終了
+                if (!IsMatch(input))
                 {
-                    SuccessInput();
+                    OnWordUpdated?.Invoke(_currentWord, _inputIndex);
+                    return;
                 }
             }
 
+            // 一致しているので進捗を進める
+            SuccessInput();
             OnWordUpdated?.Invoke(_currentWord, _inputIndex);
         }
 

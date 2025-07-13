@@ -33,7 +33,7 @@ namespace Cryptos.Runtime
             for (int i = 0; i < _cardAmount; i++)
                 RandomDraw();
 
-            void RandomDraw(CardInstance ins = default)
+            void RandomDraw(CardEntity ins = default)
             {
                 Debug.Log("draw");
                 var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
