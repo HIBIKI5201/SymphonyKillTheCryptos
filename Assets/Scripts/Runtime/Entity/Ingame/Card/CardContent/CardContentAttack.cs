@@ -9,7 +9,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         public void TriggerEnterContent(GameObject player, params GameObject[] target)
         {
-            //ターゲットにダメージを与える
+            Debug.Log($"CardContentAttack: Player {player.name} attacks target(s) with {_damage} damage.");
+            foreach (var t in target)
+            {
+                Debug.Log($"  Target: {t.name}");
+                // ここに実際のダメージ処理を記述
+            }
         }
     }
 }
