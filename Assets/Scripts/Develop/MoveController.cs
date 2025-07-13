@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.Develop
     [RequireComponent(typeof(SymphonyAnimeManager))]
     public class MoveController : MonoBehaviour
     {
-        [SerializeField, Range(0, 10)] private float _larpSpeed = 5f;
+        [SerializeField, Range(0, 10)] private float _lerpSpeed = 5f;
         
         private SymphonyAnimeManager _symphonyAnimeManager;
         
@@ -21,9 +21,14 @@ namespace Cryptos.Runtime.Develop
         {
             if (_symphonyAnimeManager == null) return;
 
+            HandleInput();
+        }
+
+        private void HandleInput()
+        {
             Vector2 dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             
-            _lastDir = Vector2.Lerp(_lastDir, dir, Time.deltaTime * _larpSpeed);
+            _lastDir = Vector2.Lerp(_lastDir, dir, Time.deltaTime * _lerpSpeed);
             _symphonyAnimeManager.SetDirX(_lastDir.x);
             _symphonyAnimeManager.SetDirY(_lastDir.y);
             _symphonyAnimeManager.SetVelocity(_lastDir.magnitude);
