@@ -7,12 +7,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// <summary>
     ///     カードを生成するクラス
     /// </summary>
-    [Serializable]
     public class CardDrawer
     {
-        [SerializeField, Tooltip("ワードのデータベース")]
-        private WordDataBase _wordDatabase;
+        public CardDrawer(WordDataBase wordDataBase)
+        {
+            _wordDatabase = wordDataBase ?? throw new ArgumentNullException(nameof(wordDataBase));
+        }
 
+        private readonly WordDataBase _wordDatabase;
         private readonly WordManager _wordManager = new();
 
         /// <summary>
