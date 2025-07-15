@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Framework;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity
@@ -5,6 +6,7 @@ namespace Cryptos.Runtime.Entity
     /// <summary>
     ///     Symphonyのデータを保持するクラス。
     /// </summary>
+    [CreateAssetMenu(fileName = nameof(SymphonyData), menuName = CryptosPathConstant.ASSET_PATH + nameof(SymphonyData), order = 1)]
     public class SymphonyData : ScriptableObject, IAttackableData, IHitableData
     {
         public float AttackPower => _attackPower;
