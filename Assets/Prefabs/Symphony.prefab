@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 640bcd9207092a94a9f11f56f43517b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _symphonyData: {fileID: 11400000, guid: fcf3f1f413c8c4348987e4dadd1102f0, type: 2}
 --- !u!114 &3463416069888909988
 MonoBehaviour:
   m_ObjectHideFlags: 0
