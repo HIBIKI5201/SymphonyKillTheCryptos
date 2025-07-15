@@ -99,7 +99,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// <param name="instance"></param>
         private void HandleCardCompleted(CardEntity instance)
         {
-            _cardUseCase.ExecuteCardEffect(instance, _playerManager.gameObject);
+            _cardUseCase.ExecuteCardEffect(instance, _playerManager);
             RemoveCardFromDeck(instance);
         }
 
