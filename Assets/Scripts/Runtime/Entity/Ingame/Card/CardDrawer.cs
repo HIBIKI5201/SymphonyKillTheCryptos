@@ -22,7 +22,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public CardEntity GetNewCard(CardData data)
+        public CardEntity CreateNewCard(CardData data)
         {
             if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
             {

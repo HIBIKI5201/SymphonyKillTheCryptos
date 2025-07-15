@@ -16,7 +16,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
 
         public CardEntity CreateCard(CardData data)
         {
-            return _cardDrawer.GetNewCard(data);
+            return _cardDrawer.CreateNewCard(data);
         }
 
         public void InputCharToCard(CardEntity cardEntity, char input)
