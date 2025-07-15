@@ -8,12 +8,11 @@ namespace Cryptos.Runtime.Presenter.Character.Player
     /// </summary>
     public class SymphonyManager : MonoBehaviour, IAttackable, IHitable
     {
-        public IHitableData HitableData => _hitableData;
-        public IAttackableData AttackableData => _attackableData;
+        public IHitableData HitableData => _symphonyData;
+        public IAttackableData AttackableData => _symphonyData;
 
-        private IHitableData _hitableData;
-        private IAttackableData _attackableData;
-
+        [SerializeField]
+        private SymphonyData _symphonyData;
 
         private SymphonyAnimeManager _animeManager;
 
