@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField]
         private float _damage;
 
-        public void TriggerEnterContent(GameObject player, params GameObject[] target)
+        public void Execute(GameObject player, params GameObject[] target)
         {
             Debug.Log($"CardContentAttack: Player {player.name} attacks target(s) with {_damage} damage.");
             foreach (var t in target)
