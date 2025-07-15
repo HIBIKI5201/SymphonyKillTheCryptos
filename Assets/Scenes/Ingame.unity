@@ -200,8 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 612ec119fcd17ca468b5c24057585de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardDrawer:
-    _wordDatabase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
+  _wordDataBase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
 --- !u!4 &82867841
 Transform:
   m_ObjectHideFlags: 0
