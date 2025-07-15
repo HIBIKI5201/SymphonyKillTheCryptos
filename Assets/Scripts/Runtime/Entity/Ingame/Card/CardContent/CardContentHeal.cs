@@ -9,7 +9,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         public void Execute(IAttackable player, params IHitable[] target)
         {
-            Debug.Log($"CardContentHeal: Player {player.gameObject.name} heals for {_healAmount} amount.");
+            Debug.Log($"CardContentHeal: Player {player.gameObject.name} heals for {_healAmount} amount.\nhealth is {target[0].HitableData.Health}");
             // ここに実際の回復処理を記述
         }
     }
