@@ -5,6 +5,9 @@ using Cryptos.Runtime.Entity.Ingame.Card;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
+    /// <summary>
+    ///     カードのUI要素
+    /// </summary>
     [UxmlElement]
     public partial class UIElementCard : SymphonyVisualElement
     {
