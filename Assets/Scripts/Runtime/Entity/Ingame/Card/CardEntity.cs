@@ -19,7 +19,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         {
             _data = data;
             _wordManager = wordManager;
-            _candidateWordDatas = wordDatas;
+            _wordCandidates = wordDatas;
             _remainDifficulty = data.CardDifficulty;
 
             NextWord();
@@ -59,7 +59,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private CardData _data;
         private WordManager _wordManager;
 
-        [Tooltip("候補となるワード一覧")] private WordData[] _candidateWordDatas;
+        [Tooltip("候補となるワード一覧")] private WordData[] _wordCandidates;
 
         private int _currentDifficulty;
         private string _currentWord;
@@ -121,7 +121,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             _wordManager.RemoveWord(_currentWord);
 
             //ランダムなワードを取得する
-            var data = _wordManager.GetAvailableWord(_candidateWordDatas);
+            var data = _wordManager.GetAvailableWord(_wordCandidates);
             if (data.difficulty < 0) return;
 
             //新しいワードを登録しなおす
