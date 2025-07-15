@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
@@ -9,12 +10,19 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         public void Execute(IAttackable player, params IHitable[] targets)
         {
-            Debug.Log($"CardContentAttack: Player <b>{player.gameObject.name}</b> attacks targets with {_damageScale} damage.");
+            StringBuilder sb = new($"CardContentAttack: Player <b>{player.gameObject.name}</b>\n");
+
+            float power = player.GetAttackPower() * _damageScale;
+            sb.Append($"attacks targets with {power} damage.");
+
             foreach (var t in targets)
             {
-                Debug.Log($"  Target: {t.gameObject.name}");
-                // ここに実際のダメージ処理を記述
+                t.AddHealthDamage(power);
+
+                sb.Append($"\nTarget: {t.gameObject.name}");
             }
+
+            Debug.Log(sb.ToString());
         }
     }
 }

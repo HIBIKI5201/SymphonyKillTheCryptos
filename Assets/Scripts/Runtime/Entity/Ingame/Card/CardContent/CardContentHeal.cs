@@ -10,10 +10,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         public void Execute(IAttackable player, params IHitable[] targets)
         {
-            StringBuilder sb = new StringBuilder($"CardContentHeal: Player {player.gameObject.name} heals for {_healAmount} amount.");
+            StringBuilder sb = new StringBuilder($"CardContentHeal: <b>{player.gameObject.name}</b> heals for <b>{_healAmount}</b> amount.");
             foreach(var t in targets)
             {
-                sb.Append($" target : {t.gameObject.name} health is {t.HitableData.Health}");
+                t.AddHealthHeal(_healAmount);
+
+                sb.Append($" target : {t.gameObject.name}");
             }
 
             Debug.Log(sb.ToString());
