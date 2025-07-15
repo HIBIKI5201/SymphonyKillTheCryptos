@@ -7,18 +7,16 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
 {
     public class CardUseCase
     {
-        private readonly WordManager _wordManager = new();
-
-        public CardEntity CreateCard(CardData data, WordDataBase wordDatabase)
+        public CardUseCase(WordDataBase wordDataBase)
         {
-            if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
-            {
-                Debug.LogWarning($"{data.name}のWordRnageが不適切です\n二つの距離は0から{wordDatabase.WordData.Length - 1}までです");
-                return null;
-            }
+            _cardDrawer = new(wordDataBase);
+        }
 
-            WordData[] words = wordDatabase.WordData[data.WordRange.x..data.WordRange.y];
-            return new CardEntity(data, words, _wordManager);
+        private readonly CardDrawer _cardDrawer;
+
+        public CardEntity CreateCard(CardData data)
+        {
+            return _cardDrawer.GetNewCard(data);
         }
 
         public void InputCharToCard(CardEntity cardEntity, char input)
