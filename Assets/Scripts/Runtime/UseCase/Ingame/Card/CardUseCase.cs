@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Word;
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.UseCase.Ingame.Card
@@ -23,11 +24,24 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             cardEntity.OnInputChar(input);
         }
 
-        public void ExecuteCardEffect(CardEntity cardEntity, GameObject player, params GameObject[] target)
+        public void ExecuteCardEffect(CardEntity cardEntity, GameObject player, params GameObject[] targets)
         {
-            foreach (var content in cardEntity.CardData.Contents)
+            ICardContent[] contents = cardEntity.CardData.Contents;
+
+            if (contents == null || contents.Length == 0) return;
+
+            foreach (var content in contents)
             {
-                content.TriggerEnterContent(player, target);
+                if (content == null) continue;
+
+                try
+                {
+                    content.Execute(player, targets);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"コンテンツの実行に失敗しました: {content.GetType().Name}\n{e.Message}");
+                }
             }
         }
     }

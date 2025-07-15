@@ -96,28 +96,5 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             _deckCardList.Remove(instance);
             OnRemoveCardInstance?.Invoke(instance);
         }
-
-        /// <summary>
-        ///     全てのコンテンツを実行する
-        /// </summary>
-        /// <param name="contents"></param>
-        private void InvokeContents(ICardContent[] contents)
-        {
-            if (contents == null || contents.Length == 0) return;
-
-            foreach (var content in contents)
-            {
-                if (content == null) continue;
-
-                try
-                {
-                    content.TriggerEnterContent(_playerManager.gameObject);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"コンテンツの実行に失敗しました: {content.GetType().Name}\n{e.Message}");
-                }
-            }
-        }
     }
 }
