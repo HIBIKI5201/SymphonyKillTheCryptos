@@ -9,6 +9,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         /// <param name="player"></param>
         /// <param name="target"></param>
-        public void Execute(GameObject player, params GameObject[] target);
+        public void Execute(IAttackable player, params IHitable[] target);
     }
 }

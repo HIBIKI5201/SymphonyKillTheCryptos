@@ -7,12 +7,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField]
         private float _damage;
 
-        public void Execute(GameObject player, params GameObject[] target)
+        public void Execute(IAttackable player, params IHitable[] target)
         {
-            Debug.Log($"CardContentAttack: Player {player.name} attacks target(s) with {_damage} damage.");
+            Debug.Log($"CardContentAttack: Player {player.gameObject.name} attacks target(s) with {_damage} damage.");
             foreach (var t in target)
             {
-                Debug.Log($"  Target: {t.name}");
+                Debug.Log($"  Target: {t.gameObject.name}");
                 // ここに実際のダメージ処理を記述
             }
         }
