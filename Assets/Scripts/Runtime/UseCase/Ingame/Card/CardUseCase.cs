@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using System;
@@ -24,7 +25,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             cardEntity.OnInputChar(input);
         }
 
-        public void ExecuteCardEffect(CardEntity cardEntity, GameObject player, params GameObject[] targets)
+        public void ExecuteCardEffect(CardEntity cardEntity, IAttackable player, params IHitable[] targets)
         {
             ICardContent[] contents = cardEntity.CardData.Contents;
 
