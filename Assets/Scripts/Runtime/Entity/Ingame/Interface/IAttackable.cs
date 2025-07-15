@@ -8,5 +8,11 @@ namespace Cryptos.Runtime.Entity
     public interface IAttackable : IGameObject
     {
         public IAttackableData AttackableData { get; }
+
+        /// <summary>
+        ///     ダメージを計算する
+        /// </summary>
+        /// <returns>ダメージ量</returns>
+        public float GetAttackPower();
     }
 }
