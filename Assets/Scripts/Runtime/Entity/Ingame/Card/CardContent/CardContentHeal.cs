@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
@@ -9,7 +10,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         public void Execute(IAttackable player, params IHitable[] target)
         {
-            Debug.Log($"CardContentHeal: Player {player.gameObject.name} heals for {_healAmount} amount.\nhealth is {target[0].HitableData.Health}");
+            StringBuilder sb = new StringBuilder($"CardContentHeal: Player {player.gameObject.name} heals for {_healAmount} amount.");
+            foreach(var t in target)
+            {
+                sb.Append($" target : {t.gameObject.name} health is {t.HitableData.Health}");
+            }
+
+            Debug.Log(sb.ToString());
+
             // ここに実際の回復処理を記述
         }
     }
