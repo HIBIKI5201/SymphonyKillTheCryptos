@@ -41,7 +41,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"コンテンツの実行に失敗しました: {content.GetType().Name}\n{e.Message}");
+                    Debug.LogError($"コンテンツの実行に失敗しました: {content.GetType().Name}\n{e.Message}\nstack trace\n{e.StackTrace}");
                 }
             }
         }
