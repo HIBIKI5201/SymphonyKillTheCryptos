@@ -8,10 +8,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField]
         private float _healAmount;
 
-        public void Execute(IAttackable player, params IHitable[] target)
+        public void Execute(IAttackable player, params IHitable[] targets)
         {
             StringBuilder sb = new StringBuilder($"CardContentHeal: Player {player.gameObject.name} heals for {_healAmount} amount.");
-            foreach(var t in target)
+            foreach(var t in targets)
             {
                 sb.Append($" target : {t.gameObject.name} health is {t.HitableData.Health}");
             }
