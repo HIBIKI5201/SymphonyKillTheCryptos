@@ -7,6 +7,6 @@ namespace Cryptos.Runtime.Entity
     /// </summary>
     public interface IHitable : IGameObject
     {
-
+        public IHitableData HitableData { get; }
     }
 }
