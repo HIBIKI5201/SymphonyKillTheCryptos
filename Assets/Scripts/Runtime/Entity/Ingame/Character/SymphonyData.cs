@@ -14,7 +14,6 @@ namespace Cryptos.Runtime.Entity
         public float CriticalChance => _criticalChance;
         public float CriticalDamage => _criticalDamage;
 
-        public float Health => _health;
         public float MaxHealth => _maxHealth;
 
         public float Armor => _armor;
