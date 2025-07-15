@@ -1,6 +1,7 @@
-using Cryptos.Runtime.Entity.Ingame.Interface;
+using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Presenter.Character.Player;
+using Cryptos.Runtime.UseCase.Ingame.Card;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System;
@@ -33,7 +34,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             }
 
             //カードのデータを生成
-            var instance = _cardDrawer.GetNewCard(data);
+            CardEntity instance = _cardUseCase.CreateCard(data);
 
             if (instance == null) return null;
 
@@ -51,12 +52,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
 
+            _cardUseCase = new(_wordDataBase);
+
             _inputBuffer.OnAlphabetKeyPressed += OnInputAlphabet;
         }
 
-        [SerializeField]
-        private CardDrawer _cardDrawer;
+        [SerializeField, Tooltip("ワードのデータベース")]
+        private WordDataBase _wordDataBase;
 
+        private CardUseCase _cardUseCase;
         private readonly List<CardEntity> _deckCardList = new();
 
         private InputBuffer _inputBuffer;
@@ -69,7 +73,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private void OnInputAlphabet(char alphabet)
         {
             for (int i = 0; i < _deckCardList.Count; i++)
-                _deckCardList[i].OnInputChar(alphabet);
+                _cardUseCase.InputCharToCard(_deckCardList[i], alphabet);
         }
 
         /// <summary>
@@ -78,7 +82,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// <param name="instance"></param>
         private void CompletedEvent(CardEntity instance)
         {
-            InvokeContents(instance.CardData.Contents);
+            _cardUseCase.ExecuteCardEffect(instance, _playerManager.gameObject);
             RemoveCardFromDeck(instance);
         }
 
