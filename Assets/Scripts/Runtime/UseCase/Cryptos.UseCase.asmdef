@@ -1,0 +1,16 @@
+{
+    "name": "Cryptos.UseCase",
+    "rootNamespace": "",
+    "references": [
+        "GUID:83b371f8bd104ee45b1cb38cf205ac72"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
