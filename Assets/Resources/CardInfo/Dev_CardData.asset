@@ -15,9 +15,19 @@ MonoBehaviour:
   _cardName: 
   _cardExplanation: 
   _cardIcon: {fileID: 0}
-  _cardDifficulty: 0
+  _cardDifficulty: 2
   _wordRange: {x: 0, y: 1}
-  _contentsArray: []
+  _contentsArray:
+  - rid: 7111649257557328015
+  - rid: 7111649257557328016
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 7111649257557328015
+      type: {class: CardContentAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.Ingame.Entity}
+      data:
+        _damageScale: 10
+    - rid: 7111649257557328016
+      type: {class: CardContentHeal, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.Ingame.Entity}
+      data:
+        _healAmount: 20
