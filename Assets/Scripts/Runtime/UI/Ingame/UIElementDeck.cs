@@ -30,7 +30,7 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     カードをデッキに追加する
         /// </summary>
         /// <param name="instance"></param>
-        public void AddCard(CardEntity instance)
+        public void HandleAddCard(CardEntity instance)
         {
             //カードを追加
             UIElementCard card = new ();
@@ -44,7 +44,7 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     カードをデッキから削除する
         /// </summary>
         /// <param name="instance"></param>
-        public void RemoveCard(CardEntity instance)
+        public void HandleRemoveCard(CardEntity instance)
         {
             if (_cards.TryGetValue(instance, out UIElementCard card))
             {

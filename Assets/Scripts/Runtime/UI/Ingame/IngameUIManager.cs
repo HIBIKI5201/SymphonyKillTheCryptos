@@ -30,8 +30,8 @@ namespace Cryptos.Runtime.UI.Ingame
             await _deck.InitializeTask;
 
             _deckManager = await ServiceLocator.GetInstanceAsync<DeckManager>();
-            _deckManager.OnAddCardInstance += _deck.AddCard;
-            _deckManager.OnRemoveCardInstance += _deck.RemoveCard;
+            _deckManager.OnAddCardInstance += _deck.HandleAddCard;
+            _deckManager.OnRemoveCardInstance += _deck.HandleRemoveCard;
         }
     }
 }

@@ -24,12 +24,12 @@ namespace Cryptos.Runtime.UI.Ingame
         /// <param name="data"></param>
         public void SetData(CardEntity instance)
         {
-            instance.OnWordUpdated += OnWordUpdate;
-            instance.OnProgressUpdate += OnProgressBarUpdate;
+            instance.OnWordUpdated += HandleWordUpdate;
+            instance.OnProgressUpdate += HandleProgressBarUpdate;
 
             //初期値を入れる
-            OnWordUpdate(instance.CurrentWord, 0);
-            OnProgressBarUpdate(0);
+            HandleWordUpdate(instance.CurrentWord, 0);
+            HandleProgressBarUpdate(0);
         }
 
         protected override Task Initialize_S(TemplateContainer container)
@@ -48,7 +48,7 @@ namespace Cryptos.Runtime.UI.Ingame
         /// </summary>
         /// <param name="word"></param>
         /// <param name="index"></param>
-        private void OnWordUpdate(string word, int index)
+        private void HandleWordUpdate(string word, int index)
         {
             string newText = $"<b><color=green>{word[..index]}</color></b>{word[index..]}";
             _wordLabel.text = newText;
@@ -58,7 +58,7 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     進捗率を更新する
         /// </summary>
         /// <param name="progress"></param>
-        private void OnProgressBarUpdate(float progress)
+        private void HandleProgressBarUpdate(float progress)
         {
             progress = progress * 100;
             _progressBar.style.width = Length.Percent(progress);
