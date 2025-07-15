@@ -41,7 +41,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             _deckCardList.Add(instance);
 
             //終了イベント
-            instance.OnComplete += CompletedEvent;
+            instance.OnComplete += HandleCardCompleted;
 
             OnAddCardInstance?.Invoke(instance);
             return instance;
@@ -49,12 +49,29 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         async Task IInitializeAsync.InitializeAsync()
         {
+            if (_wordDataBase != null)
+            {
+                _cardUseCase = new(_wordDataBase);
+            }
+            else
+            {
+                Debug.LogError("ワードのデータベースが設定されていません。");
+                return;
+            }
+
+            if (_cardUseCase == null)
+            {
+                Debug.LogError("カードのユースケースが初期化されていません。");
+                return;
+            }
+
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
 
-            _cardUseCase = new(_wordDataBase);
-
-            _inputBuffer.OnAlphabetKeyPressed += OnInputAlphabet;
+            if (_inputBuffer != null)
+            {
+                _inputBuffer.OnAlphabetKeyPressed += HandleInputAlphabet;
+            }
         }
 
         [SerializeField, Tooltip("ワードのデータベース")]
@@ -70,7 +87,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     アルファベット入力を受けた時のイベント
         /// </summary>
         /// <param name="alphabet"></param>
-        private void OnInputAlphabet(char alphabet)
+        private void HandleInputAlphabet(char alphabet)
         {
             for (int i = 0; i < _deckCardList.Count; i++)
                 _cardUseCase.InputCharToCard(_deckCardList[i], alphabet);
@@ -80,7 +97,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードの入力が完了した時のイベント
         /// </summary>
         /// <param name="instance"></param>
-        private void CompletedEvent(CardEntity instance)
+        private void HandleCardCompleted(CardEntity instance)
         {
             _cardUseCase.ExecuteCardEffect(instance, _playerManager.gameObject);
             RemoveCardFromDeck(instance);
