@@ -22,7 +22,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public CardEntity CreateNewCard(CardData data)
+        public WordEntity CreateNewCard(CardData data)
         {
             if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
             {
@@ -35,7 +35,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
                 .WordData[data.WordRange.x..data.WordRange.y];
 
             //カードを生成
-            CardEntity instance = new(data, words, _wordManager);
+            WordEntity instance = new(data, words, _wordManager);
 
             return instance;
         }

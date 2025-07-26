@@ -13,20 +13,34 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             _cardDrawer = new(wordDataBase);
         }
 
-        private readonly CardDrawer _cardDrawer;
+        public event Func<IAttackable> GetPlayer;
 
-        public CardEntity CreateCard(CardData data)
+        public event Action<WordEntity> OnCardCompleted;
+
+        public WordEntity CreateCard(CardData data)
         {
             return _cardDrawer.CreateNewCard(data);
         }
 
-        public void InputCharToCard(CardEntity cardEntity, char input)
+        public void InputCharToCard(WordEntity cardEntity, char input)
         {
-            cardEntity.OnInputChar(input);
+            //入力をエンティティに渡す
+            if (cardEntity.OnInputChar(input))
+            {
+                //入力が完了した時の処理
+                ExecuteCardEffect(cardEntity, GetPlayer?.Invoke());
+                OnCardCompleted?.Invoke(cardEntity);
+            }
         }
 
-        public void ExecuteCardEffect(CardEntity cardEntity, IAttackable player, params IHitable[] targets)
+        public void ExecuteCardEffect(WordEntity cardEntity, IAttackable player, params IHitable[] targets)
         {
+            if (player == null)
+            {
+                Debug.LogError("Player is null");
+                return;
+            }
+
             ICardContent[] contents = cardEntity.CardData.Contents;
 
             if (contents == null || contents.Length == 0) return;
@@ -45,5 +59,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
                 }
             }
         }
+
+        private readonly CardDrawer _cardDrawer;
     }
 }

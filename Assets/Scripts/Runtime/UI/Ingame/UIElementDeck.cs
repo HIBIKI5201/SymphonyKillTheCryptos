@@ -17,7 +17,7 @@ namespace Cryptos.Runtime.UI.Ingame
         private const string DECK_NAME = "deck";
 
         private VisualElement _deck;
-        private readonly Dictionary<CardEntity, UIElementCard> _cards = new();
+        private readonly Dictionary<WordEntity, UIElementCard> _cards = new();
 
         protected override Task Initialize_S(TemplateContainer container)
         {
@@ -30,7 +30,7 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     カードをデッキに追加する
         /// </summary>
         /// <param name="instance"></param>
-        public void HandleAddCard(CardEntity instance)
+        public void HandleAddCard(WordEntity instance)
         {
             //カードを追加
             UIElementCard card = new ();
@@ -44,7 +44,7 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     カードをデッキから削除する
         /// </summary>
         /// <param name="instance"></param>
-        public void HandleRemoveCard(CardEntity instance)
+        public void HandleRemoveCard(WordEntity instance)
         {
             if (_cards.TryGetValue(instance, out UIElementCard card))
             {

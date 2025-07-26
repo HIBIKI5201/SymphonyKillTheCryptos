@@ -16,8 +16,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// </summary>
     public class DeckManager : MonoBehaviour, IInitializeAsync
     {
-        public event Action<CardEntity> OnAddCardInstance;
-        public event Action<CardEntity> OnRemoveCardInstance;
+        public event Action<WordEntity> OnAddCardInstance;
+        public event Action<WordEntity> OnRemoveCardInstance;
 
         Task IInitializeAsync.InitializeTask { get; set; }
 
@@ -25,7 +25,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードを追加する
         /// </summary>
         /// <param name="data"></param>
-        public CardEntity AddCardToDeck(CardData data)
+        public WordEntity AddCardToDeck(CardData data)
         {
             if (data == null)
             {
@@ -34,14 +34,11 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             }
 
             //カードのデータを生成
-            CardEntity instance = _cardUseCase.CreateCard(data);
+            WordEntity instance = _cardUseCase.CreateCard(data);
 
             if (instance == null) return null;
 
             _deckCardList.Add(instance);
-
-            //終了イベント
-            instance.OnComplete += HandleCardCompleted;
 
             OnAddCardInstance?.Invoke(instance);
             return instance;
@@ -49,21 +46,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         async Task IInitializeAsync.InitializeAsync()
         {
-            if (_wordDataBase != null)
-            {
-                _cardUseCase = new(_wordDataBase);
-            }
-            else
+            if (_wordDataBase == null)
             {
                 Debug.LogError("ワードのデータベースが設定されていません。");
                 return;
             }
 
-            if (_cardUseCase == null)
-            {
-                Debug.LogError("カードのユースケースが初期化されていません。");
-                return;
-            }
+            _cardUseCase = new(_wordDataBase);
+            _cardUseCase.OnCardCompleted += HandleCardCompleted;
+            _cardUseCase.GetPlayer += () => _playerManager;
 
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
@@ -78,7 +69,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private WordDataBase _wordDataBase;
 
         private CardUseCase _cardUseCase;
-        private readonly List<CardEntity> _deckCardList = new();
+        private readonly List<WordEntity> _deckCardList = new();
 
         private InputBuffer _inputBuffer;
         private SymphonyManager _playerManager;
@@ -97,9 +88,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードの入力が完了した時のイベント
         /// </summary>
         /// <param name="instance"></param>
-        private void HandleCardCompleted(CardEntity instance)
+        private void HandleCardCompleted(WordEntity instance)
         {
-            _cardUseCase.ExecuteCardEffect(instance, _playerManager);
             RemoveCardFromDeck(instance);
         }
 
@@ -107,9 +97,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードをデッキから削除する
         /// </summary>
         /// <param name="instance"></param>
-        private void RemoveCardFromDeck(CardEntity instance)
+        private void RemoveCardFromDeck(WordEntity instance)
         {
-            _inputBuffer.OnAlphabetKeyPressed -= instance.OnInputChar;
             _deckCardList.Remove(instance);
             OnRemoveCardInstance?.Invoke(instance);
         }
