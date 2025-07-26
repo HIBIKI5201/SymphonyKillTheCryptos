@@ -1,4 +1,6 @@
 using Cryptos.Runtime.Entity;
+using SymphonyFrameWork.Attribute;
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Character.Player
@@ -8,6 +10,9 @@ namespace Cryptos.Runtime.Presenter.Character.Player
     /// </summary>
     public class SymphonyManager : MonoBehaviour, IAttackable, IHitable
     {
+        [Tooltip("第一引数は現在値、第二引数は最大値")] public event Action<float, float> OnHealthChanged;
+        public event Action OnDead;
+
         public IHitableData HitableData => _symphonyData;
         public IAttackableData AttackableData => _symphonyData;
 
@@ -20,7 +25,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
             float power = _symphonyData.AttackPower;
 
             //クリティカル時に倍率を掛ける
-            if (Random.Range(0, 1) < _symphonyData.CriticalChance)
+            if (UnityEngine.Random.Range(0, 1) < _symphonyData.CriticalChance)
             {
                 power *= _symphonyData.CriticalDamage;
             }
@@ -35,6 +40,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         public void AddHealthDamage(float damage)
         {
             _health -= damage;
+            OnHealthChanged?.Invoke(_health, _symphonyData.MaxHealth);
 
             if (_health <= 0) //体力が無くなったら死亡
             {
@@ -62,6 +68,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         public void Dead()
         {
             Debug.Log("Player is dead.");
+            OnDead?.Invoke();
         }
 
         [SerializeField]
@@ -69,7 +76,8 @@ namespace Cryptos.Runtime.Presenter.Character.Player
 
         private SymphonyAnimeManager _animeManager;
 
-        private float _health;
+        [Header("Debug")]
+        [SerializeField, ReadOnly] private float _health;
 
         private void Awake()
         {
