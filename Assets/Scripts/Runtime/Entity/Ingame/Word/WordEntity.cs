@@ -1,20 +1,21 @@
-using Cryptos.Runtime.Entity.Ingame.Card;
 using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Word
 {
     /// <summary>
-    ///     ワードタイピングのインスタンスデータ
+    /// ワードタイピングのインスタンスデータを表すエンティティクラス。
+    /// 個々のワードの入力進捗、難易度、および関連するイベントを管理します。
     /// </summary>
     [Serializable]
     public class WordEntity
     {
         /// <summary>
-        ///     インスタンスの初期化
+        /// WordEntityの新しいインスタンスを初期化します。
         /// </summary>
-        /// <param name="data">カードのデータ</param>
-        /// <param name="wordDatas">出てくるワードの候補</param>
+        /// <param name="wordDatas">ワードの候補データ配列</param>
+        /// <param name="wordManager">ワードの管理を行うマネージャー</param>
+        /// <param name="difficulty">このワードエンティティの初期難易度</param>
         public WordEntity(WordData[] wordDatas, WordManager wordManager, int difficulty)
         {
             _wordManager = wordManager;
@@ -25,16 +26,21 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
             NextWord();
         }
 
-        [Tooltip("ワード入力が終了した時")] public event Action OnComplete;
-        [Tooltip("ワードの入力が更新された時")] public event Action<string, int> OnWordUpdated;
-        [Tooltip("ワードコンプリート進捗率")] public event Action<float> OnProgressUpdate;
+        [Tooltip("ワード入力が全て完了した時に発生するイベント")] public event Action OnComplete;
+        [Tooltip("現在のワードの入力状況が更新された時に発生するイベント。引数は現在のワードと入力済みの文字数。")] public event Action<string, int> OnWordUpdated;
+        [Tooltip("ワードコンプリートの進捗率が更新された時に発生するイベント。引数は0.0fから1.0fの進捗率。")] public event Action<float> OnProgressUpdate;
 
+        /// <summary>
+        /// 現在入力対象となっているワードを取得します。
+        /// </summary>
         public string CurrentWord => _currentWord;
 
         /// <summary>
-        ///     アルファベット入力を受けた時
+        /// アルファベット入力を受け取った際の処理。
+        /// 入力文字が現在のワードと一致するかを判定し、進捗を更新します。
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="input">入力された文字</param>
+        /// <returns>このワードエンティティの全てのワード入力が完了した場合はtrue、それ以外はfalse。</returns>
         public bool OnInputChar(char input)
         {
             // 入力が次の期待文字と一致しない場合は進捗をリセットする
@@ -51,7 +57,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
             }
 
             // 一致しているので進捗を進める
-
             _inputIndex++;
             //終了しているか判定
             if (UpdateWord())
@@ -77,9 +82,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         private float _remainDifficulty;
 
         /// <summary>
-        ///     ワードの入力が全て終了したか判定
+        /// 現在のワードの入力が全て終了したか、またはワードエンティティ全体の進捗が完了したかを判定し、更新します。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ワードエンティティ全体の進捗が完了した場合はtrue、それ以外はfalse。</returns>
         private bool UpdateWord()
         {
             if (_currentWord.Length <= _inputIndex) //ワードが全部書き終わったか
@@ -101,7 +106,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         }
 
         /// <summary>
-        ///     次のワードに変更する
+        /// 次のワードに変更し、関連するイベントを発火します。
         /// </summary>
         private void NextWord()
         {
@@ -110,7 +115,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         }
 
         /// <summary>
-        ///     ランダムなワードをセットする
+        /// ランダムなワードをセットし、WordManagerに登録します。
         /// </summary>
         private void SetNewWord()
         {
@@ -127,7 +132,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         }
 
         /// <summary>
-        ///     現在の進捗率を引数にイベントを発火する
+        /// 現在のワードコンプリート進捗率を計算し、OnProgressUpdateイベントを発火します。
         /// </summary>
         private void InvokeProgressEvent()
         {
@@ -136,10 +141,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         }
 
         /// <summary>
-        ///     今の文字とマッチしているか
+        /// 入力された文字が現在のワードの次の期待文字と一致するかを判定します。
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+        /// <param name="input">入力された文字</param>
+        /// <returns>一致する場合はtrue、それ以外はfalse。</returns>
         private bool IsMatch(char input) => _currentWord.ToUpper()[_inputIndex] == input;
     }
 }

@@ -4,17 +4,41 @@ using UnityEngine;
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     /// <summary>
-    ///     カードのデータ情報
+    /// ゲーム内の「カード」の静的なデータ情報を持つScriptableObject。
+    /// カードの名前、説明、難易度、アイコン、ワードの範囲、およびカード効果の配列を定義します。
     /// </summary>
     [CreateAssetMenu(fileName = nameof(CardData),
         menuName = CryptosPathConstant.ASSET_PATH + nameof(CardData))]
     public class CardData : ScriptableObject
     {
+        /// <summary>
+        /// カードの名前を取得します。
+        /// </summary>
         public string CardName => _cardName;
+
+        /// <summary>
+        /// カードの説明を取得します。
+        /// </summary>
         public string CardExplanation => _cardExplanation;
+
+        /// <summary>
+        /// カードの難易度を取得します。
+        /// </summary>
         public int CardDifficulty => _cardDifficulty;
+
+        /// <summary>
+        /// カードのアイコン画像を取得します。
+        /// </summary>
         public Texture2D CardIcon => _cardIcon;
+
+        /// <summary>
+        /// ワードデータベースからワードを選択する範囲（x:開始インデックス, y:終了インデックス）を取得します。
+        /// </summary>
         public Vector2Int WordRange => _wordRange;
+
+        /// <summary>
+        /// このカードが持つ効果の配列を取得します。
+        /// </summary>
         public ICardContent[] Contents => _contentsArray;
 
 

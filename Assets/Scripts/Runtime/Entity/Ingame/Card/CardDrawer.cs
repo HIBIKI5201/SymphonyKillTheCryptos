@@ -5,10 +5,15 @@ using UnityEngine;
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     /// <summary>
-    ///     カードを生成するクラス
+    /// カードのインスタンスを生成するファクトリークラス。
+    /// CardDataとWordDataBaseに基づいてCardEntityとWordEntityを構築します。
     /// </summary>
     public class CardDrawer
     {
+        /// <summary>
+        /// CardDrawerの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="wordDataBase">ワードデータが格納されたデータベース</param>
         public CardDrawer(WordDataBase wordDataBase)
         {
             _wordDatabase = wordDataBase ?? throw new ArgumentNullException(nameof(wordDataBase));
@@ -18,10 +23,11 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private readonly WordManager _wordManager = new();
 
         /// <summary>
-        ///     新しいカードを生成する
+        /// 新しいCardEntityインスタンスを生成します。
+        /// CardDataのWordRangeに基づいてWordEntityを生成し、CardEntityに紐付けます。
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        /// <param name="data">生成するカードのデータ</param>
+        /// <returns>生成されたCardEntityインスタンス。WordRangeが不適切な場合はnull。</returns>
         public CardEntity CreateNewCard(CardData data)
         {
             if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)

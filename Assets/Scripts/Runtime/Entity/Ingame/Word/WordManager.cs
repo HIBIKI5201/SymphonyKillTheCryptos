@@ -7,17 +7,19 @@ using Random = System.Random;
 namespace Cryptos.Runtime.Entity.Ingame.Word
 {
     /// <summary>
-    ///     デッキのワードを管理するクラス
+    /// ゲーム内で使用されるワードの重複や競合を管理するクラス。
+    /// 既に存在するワードや、先頭文字が競合するワードを除外して、利用可能なワードを提供します。
     /// </summary>
     public class WordManager
     {
         private HashSet<string> _existWords = new();
 
         /// <summary>
-        ///     デッキにない唯一のワードを取得する
+        /// デッキにない唯一のワードを取得します。
+        /// 既に存在するワードや、先頭文字が競合するワードを除外して、利用可能なワードを返します。
         /// </summary>
-        /// <param name="candidateWordDatas">候補となるワード</param>
-        /// <returns></returns>
+        /// <param name="candidateWordDatas">候補となるWordDataのコレクション</param>
+        /// <returns>難易度とワードのタプル。利用可能なワードがない場合は(-1, null)。</returns>
         public (int difficulty, string word) GetAvailableWord(IEnumerable<WordData> candidateWordDatas)
         {
             (int difficulty, IEnumerable<string> words)[] dataArray =
@@ -62,19 +64,33 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
             return (-1, null);
         }
 
+        /// <summary>
+        /// 指定されたワードを現在存在するワードのセットに追加します。
+        /// </summary>
+        /// <param name="word">追加するワード</param>
         public void AddWord(string word) => _existWords.Add(word);
+
+        /// <summary>
+        /// 指定されたワードを現在存在するワードのセットから削除します。
+        /// </summary>
+        /// <param name="word">削除するワード</param>
         public void RemoveWord(string word) => _existWords.Remove(word);
 
+        /// <summary>
+        /// 既に存在するワードのセットに含まれていないワードのみをフィルタリングします。
+        /// </summary>
+        /// <param name="wordDatas">フィルタリング対象のワードコレクション</param>
+        /// <returns>重複しないワードのコレクション</returns>
         private IEnumerable<string> GetOnlyWords(IEnumerable<string> wordDatas)
         {
             return wordDatas.Where(word => !_existWords.Contains(word));
         }
 
         /// <summary>
-        ///     文字列の最初が被っていないワードのみに厳選する
+        /// 既に存在するワードの先頭文字と競合しないワードのみをフィルタリングします。
         /// </summary>
-        /// <param name="wordDatas"></param>
-        /// <returns></returns>
+        /// <param name="wordDatas">フィルタリング対象のワードコレクション</param>
+        /// <returns>競合しないワードのコレクション</returns>
         private IEnumerable<string> GetNonStartWithWords(IEnumerable<string> wordDatas)
         {
             List<string> result = new();
