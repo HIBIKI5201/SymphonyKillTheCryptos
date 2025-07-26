@@ -15,25 +15,25 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
 
         public event Func<IAttackable> GetPlayer;
 
-        public event Action<WordEntity> OnCardCompleted;
+        public event Action<CardEntity> OnCardCompleted;
 
-        public WordEntity CreateCard(CardData data)
+        public CardEntity CreateCard(CardData data)
         {
             return _cardDrawer.CreateNewCard(data);
         }
 
-        public void InputCharToCard(WordEntity cardEntity, char input)
+        public void InputCharToCard(CardEntity cardEntity, char input)
         {
             //入力をエンティティに渡す
-            if (cardEntity.OnInputChar(input))
+            if (cardEntity.WordEntity.OnInputChar(input))
             {
                 //入力が完了した時の処理
-                ExecuteCardEffect(cardEntity, GetPlayer?.Invoke());
+                ExecuteCardEffect(cardEntity.Data, GetPlayer?.Invoke());
                 OnCardCompleted?.Invoke(cardEntity);
             }
         }
 
-        public void ExecuteCardEffect(WordEntity cardEntity, IAttackable player, params IHitable[] targets)
+        public void ExecuteCardEffect(CardData cardData, IAttackable player, params IHitable[] targets)
         {
             if (player == null)
             {
@@ -41,7 +41,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
                 return;
             }
 
-            ICardContent[] contents = cardEntity.CardData.Contents;
+            ICardContent[] contents = cardData.Contents;
 
             if (contents == null || contents.Length == 0) return;
 

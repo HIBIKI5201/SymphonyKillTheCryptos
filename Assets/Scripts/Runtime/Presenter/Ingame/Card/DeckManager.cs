@@ -16,8 +16,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// </summary>
     public class DeckManager : MonoBehaviour, IInitializeAsync
     {
-        public event Action<WordEntity> OnAddCardInstance;
-        public event Action<WordEntity> OnRemoveCardInstance;
+        public event Action<CardEntity> OnAddCardInstance;
+        public event Action<CardEntity> OnRemoveCardInstance;
 
         Task IInitializeAsync.InitializeTask { get; set; }
 
@@ -25,7 +25,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードを追加する
         /// </summary>
         /// <param name="data"></param>
-        public WordEntity AddCardToDeck(CardData data)
+        public CardEntity AddCardToDeck(CardData data)
         {
             if (data == null)
             {
@@ -34,7 +34,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             }
 
             //カードのデータを生成
-            WordEntity instance = _cardUseCase.CreateCard(data);
+            CardEntity instance = _cardUseCase.CreateCard(data);
 
             if (instance == null) return null;
 
@@ -69,7 +69,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private WordDataBase _wordDataBase;
 
         private CardUseCase _cardUseCase;
-        private readonly List<WordEntity> _deckCardList = new();
+        private readonly List<CardEntity> _deckCardList = new();
 
         private InputBuffer _inputBuffer;
         private SymphonyManager _playerManager;
@@ -88,7 +88,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードの入力が完了した時のイベント
         /// </summary>
         /// <param name="instance"></param>
-        private void HandleCardCompleted(WordEntity instance)
+        private void HandleCardCompleted(CardEntity instance)
         {
             RemoveCardFromDeck(instance);
         }
@@ -97,7 +97,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         ///     カードをデッキから削除する
         /// </summary>
         /// <param name="instance"></param>
-        private void RemoveCardFromDeck(WordEntity instance)
+        private void RemoveCardFromDeck(CardEntity instance)
         {
             _deckCardList.Remove(instance);
             OnRemoveCardInstance?.Invoke(instance);

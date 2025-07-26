@@ -1,11 +1,11 @@
-using Cryptos.Runtime.Entity.Ingame.Word;
+using Cryptos.Runtime.Entity.Ingame.Card;
 using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Word
 {
     /// <summary>
-    ///     カードのインスタンスデータ
+    ///     ワードタイピングのインスタンスデータ
     /// </summary>
     [Serializable]
     public class WordEntity
@@ -15,12 +15,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         /// </summary>
         /// <param name="data">カードのデータ</param>
         /// <param name="wordDatas">出てくるワードの候補</param>
-        public WordEntity(CardData data, WordData[] wordDatas, WordManager wordManager)
+        public WordEntity(WordData[] wordDatas, WordManager wordManager, int difficulty)
         {
-            _data = data;
             _wordManager = wordManager;
             _wordCandidates = wordDatas;
-            _remainDifficulty = data.CardDifficulty;
+            _difficulty = difficulty;
+            _remainDifficulty = difficulty;
 
             NextWord();
         }
@@ -29,7 +29,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         [Tooltip("ワードの入力が更新された時")] public event Action<string, int> OnWordUpdated;
         [Tooltip("ワードコンプリート進捗率")] public event Action<float> OnProgressUpdate;
 
-        public CardData CardData => _data;
         public string CurrentWord => _currentWord;
 
         /// <summary>
@@ -55,7 +54,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
 
             _inputIndex++;
             //終了しているか判定
-            if (CheckCompleteWord()) 
+            if (UpdateWord())
             {
                 _wordManager.RemoveWord(_currentWord);
                 OnComplete?.Invoke();
@@ -66,7 +65,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
             return false;
         }
 
-        private CardData _data;
         private WordManager _wordManager;
 
         [Tooltip("候補となるワード一覧")] private WordData[] _wordCandidates;
@@ -75,13 +73,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         private string _currentWord;
 
         private int _inputIndex;
-        private int _remainDifficulty;
+        private readonly float _difficulty;
+        private float _remainDifficulty;
 
         /// <summary>
         ///     ワードの入力が全て終了したか判定
         /// </summary>
         /// <returns></returns>
-        private bool CheckCompleteWord()
+        private bool UpdateWord()
         {
             if (_currentWord.Length <= _inputIndex) //ワードが全部書き終わったか
             {
@@ -132,10 +131,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         /// </summary>
         private void InvokeProgressEvent()
         {
-            float progress = 1f - Mathf.Clamp01((float)_remainDifficulty / (float)_data.CardDifficulty);
+            float progress = 1f - Mathf.Clamp01(_remainDifficulty / _difficulty);
             OnProgressUpdate?.Invoke(progress);
         }
 
+        /// <summary>
+        ///     今の文字とマッチしているか
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private bool IsMatch(char input) => _currentWord.ToUpper()[_inputIndex] == input;
     }
 }

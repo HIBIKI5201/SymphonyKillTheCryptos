@@ -1,7 +1,7 @@
+using Cryptos.Runtime.Entity.Ingame.Word;
 using SymphonyFrameWork.Utility;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
-using Cryptos.Runtime.Entity.Ingame.Card;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
