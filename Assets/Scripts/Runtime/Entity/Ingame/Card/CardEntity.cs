@@ -1,6 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Word;
 using System;
-using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
