@@ -1,4 +1,4 @@
-using UnityEngine;
+using Cryptos.Runtime.Entity.Ingame.Character;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {

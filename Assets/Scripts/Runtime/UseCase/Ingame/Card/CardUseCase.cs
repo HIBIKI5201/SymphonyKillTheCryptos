@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using System;
 using UnityEngine;
