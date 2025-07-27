@@ -1,7 +1,4 @@
-using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Character;
-using SymphonyFrameWork.Attribute;
-using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Character.Player
@@ -16,6 +13,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         [SerializeField]
         private SymphonyData _symphonyData;
 
+        [SerializeField]
         private CharacterEntity<SymphonyData> _entity;
 
         private void Awake()
