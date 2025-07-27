@@ -14,7 +14,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             float power = _symphonyData.AttackPower;
 
             //クリティカル時に倍率を掛ける
-            if (UnityEngine.Random.Range(0, 1) < _symphonyData.CriticalChance)
+            if (Random.Range(0, 1) < _symphonyData.CriticalChance)
             {
                 power *= _symphonyData.CriticalDamage;
             }
