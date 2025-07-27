@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity;
+using Cryptos.Runtime.Entity.Ingame.Character;
 using SymphonyFrameWork.Attribute;
 using System;
 using UnityEngine;
