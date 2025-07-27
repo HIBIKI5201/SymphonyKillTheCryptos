@@ -6,7 +6,6 @@ using Cryptos.Runtime.UseCase.Ingame.Card;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
