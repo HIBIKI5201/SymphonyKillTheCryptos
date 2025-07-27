@@ -17,8 +17,16 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// </summary>
     public class DeckManager : MonoBehaviour, IInitializeAsync
     {
-        public event Action<CardEntity> OnAddCardInstance;
-        public event Action<CardEntity> OnRemoveCardInstance;
+        public event Action<CardEntity> OnAddCardInstance
+        {
+            add => _deckEntity.OnAddCardInstance += value;
+            remove => _deckEntity.OnAddCardInstance -= value;
+        }
+        public event Action<CardEntity> OnRemoveCardInstance
+        {
+            add => _deckEntity.OnRemoveCardInstance += value;
+            remove => _deckEntity.OnRemoveCardInstance -= value;
+        }
 
         Task IInitializeAsync.InitializeTask { get; set; }
 
@@ -80,8 +88,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private WordDataBase _wordDataBase;
 
         private CardUseCase _cardUseCase;
-
         private CardDeckEntity _deckEntity = new();
+
         private InputBuffer _inputBuffer;
         private SymphonyManager _playerManager;
         private EnemyManager _enemyManager;
