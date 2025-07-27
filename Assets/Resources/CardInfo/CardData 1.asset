@@ -14,6 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: 
   _cardExplanation: 
+  _cardIcon: {fileID: 0}
   _cardDifficulty: 2
   _wordRange: {x: 0, y: 1}
-  _cardIcon: {fileID: 0}
+  _contentsArray:
+  - rid: 7111649532920987774
+  references:
+    version: 2
+    RefIds:
+    - rid: 7111649532920987774
+      type: {class: CardContentAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.Ingame.Entity}
+      data:
+        _damageScale: 1
