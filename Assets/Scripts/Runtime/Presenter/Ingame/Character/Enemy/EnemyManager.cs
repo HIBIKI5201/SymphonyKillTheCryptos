@@ -6,7 +6,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
 {
     public class EnemyManager : MonoBehaviour
     {
-        private List<IHitable> _enemies = new List<IHitable>();
+        private List<IHitable> _enemies = new();
 
         public IReadOnlyList<IHitable> GetAllEnemies()
         {
