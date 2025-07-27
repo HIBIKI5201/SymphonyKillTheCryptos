@@ -76,16 +76,12 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         [SerializeField]
         private SymphonyData _symphonyData;
 
-        private SymphonyAnimeManager _animeManager;
-
         [Header("Debug")]
         [SerializeField, ReadOnly] private float _health;
 
         private void Awake()
         {
             _health = _symphonyData.MaxHealth;
-
-            _animeManager = GetComponentInChildren<SymphonyAnimeManager>();
         }
     }
 }
