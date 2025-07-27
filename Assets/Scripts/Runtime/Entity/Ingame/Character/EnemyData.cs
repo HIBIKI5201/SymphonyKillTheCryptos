@@ -22,8 +22,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         [SerializeField]
         private float _criticalDamage;
         [SerializeField]
-        private float _health;
-        [SerializeField]
         private float _maxHealth;
         [SerializeField]
         private float _armor;
