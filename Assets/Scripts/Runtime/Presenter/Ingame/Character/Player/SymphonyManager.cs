@@ -55,6 +55,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         public void AddHealthHeal(float amount)
         {
             _health += amount;
+            OnHealthChanged?.Invoke(_health, _symphonyData.MaxHealth);
 
             if (_health > _symphonyData.MaxHealth) //体力が最大値を超えないようにする
             {
