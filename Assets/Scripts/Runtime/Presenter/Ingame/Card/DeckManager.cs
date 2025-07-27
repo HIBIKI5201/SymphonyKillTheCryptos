@@ -1,11 +1,13 @@
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Presenter.Character.Player;
+using Cryptos.Runtime.Presenter.Ingame.Character.Enemy;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -52,17 +54,30 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
                 return;
             }
 
-            _cardUseCase = new(_wordDataBase);
-            _cardUseCase.OnCardCompleted += HandleCardCompleted;
-            _cardUseCase.GetPlayer += () => _playerManager;
-
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             _playerManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
+            _enemyManager = await ServiceLocator.GetInstanceAsync<EnemyManager>();
 
             if (_inputBuffer != null)
             {
                 _inputBuffer.OnAlphabetKeyPressed += HandleInputAlphabet;
             }
+
+            if (_playerManager == null)
+            {
+                Debug.LogError("プレイヤーマネージャーが取得できませんでした。");
+                return;
+            }
+            if (_enemyManager == null)
+            {
+                Debug.LogError("エネミーマネージャーが取得できませんでした。");
+                return;
+            }
+
+            _cardUseCase = new(_wordDataBase);
+            _cardUseCase.OnCardCompleted += HandleCardCompleted;
+            _cardUseCase.GetPlayer += () => _playerManager;
+            _cardUseCase.GetTargets += () => _enemyManager.GetAllEnemies().ToArray();
         }
 
         [SerializeField, Tooltip("ワードのデータベース")]
@@ -73,6 +88,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         private InputBuffer _inputBuffer;
         private SymphonyManager _playerManager;
+        private EnemyManager _enemyManager;
 
         /// <summary>
         ///     アルファベット入力を受けた時のイベント
