@@ -11,16 +11,16 @@ namespace Cryptos.Runtime.Presenter.Character.Player
     /// </summary>
     public class SymphonyManager : MonoBehaviour
     {
-        public PlayerCharacterEntity Entity => _entity;
+        public CharacterEntity<SymphonyData> Entity => _entity;
 
         [SerializeField]
         private SymphonyData _symphonyData;
 
-        private PlayerCharacterEntity _entity;
+        private CharacterEntity<SymphonyData> _entity;
 
         private void Awake()
         {
-            _entity = new PlayerCharacterEntity(_symphonyData);
+            _entity = new CharacterEntity<SymphonyData>(_symphonyData);
         }
     }
 }
