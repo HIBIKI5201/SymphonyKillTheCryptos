@@ -76,7 +76,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
             _cardUseCase = new(_wordDataBase);
             _cardUseCase.OnCardCompleted += HandleCardCompleted;
-            _cardUseCase.GetPlayer += () => _playerManager;
+            _cardUseCase.GetPlayer += () => _playerManager.Entity;
             _cardUseCase.GetTargets += () => _enemyManager.GetAllEnemies().ToArray();
         }
 
