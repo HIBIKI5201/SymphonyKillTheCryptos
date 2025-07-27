@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
+    /// <summary>
+    ///     体力のクラス
+    /// </summary>
     [Serializable]
     public class HealthEntity
     {
