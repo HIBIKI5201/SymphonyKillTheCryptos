@@ -16,14 +16,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         public float Armor => _armor;
 
         [SerializeField]
-        private float _attackPower;
+        private float _attackPower = 10;
         [SerializeField]
-        private float _criticalChance;
+        private float _criticalChance = 3;
         [SerializeField]
-        private float _criticalDamage;
+        private float _criticalDamage = 2;
         [SerializeField]
-        private float _maxHealth;
+        private float _maxHealth = 100;
         [SerializeField]
-        private float _armor;
+        private float _armor = 25;
     }
 }
