@@ -1,8 +1,8 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Presenter.Character.Player;
+using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character;
-using JetBrains.Annotations;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;

@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Presenter.Character.Player;
@@ -10,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Entity.Ingame.Card
+namespace Cryptos.Runtime.Presenter.Ingame.Card
 {
     /// <summary>
     ///     デッキを管理するクラス
