@@ -25,6 +25,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// プレイヤーのIAttackableインターフェースを取得するためのイベント。
         /// </summary>
         public event Func<IAttackable> GetPlayer;
+        public event Func<IHitable[]> GetTargets;
 
         /// <summary>
         /// カードの全てのワード入力が完了したときに発生するイベント。
@@ -53,7 +54,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             if (cardEntity.WordEntity.OnInputChar(input)) // WordEntityのOnInputCharを呼び出すように変更
             {
                 //入力が完了した時の処理
-                ExecuteCardEffect(cardEntity, GetPlayer?.Invoke());
+                ExecuteCardEffect(cardEntity,
+                    player: GetPlayer?.Invoke(),
+                    targets: GetTargets?.Invoke());
                 OnCardCompleted?.Invoke(cardEntity);
             }
         }
