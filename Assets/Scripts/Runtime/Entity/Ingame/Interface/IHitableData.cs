@@ -1,4 +1,4 @@
-namespace Cryptos.Runtime.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     public interface IHitableData
     {

@@ -1,6 +1,4 @@
-using SymphonyFrameWork;
-
-namespace Cryptos.Runtime.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
     ///     攻撃を受けられるオブジェクトのインターフェース

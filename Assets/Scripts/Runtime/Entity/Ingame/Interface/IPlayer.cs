@@ -1,7 +1,6 @@
 using SymphonyFrameWork;
-using UnityEngine;
 
-namespace Cryptos.Runtime.Entity.Ingame.Interface
+namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
     ///     プレイヤーを表すインターフェース
