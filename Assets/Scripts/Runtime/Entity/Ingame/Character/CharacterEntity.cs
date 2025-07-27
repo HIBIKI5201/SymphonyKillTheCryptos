@@ -1,9 +1,11 @@
+using SymphonyFrameWork.Attribute;
 using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
-    public class CharacterEntity<T> : IAttackable, IHitable
+    [Serializable]
+    public sealed class CharacterEntity<T> : IAttackable, IHitable
         where T : class, IAttackableData, IHitableData
     {
         public CharacterEntity(T data)
@@ -26,7 +28,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             remove => _healthEntity.OnDead -= value;
         }
 
-        public virtual float GetAttackPower()
+        public float GetAttackPower()
         {
             float power = _entityData.AttackPower;
 
@@ -39,11 +41,13 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             return power;
         }
 
-        public virtual void AddHealthDamage(float damage) => _healthEntity.AddHealthDamage(damage);
-        public virtual void AddHealthHeal(float amount) => _healthEntity.AddHealthHeal(amount);
-        public virtual void Dead() => _healthEntity.Dead();
+        public void AddHealthDamage(float damage) => _healthEntity.AddHealthDamage(damage);
+        public void AddHealthHeal(float amount) => _healthEntity.AddHealthHeal(amount);
+        public void Dead() => _healthEntity.Dead();
 
-        protected readonly T _entityData;
+        private readonly T _entityData;
+        
+        [SerializeField, ReadOnly] 
         private readonly HealthEntity _healthEntity;
     }
 }
