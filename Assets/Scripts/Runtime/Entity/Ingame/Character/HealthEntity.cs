@@ -10,10 +10,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     [Serializable]
     public class HealthEntity
     {
-        public HealthEntity(float maxHealth)
+        public HealthEntity(IHitableData data)
         {
-            _maxHealth = maxHealth;
-            _health = maxHealth;
+            _data = data;
+            _health = data.MaxHealth;
         }
 
         public event Action<float, float> OnHealthChanged; //第一引数は現在値、第二引数は最大値
@@ -25,8 +25,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// <param name="damage"></param>
         public void AddHealthDamage(float damage)
         {
-            _health -= damage;
-            OnHealthChanged?.Invoke(_health, _maxHealth);
+            _health = Mathf.Max(_health - damage, 0); //体力は0未満にならないようにする
+            OnHealthChanged?.Invoke(_health, _data.MaxHealth);
 
             if (_health <= 0) //体力が無くなったら死亡
             {
@@ -40,8 +40,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// <param name="amount"></param>
         public void AddHealthHeal(float amount)
         {
-            _health = Mathf.Min(_health + amount, _maxHealth);
-            OnHealthChanged?.Invoke(_health, _maxHealth);
+            _health = Mathf.Min(_health + amount, _data.MaxHealth); //体力は最大値を超えないようにする
+            OnHealthChanged?.Invoke(_health, _data.MaxHealth);
         }
 
         /// <summary>
@@ -50,11 +50,11 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         public void Dead()
         {
             _health = 0;
-            OnHealthChanged?.Invoke(_health, _maxHealth);
+            OnHealthChanged?.Invoke(0, _data.MaxHealth);
             OnDead?.Invoke();
         }
 
-        private readonly float _maxHealth;
+        private readonly IHitableData _data;
         [SerializeField, ReadOnly] private float _health;
     }
 }
