@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
-    public abstract class CharacterEntity : IAttackable, IHitable
+    public abstract class CharacterEntity<T> : IAttackable, IHitable
+        where T : class, IAttackableData, IHitableData
     {
-        public CharacterEntity(IHitableData data)
+        public CharacterEntity(T data)
         {
             _healthEntity = new HealthEntity(data.MaxHealth);
         }
