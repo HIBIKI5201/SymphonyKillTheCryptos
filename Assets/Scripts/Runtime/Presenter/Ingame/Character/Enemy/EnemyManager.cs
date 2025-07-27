@@ -7,12 +7,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
 {
     public class EnemyManager : MonoBehaviour
     {
-        private List<IHitable> _enemies = new();
-
-        public IReadOnlyList<IHitable> GetAllEnemies()
-        {
-            return _enemies;
-        }
+        public IReadOnlyList<IHitable> AllEnemies => _enemies;
 
         public CharacterEntity<EnemyData> CreateEnemy(EnemyData data)
         {
@@ -21,6 +16,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
                 Debug.LogError("EnemyData is null.");
                 return null;
             }
+
             CharacterEntity<EnemyData> enemy = _enemyGenerator.Generate(data);
             if (enemy != null)
             {
@@ -29,10 +25,25 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
                 {
                     _enemies.Remove(enemy);
                 };
+                EnemyLog(enemy);
             }
             return enemy;
         }
 
+        private List<IHitable> _enemies = new();
         private EnemyGenerator _enemyGenerator = new();
+
+        private void EnemyLog(CharacterEntity<EnemyData> enemy)
+        {
+            enemy.OnHealthChanged += (currentHealth, maxHealth) =>
+            {
+                Debug.Log($"Enemy health changed: {currentHealth}/{maxHealth}");
+            };
+
+            enemy.OnDead += () =>
+            {
+                Debug.Log("Enemy has died.");
+            };
+        }
     }
 }
