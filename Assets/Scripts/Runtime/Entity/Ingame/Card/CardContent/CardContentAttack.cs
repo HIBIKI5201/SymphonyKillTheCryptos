@@ -10,7 +10,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         public void Execute(IAttackable player, params IHitable[] targets)
         {
-            StringBuilder sb = new($"CardContentAttack: Player <b>{player.gameObject.name}</b>\n");
+            StringBuilder sb = new($"CardContentAttack: Player <b>{player}</b>\n");
 
             float power = player.GetAttackPower() * _damageScale;
             sb.Append($"attacks targets with {power} damage.");
@@ -19,7 +19,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             {
                 t.AddHealthDamage(power);
 
-                sb.Append($"\nTarget: {t.gameObject.name}");
+                sb.Append($"\nTarget: {t}");
             }
 
             Debug.Log(sb.ToString());
