@@ -17,9 +17,10 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// CardUseCaseの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="wordDataBase">ワードデータが格納されたデータベース</param>
-        public CardUseCase(WordDataBase wordDataBase)
+        public CardUseCase(WordDataBase wordDataBase, CardDeckEntity deck)
         {
             _cardDrawer = new(wordDataBase);
+            _cardDeckEntity = deck;
         }
 
         /// <summary>
@@ -40,7 +41,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// <returns>生成されたCardEntityインスタンス。</returns>
         public CardEntity CreateCard(CardData data)
         {
-            return _cardDrawer.CreateNewCard(data);
+            CardEntity entity = _cardDrawer.CreateNewCard(data);
+            _cardDeckEntity.AddCardToDeck(entity);
+            return entity;
         }
 
         /// <summary>
@@ -58,6 +61,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
                 ExecuteCardEffect(cardEntity,
                     player: GetPlayer?.Invoke(),
                     targets: GetTargets?.Invoke());
+
+                _cardDeckEntity.RemoveCardFromDeck(cardEntity); 
                 OnCardCompleted?.Invoke(cardEntity);
             }
         }
@@ -95,6 +100,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             }
         }
 
+        private readonly CardDeckEntity _cardDeckEntity;
         private readonly CardDrawer _cardDrawer;
     }
 }

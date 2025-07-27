@@ -40,8 +40,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
             if (instance == null) return null;
 
-            _deckCardList.Add(instance);
-
             OnAddCardInstance?.Invoke(instance);
             return instance;
         }
@@ -74,8 +72,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
                 return;
             }
 
-            _cardUseCase = new(_wordDataBase);
-            _cardUseCase.OnCardCompleted += HandleCardCompleted;
+            _cardUseCase = new(_wordDataBase, _deckEntity);
             _cardUseCase.GetPlayer += () => _playerManager.Entity;
             _cardUseCase.GetTargets += () => _enemyManager.AllEnemies.ToArray();
         }
@@ -84,8 +81,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private WordDataBase _wordDataBase;
 
         private CardUseCase _cardUseCase;
-        private readonly List<CardEntity> _deckCardList = new();
 
+        private CardDeckEntity _deckEntity = new();
         private InputBuffer _inputBuffer;
         private SymphonyManager _playerManager;
         private EnemyManager _enemyManager;
@@ -96,27 +93,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// <param name="alphabet"></param>
         private void HandleInputAlphabet(char alphabet)
         {
-            for (int i = 0; i < _deckCardList.Count; i++)
-                _cardUseCase.InputCharToCard(_deckCardList[i], alphabet);
-        }
-
-        /// <summary>
-        ///     カードの入力が完了した時のイベント
-        /// </summary>
-        /// <param name="instance"></param>
-        private void HandleCardCompleted(CardEntity instance)
-        {
-            RemoveCardFromDeck(instance);
-        }
-
-        /// <summary>
-        ///     カードをデッキから削除する
-        /// </summary>
-        /// <param name="instance"></param>
-        private void RemoveCardFromDeck(CardEntity instance)
-        {
-            _deckCardList.Remove(instance);
-            OnRemoveCardInstance?.Invoke(instance);
+            for (int i = 0; i < _deckEntity.DeckCardList.Count; i++)
+                _cardUseCase.InputCharToCard(_deckEntity.DeckCardList[i], alphabet);
         }
     }
 }
