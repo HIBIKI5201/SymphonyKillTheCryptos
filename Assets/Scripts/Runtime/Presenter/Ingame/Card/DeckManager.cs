@@ -47,7 +47,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
             if (instance == null) return null;
 
-            OnAddCardInstance?.Invoke(instance);
             return instance;
         }
 
