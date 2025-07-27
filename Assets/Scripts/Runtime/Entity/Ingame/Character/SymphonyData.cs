@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Framework;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Entity
+namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
     ///     Symphonyのデータを保持するクラス。
