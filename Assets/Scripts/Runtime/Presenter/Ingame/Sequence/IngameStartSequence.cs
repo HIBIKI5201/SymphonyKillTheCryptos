@@ -1,6 +1,8 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Character;
+using JetBrains.Annotations;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
@@ -19,6 +21,11 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
         [SerializeField, Min(1)]
         private int _cardAmount = 3;
 
+        [Space]
+        [SerializeField]
+        private EnemyData _enemyData;
+        private int _enemyAmount = 3;
+
         public async Task StartSequence()
         {
             DeckManager deck = await ServiceLocator.GetInstanceAsync<DeckManager>();
@@ -31,6 +38,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
             }
 
             TestCardSpawn(deck);
+
+            TestEnemySpawn(enemy);
         }
 
         private void TestCardSpawn(DeckManager deckManager)
@@ -51,6 +60,25 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
                 var instance = deckManager.AddCardToDeck(cardData);
 
                 instance.OnComplete += RandomDraw;
+            }
+        }
+
+        private void TestEnemySpawn(EnemyManager enemyManager)
+        {
+            if (enemyManager == null)
+            {
+                Debug.LogWarning("EnemyManagerが設定されていません。");
+                return;
+            }
+
+            for (int i = 0; i < _enemyAmount; i++)
+            {
+                var enemy = enemyManager.CreateEnemy(_enemyData);
+                if (enemy == null)
+                {
+                    Debug.LogWarning("エネミーの生成に失敗しました。");
+                    continue;
+                }
             }
         }
     }

@@ -47,7 +47,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
 
         private readonly T _entityData;
         
-        [SerializeField, ReadOnly] 
+        [SerializeField, ReadOnly]
         private readonly HealthEntity _healthEntity;
     }
 }
