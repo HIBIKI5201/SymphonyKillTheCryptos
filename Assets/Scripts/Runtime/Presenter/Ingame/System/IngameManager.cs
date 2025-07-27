@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.Presenter.Ingame.Sequence;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
@@ -26,6 +27,11 @@ namespace Cryptos.Runtime.Ingame.System
             {
                 Debug.LogError($"Failed to load scene: {SceneListEnum.Stage}");
             }
+
+            await _ingameStartSequence.StartSequence();
         }
+
+        [SerializeField]
+        private IngameStartSequence _ingameStartSequence;
     }
 }
