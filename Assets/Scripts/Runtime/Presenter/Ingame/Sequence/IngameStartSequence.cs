@@ -1,20 +1,30 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Presenter.Character.Player;
-using Cryptos.Runtime.Presenter.Ingame.Card;
+using Cryptos.Runtime.Entity.Ingame.Word;
+using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Presenter.Ingame.Character;
-using SymphonyFrameWork;
+using Cryptos.Runtime.UseCase.Ingame.Card;
 using SymphonyFrameWork.System;
-using SymphonyFrameWork.Utility;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Sequence
 {
     [Serializable]
-    public class IngameStartSequence
+    public class IngameStartSequence : IDisposable
     {
+        public void Dispose()
+        {
+            ServiceLocator.DestroyInstance<CardUseCase>();
+        }
+
+        [SerializeField, Tooltip("プレイヤーデータ")]
+        private SymphonyData _symphonyData;
+        [SerializeField, Tooltip("ワードのデータベース")]
+        private WordDataBase _wordDataBase;
+
         [Header("テストコード")]
         [SerializeField]
         private CardData[] _cardDatas;
@@ -26,23 +36,30 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
         private EnemyData _enemyData;
         private int _enemyAmount = 3;
 
+        CardUseCase _cardUseCase;
+        CharacterEntity<SymphonyData> _symphony;
+        EnemyRepository _enemy;
+
         public async Task StartSequence()
         {
-            DeckManager deck = await ServiceLocator.GetInstanceAsync<DeckManager>();
-            SymphonyManager player = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
-            EnemyManager enemy = await ServiceLocator.GetInstanceAsync<EnemyManager>();
+            _symphony = new(_symphonyData);
+            _enemy = new();
 
-            if (deck is IInitializeAsync initialize)
-            {
-                await SymphonyTask.WaitUntil(() => initialize.IsDone);
-            }
+            _cardUseCase = new(_wordDataBase, new());
+            _cardUseCase.GetPlayer += () => _symphony;
+            _cardUseCase.GetTargets += () => _enemy.AllEnemies.ToArray();
 
-            TestCardSpawn(deck);
+            ServiceLocator.RegisterInstance(_cardUseCase);
 
-            TestEnemySpawn(enemy);
+            InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
+            inputBuffer.OnAlphabetKeyPressed += _cardUseCase.InputCharToDeck;
+
+            await Awaitable.WaitForSecondsAsync(1); //UIの初期化を待つ
+            TestCardSpawn();
+            TestEnemySpawn();
         }
 
-        private void TestCardSpawn(DeckManager deckManager)
+        private void TestCardSpawn()
         {
             if (_cardDatas == null || _cardDatas.Length == 0)
             {
@@ -51,29 +68,25 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
             }
 
             for (int i = 0; i < _cardAmount; i++)
+            {
                 RandomDraw();
+            }
 
             void RandomDraw()
             {
                 Debug.Log("draw");
                 var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
-                var instance = deckManager.AddCardToDeck(cardData);
+                var instance = _cardUseCase.CreateCard(cardData);
 
                 instance.OnComplete += RandomDraw;
             }
         }
 
-        private void TestEnemySpawn(EnemyManager enemyManager)
+        private void TestEnemySpawn()
         {
-            if (enemyManager == null)
-            {
-                Debug.LogWarning("EnemyManagerが設定されていません。");
-                return;
-            }
-
             for (int i = 0; i < _enemyAmount; i++)
             {
-                var enemy = enemyManager.CreateEnemy(_enemyData);
+                var enemy = _enemy.CreateEnemy(_enemyData);
                 if (enemy == null)
                 {
                     Debug.LogWarning("エネミーの生成に失敗しました。");
