@@ -1,4 +1,3 @@
-using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.Word;
@@ -34,6 +33,17 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// </summary>
         public event Action<CardEntity> OnCardCompleted;
 
+        public event Action<CardEntity> OnCardAddedToDeck
+        {
+            add => _cardDeckEntity.OnAddCardInstance += value;
+            remove => _cardDeckEntity.OnAddCardInstance -= value;
+        }
+        public event Action<CardEntity> OnCardRemovedFromDeck
+        {
+            add => _cardDeckEntity.OnRemoveCardInstance += value;
+            remove => _cardDeckEntity.OnRemoveCardInstance -= value;
+        }
+
         /// <summary>
         /// 新しいCardEntityインスタンスを生成します。
         /// </summary>
@@ -44,6 +54,14 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             CardEntity entity = _cardDrawer.CreateNewCard(data);
             _cardDeckEntity.AddCardToDeck(entity);
             return entity;
+        }
+
+        public void InputCharToDeck(char input)
+        {
+            for (int i = 0; i < _cardDeckEntity.DeckCardList.Count; i++)
+            {
+                InputCharToCard(_cardDeckEntity.DeckCardList[i], input);
+            }
         }
 
         /// <summary>
@@ -62,7 +80,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
                     player: GetPlayer?.Invoke(),
                     targets: GetTargets?.Invoke());
 
-                _cardDeckEntity.RemoveCardFromDeck(cardEntity); 
+                _cardDeckEntity.RemoveCardFromDeck(cardEntity);
                 OnCardCompleted?.Invoke(cardEntity);
             }
         }
