@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Presenter.Ingame.Card;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
