@@ -28,7 +28,7 @@ namespace Cryptos.Runtime.Ingame.System
                 Debug.LogError($"Failed to load scene: {SceneListEnum.Stage}");
             }
 
-            await _ingameStartSequence.StartSequence();
+            _ingameStartSequence.StartSequence();
         }
 
         [SerializeField]
