@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Character
 {
-    public class EnemyManager : MonoBehaviour
+    public class EnemyRepository
     {
         public IReadOnlyList<IHitable> AllEnemies => _enemies;
 
