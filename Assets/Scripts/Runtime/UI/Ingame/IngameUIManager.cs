@@ -1,6 +1,6 @@
-using Cryptos.Runtime.UseCase.Ingame.Card;
+using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Presenter.Ingame;
 using SymphonyFrameWork;
-using SymphonyFrameWork.System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,12 +11,16 @@ namespace Cryptos.Runtime.UI.Ingame
     ///     インゲームのUIを管理する
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    public class IngameUIManager : MonoBehaviour, IInitializeAsync
+    public class IngameUIManager : MonoBehaviour,ICardUIManager, IInitializeAsync
     {
-        public void Init(CardUseCase cardUseCase)
+        public void HanldeAddCard(CardEntity instance)
         {
-            cardUseCase.OnCardAddedToDeck += _deck.HandleAddCard;
-            cardUseCase.OnCardRemovedFromDeck += _deck.HandleRemoveCard;
+            _deck.HandleAddCard(instance);
+        }
+
+        public void HandleRemoveCard(CardEntity instance)
+        {
+            _deck.HandleRemoveCard(instance);
         }
 
         Task IInitializeAsync.InitializeTask { get; set; }
