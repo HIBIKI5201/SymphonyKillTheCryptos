@@ -15,37 +15,48 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// CardDrawerの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="wordDataBase">ワードデータが格納されたデータベース</param>
-        public CardDrawer(WordDataBase wordDataBase)
+        /// <param name="wordManager">ワードを管理するマネージャー</param>
+        public CardDrawer(WordDataBase wordDataBase, WordManager wordManager)
         {
             _wordDatabase = wordDataBase ?? throw new ArgumentNullException(nameof(wordDataBase));
+            _wordManager = wordManager ?? throw new ArgumentNullException(nameof(wordManager));
         }
-
-        private readonly WordDataBase _wordDatabase;
-        private readonly WordManager _wordManager = new();
 
         /// <summary>
         /// 新しいCardEntityインスタンスを生成します。
-        /// CardDataのWordRangeに基づいてWordEntityを生成し、CardEntityに紐付けます。
         /// </summary>
         /// <param name="data">生成するカードのデータ</param>
-        /// <returns>生成されたCardEntityインスタンス。WordRangeが不適切な場合はnull。</returns>
-        public CardEntity CreateNewCard(CardData data)
+        /// <param name="availableWords">[out] このカードで利用可能なワードの候補リスト</param>
+        /// <returns>生成されたCardEntityインスタンス。利用可能なワードがない場合はnull。</returns>
+        public CardEntity CreateNewCard(CardData data, out WordData[] availableWords)
         {
             if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
             {
-                Debug.LogWarning($"{data.name}のWordRnageが不適切です\n二つの距離は0から{_wordDatabase.WordData.Length - 1}までです");
+                Debug.LogWarning($"{data.name}のWordRnageが不適切です");
+                availableWords = null;
                 return null;
             }
 
-            //カードの難易度までのワードを取得
-            WordData[] words = _wordDatabase
-                .WordData[data.WordRange.x..data.WordRange.y];
+            // カードで利用可能なワードの候補リストを作成
+            availableWords = _wordDatabase.WordData[data.WordRange.x..data.WordRange.y];
 
-            //カードを生成
-            WordEntity wordEntity = new(words, _wordManager, data.CardDifficulty);
+            // 最初の単語を取得
+            var initialWordData = _wordManager.GetAvailableWord(availableWords);
+            if (initialWordData.word == null)
+            {
+                Debug.LogError("利用可能な単語が見つかりませんでした。");
+                return null;
+            }
+
+            // WordEntityを最初の単語で初期化
+            WordEntity wordEntity = new(initialWordData.word, initialWordData.difficulty, data.CardDifficulty);
+            _wordManager.AddWord(initialWordData.word); // 使用中にする
+
             CardEntity instance = new(data, wordEntity);
-
             return instance;
         }
+
+        private readonly WordDataBase _wordDatabase;
+        private readonly WordManager _wordManager;
     }
 }
