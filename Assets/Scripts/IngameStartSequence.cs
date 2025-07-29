@@ -51,8 +51,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
             _cardUseCase.GetPlayer += () => _symphony;
             _cardUseCase.GetTargets += () => _enemy.AllEnemies.ToArray();
 
-            ServiceLocator.RegisterInstance(_cardUseCase);
-
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             inputBuffer.OnAlphabetKeyPressed += _cardUseCase.InputCharToDeck;
 
