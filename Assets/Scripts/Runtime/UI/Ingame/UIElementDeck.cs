@@ -1,5 +1,4 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
-using Cryptos.Runtime.Entity.Ingame.Word;
 using SymphonyFrameWork.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,7 +33,7 @@ namespace Cryptos.Runtime.UI.Ingame
         public void HandleAddCard(CardEntity instance)
         {
             //カードを追加
-            UIElementCard card = new ();
+            UIElementCard card = new();
             card.SetData(instance.WordEntity);
 
             _deck.Add(card);
