@@ -38,6 +38,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
         private int _enemyAmount = 3;
 
         CardUseCase _cardUseCase;
+        CardPresenter _cardPresenter;
         CharacterEntity<SymphonyData> _symphony;
         EnemyRepository _enemy;
 
@@ -57,7 +58,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
 
             IngameUIManager ingameUIManager = await ServiceLocator.GetInstanceAsync<IngameUIManager>();
             await InitializeUtility.WaitInitialize(ingameUIManager);
-            ingameUIManager.Init(_cardUseCase);
+            _cardPresenter = new CardPresenter(_cardUseCase, ingameUIManager);
 
             TestCardSpawn();
             TestEnemySpawn();
