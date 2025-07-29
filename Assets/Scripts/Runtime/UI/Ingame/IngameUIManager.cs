@@ -13,10 +13,15 @@ namespace Cryptos.Runtime.UI.Ingame
     [RequireComponent(typeof(UIDocument))]
     public class IngameUIManager : MonoBehaviour, IInitializeAsync
     {
+        public void Init(CardUseCase cardUseCase)
+        {
+            cardUseCase.OnCardAddedToDeck += _deck.HandleAddCard;
+            cardUseCase.OnCardRemovedFromDeck += _deck.HandleRemoveCard;
+        }
+
         Task IInitializeAsync.InitializeTask { get; set; }
 
         private UIDocument _document;
-        private CardUseCase _deckManager;
 
         private UIElementDeck _deck;
 
@@ -28,10 +33,6 @@ namespace Cryptos.Runtime.UI.Ingame
             _deck = root.Q<UIElementDeck>();
 
             await _deck.InitializeTask;
-
-            _deckManager = await ServiceLocator.GetInstanceAsync<CardUseCase>();
-            _deckManager.OnCardAddedToDeck += _deck.HandleAddCard;
-            _deckManager.OnCardRemovedFromDeck += _deck.HandleRemoveCard;
         }
     }
 }
