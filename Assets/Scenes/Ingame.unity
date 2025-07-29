@@ -210,7 +210,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1025702765}
   - component: {fileID: 1025702766}
-  - component: {fileID: 1025702767}
   m_Layer: 0
   m_Name: InGameManager
   m_TagString: Untagged
@@ -246,28 +245,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ingameStartSequence:
-    _symphonyData: {fileID: 11400000, guid: fcf3f1f413c8c4348987e4dadd1102f0, type: 2}
-    _wordDataBase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
-    _cardDatas:
-    - {fileID: 11400000, guid: 5f133e15ad993d141ad05589ec0d0163, type: 2}
-    _cardAmount: 3
-    _enemyData: {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
---- !u!114 &1025702767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025702764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _target: {fileID: 1025702766}
-  _locateType: 1
-  _autoRegister: 1
-  _autoUnregister: 1
+    rid: 7111649563309506653
+  references:
+    version: 2
+    RefIds:
+    - rid: 7111649563309506653
+      type: {class: IngameStartSequence, ns: Cryptos.Runtime.Presenter.Ingame.Sequence, asm: Assembly-CSharp}
+      data:
+        _symphonyData: {fileID: 11400000, guid: fcf3f1f413c8c4348987e4dadd1102f0, type: 2}
+        _wordDataBase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
+        _cardDatas:
+        - {fileID: 11400000, guid: 5f133e15ad993d141ad05589ec0d0163, type: 2}
+        _cardAmount: 3
+        _enemyData: {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
 --- !u!1001 &1595730579
 PrefabInstance:
   m_ObjectHideFlags: 0
