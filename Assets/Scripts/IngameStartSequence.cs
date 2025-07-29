@@ -2,18 +2,19 @@ using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.Ingame.System;
 using Cryptos.Runtime.Presenter.Ingame.Character;
+using Cryptos.Runtime.UI.Ingame;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using SymphonyFrameWork.System;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Sequence
 {
     [Serializable]
-    public class IngameStartSequence : IDisposable
+    public class IngameStartSequence : IGameInstaller, IDisposable
     {
         public void Dispose()
         {
@@ -40,7 +41,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
         CharacterEntity<SymphonyData> _symphony;
         EnemyRepository _enemy;
 
-        public async Task StartSequence()
+        public async void GameInitialize()
         {
             _symphony = new(_symphonyData);
             _enemy = new();
@@ -54,7 +55,10 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             inputBuffer.OnAlphabetKeyPressed += _cardUseCase.InputCharToDeck;
 
-            await Awaitable.WaitForSecondsAsync(1); //UIの初期化を待つ
+            IngameUIManager ingameUIManager = await ServiceLocator.GetInstanceAsync<IngameUIManager>();
+            await InitializeUtility.WaitInitialize(ingameUIManager);
+            ingameUIManager.Init(_cardUseCase);
+
             TestCardSpawn();
             TestEnemySpawn();
         }
