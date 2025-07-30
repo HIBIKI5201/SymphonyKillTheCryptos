@@ -20,5 +20,10 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         public void SetDirY(float value) => _animator.SetFloat(_dirYHash, value);
         public void SetVelocity(float value) => _animator.SetFloat(_velocityHash, value);
         public void SetSprint(bool value) => _animator.SetBool(_sprintHash, value);
+        public void ActiveSkill(int value)
+        {
+            _animator.SetInteger("Skill", value);
+            _animator.SetTrigger("SkillTrigger");
+        }
     }
 }
