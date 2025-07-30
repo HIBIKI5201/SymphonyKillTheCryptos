@@ -3,6 +3,7 @@ using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Ingame.System;
+using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.UI.Ingame;
 using Cryptos.Runtime.UseCase.Ingame.Card;
@@ -57,6 +58,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.Sequence
             IngameUIManager ingameUIManager = await ServiceLocator.GetInstanceAsync<IngameUIManager>();
             await InitializeUtility.WaitInitialize(ingameUIManager);
             _cardPresenter = new CardPresenter(_cardUseCase, ingameUIManager);
+
+            SymphonyManager symphonyManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
+            symphonyManager.Init(_cardUseCase);
 
             TestCardSpawn();
             TestEnemySpawn();
