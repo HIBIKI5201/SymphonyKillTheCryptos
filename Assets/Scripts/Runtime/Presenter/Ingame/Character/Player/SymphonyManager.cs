@@ -1,3 +1,6 @@
+using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.UseCase.Ingame.Card;
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Character.Player
@@ -7,6 +10,11 @@ namespace Cryptos.Runtime.Presenter.Character.Player
     /// </summary>
     public class SymphonyManager : MonoBehaviour
     {
+        public void Init(CardUseCase cardUseCase)
+        {
+            cardUseCase.OnCardCompleted += HandleCardComplete;
+        }
+
         [SerializeField]
         private ParticleSystem _muzzleFlash;
 
@@ -19,6 +27,14 @@ namespace Cryptos.Runtime.Presenter.Character.Player
             {
                 Debug.LogError("SymphonyAnimeManager is not found on the GameObject.");
             }
+        }
+
+        private void HandleCardComplete(CardEntity cardEntity)
+        {
+            if (cardEntity == null) return;
+
+            _animeManager.ActiveSkill(cardEntity.AnimationIndex);
+            
         }
     }
 }
