@@ -81,7 +81,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
                 return;
             }
 
-            ICardContent[] contents = cardEntity.Data.Contents;
+            ICardContent[] contents = cardEntity.Contents;
 
             if (contents == null || contents.Length == 0) return;
 
