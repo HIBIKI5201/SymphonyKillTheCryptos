@@ -41,24 +41,29 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         public ICardContent[] Contents => _contentsArray;
 
+        public int AnimationIndex => _animationIndex;
+
 
         [Header("基本情報")]
         [SerializeField, Tooltip("カードの名前")]
-        private string _cardName;
+        private string _cardName = "empty";
 
         [SerializeField, Tooltip("カードの説明"), TextArea]
-        private string _cardExplanation;
+        private string _cardExplanation = "explanation";
 
         [SerializeField, Tooltip("アイコン画像")]
         private Texture2D _cardIcon;
 
         [SerializeField, Tooltip("カードの難易度"), Min(1)]
-        private int _cardDifficulty;
+        private int _cardDifficulty = 1;
 
         [SerializeField, Tooltip("ワードの範囲")]
         private Vector2Int _wordRange = new Vector2Int(0, 1);
 
         [SerializeReference, SubclassSelector]
         private ICardContent[] _contentsArray;
+
+        [SerializeField]
+        private int _animationIndex;
     }
 }
