@@ -21,6 +21,14 @@ MonoBehaviour:
     - private
     - public
     - void
+    - new
+    - Quit
+    - value
+    - get
+    - set
+    - index
+    - if
+    - for
     _difficulty: 1
   - _words:
     - double
@@ -32,15 +40,24 @@ MonoBehaviour:
     - struct
     - async
     - await
+    - using
+    - array
+    - foreach
+    - switch
+    - return
+    - break
+    - continue
     _difficulty: 2
   - _words:
     - List
     - Dictionary
-    - readonry
+    - readonly
     - const
     - sealed
     - internal
     - interface
+    - Coroutine
+    - summry
     _difficulty: 3
   - _words:
     - Vector
@@ -50,6 +67,10 @@ MonoBehaviour:
     - abstruct
     - partial
     - virtual
+    - Serialize
+    - Collider
+    - Collision
+    - stackalloc
     _difficulty: 4
   - _words:
     - Quaternion
