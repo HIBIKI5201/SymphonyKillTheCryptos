@@ -18,8 +18,7 @@ namespace Cryptos.Runtime.Framework
             string sceneName = firstScene.ToString();
 
             //初期シーンをロードする
-            await MultiSceneLoader.LoadScenes(sceneName);
-            SceneLoader.SetActiveScene(sceneName);
+            await SceneLoader.LoadScene(sceneName);
 
             Destroy(gameObject); //終了したら自己破棄する
         }
