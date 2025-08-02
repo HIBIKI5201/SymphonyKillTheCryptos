@@ -70,10 +70,10 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// <summary>
         /// 指定されたCardEntityのカード効果を実行します。
         /// </summary>
-        /// <param name="cardEntity">効果を実行するCardEntity</param>
+        /// <param name="contents">効果を実行するContents</param>
         /// <param name="player">効果の主体となるプレイヤー</param>
         /// <param name="targets">効果の対象となるターゲット</param>
-        public void ExecuteCardEffect(CardEntity cardEntity, IAttackable player, params IHitable[] targets)
+        public void ExecuteCardEffect(ICardContent[] contents, IAttackable player, params IHitable[] targets)
         {
             if (player == null)
             {
@@ -81,9 +81,11 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
                 return;
             }
 
-            ICardContent[] contents = cardEntity.Contents;
-
-            if (contents == null || contents.Length == 0) return;
+            if (contents == null || contents.Length == 0)
+            {
+                Debug.LogError("No contents to execute.");
+                return;
+            }
 
             foreach (var content in contents)
             {
@@ -132,7 +134,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         private void HandleCardCompleted(CardEntity cardEntity)
         {
             _wordManager.RemoveWord(cardEntity.WordEntity.CurrentWord);
-            ExecuteCardEffect(cardEntity, GetPlayer?.Invoke(), GetTargets?.Invoke());
+            ExecuteCardEffect(cardEntity.Contents, GetPlayer?.Invoke(), GetTargets?.Invoke());
             _cardDeckEntity.RemoveCardFromDeck(cardEntity);
             _cardWordCandidates.Remove(cardEntity);
             OnCardCompleted?.Invoke(cardEntity);
