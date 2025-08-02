@@ -256,6 +256,9 @@ MonoBehaviour:
         _wordDataBase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
         _cardDatas:
         - {fileID: 11400000, guid: 5f133e15ad993d141ad05589ec0d0163, type: 2}
+        - {fileID: 11400000, guid: db05b835f35190a4bbfa52a418b4a8fb, type: 2}
+        - {fileID: 11400000, guid: fca1eac7d2164c34a9dc8d88cfa90679, type: 2}
+        - {fileID: 11400000, guid: 4f81ac41041ba54418d48356df7b134e, type: 2}
         _cardAmount: 3
         _enemyData: {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
 --- !u!1001 &1595730579
