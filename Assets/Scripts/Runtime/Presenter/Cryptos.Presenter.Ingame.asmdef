@@ -1,6 +1,6 @@
 {
-    "name": "Cryptos.Presenter.Ingame",
-    "rootNamespace": "Cryptos.Runtime.Presenter.Ingame",
+    "name": "Cryptos.Presenter",
+    "rootNamespace": "Cryptos.Runtime.Presenter",
     "references": [
         "GUID:83b371f8bd104ee45b1cb38cf205ac72",
         "GUID:95a8293fbc1762c46af8f9fbc966e4ad",
