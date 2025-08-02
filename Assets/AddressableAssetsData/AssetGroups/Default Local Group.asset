@@ -14,12 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
   m_GUID: 0b7440546848d2044a51b3110ec5c25b
-  m_SerializeEntries:
-  - m_GUID: e5c4e3d36388c9f499594322d5368a45
-    m_Address: CardInfo/WordDataBase
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c414c8d583fd5e42825d7852d14895c, type: 2}
   m_SchemaSet:
