@@ -41,7 +41,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         public ICardContent[] Contents => _contentsArray;
 
-        public int AnimationIndex => _animationIndex;
+        /// <summary>
+        /// カードの優先度を取得します。
+        /// </summary>
+        public int Priority => _priority;
+
+        /// <summary>
+        /// カードに関連付けられたアニメーションのIDを取得します。
+        /// </summary>
+        public int AnimationID => _animationID;
 
 
         [Header("基本情報")]
@@ -62,8 +70,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         [SerializeReference, SubclassSelector]
         private ICardContent[] _contentsArray = default;
+        [SerializeField, Tooltip("カード優先度")]
+        private int _priority = 0;
 
-        [SerializeField]
-        private int _animationIndex = 0;
+        [SerializeField, Tooltip("アニメーションのID")]
+        private int _animationID = 0;
     }
 }
