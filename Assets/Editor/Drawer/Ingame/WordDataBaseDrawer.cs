@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
@@ -50,21 +52,25 @@ namespace Cryptos.Editor.Ingame
 
         private async void LoadDataBase()
         {
-            //リクエストを待機
-            UnityWebRequest request = UnityWebRequest.Get(
-                "https://docs.google.com/spreadsheets/d/" + _url
-                + "/gviz/tq?tqx=out:csv&sheet=" + _sheetName);
+            // アクセスリンクを作成
+            var builder = new StringBuilder(100);
+            builder.Append("https://docs.google.com/spreadsheets/d/");
+            builder.Append(_url);
+            builder.Append("/gviz/tq?tqx=out:csv&sheet=");
+            builder.Append(_sheetName);
 
+            //リクエストを待機
+            UnityWebRequest request = UnityWebRequest.Get(builder.ToString());
             await request.SendWebRequest();
 
             //リクエストに失敗したかどうか
             if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.Log(request.error);
+                Debug.LogError(request.error);
                 return;
             }
 
-            Debug.Log("リクエスト成功");
+            StringBuilder stringBuilder = new StringBuilder("リクエスト成功");
 
             StringReader reader = new StringReader(request.downloadHandler.text);
 
@@ -86,15 +92,23 @@ namespace Cryptos.Editor.Ingame
                 wordDatas.Add(data);
             }
 
+            stringBuilder.AppendLine($"単語データの数: {wordDatas.Count}");
+
             WordDataBase db = (WordDataBase)target;
             // private フィールド _words を取得
             FieldInfo field = typeof(WordDataBase).GetField(WORDS_PROP_NAME, BindingFlags.NonPublic | BindingFlags.Instance);
 
-            if (field != null)
+            if (field == null)
             {
-                field.SetValue(db, wordDatas.ToArray());
-                EditorUtility.SetDirty(db);
+                Debug.LogError($"フィールド '{WORDS_PROP_NAME}' が見つかりません。");
+                return;
             }
+
+            field.SetValue(db, wordDatas.ToArray());
+            EditorUtility.SetDirty(db);
+
+            stringBuilder.Append("データベースの更新が完了しました。");
+            Debug.Log(stringBuilder.ToString());
         }
     }
 }
