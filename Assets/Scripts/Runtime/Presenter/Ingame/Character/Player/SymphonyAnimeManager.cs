@@ -9,6 +9,8 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         private readonly int _dirYHash = Animator.StringToHash("DirY");
         private readonly int _velocityHash = Animator.StringToHash("Velocity");
         private readonly int _sprintHash = Animator.StringToHash("IsSprint");
+        private readonly int _skillHash = Animator.StringToHash("Skill");
+        private readonly int _skillTriggerHash = Animator.StringToHash("SkillTrigger");
 
         private Animator _animator;
         private void Awake()
@@ -22,8 +24,8 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         public void SetSprint(bool value) => _animator.SetBool(_sprintHash, value);
         public void ActiveSkill(int value)
         {
-            _animator.SetInteger("Skill", value);
-            _animator.SetTrigger("SkillTrigger");
+            _animator.SetInteger(_skillHash, value);
+            _animator.SetTrigger(_skillTriggerHash);
         }
     }
 }
