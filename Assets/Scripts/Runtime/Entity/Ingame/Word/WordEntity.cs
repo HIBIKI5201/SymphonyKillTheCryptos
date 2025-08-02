@@ -53,9 +53,11 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         /// <returns>カード全体の入力が完了した場合true</returns>
         public bool OnInputChar(char input)
         {
+            // 入力された文字が現在の単語の文字と一致するか確認
             if (!IsMatch(input))
             {
-                _inputIndex = 0;
+                // 一致しない場合、入力インデックスをリセットして再度チェック
+                ResetIndex();
                 if (!IsMatch(input))
                 {
                     OnWordUpdated?.Invoke(_currentWord, _inputIndex);
@@ -82,6 +84,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
             }
 
             return false;
+        }
+
+        public void ResetIndex()
+        {
+            _inputIndex = 0;
+            OnWordUpdated?.Invoke(_currentWord, _inputIndex);
         }
 
         private string _currentWord;
