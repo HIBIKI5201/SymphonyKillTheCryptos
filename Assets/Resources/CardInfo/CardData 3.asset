@@ -16,8 +16,9 @@ MonoBehaviour:
   _cardExplanation: 
   _cardIcon: {fileID: 0}
   _cardDifficulty: 4
-  _wordRange: {x: 0, y: 1}
+  _wordRange: {x: 0, y: 3}
   _contentsArray: []
+  _animationIndex: 3
   references:
     version: 2
     RefIds: []
