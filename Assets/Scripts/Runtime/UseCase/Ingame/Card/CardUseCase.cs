@@ -83,7 +83,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
 
             if (contents == null || contents.Length == 0)
             {
-                Debug.LogError("No contents to execute.");
+                Debug.LogWarning("No contents to execute.");
                 return;
             }
 
@@ -133,10 +133,20 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// </summary>
         private void HandleCardCompleted(CardEntity cardEntity)
         {
+            // カードがデッキから削除され、ワードが管理から解放される
             _wordManager.RemoveWord(cardEntity.WordEntity.CurrentWord);
-            ExecuteCardEffect(cardEntity.Contents, GetPlayer?.Invoke(), GetTargets?.Invoke());
             _cardDeckEntity.RemoveCardFromDeck(cardEntity);
             _cardWordCandidates.Remove(cardEntity);
+
+            // カードの効果を実行
+            ExecuteCardEffect(cardEntity.Contents, GetPlayer?.Invoke(), GetTargets?.Invoke());
+
+            // 残りのカードのワードエンティティのインデックスをリセット
+            foreach (CardEntity card in _cardDeckEntity.DeckCardList)
+            {
+                card.WordEntity.ResetIndex();
+            }
+
             OnCardCompleted?.Invoke(cardEntity);
         }
     }
