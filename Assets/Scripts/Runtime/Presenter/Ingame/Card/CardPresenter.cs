@@ -2,7 +2,7 @@ using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter.Ingame
+namespace Cryptos.Runtime.Presenter.Ingame.Card
 {
     public class CardPresenter
     {
@@ -18,12 +18,13 @@ namespace Cryptos.Runtime.Presenter.Ingame
 
         private void HandleAddCard(CardEntity card)
         {
-            _cardUIManager.HanldeAddCard(card);
+
+            _cardUIManager.HanldeAddCard(new(card));
         }
 
         private void HandleRemoveCard(CardEntity card)
         {
-            _cardUIManager.HandleRemoveCard(card);
+            _cardUIManager.HandleRemoveCard(new(card));
         }
     }
 }
