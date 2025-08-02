@@ -13,7 +13,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter.Ingame.Sequence
+namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 {
     [Serializable]
     public class IngameStartSequence : IGameInstaller, IDisposable
