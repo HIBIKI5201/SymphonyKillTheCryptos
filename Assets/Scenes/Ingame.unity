@@ -245,12 +245,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ingameStartSequence:
-    rid: 7111649563309506653
+    rid: 713893158171443313
   references:
     version: 2
     RefIds:
-    - rid: 7111649563309506653
-      type: {class: IngameStartSequence, ns: Cryptos.Runtime.Presenter.Ingame.Sequence, asm: Assembly-CSharp}
+    - rid: 713893158171443313
+      type: {class: IngameStartSequence, ns: Cryptos.Runtime.InfraStructure.Ingame.Sequence, asm: Assembly-CSharp}
       data:
         _symphonyData: {fileID: 11400000, guid: fcf3f1f413c8c4348987e4dadd1102f0, type: 2}
         _wordDataBase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
