@@ -18,7 +18,8 @@ MonoBehaviour:
   _cardDifficulty: 5
   _wordRange: {x: 0, y: 4}
   _contentsArray: []
-  _animationIndex: 0
+  _priority: 0
+  _animationClip: {fileID: 7400000, guid: 5ea12e76574f31749a5f956ff0431626, type: 2}
   references:
     version: 2
     RefIds: []

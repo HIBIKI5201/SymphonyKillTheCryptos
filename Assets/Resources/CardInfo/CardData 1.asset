@@ -19,7 +19,8 @@ MonoBehaviour:
   _wordRange: {x: 0, y: 1}
   _contentsArray:
   - rid: 7111649532920987774
-  _animationIndex: 1
+  _priority: 0
+  _animationClip: {fileID: 7400000, guid: 8a88a803a61f66a46a0d7804f1181a86, type: 2}
   references:
     version: 2
     RefIds:
