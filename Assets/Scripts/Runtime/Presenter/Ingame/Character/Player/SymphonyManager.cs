@@ -33,7 +33,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         {
             if (cardEntity == null) return;
 
-            _animeManager.ActiveSkill(cardEntity.AnimationIndex);
+            _animeManager.ActiveSkill(cardEntity.AnimationID);
             
         }
     }
