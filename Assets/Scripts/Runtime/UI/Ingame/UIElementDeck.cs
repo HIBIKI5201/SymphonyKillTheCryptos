@@ -1,4 +1,4 @@
-using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Presenter.Ingame.Card;
 using SymphonyFrameWork.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,7 +17,7 @@ namespace Cryptos.Runtime.UI.Ingame
         private const string DECK_NAME = "deck";
 
         private VisualElement _deck;
-        private readonly Dictionary<CardEntity, UIElementCard> _cards = new();
+        private readonly Dictionary<CardViewModel, UIElementCard> _cards = new();
 
         protected override Task Initialize_S(TemplateContainer container)
         {
@@ -30,11 +30,11 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     カードをデッキに追加する
         /// </summary>
         /// <param name="instance"></param>
-        public void HandleAddCard(CardEntity instance)
+        public void HandleAddCard(CardViewModel instance)
         {
             //カードを追加
             UIElementCard card = new();
-            card.SetData(instance.WordEntity);
+            card.SetData(instance);
 
             _deck.Add(card);
             _cards.Add(instance, card);
@@ -44,7 +44,7 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     カードをデッキから削除する
         /// </summary>
         /// <param name="instance"></param>
-        public void HandleRemoveCard(CardEntity instance)
+        public void HandleRemoveCard(CardViewModel instance)
         {
             if (_cards.TryGetValue(instance, out UIElementCard card))
             {

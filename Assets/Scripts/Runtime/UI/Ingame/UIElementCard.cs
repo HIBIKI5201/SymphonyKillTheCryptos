@@ -1,4 +1,4 @@
-using Cryptos.Runtime.Entity.Ingame.Word;
+using Cryptos.Runtime.Presenter.Ingame.Card;
 using SymphonyFrameWork.Utility;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
@@ -22,7 +22,7 @@ namespace Cryptos.Runtime.UI.Ingame
         ///     データをセットする
         /// </summary>
         /// <param name="data"></param>
-        public void SetData(WordEntity instance)
+        public void SetData(CardViewModel instance)
         {
             instance.OnWordUpdated += HandleWordUpdate;
             instance.OnProgressUpdate += HandleProgressBarUpdate;
