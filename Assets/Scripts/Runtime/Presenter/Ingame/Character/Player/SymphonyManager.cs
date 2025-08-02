@@ -1,6 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.Card;
-using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Character.Player
@@ -14,6 +13,9 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         {
             cardUseCase.OnCardCompleted += HandleCardComplete;
         }
+
+        [SerializeField]
+        private SymphonySkillAnimationDataBase _skillAnimationDataBase;
 
         [SerializeField]
         private ParticleSystem _muzzleFlash;
@@ -33,8 +35,21 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         {
             if (cardEntity == null) return;
 
-            _animeManager.ActiveSkill(cardEntity.AnimationID);
-            
+            if (cardEntity.AnimationClip == null)
+            {
+                Debug.LogWarning("CardEntity does not have an AnimationClip assigned.");
+                return;
+            }
+
+            int index = _skillAnimationDataBase[cardEntity.AnimationClip];
+            if (index < 0)
+            {
+                Debug.LogWarning($"AnimationClip {cardEntity.AnimationClip.name} does not have a valid SkillIndex.");
+                return;
+            }
+
+            _animeManager.ActiveSkill(index);
+
         }
     }
 }
