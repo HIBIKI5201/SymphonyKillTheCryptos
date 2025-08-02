@@ -52,7 +52,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private string _cardExplanation = "explanation";
 
         [SerializeField, Tooltip("アイコン画像")]
-        private Texture2D _cardIcon;
+        private Texture2D _cardIcon = default;
 
         [SerializeField, Tooltip("カードの難易度"), Min(1)]
         private int _cardDifficulty = 1;
@@ -61,9 +61,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         private Vector2Int _wordRange = new Vector2Int(0, 1);
 
         [SerializeReference, SubclassSelector]
-        private ICardContent[] _contentsArray;
+        private ICardContent[] _contentsArray = default;
 
         [SerializeField]
-        private int _animationIndex;
+        private int _animationIndex = 0;
     }
 }
