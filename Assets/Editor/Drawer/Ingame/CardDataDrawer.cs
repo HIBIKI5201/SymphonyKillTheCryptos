@@ -60,11 +60,16 @@ namespace Cryptos.Editor.Ingame
             var json = EditorPrefs.GetString(SKILL_ANIMATION_GUID_MAP_KEY, string.Empty);
             if (string.IsNullOrEmpty(json)) return;
 
-            var guidMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(json);
-            if (guidMap == null) return;
+            var data = JsonConvert.DeserializeObject<CardDataDrawerData>(json);
+
+            if (data.Data == null || data.Data.Count == 0)
+            {
+                Debug.LogWarning("No animation data found in EditorPrefs.");
+                return;
+            }
 
             _skillAnimationClips.Clear();
-            foreach (var pair in guidMap)
+            foreach (var pair in data.Data)
             {
                 var path = AssetDatabase.GUIDToAssetPath(pair.Value);
                 if (!string.IsNullOrEmpty(path))
@@ -96,6 +101,17 @@ namespace Cryptos.Editor.Ingame
         [SerializeField] private AnimatorController _animatorController;
         private string _targetStateName = "Skill/Entry";
         private string _intParameterName = "Skill";
+
+        private void OnEnable()
+        {
+            var json = EditorPrefs.GetString(CardDataDrawer.SKILL_ANIMATION_GUID_MAP_KEY, string.Empty);
+            if (string.IsNullOrEmpty(json)) return;
+
+            var data = JsonConvert.DeserializeObject<CardDataDrawerData>(json);
+
+            string path = AssetDatabase.GUIDToAssetPath(data.AnimationControllerGUID);
+            _animatorController = AssetDatabase.LoadAssetAtPath<AnimatorController>(path);
+        }
 
         private void OnGUI()
         {
@@ -227,9 +243,28 @@ namespace Cryptos.Editor.Ingame
                 }
             }
 
+            CardDataDrawerData data =
+                new CardDataDrawerData(guidMap,
+                AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(_animatorController)));
+
             // JSONにシリアライズしてEditorPrefsに保存
-            var json = JsonConvert.SerializeObject(guidMap);
+            var json = JsonConvert.SerializeObject(data);
             EditorPrefs.SetString(CardDataDrawer.SKILL_ANIMATION_GUID_MAP_KEY, json);
         }
+    }
+
+    [Serializable]
+    public struct CardDataDrawerData
+    {
+        public CardDataDrawerData(Dictionary<int, string> data, string animationControllerGUID)
+        {
+            _data = data;
+            _animationControllerGUID = animationControllerGUID;
+        }
+        public Dictionary<int, string> Data => _data;
+        public string AnimationControllerGUID => _animationControllerGUID;
+
+        private Dictionary<int, string> _data;
+        private string _animationControllerGUID;
     }
 }
