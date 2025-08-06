@@ -62,6 +62,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Tooltip("アイコン画像")]
         private Texture2D _cardIcon = default;
 
+        [Header("カードの詳細設定")]
         [SerializeField, Tooltip("カードの難易度"), Min(1)]
         private int _cardDifficulty = 1;
 
@@ -73,6 +74,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Tooltip("カード優先度")]
         private int _priority = 0;
 
+        [Header("演出設定")]
         [SerializeField, Tooltip("アニメーションのID")]
         private AnimationClip _animationClip = default;
     }
