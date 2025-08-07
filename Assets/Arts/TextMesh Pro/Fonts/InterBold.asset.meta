@@ -1,9 +1,8 @@
 fileFormatVersion: 2
-guid: fe393ace9b354375a9cb14cdbbc28be4
-ShaderImporter:
+guid: 4652ec2f3a1009845ac180627188f64a
+NativeFormatImporter:
   externalObjects: {}
-  defaultTextures: []
-  nonModifiableTextures: []
+  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -12,5 +11,5 @@ AssetOrigin:
   productId: 213198
   packageName: Unity Terrain - HDRP Demo Scene
   packageVersion: 1.0.3
-  assetPath: Assets/Arts/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+  assetPath: Assets/Arts/TextMesh Pro/Fonts/InterBold.asset
   uploadId: 727864
