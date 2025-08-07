@@ -35,7 +35,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// このカードの静的なデータ（CardData ScriptableObject）を取得します。
         /// </summary>
         public ICardContent[] Contents => _data.Contents;
-        public AnimationClip AnimationClip => _data.AnimationClip;
+        public int AnimationClipID => _data.AnimationClipID;
 
         /// <summary>
         /// このカードに関連付けられたワードタイピングのエンティティを取得します。

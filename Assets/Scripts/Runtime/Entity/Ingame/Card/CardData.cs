@@ -49,7 +49,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// <summary>
         /// カードに関連付けられたアニメーションのIDを取得します。
         /// </summary>
-        public AnimationClip AnimationClip => _animationClip;
+        public int AnimationClipID => _animationClipID;
 
 
         [Header("基本情報")]
@@ -76,6 +76,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         [Header("演出設定")]
         [SerializeField, Tooltip("アニメーションのID")]
-        private AnimationClip _animationClip = default;
+        private int _animationClipID = default;
     }
 }
