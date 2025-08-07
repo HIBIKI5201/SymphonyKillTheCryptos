@@ -15,43 +15,21 @@ namespace Cryptos.Editor.Ingame
     {
         // EditorPrefsに保存するためのキー
         public const string SKILL_ANIMATION_GUID_MAP_KEY = "skill-animation-guid-map";
+        private const string VALIABLE_ANIMATION_CLIP_ID = "_animationClipID";
 
         // 解析結果を保持する辞書
         private Dictionary<int, AnimationClip> _skillAnimationClips = new Dictionary<int, AnimationClip>();
+        private KeyValuePair<int, AnimationClip>[] _skillAnimationClipsArray;
 
-        public void OnEnable()
+        private string[] _animationClipOptions;
+        private SerializedProperty _animationClipProperty;
+
+        private void OnEnable()
         {
             LoadData();
-        }
 
-
-        public override void OnInspectorGUI()
-        {
-            // デフォルトのインスペクターを表示
-            DrawDefaultInspector();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Animation Skill Viewer", EditorStyles.boldLabel);
-
-            // アニメーション解析ウィンドウを開くボタン
-            if (GUILayout.Button("Open Animator Analyzer"))
-            {
-                CardDataWindow window = CardDataWindow.ShowWindow();
-                window.OnDataAnalyzed += LoadData;
-            }
-
-            // 解析データが存在する場合、読み取り専用で表示
-            if (_skillAnimationClips.Count > 0)
-            {
-                foreach (var item in _skillAnimationClips)
-                {
-                    EditorGUILayout.LabelField(item.ToString());
-                }
-            }
-            else
-            {
-                EditorGUILayout.HelpBox("No animation data found. Open the analyzer to generate it.", MessageType.Info);
-            }
+            // プロパティ取得
+            _animationClipProperty = serializedObject.FindProperty(VALIABLE_ANIMATION_CLIP_ID);
         }
 
         public void LoadData()
@@ -81,8 +59,71 @@ namespace Cryptos.Editor.Ingame
                     }
                 }
             }
+            _skillAnimationClipsArray = _skillAnimationClips.ToArray();
+
+            // プルダウンに表示する選択肢
+            _animationClipOptions = new string[_skillAnimationClips.Count];
+            for (int i = 0; i < _skillAnimationClips.Count; i++)
+            {
+                _animationClipOptions[i] = _skillAnimationClipsArray[i].Key.ToString();
+            }
+
         }
 
+
+        public override void OnInspectorGUI()
+        {
+            // 対象のデータ
+            serializedObject.Update();
+
+            // デフォルトのインスペクタを描画（_animationClipを除く）
+            DrawPropertiesExcluding(serializedObject, VALIABLE_ANIMATION_CLIP_ID);
+
+            if (_animationClipProperty != null)
+            {
+                // _animationClip用のカスタム描画（プルダウン）
+                EditorGUILayout.LabelField("演出設定", EditorStyles.boldLabel);
+
+                int currentValue = _animationClipProperty.intValue;
+                int selectedIndex = Array.FindIndex(_skillAnimationClipsArray, x => x.Key == currentValue);
+
+                selectedIndex = EditorGUILayout.Popup("アニメーションID", selectedIndex, _animationClipOptions);
+
+                _animationClipProperty.intValue = _skillAnimationClipsArray[selectedIndex].Key;
+
+                // 変更を適用
+                serializedObject.ApplyModifiedProperties();
+            }
+
+
+            DrawAnalyzer();
+        }
+
+        private void DrawAnalyzer()
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Animation Skill Viewer", EditorStyles.boldLabel);
+
+            // アニメーション解析ウィンドウを開くボタン
+            if (GUILayout.Button("Open Animator Analyzer"))
+            {
+                CardDataWindow window = CardDataWindow.ShowWindow();
+                window.OnDataAnalyzed += LoadData;
+            }
+
+            // 解析データが存在する場合、読み取り専用で表示
+            if (_skillAnimationClips.Count > 0)
+            {
+                foreach (var item in _skillAnimationClips)
+                {
+                    EditorGUILayout.LabelField(item.ToString());
+                }
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("No animation data found. Open the analyzer to generate it.", MessageType.Info);
+            }
+        }
     }
 
     public class CardDataWindow : EditorWindow
