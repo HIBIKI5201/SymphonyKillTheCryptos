@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -13,12 +12,11 @@ namespace Cryptos.Editor.Ingame
     [CustomEditor(typeof(CardData))]
     public class CardDataDrawer : UnityEditor.Editor
     {
-        // EditorPrefsに保存するためのキー
-        public const string SKILL_ANIMATION_GUID_MAP_KEY = "skill-animation-guid-map";
-        private const string VALIABLE_ANIMATION_CLIP_ID = "_animationClipID";
+        public const string SKILL_ANIMATION_GUID_MAP_KEY = "skill-animation-guid-map"; // EditorUserSettingsに保存するためのキー
+        private const string VALIABLE_ANIMATION_CLIP_ID = "_animationClipID"; //アニメーションIDの変数名
 
         // 解析結果を保持する辞書
-        private Dictionary<int, AnimationClip> _skillAnimationClips = new Dictionary<int, AnimationClip>();
+        private Dictionary<int, AnimationClip> _skillAnimationClips = new();
         private KeyValuePair<int, AnimationClip>[] _skillAnimationClipsArray;
 
         private string[] _animationClipOptions;
@@ -32,17 +30,69 @@ namespace Cryptos.Editor.Ingame
             _animationClipProperty = serializedObject.FindProperty(VALIABLE_ANIMATION_CLIP_ID);
         }
 
-        public void LoadData()
+        public override void OnInspectorGUI()
         {
-            // EditorPrefsからGUIDのマップを読み込み、AnimationClipを復元する
-            var json = EditorPrefs.GetString(SKILL_ANIMATION_GUID_MAP_KEY, string.Empty);
+            // 対象のデータ
+            serializedObject.Update();
+
+            // デフォルトのインスペクタを描画（_animationClipを除く）
+            DrawPropertiesExcluding(serializedObject, VALIABLE_ANIMATION_CLIP_ID);
+
+            DrawAnimationClipID();
+            // 変更を適用
+            serializedObject.ApplyModifiedProperties();
+
+            DrawAnalyzer();
+        }
+
+        private void DrawAnimationClipID()
+        {
+            if (_animationClipProperty == null) return;
+
+            // _animationClip用のカスタム描画（プルダウン）
+            EditorGUILayout.LabelField("演出設定", EditorStyles.boldLabel);
+
+            if (_skillAnimationClipsArray == null || _skillAnimationClipsArray.Length == 0)
+            {
+                EditorGUILayout.HelpBox("No animation clips found. Please analyze the animator first.", MessageType.Warning);
+                return;
+            }
+
+            int currentValue = _animationClipProperty.intValue;
+            int selectedIndex = Array.FindIndex(_skillAnimationClipsArray, x => x.Key == currentValue);
+
+            selectedIndex = EditorGUILayout.Popup("アニメーションID", selectedIndex, _animationClipOptions);
+
+            _animationClipProperty.intValue = _skillAnimationClipsArray[selectedIndex].Key;
+        }
+
+        private void DrawAnalyzer()
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Animation Skill Viewer", EditorStyles.boldLabel);
+
+            // アニメーション解析ウィンドウを開くボタン
+            if (GUILayout.Button("Open Animator Analyzer"))
+            {
+                CardDataWindow window = CardDataWindow.ShowWindow();
+                window.OnDataAnalyzed += LoadData;
+            }
+        }
+
+        /// <summary>
+        ///     EditorUserSettingsからアニメーションデータを読み込み、アニメーションの辞書を初期化します。
+        /// </summary>
+        private void LoadData()
+        {
+            // EditorUserSettingsからGUIDのマップを読み込み、AnimationClipを復元する
+            var json = EditorUserSettings.GetConfigValue(SKILL_ANIMATION_GUID_MAP_KEY) ?? string.Empty;
             if (string.IsNullOrEmpty(json)) return;
 
             var data = JsonConvert.DeserializeObject<CardDataDrawerData>(json);
 
             if (data.Data == null || data.Data.Count == 0)
             {
-                Debug.LogWarning("No animation data found in EditorPrefs.");
+                Debug.LogWarning("No animation data found in EditorUserSettings.");
                 return;
             }
 
@@ -61,67 +111,11 @@ namespace Cryptos.Editor.Ingame
             }
             _skillAnimationClipsArray = _skillAnimationClips.ToArray();
 
-            // プルダウンに表示する選択肢
+            // プルダウンに表示する選択肢を生成
             _animationClipOptions = new string[_skillAnimationClips.Count];
             for (int i = 0; i < _skillAnimationClips.Count; i++)
             {
-                _animationClipOptions[i] = _skillAnimationClipsArray[i].Key.ToString();
-            }
-
-        }
-
-
-        public override void OnInspectorGUI()
-        {
-            // 対象のデータ
-            serializedObject.Update();
-
-            // デフォルトのインスペクタを描画（_animationClipを除く）
-            DrawPropertiesExcluding(serializedObject, VALIABLE_ANIMATION_CLIP_ID);
-
-            if (_animationClipProperty != null)
-            {
-                // _animationClip用のカスタム描画（プルダウン）
-                EditorGUILayout.LabelField("演出設定", EditorStyles.boldLabel);
-
-                int currentValue = _animationClipProperty.intValue;
-                int selectedIndex = Array.FindIndex(_skillAnimationClipsArray, x => x.Key == currentValue);
-
-                selectedIndex = EditorGUILayout.Popup("アニメーションID", selectedIndex, _animationClipOptions);
-
-                _animationClipProperty.intValue = _skillAnimationClipsArray[selectedIndex].Key;
-
-                // 変更を適用
-                serializedObject.ApplyModifiedProperties();
-            }
-
-
-            DrawAnalyzer();
-        }
-
-        private void DrawAnalyzer()
-        {
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Animation Skill Viewer", EditorStyles.boldLabel);
-
-            // アニメーション解析ウィンドウを開くボタン
-            if (GUILayout.Button("Open Animator Analyzer"))
-            {
-                CardDataWindow window = CardDataWindow.ShowWindow();
-                window.OnDataAnalyzed += LoadData;
-            }
-
-            // 解析データが存在する場合、読み取り専用で表示
-            if (_skillAnimationClips.Count > 0)
-            {
-                foreach (var item in _skillAnimationClips)
-                {
-                    EditorGUILayout.LabelField(item.ToString());
-                }
-            }
-            else
-            {
-                EditorGUILayout.HelpBox("No animation data found. Open the analyzer to generate it.", MessageType.Info);
+                _animationClipOptions[i] = _skillAnimationClipsArray[i].Value.ToString();
             }
         }
     }
@@ -143,15 +137,24 @@ namespace Cryptos.Editor.Ingame
         private string _targetStateName = "Skill/Entry";
         private string _intParameterName = "Skill";
 
+        private IEnumerable<KeyValuePair<int, AnimationClip>> _skillAnimationClips;
         private void OnEnable()
         {
-            var json = EditorPrefs.GetString(CardDataDrawer.SKILL_ANIMATION_GUID_MAP_KEY, string.Empty);
+            var json = EditorUserSettings.GetConfigValue(CardDataDrawer.SKILL_ANIMATION_GUID_MAP_KEY) ?? string.Empty;
             if (string.IsNullOrEmpty(json)) return;
 
             var data = JsonConvert.DeserializeObject<CardDataDrawerData>(json);
 
             string path = AssetDatabase.GUIDToAssetPath(data.AnimationControllerGUID);
             _animatorController = AssetDatabase.LoadAssetAtPath<AnimatorController>(path);
+
+            _skillAnimationClips = data.Data
+                .Select(kvp =>
+                {
+                    string assetPath = AssetDatabase.GUIDToAssetPath(kvp.Value);
+                    AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(assetPath);
+                    return new KeyValuePair<int, AnimationClip>(kvp.Key, clip);
+                });
         }
 
         private void OnGUI()
@@ -160,7 +163,7 @@ namespace Cryptos.Editor.Ingame
             _targetStateName = EditorGUILayout.TextField("Target State Name", _targetStateName);
             _intParameterName = EditorGUILayout.TextField("Int Parameter Name", _intParameterName);
 
-            if (GUILayout.Button("Analyze and Save to EditorPrefs"))
+            if (GUILayout.Button("Analyze and Save to EditorUserSettings"))
             {
                 Dictionary<int, AnimationClip> animationDict = AnalyzeAnimator();
                 if (animationDict == null) return;
@@ -171,6 +174,19 @@ namespace Cryptos.Editor.Ingame
 
                 OnDataAnalyzed?.Invoke();
                 this.Close();
+            }
+
+            // 解析データが存在する場合、読み取り専用で表示
+            if (_skillAnimationClips == null || _skillAnimationClips.Count() > 0)
+            {
+                foreach (var item in _skillAnimationClips)
+                {
+                    EditorGUILayout.LabelField(item.ToString());
+                }
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("No animation data found. Open the analyzer to generate it.", MessageType.Info);
             }
         }
 
@@ -284,13 +300,11 @@ namespace Cryptos.Editor.Ingame
                 }
             }
 
-            CardDataDrawerData data =
-                new CardDataDrawerData(guidMap,
-                AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(_animatorController)));
-
-            // JSONにシリアライズしてEditorPrefsに保存
+            // JSONにシリアライズしてEditorUserSettingsに保存
+            string controllerGUID = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(_animatorController));
+            CardDataDrawerData data = new(guidMap, controllerGUID);
             var json = JsonConvert.SerializeObject(data);
-            EditorPrefs.SetString(CardDataDrawer.SKILL_ANIMATION_GUID_MAP_KEY, json);
+            EditorUserSettings.SetConfigValue(CardDataDrawer.SKILL_ANIMATION_GUID_MAP_KEY, json);
         }
     }
 
