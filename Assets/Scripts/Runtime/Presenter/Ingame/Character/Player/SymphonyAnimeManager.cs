@@ -1,4 +1,3 @@
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Character.Player
