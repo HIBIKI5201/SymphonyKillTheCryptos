@@ -13,11 +13,16 @@ namespace Cryptos.Runtime.Ingame.System
     {
         private readonly string[] scenes = { SceneListEnum.Stage.ToString() };
 
+        [SerializeField]
+        private int _frameRate = 30;
+
         Task IInitializeAsync.InitializeTask { get; set; }
 
         async Task IInitializeAsync.InitializeAsync()
         {
             _ingameStartSequence.GameInitialize();
+
+            Application.targetFrameRate = _frameRate;
 
             await MultiSceneLoader.LoadScenes(scenes);
             if (SceneLoader.GetExistScene(SceneListEnum.Stage.ToString(), out var stageScene))
