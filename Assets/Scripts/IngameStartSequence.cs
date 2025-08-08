@@ -65,6 +65,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             TestCardSpawn();
             TestEnemySpawn();
+
+            SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
 
         private void TestCardSpawn()
