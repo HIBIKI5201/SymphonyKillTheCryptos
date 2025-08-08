@@ -20,12 +20,13 @@ namespace Cryptos.Runtime.Framework
 
         private void Awake()
         {
-            _input = GetComponent<PlayerInput>();
-            _input.CheckComponentNull();
-
-            if (_input)
+            if (TryGetComponent(out _input))
             {
                 _input.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
+            }
+            else
+            {
+                Debug.LogError("PlayerInput component is required on InputBuffer.");
             }
         }
 
