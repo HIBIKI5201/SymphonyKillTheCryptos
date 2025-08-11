@@ -5,7 +5,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// <summary>
     ///     プレイヤーを表すインターフェース
     /// </summary>
-    public interface IPlayer : IGameObject
+    public interface ICharacter : IAttackable, IHitable
     {
     }
 }
