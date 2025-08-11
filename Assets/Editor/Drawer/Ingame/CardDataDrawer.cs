@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -14,6 +15,14 @@ namespace Cryptos.Editor.Ingame
     {
         public const string SKILL_ANIMATION_GUID_MAP_KEY = "skill-animation-guid-map"; // EditorUserSettingsに保存するためのキー
         private const string VALIABLE_ANIMATION_CLIP_ID = "_animationClipID"; //アニメーションIDの変数名
+
+        private static readonly GUIStyle compactWordWrappedLabel = new GUIStyle(EditorStyles.label)
+        {
+            wordWrap = true,
+            richText = true,
+            fontSize = 11,
+            padding = new RectOffset(0, 0, 0, 0) // 上下左右の余白をなくす
+        };
 
         // 解析結果を保持する辞書
         private Dictionary<int, AnimationClip> _skillAnimationClips = new();
@@ -63,7 +72,24 @@ namespace Cryptos.Editor.Ingame
 
             selectedIndex = EditorGUILayout.Popup("アニメーションID", selectedIndex, _animationClipOptions);
 
+            if (selectedIndex < 1 || _skillAnimationClipsArray.Length <= selectedIndex)
+            {
+                // 現在の値が見つからない場合、最初の要素を選択
+                selectedIndex = 0;
+            }
+
             _animationClipProperty.intValue = _skillAnimationClipsArray[selectedIndex].Key;
+
+            //選択中のアニメーションのイベントを表示
+            AnimationClip selectedClip = _skillAnimationClipsArray[selectedIndex].Value;
+
+            StringBuilder stringBuilder = new StringBuilder("--- Event ---\n");
+            foreach (var evt in selectedClip.events)
+            {
+                stringBuilder.AppendLine($"index {evt.intParameter} of {evt.functionName} at {evt.time}\n");
+            }
+
+            EditorGUILayout.LabelField(stringBuilder.ToString(), compactWordWrappedLabel);
         }
 
         private void DrawAnalyzer()
