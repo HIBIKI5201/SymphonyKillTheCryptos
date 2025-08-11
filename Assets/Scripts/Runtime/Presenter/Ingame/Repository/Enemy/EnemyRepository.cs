@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
 {
     public class EnemyRepository
     {
-        public IReadOnlyList<IHitable> AllEnemies => _enemies;
+        public IReadOnlyList<ICharacter> AllEnemies => _enemies;
 
         public CharacterEntity<EnemyData> CreateEnemy(EnemyData data)
         {
@@ -30,7 +30,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
             return enemy;
         }
 
-        private List<IHitable> _enemies = new();
+        private List<ICharacter> _enemies = new();
         private EnemyGenerator _enemyGenerator = new();
 
         private void EnemyLog(CharacterEntity<EnemyData> enemy)
