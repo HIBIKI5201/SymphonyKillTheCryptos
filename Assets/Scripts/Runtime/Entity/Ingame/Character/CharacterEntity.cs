@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     [Serializable]
-    public sealed class CharacterEntity<T> : IAttackable, IHitable
+    public sealed class CharacterEntity<T> : ICharacter
         where T : class, IAttackableData, IHitableData
     {
         public CharacterEntity(T data)
