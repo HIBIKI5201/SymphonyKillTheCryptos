@@ -6,8 +6,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     public class CardContentHeal : ICardContent
     {
-        [SerializeField]
-        private float _healAmount;
+        [SerializeField, Min(1)]
+        private float _healAmount = 10;
 
         public void Execute(IAttackable player, params IHitable[] targets)
         {

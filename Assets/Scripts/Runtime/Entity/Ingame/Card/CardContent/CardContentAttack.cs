@@ -6,8 +6,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     public class CardContentAttack : ICardContent
     {
-        [SerializeField]
-        private float _damageScale;
+        [SerializeField, Min(0)]
+        private float _damageScale = 1;
 
         public void Execute(IAttackable player, params IHitable[] targets)
         {
