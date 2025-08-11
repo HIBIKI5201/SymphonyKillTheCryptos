@@ -26,9 +26,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         }
 
         /// <summary> プレイヤーのIAttackableインターフェースを取得するためのイベント </summary>
-        public event Func<IAttackable> GetPlayer;
+        public event Func<ICharacter> GetPlayer;
         /// <summary> 攻撃対象のIHitableインターフェース配列を取得するためのイベント </summary>
-        public event Func<IHitable[]> GetTargets;
+        public event Func<ICharacter[]> GetTargets;
         /// <summary> カードの全てのワード入力が完了したときに発生するイベント </summary>
         public event Action<CardEntity> OnCardCompleted;
         /// <summary> カードがデッキに追加されたときに発生するイベント </summary>
@@ -139,7 +139,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             _cardWordCandidates.Remove(cardEntity);
 
             // カードの効果を実行
-            ExecuteCardEffect(cardEntity.Contents, GetPlayer?.Invoke(), GetTargets?.Invoke());
+            ExecuteCardEffect(cardEntity.GetContents(0), GetPlayer?.Invoke(), GetTargets?.Invoke());
 
             // 残りのカードのワードエンティティのインデックスをリセット
             foreach (CardEntity card in _cardDeckEntity.DeckCardList)
