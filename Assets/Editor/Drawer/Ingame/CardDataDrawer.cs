@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -14,15 +13,11 @@ namespace Cryptos.Editor.Ingame
     public class CardDataDrawer : UnityEditor.Editor
     {
         public const string SKILL_ANIMATION_GUID_MAP_KEY = "skill-animation-guid-map"; // EditorUserSettingsに保存するためのキー
-        private const string VALIABLE_ANIMATION_CLIP_ID = "_animationClipID"; //アニメーションIDの変数名
 
-        private static readonly GUIStyle compactWordWrappedLabel = new GUIStyle(EditorStyles.label)
-        {
-            wordWrap = true,
-            richText = true,
-            fontSize = 11,
-            padding = new RectOffset(0, 0, 0, 0) // 上下左右の余白をなくす
-        };
+        private const string VALIABLE_ANIMATION_CLIP_ID = "_animationClipID"; //アニメーションIDの変数名
+        private const string VALIABLE_CONTENTS_ARRAY = "_contentsArray";
+
+        private const string SKILL_EVENT_NAME = "Skill"; // スキルイベントの名前
 
         // 解析結果を保持する辞書
         private Dictionary<int, AnimationClip> _skillAnimationClips = new();
@@ -30,6 +25,7 @@ namespace Cryptos.Editor.Ingame
 
         private string[] _animationClipOptions;
         private SerializedProperty _animationClipProperty;
+        private SerializedProperty _contentsArrayProperty;
 
         private void OnEnable()
         {
@@ -37,6 +33,7 @@ namespace Cryptos.Editor.Ingame
 
             // プロパティ取得
             _animationClipProperty = serializedObject.FindProperty(VALIABLE_ANIMATION_CLIP_ID);
+            _contentsArrayProperty = serializedObject.FindProperty(VALIABLE_CONTENTS_ARRAY);
         }
 
         public override void OnInspectorGUI()
@@ -61,6 +58,7 @@ namespace Cryptos.Editor.Ingame
             // _animationClip用のカスタム描画（プルダウン）
             EditorGUILayout.LabelField("演出設定", EditorStyles.boldLabel);
 
+            #region クリップインデックスのパラメータ
             if (_skillAnimationClipsArray == null || _skillAnimationClipsArray.Length == 0)
             {
                 EditorGUILayout.HelpBox("No animation clips found. Please analyze the animator first.", MessageType.Warning);
@@ -80,16 +78,38 @@ namespace Cryptos.Editor.Ingame
 
             _animationClipProperty.intValue = _skillAnimationClipsArray[selectedIndex].Key;
 
+            #endregion
+
+            #region アニメーションクリップのイベントプレビュー
+            int length = _contentsArrayProperty.arraySize;
+
             //選択中のアニメーションのイベントを表示
             AnimationClip selectedClip = _skillAnimationClipsArray[selectedIndex].Value;
+            AnimationEvent[] events = selectedClip.events;
+            Span<int> indexs = stackalloc int[events.Length];
 
-            StringBuilder stringBuilder = new StringBuilder("--- Event ---\n");
-            foreach (var evt in selectedClip.events)
+            EditorGUILayout.LabelField($"Event of {selectedClip.name}", EditorStyles.boldLabel);
+
+            for (int i = 0; i < events.Length; i++)
             {
-                stringBuilder.AppendLine($"index {evt.intParameter} of {evt.functionName} at {evt.time}\n");
+                AnimationEvent evt = events[i];
+                if (evt.functionName != SKILL_EVENT_NAME)
+                    continue;
+
+                indexs[i] = evt.intParameter;
+                EditorGUILayout.LabelField($"index {evt.intParameter} of {evt.functionName} at {evt.time}");
             }
 
-            EditorGUILayout.LabelField(stringBuilder.ToString(), compactWordWrappedLabel);
+            for (int i = 0; i < indexs.Length; i++)
+            {
+                int index = indexs[i];
+                if (index < 0 || index >= length)
+                {
+                    EditorGUILayout.HelpBox($"Invalid index {index} for contents array.", MessageType.Error);
+                    continue;
+                }
+            }
+#endregion
         }
 
         private void DrawAnalyzer()
