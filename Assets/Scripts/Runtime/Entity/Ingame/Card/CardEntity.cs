@@ -1,6 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Word;
 using System;
-using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
@@ -32,15 +31,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         }
 
         /// <summary>
-        /// このカードの静的なデータ（CardData ScriptableObject）を取得します。
-        /// </summary>
-        public ICardContent[] Contents => _data.Contents;
-        public int AnimationClipID => _data.AnimationClipID;
-
-        /// <summary>
         /// このカードに関連付けられたワードタイピングのエンティティを取得します。
         /// </summary>
         public WordEntity WordEntity => _word;
+
+        public int AnimationClipID => _data.AnimationClipID;
+        public ICardContent[] GetContents(int index) => _data.ContentsArray[index].Contents;
 
         private readonly CardData _data;
         private readonly WordEntity _word;

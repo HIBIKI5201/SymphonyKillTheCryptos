@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Framework;
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
@@ -39,7 +40,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// <summary>
         /// このカードが持つ効果の配列を取得します。
         /// </summary>
-        public ICardContent[] Contents => _contentsArray;
+        public CardContents[] ContentsArray => _contentsArray;
 
         /// <summary>
         /// カードの優先度を取得します。
@@ -69,13 +70,24 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Tooltip("ワードの範囲")]
         private Vector2Int _wordRange = new Vector2Int(0, 1);
 
-        [SerializeReference, SubclassSelector]
-        private ICardContent[] _contentsArray = default;
+        [SerializeField]
+        private CardContents[] _contentsArray = default;
         [SerializeField, Tooltip("カード優先度")]
         private int _priority = 0;
 
         [Header("演出設定")]
         [SerializeField, Tooltip("アニメーションのID")]
         private int _animationClipID = default;
+
+        [Serializable]
+        public class CardContents
+        {
+            public ICardContent this[int index] => _content[index];
+
+            public ICardContent[] Contents => _content;
+
+            [SerializeReference, SubclassSelector]
+            private ICardContent[] _content;
+        }
     }
 }
