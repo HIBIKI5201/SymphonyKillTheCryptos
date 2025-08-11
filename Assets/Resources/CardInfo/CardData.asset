@@ -17,9 +17,15 @@ MonoBehaviour:
   _cardIcon: {fileID: 0}
   _cardDifficulty: 1
   _wordRange: {x: 2, y: 4}
-  _contentsArray: []
+  _contentsArray:
+  - _content:
+    - rid: 713893369316900961
   _priority: 0
-  _animationClip: {fileID: 7400000, guid: 8a88a803a61f66a46a0d7804f1181a86, type: 2}
+  _animationClipID: 0
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 713893369316900961
+      type: {class: CardContentAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.Ingame.Entity}
+      data:
+        _damageScale: 0
