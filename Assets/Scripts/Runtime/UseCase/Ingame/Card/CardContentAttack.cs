@@ -10,12 +10,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// </summary>
     public class CardContentAttack : ICardContent
     {
-        public CardContentAttack()
-        {
-            _combatProcessor = new CombatProcessor()
-                .AddTo(new CriticalCalcHandler());
-        }
-
         /// <summary>
         /// プレイヤーからターゲットに対して攻撃を実行します。
         /// ダメージ計算はCombatProcessorを介して行われます。
@@ -30,7 +24,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
             foreach (var target in targets)
             {
-                CombatContext context = _combatProcessor.Execute(player, target);
+                CombatContext context = CombatProcessor.Execute(player, target, Handlers);
 
                 target.AddHealthDamage(context);
 
@@ -43,6 +37,16 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Min(0), Tooltip("ダメージの倍率。")]
         private float _damageScale = 1;
 
-        private readonly CombatProcessor _combatProcessor;
+        private ICombatHandler[] Handlers
+        {
+            get
+            {
+                return new ICombatHandler[]
+                {
+                    new CriticalCalcHandler(),
+                    new MultiplyHandler(_damageScale)
+                };
+            }
+        }
     }
 }
