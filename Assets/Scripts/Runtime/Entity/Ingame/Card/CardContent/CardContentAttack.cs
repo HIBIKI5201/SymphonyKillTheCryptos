@@ -9,11 +9,11 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Min(0)]
         private float _damageScale = 1;
 
-        public void Execute(IAttackable player, params IHitable[] targets)
+        public void Execute(ICharacter[] players, ICharacter[] targets)
         {
-            StringBuilder sb = new($"CardContentAttack: Player <b>{player}</b>\n");
+            StringBuilder sb = new($"CardContentAttack: Player <b>{players}</b>\n");
 
-            float power = player.GetAttackPower() * _damageScale;
+            float power = players[0].GetAttackPower() * _damageScale;
             sb.Append($"attacks targets with {power} damage.");
 
             foreach (var t in targets)
