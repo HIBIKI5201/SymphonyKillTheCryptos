@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.CombatSystem
     /// クリティカルヒットの計算を行う戦闘ハンドラーです。
     /// 100%を超えるクリティカル確率にも対応します。
     /// </summary>
-    internal class CriticalCalcHandler : ICombatHandler
+    public class CriticalCalcHandler : ICombatHandler
     {
         /// <summary>
         /// CombatContextを受け取り、クリティカルヒット計算を適用した新しいContextを返します。
