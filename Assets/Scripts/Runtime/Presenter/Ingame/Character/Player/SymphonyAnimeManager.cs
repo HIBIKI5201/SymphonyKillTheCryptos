@@ -1,10 +1,14 @@
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Character.Player
 {
-    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Animator), typeof(SkillEndReceiver))]
     public class SymphonyAnimeManager : MonoBehaviour
     {
+        public event Action<int> OnSkillTriggered;
+        public event Action OnSkillEnded;
+
         public void SetDirX(float value) => _animator.SetFloat(_dirXHash, value);
         public void SetDirY(float value) => _animator.SetFloat(_dirYHash, value);
         public void SetVelocity(float value) => _animator.SetFloat(_velocityHash, value);
@@ -33,11 +37,37 @@ namespace Cryptos.Runtime.Presenter.Character.Player
                 Debug.LogError("Animator component is not found on the GameObject.");
                 return;
             }
+
+            if (TryGetComponent(out SkillEndReceiver skillEndReceiver))
+            {
+                skillEndReceiver.OnSkillEnd += EndSkill;
+
+                destroyCancellationToken.Register(() =>
+                {
+                    if (skillEndReceiver != null)
+                    {
+                        Debug.Log("Unsubscribing from OnSkillEnd event in SymphonyAnimeManager.");
+                        skillEndReceiver.OnSkillEnd -= EndSkill;
+                    }
+                });
+            }
+            else
+            {
+                Debug.LogError("SkillEndReceiver component is not found on the GameObject.");
+                return;
+            }
         }
 
-        private void Skill(int number)
+        private void TriggeredSkill(int number)
         {
             Debug.Log($"Skill animation event{number} triggered");
+            OnSkillTriggered?.Invoke(number);
+        }
+
+        private void EndSkill()
+        {
+            Debug.Log("Skill animation ended");
+            OnSkillEnded?.Invoke();
         }
     }
 }
