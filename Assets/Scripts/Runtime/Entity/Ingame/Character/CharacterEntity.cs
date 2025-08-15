@@ -28,6 +28,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             remove => _healthEntity.OnDead -= value;
         }
 
+        public IAttackableData AttackableData => _entityData;
+        public IHitableData HitableData => _entityData;
+
         public float GetAttackPower()
         {
             float power = _entityData.AttackPower;
@@ -41,7 +44,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             return power;
         }
 
-        public void AddHealthDamage(float damage) => _healthEntity.AddHealthDamage(damage);
+        public void AddHealthDamage(CombatContext damage) => _healthEntity.AddHealthDamage(damage.Damage);
         public void AddHealthHeal(float amount) => _healthEntity.AddHealthHeal(amount);
         public void Dead() => _healthEntity.Dead();
 
