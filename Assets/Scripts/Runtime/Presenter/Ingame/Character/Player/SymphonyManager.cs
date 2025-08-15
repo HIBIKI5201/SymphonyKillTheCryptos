@@ -11,16 +11,24 @@ namespace Cryptos.Runtime.Presenter.Character.Player
     {
         public void Init(CardUseCase cardUseCase)
         {
-            cardUseCase.OnCardCompleted += HandleCardComplete;
-        }
+            _cardUseCase = cardUseCase;
+            _cardUseCase.OnCardCompleted += HandleCardComplete;
 
-        [SerializeField]
-        private SymphonySkillAnimationDataBase _skillAnimationDataBase;
+            destroyCancellationToken.Register(() =>
+            {
+                if (_cardUseCase != null)
+                {
+                    Debug.Log("Unsubscribing from OnCardCompleted event in SymphonyManager.");
+                    _cardUseCase.OnCardCompleted -= HandleCardComplete;
+                }
+            });
+        }
 
         [SerializeField]
         private ParticleSystem _muzzleFlash;
 
         private SymphonyAnimeManager _animeManager;
+        private CardUseCase _cardUseCase;
 
         private void Awake()
         {
