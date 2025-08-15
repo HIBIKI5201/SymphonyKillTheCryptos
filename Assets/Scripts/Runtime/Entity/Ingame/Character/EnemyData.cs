@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     [CreateAssetMenu(fileName = nameof(EnemyData), menuName = CryptosPathConstant.ASSET_PATH + nameof(EnemyData), order = 1)]
-    public class EnemyData : ScriptableObject, IAttackableData, IHitableData
+    public class EnemyData : ScriptableObject, IAttackableData, IHittableData
     {
         public float AttackPower => _attackPower;
 

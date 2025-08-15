@@ -10,7 +10,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     [Serializable]
     public class HealthEntity
     {
-        public HealthEntity(IHitableData data)
+        public HealthEntity(IHittableData data)
         {
             _data = data;
             _health = data.MaxHealth;
@@ -54,7 +54,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             OnDead?.Invoke();
         }
 
-        private readonly IHitableData _data;
+        private readonly IHittableData _data;
         [SerializeField, ReadOnly] private float _health;
     }
 }

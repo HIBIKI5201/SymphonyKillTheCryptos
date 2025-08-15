@@ -6,7 +6,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     [Serializable]
     public sealed class CharacterEntity<T> : ICharacter
-        where T : class, IAttackableData, IHitableData
+        where T : class, IAttackableData, IHittableData
     {
         public CharacterEntity(T data)
         {
@@ -29,7 +29,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         }
 
         public IAttackableData AttackableData => _entityData;
-        public IHitableData HitableData => _entityData;
+        public IHittableData HitableData => _entityData;
 
         public float GetAttackPower()
         {

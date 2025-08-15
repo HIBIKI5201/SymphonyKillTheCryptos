@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     ///     Symphonyのデータを保持するクラス。
     /// </summary>
     [CreateAssetMenu(fileName = nameof(SymphonyData), menuName = CryptosPathConstant.ASSET_PATH + nameof(SymphonyData), order = 1)]
-    public class SymphonyData : ScriptableObject, IAttackableData, IHitableData
+    public class SymphonyData : ScriptableObject, IAttackableData, IHittableData
     {
         public float AttackPower => _attackPower;
 

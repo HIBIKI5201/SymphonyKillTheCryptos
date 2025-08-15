@@ -3,9 +3,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// <summary>
     ///     攻撃を受けられるオブジェクトのインターフェース
     /// </summary>
-    public interface IHitable
+    public interface IHittable
     {
-        public IHitableData HitableData { get; }
+        public IHittableData HitableData { get; }
 
         /// <summary>
         ///     ダメージを受ける

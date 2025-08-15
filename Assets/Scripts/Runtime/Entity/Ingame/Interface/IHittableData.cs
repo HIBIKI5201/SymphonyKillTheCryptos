@@ -1,6 +1,6 @@
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
-    public interface IHitableData
+    public interface IHittableData
     {
         public float MaxHealth { get; }
 
