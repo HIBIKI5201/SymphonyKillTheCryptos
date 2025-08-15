@@ -73,8 +73,11 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// <param name="contents">効果を実行するContents</param>
         /// <param name="player">効果の主体となるプレイヤー</param>
         /// <param name="targets">効果の対象となるターゲット</param>
-        public void ExecuteCardEffect(ICardContent[] contents, IAttackable player, params IHitable[] targets)
+        public void ExecuteCardEffect(ICardContent[] contents)
         {
+            IAttackable player = GetPlayer?.Invoke();
+            IHitable[] targets = GetTargets?.Invoke() ?? Array.Empty<IHitable>();
+
             if (player == null)
             {
                 Debug.LogError("Player is null");
@@ -137,9 +140,6 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             _wordManager.RemoveWord(cardEntity.WordEntity.CurrentWord);
             _cardDeckEntity.RemoveCardFromDeck(cardEntity);
             _cardWordCandidates.Remove(cardEntity);
-
-            // カードの効果を実行
-            ExecuteCardEffect(cardEntity.GetContents(0), GetPlayer?.Invoke(), GetTargets?.Invoke());
 
             // 残りのカードのワードエンティティのインデックスをリセット
             foreach (CardEntity card in _cardDeckEntity.DeckCardList)
