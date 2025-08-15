@@ -18,7 +18,6 @@ namespace Cryptos.Runtime.Presenter.Character.Player
             {
                 if (_cardUseCase != null)
                 {
-                    Debug.Log("Unsubscribing from OnCardCompleted event in SymphonyManager.");
                     _cardUseCase.OnCardCompleted -= HandleCardComplete;
                 }
             });
@@ -30,6 +29,8 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         private SymphonyAnimeManager _animeManager;
         private CardUseCase _cardUseCase;
 
+        private CardEntity _usingCard;
+
         private void Awake()
         {
             _animeManager = GetComponentInChildren<SymphonyAnimeManager>();
@@ -39,12 +40,33 @@ namespace Cryptos.Runtime.Presenter.Character.Player
             }
         }
 
+        private void Start()
+        {
+            if (_animeManager == null) return;
+
+            _animeManager.OnSkillTriggered += HandleSkillTriggered;
+            _animeManager.OnSkillEnded += HandleSkillEnded;
+        }
+
         private void HandleCardComplete(CardEntity cardEntity)
         {
             if (cardEntity == null) return;
 
             _animeManager.ActiveSkill(cardEntity.AnimationClipID);
 
+            _usingCard = cardEntity;
+        }
+
+        private void HandleSkillTriggered(int index)
+        {
+            if (_usingCard == null) return;
+
+            _cardUseCase.ExecuteCardEffect(_usingCard.GetContents(index));
+        }
+
+        private void HandleSkillEnded()
+        {
+            _usingCard = null;
         }
     }
 }
