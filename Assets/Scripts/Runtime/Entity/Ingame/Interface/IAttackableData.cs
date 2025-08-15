@@ -1,13 +1,23 @@
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
+    /// <summary>
+    /// 攻撃可能なオブジェクトの静的なステータスデータを定義するインターフェースです。
+    /// </summary>
     public interface IAttackableData
     {
+        /// <summary>
+        /// 基本攻撃力を取得します。
+        /// </summary>
         public float AttackPower { get; }
 
-        /// <summary> クリティカル確率（%）</summary>
+        /// <summary>
+        /// クリティカルヒットの確率を取得します（%）。
+        /// </summary>
         public float CriticalChance { get; }
 
-        /// <summary> クリティカル倍率 </summary>
+        /// <summary>
+        /// クリティカルヒット時のダメージ倍率を取得します。
+        /// </summary>
         public float CriticalDamage { get; }
     }
 }

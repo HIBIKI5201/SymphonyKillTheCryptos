@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
+    /// <summary>
+    /// キャラクターのインスタンスデータを表す汎用的なエンティティクラスです。
+    /// IAttackableData と IHittableData の両方を実装したデータ型を扱うことができます。
+    /// </summary>
     [Serializable]
     public sealed class CharacterEntity<T> : ICharacter
         where T : class, IAttackableData, IHittableData
@@ -14,14 +18,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             _healthEntity = new HealthEntity(data);
         }
 
-        [Tooltip("第一引数は現在値、第二引数は最大値")]
+        [Tooltip("体力が変化した際に発火します。第一引数は現在値、第二引数は最大値。")]
         public event Action<float, float> OnHealthChanged
         {
             add => _healthEntity.OnHealthChanged += value;
             remove => _healthEntity.OnHealthChanged -= value;
         }
 
-        [Tooltip("死亡時のイベント")]
+        [Tooltip("死亡時に発火します。")]
         public event Action OnDead
         {
             add => _healthEntity.OnDead += value;
@@ -29,13 +33,17 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         }
 
         public IAttackableData AttackableData => _entityData;
-        public IHittableData HitableData => _entityData;
+        public IHittableData HittableData => _entityData;
 
+        /// <summary>
+        /// クリティカル判定を含む、最終的な攻撃力を計算して取得します。
+        /// </summary>
+        /// <returns>計算後の攻撃力。</returns>
         public float GetAttackPower()
         {
             float power = _entityData.AttackPower;
 
-            //クリティカル時に倍率を掛ける
+            // クリティカル時に倍率を掛けます。
             if (UnityEngine.Random.Range(0, 1) < _entityData.CriticalChance)
             {
                 power *= _entityData.CriticalDamage;
@@ -44,13 +52,26 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             return power;
         }
 
+        /// <summary>
+        /// キャラクターにダメージを与えます。
+        /// </summary>
+        /// <param name="damage">与えるダメージ情報を含んだCombatContext。</param>
         public void AddHealthDamage(CombatContext damage) => _healthEntity.AddHealthDamage(damage.Damage);
+
+        /// <summary>
+        /// キャラクターの体力を回復します。
+        /// </summary>
+        /// <param name="amount">回復量。</param>
         public void AddHealthHeal(float amount) => _healthEntity.AddHealthHeal(amount);
+
+        /// <summary>
+        /// キャラクターを死亡状態にします。
+        /// </summary>
         public void Dead() => _healthEntity.Dead();
 
         private readonly T _entityData;
         
-        [SerializeField, ReadOnly]
+        [SerializeField, ReadOnly, Tooltip("キャラクターの体力情報を管理するエンティティです。")]
         private readonly HealthEntity _healthEntity;
     }
 }

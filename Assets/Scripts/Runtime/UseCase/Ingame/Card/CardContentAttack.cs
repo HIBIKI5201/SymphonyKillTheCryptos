@@ -5,35 +5,44 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
+    /// <summary>
+    /// カード効果として、ターゲットに攻撃を行うクラスです。
+    /// </summary>
     public class CardContentAttack : ICardContent
     {
         public CardContentAttack()
         {
-            _combatProssesor = new CombatProcessor()
+            _combatProcessor = new CombatProcessor()
                 .AddTo(new CriticalCalcHandler());
         }
 
+        /// <summary>
+        /// プレイヤーからターゲットに対して攻撃を実行します。
+        /// ダメージ計算はCombatProcessorを介して行われます。
+        /// </summary>
+        /// <param name="players">攻撃の主体となるプレイヤーキャラクターの配列。</param>
+        /// <param name="targets">攻撃の対象となるキャラクターの配列。</param>
         public void Execute(ICharacter[] players, ICharacter[] targets)
         {
-            StringBuilder sb = new($"CardContentAttack: Player <b>{players}</b>\n");
+            StringBuilder sb = new($"CardContentAttack: Player <b>{players[0]}</b>\n");
 
             IAttackable player = players[0];
 
-            foreach (var terget in targets)
+            foreach (var target in targets)
             {
-                CombatContext context = _combatProssesor.Excute(player, terget);
+                CombatContext context = _combatProcessor.Execute(player, target);
 
-                terget.AddHealthDamage(context);
+                target.AddHealthDamage(context);
 
-                sb.Append($"\nTarget: {terget}");
+                sb.Append($"\nTarget: {target}");
             }
 
             Debug.Log(sb.ToString());
         }
 
-        [SerializeField, Min(0)]
+        [SerializeField, Min(0), Tooltip("ダメージの倍率。")]
         private float _damageScale = 1;
 
-        private CombatProcessor _combatProssesor;
+        private readonly CombatProcessor _combatProcessor;
     }
 }

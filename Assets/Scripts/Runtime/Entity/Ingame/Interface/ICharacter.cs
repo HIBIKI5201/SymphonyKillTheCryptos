@@ -3,7 +3,7 @@ using SymphonyFrameWork;
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
-    ///     キャラクターを表すインターフェース
+    /// 攻撃と被弾の両方が可能な、ゲーム内のキャラクターを表すインターフェースです。
     /// </summary>
     public interface ICharacter : IAttackable, IHittable
     {

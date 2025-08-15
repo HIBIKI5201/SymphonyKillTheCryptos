@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
-    ///     体力のクラス
+    /// キャラクターの体力に関する処理を管理するクラスです。
     /// </summary>
     [Serializable]
     public class HealthEntity
@@ -16,13 +16,23 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             _health = data.MaxHealth;
         }
 
-        public event Action<float, float> OnHealthChanged; //第一引数は現在値、第二引数は最大値
+        /// <summary>
+        /// 体力が変化した際に発火します。
+        /// </summary>
+        [Tooltip("体力が変化した際に発火します。第一引数は現在値、第二引数は最大値。")]
+        public event Action<float, float> OnHealthChanged;
+
+        /// <summary>
+        /// 体力が0になり、死亡した際に発火します。
+        /// </summary>
+        [Tooltip("死亡時に発火します。")]
         public event Action OnDead;
 
         /// <summary>
-        ///     ヒットした際にダメージを受ける
+        /// ヒットした際にダメージを受けます。
+        /// 体力は0未満にはなりません。
         /// </summary>
-        /// <param name="damage"></param>
+        /// <param name="damage">受けるダメージ量。</param>
         public void AddHealthDamage(float damage)
         {
             _health = Mathf.Max(_health - damage, 0); //体力は0未満にならないようにする
@@ -35,9 +45,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         }
 
         /// <summary>
-        ///     ヒールする
+        /// 体力を回復します。
+        /// 体力は最大値を超えません。
         /// </summary>
-        /// <param name="amount"></param>
+        /// <param name="amount">回復量。</param>
         public void AddHealthHeal(float amount)
         {
             _health = Mathf.Min(_health + amount, _data.MaxHealth); //体力は最大値を超えないようにする
@@ -45,7 +56,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         }
 
         /// <summary>
-        ///     体力が0になった時の処理
+        /// 体力が0になった時の処理を実行します。
         /// </summary>
         public void Dead()
         {
@@ -55,6 +66,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         }
 
         private readonly IHittableData _data;
-        [SerializeField, ReadOnly] private float _health;
+
+        [SerializeField, ReadOnly, Tooltip("現在の体力。")]
+        private float _health;
     }
 }

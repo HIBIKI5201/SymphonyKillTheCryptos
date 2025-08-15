@@ -4,11 +4,16 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
+    /// <summary>
+    /// カード効果として、ターゲットの体力を回復するクラスです。
+    /// </summary>
     public class CardContentHeal : ICardContent
     {
-        [SerializeField, Min(1)]
-        private float _healAmount = 10;
-
+        /// <summary>
+        /// ターゲットの体力を指定量だけ回復します。
+        /// </summary>
+        /// <param name="players">効果の主体となるプレイヤーキャラクターの配列。</param>
+        /// <param name="targets">回復の対象となるキャラクターの配列。</param>
         public void Execute(ICharacter[] players, ICharacter[] targets)
         {
             StringBuilder sb = new StringBuilder($"CardContentHeal: <b>{players[0]}</b> heals for <b>{_healAmount}</b> amount.");
@@ -20,8 +25,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             }
 
             Debug.Log(sb.ToString());
-
-            // ここに実際の回復処理を記述
         }
+
+        [SerializeField, Min(1), Tooltip("回復量。")]
+        private float _healAmount = 10;
     }
 }

@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Cryptos.Runtime.UseCase.Ingame.Card
 {
     /// <summary>
-    /// カードに関するアプリケーション固有のユースケースを処理するクラス。
+    /// カードに関するアプリケーション固有のユースケースを処理するクラスです。
     /// カードの生成、文字入力の処理、カード効果の実行などを担当します。
     /// </summary>
     public class CardUseCase
@@ -17,29 +17,29 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// <summary>
         /// CardUseCaseの新しいインスタンスを初期化します。
         /// </summary>
-        /// <param name="wordDataBase">ワードデータが格納されたデータベース</param>
-        /// <param name="deck">カードデッキのエンティティ</param>
+        /// <param name="wordDataBase">ワードデータが格納されたデータベース。</param>
+        /// <param name="deck">カードデッキのエンティティ。</param>
         public CardUseCase(WordDataBase wordDataBase, CardDeckEntity deck)
         {
             _cardDeckEntity = deck;
             _cardDrawer = new(wordDataBase, _wordManager);
         }
 
-        /// <summary> プレイヤーのIAttackableインターフェースを取得するためのイベント </summary>
+        /// <summary> プレイヤーのICharacterインターフェースを取得するためのイベントです。 </summary>
         public event Func<ICharacter> GetPlayer;
-        /// <summary> 攻撃対象のIHitableインターフェース配列を取得するためのイベント </summary>
+        /// <summary> 攻撃対象のICharacterインターフェース配列を取得するためのイベントです。 </summary>
         public event Func<ICharacter[]> GetTargets;
-        /// <summary> カードの全てのワード入力が完了したときに発生するイベント </summary>
+        /// <summary> カードの全てのワード入力が完了したときに発生するイベントです。 </summary>
         public event Action<CardEntity> OnCardCompleted;
-        /// <summary> カードがデッキに追加されたときに発生するイベント </summary>
+        /// <summary> カードがデッキに追加されたときに発生するイベントです。 </summary>
         public event Action<CardEntity> OnCardAddedToDeck { add => _cardDeckEntity.OnAddCardInstance += value; remove => _cardDeckEntity.OnAddCardInstance -= value; }
-        /// <summary> カードがデッキから削除されたときに発生するイベント </summary>
+        /// <summary> カードがデッキから削除されたときに発生するイベントです。 </summary>
         public event Action<CardEntity> OnCardRemovedFromDeck { add => _cardDeckEntity.OnRemoveCardInstance += value; remove => _cardDeckEntity.OnRemoveCardInstance -= value; }
 
         /// <summary>
         /// 新しいCardEntityインスタンスを生成し、デッキに追加します。
         /// </summary>
-        /// <param name="data">生成するカードのデータ</param>
+        /// <param name="data">生成するカードのデータ。</param>
         /// <returns>生成されたCardEntityインスタンス。</returns>
         public CardEntity CreateCard(CardData data)
         {
@@ -58,7 +58,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// <summary>
         /// デッキ内の全てのカードに文字入力を試みます。
         /// </summary>
-        /// <param name="input">入力された文字</param>
+        /// <param name="input">入力された文字。</param>
         public void InputCharToDeck(char input)
         {
             foreach (var card in _cardDeckEntity.DeckCardList.ToArray())
@@ -68,19 +68,17 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         }
 
         /// <summary>
-        /// 指定されたCardEntityのカード効果を実行します。
+        /// 指定されたカード効果を実行します。
         /// </summary>
-        /// <param name="contents">効果を実行するContents</param>
-        /// <param name="player">効果の主体となるプレイヤー</param>
-        /// <param name="targets">効果の対象となるターゲット</param>
+        /// <param name="contents">実行するICardContentの配列。</param>
         public void ExecuteCardEffect(ICardContent[] contents)
         {
             ICharacter[] players = new ICharacter[1] { GetPlayer?.Invoke() };
             ICharacter[] targets = GetTargets?.Invoke() ?? Array.Empty<ICharacter>();
 
-            if (players == null || players.Length <= 0)
+            if (players == null || players.Length <= 0 || players[0] == null)
             {
-                Debug.LogError("Player is null");
+                Debug.LogError("Player is null.");
                 return;
             }
 
@@ -111,8 +109,10 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         private readonly Dictionary<CardEntity, WordData[]> _cardWordCandidates = new();
 
         /// <summary>
-        /// 現在の単語が完了した時の処理
+        /// 現在の単語入力が完了した際の処理です。
+        /// 次の単語をセットし、ワードマネージャーを更新します。
         /// </summary>
+        /// <param name="cardEntity">処理対象のカードエンティティ。</param>
         private void HandleCurrentWordCompleted(CardEntity cardEntity)
         {
             _wordManager.RemoveWord(cardEntity.WordEntity.CurrentWord);
@@ -132,16 +132,18 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         }
 
         /// <summary>
-        /// カード全体の入力が完了した時の処理
+        /// カードの全てのワード入力が完了した際の処理です。
+        /// カードをデッキから削除し、関連イベントを発行します。
         /// </summary>
+        /// <param name="cardEntity">完了したカードエンティティ。</param>
         private void HandleCardCompleted(CardEntity cardEntity)
         {
-            // カードがデッキから削除され、ワードが管理から解放される
+            // カードがデッキから削除され、ワードが管理から解放されます。
             _wordManager.RemoveWord(cardEntity.WordEntity.CurrentWord);
             _cardDeckEntity.RemoveCardFromDeck(cardEntity);
             _cardWordCandidates.Remove(cardEntity);
 
-            // 残りのカードのワードエンティティのインデックスをリセット
+            // 残りのカードのワードエンティティのインデックスをリセットします。
             foreach (CardEntity card in _cardDeckEntity.DeckCardList)
             {
                 card.WordEntity.ResetIndex();
