@@ -7,10 +7,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
 
         public float Damage => _damage;
 
-        public CombatContext(IAttackable attacker, IHitable target, float damage)
+        public CombatContext(IAttackableData attackerData, IHitableData targetData, float damage)
         {
-            _attackerData = attacker.AttackableData;
-            _targetData = target.HitableData;
+            _attackerData = attackerData;
+            _targetData = targetData;
 
             _damage = damage;
         }
