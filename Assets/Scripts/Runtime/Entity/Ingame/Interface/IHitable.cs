@@ -5,11 +5,13 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// </summary>
     public interface IHitable
     {
+        public IHitableData HitableData { get; }
+
         /// <summary>
         ///     ダメージを受ける
         /// </summary>
         /// <param name="damage"></param>
-        public void AddHealthDamage(float damage);
+        public void AddHealthDamage(CombatContext damage);
 
         /// <summary>
         ///     ヒールする

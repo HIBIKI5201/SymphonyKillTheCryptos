@@ -5,6 +5,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// </summary>
     public interface IAttackable
     {
+        public IAttackableData AttackableData { get; }
+
         /// <summary>
         ///     ダメージを計算する
         /// </summary>
