@@ -75,16 +75,16 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// <param name="targets">効果の対象となるターゲット</param>
         public void ExecuteCardEffect(ICardContent[] contents)
         {
-            IAttackable player = GetPlayer?.Invoke();
-            IHitable[] targets = GetTargets?.Invoke() ?? Array.Empty<IHitable>();
+            ICharacter[] players = new ICharacter[1] { GetPlayer?.Invoke() };
+            ICharacter[] targets = GetTargets?.Invoke() ?? Array.Empty<ICharacter>();
 
-            if (player == null)
+            if (players == null || players.Length <= 0)
             {
                 Debug.LogError("Player is null");
                 return;
             }
 
-            if (contents == null || contents.Length == 0)
+            if (contents == null || contents.Length <= 0)
             {
                 Debug.LogWarning("No contents to execute.");
                 return;
@@ -96,7 +96,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
 
                 try
                 {
-                    content.Execute(player, targets);
+                    content.Execute(players, targets);
                 }
                 catch (Exception e)
                 {
