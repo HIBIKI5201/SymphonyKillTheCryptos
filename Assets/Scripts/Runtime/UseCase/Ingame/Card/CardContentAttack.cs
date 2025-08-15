@@ -9,7 +9,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     {
         public CardContentAttack()
         {
-            _combatProssesor = new CombatProssesor();
+            _combatProssesor = new CombatProcessor()
+                .AddTo(new CriticalCalcHandler());
         }
 
         public void Execute(ICharacter[] players, ICharacter[] targets)
@@ -33,6 +34,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Min(0)]
         private float _damageScale = 1;
 
-        private CombatProssesor _combatProssesor;
+        private CombatProcessor _combatProssesor;
     }
 }
