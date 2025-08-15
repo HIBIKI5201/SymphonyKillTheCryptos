@@ -36,7 +36,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         public WordEntity WordEntity => _word;
 
         public int AnimationClipID => _data.AnimationClipID;
-        public ICardContent[] GetContents(int index) => _data.ContentsArray[index].Contents;
+        public ICardContent[] GetContents(int index)
+        {
+            if (index < 0 || index >= _data.ContentsArray.Length)
+            {
+                throw new IndexOutOfRangeException($"Index {index} is out of range for contents array.\ndata {_data.name}");
+            }
+
+            return _data.ContentsArray[index].Contents;
+        }
 
         private readonly CardData _data;
         private readonly WordEntity _word;
