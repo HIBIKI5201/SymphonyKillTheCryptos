@@ -4,7 +4,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// 一回の戦闘イベントにおける全ての情報を保持する構造体です。
     /// この構造体は、戦闘処理のハンドラー間で受け渡されます。
     /// </summary>
-    public struct CombatContext
+    public readonly struct CombatContext
     {
         /// <summary>
         /// 攻撃側の静的データを取得します。
