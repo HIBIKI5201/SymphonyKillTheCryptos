@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 0
   m_Name: Symphony
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 640bcd9207092a94a9f11f56f43517b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skillAnimationDataBase: {fileID: 11400000, guid: 7996b86b83512744ea6de88d4159a46b, type: 2}
   _muzzleFlash: {fileID: 0}
 --- !u!114 &8717745605084019085
 MonoBehaviour:
@@ -133,6 +132,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: a5a04aed77f07d740b4ddb7e8f0998f1, type: 2}
     - target: {fileID: 5159078012444724336, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.8000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5159078012444724336, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.8000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5159078012444724336, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.8000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5159078012444724336, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -172,6 +183,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5159078012444724336, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7140606858727328969, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
       propertyPath: m_DirtyAABB
       value: 0
@@ -207,6 +222,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1728013695380148634, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
       insertIndex: 1
       addedObject: {fileID: 205942826591977185}
+    - targetCorrespondingSourceObject: {fileID: -1728013695380148634, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7199176807245152589}
   m_SourcePrefab: {fileID: -3956505258223990651, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
 --- !u!4 &5440363351542359190 stripped
 Transform:
@@ -228,5 +246,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e336d38166f9b3a4d8574f3dca59797a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7199176807245152589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7213758392126178944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c99bf414007b74fbf4f6ddba1fcbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
