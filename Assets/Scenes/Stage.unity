@@ -5963,7 +5963,7 @@ Transform:
   m_GameObject: {fileID: 1708900049}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -510.67853, y: -32.353683, z: 426.22693}
+  m_LocalPosition: {x: -508.91653, y: -32.16173, z: 424.79575}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6012,22 +6012,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5440363351542359190, guid: 32144fb33710117458e592fef6031cb1, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5440363351542359190, guid: 32144fb33710117458e592fef6031cb1, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5440363351542359190, guid: 32144fb33710117458e592fef6031cb1, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5440363351542359190, guid: 32144fb33710117458e592fef6031cb1, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5930209661646628777, guid: 32144fb33710117458e592fef6031cb1, type: 3}
       propertyPath: m_Name
       value: Symphony
