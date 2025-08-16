@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
     /// <summary>
     ///     プレイヤーのマネージャークラス
     /// </summary>
-    public class SymphonyManager : MonoBehaviour
+    public class SymphonyPresenter : MonoBehaviour
     {
         public void Init(CardUseCase cardUseCase)
         {

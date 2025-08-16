@@ -61,7 +61,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             await InitializeUtility.WaitInitialize(ingameUIManager);
             _cardPresenter = new CardPresenter(_cardUseCase, ingameUIManager);
 
-            SymphonyManager symphonyManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
+            SymphonyPresenter symphonyManager = await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
             symphonyManager.Init(_cardUseCase);
 
             EnemyPresenter enemyPresenter = await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
