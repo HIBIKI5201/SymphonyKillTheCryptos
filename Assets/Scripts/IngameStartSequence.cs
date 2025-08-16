@@ -3,6 +3,7 @@ using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Ingame.System;
+using Cryptos.Runtime.Presenter.Character.Enemy;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character;
@@ -42,16 +43,16 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         CardUseCase _cardUseCase;
         CardPresenter _cardPresenter;
         CharacterEntity<SymphonyData> _symphony;
-        EnemyRepository _enemy;
+        EnemyRepository _enemyRepo;
 
         public async void GameInitialize()
         {
             _symphony = new(_symphonyData);
-            _enemy = new();
+            _enemyRepo = new();
 
             _cardUseCase = new(_wordDataBase, new());
             _cardUseCase.GetPlayer += () => _symphony;
-            _cardUseCase.GetTargets += () => _enemy.AllEnemies.ToArray();
+            _cardUseCase.GetTargets += () => _enemyRepo.AllEnemies.ToArray();
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             inputBuffer.OnAlphabetKeyPressed += _cardUseCase.InputCharToDeck;
@@ -62,6 +63,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             SymphonyManager symphonyManager = await ServiceLocator.GetInstanceAsync<SymphonyManager>();
             symphonyManager.Init(_cardUseCase);
+
+            EnemyPresenter enemyPresenter = await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
+            enemyPresenter.Init(_enemyRepo);
 
             TestCardSpawn();
             TestEnemySpawn();
@@ -96,7 +100,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         {
             for (int i = 0; i < _enemyAmount; i++)
             {
-                var enemy = _enemy.CreateEnemy(_enemyData);
+                var enemy = _enemyRepo.CreateEnemy(_enemyData);
                 if (enemy == null)
                 {
                     Debug.LogWarning("エネミーの生成に失敗しました。");
