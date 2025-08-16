@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Character.Enemy
 {
+    /// <summary>
+    ///   敵キャラクターのモデルを操作するクラスです。
+    /// </summary>
     public class EnemyModelPresenter : MonoBehaviour
     {
         public void Init(Transform target)

@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Character
 {
+    /// <summary>
+    /// 敵キャラクターの生成と管理を行うリポジトリクラスです。
+    /// </summary>
     public class EnemyRepository
     {
         public event Action<CharacterEntity<EnemyData>> OnEnemyCreated;

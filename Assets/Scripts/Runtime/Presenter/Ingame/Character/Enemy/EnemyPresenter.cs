@@ -1,13 +1,14 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Character;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace Cryptos.Runtime.Presenter.Character.Enemy
 {
+    /// <summary>
+    ///     敵キャラクターモデルの生成と管理を行うクラスです。
+    /// </summary>
     public class EnemyPresenter : MonoBehaviour
     {
         public void Init(EnemyRepository repository, SymphonyPresenter player)
