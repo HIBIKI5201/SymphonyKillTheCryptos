@@ -83,5 +83,17 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
 
             enemy.OnDead += model.Dead;
         }
+
+        private void OnDrawGizmos()
+        {
+            if (_spawnPoints == null || _spawnPoints.Length == 0) return;
+            Gizmos.color = Color.red;
+
+            Vector3 size = new Vector3(1, 2, 1);
+            foreach (var spawnPoint in _spawnPoints)
+            {
+                Gizmos.DrawWireCube(spawnPoint.position + Vector3.up * size.y / 2, size);
+            }
+        }
     }
 }
