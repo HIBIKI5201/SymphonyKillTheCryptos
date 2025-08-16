@@ -28,6 +28,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         [Tooltip("死亡時に発火します。")]
         public event Action OnDead;
 
+        public float CurrentHealth => _health;
+
         /// <summary>
         /// ヒットした際にダメージを受けます。
         /// 体力は0未満にはなりません。
