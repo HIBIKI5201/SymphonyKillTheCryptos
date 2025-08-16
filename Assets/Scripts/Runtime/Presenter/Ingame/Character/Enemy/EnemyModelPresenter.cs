@@ -1,19 +1,27 @@
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter
+namespace Cryptos.Runtime.Presenter.Character.Enemy
 {
     public class EnemyModelPresenter : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        public void Init(Transform target)
         {
-        
+            if (_target == null)
+            {
+                Debug.LogError("Target transform is not assigned.");
+                return;
+            }
+
+            _target = target;
         }
 
-        // Update is called once per frame
-        void Update()
+        private Transform _target;
+
+        private void Update()
         {
-        
+            if (_target == null) return;
+
+            transform.rotation = Quaternion.LookRotation(_target.position - transform.position);
         }
     }
 }
