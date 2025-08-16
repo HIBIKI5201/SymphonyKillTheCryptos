@@ -5905,6 +5905,10 @@ PrefabInstance:
       propertyPath: orthographic size
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2262141092822937957, guid: 15acaf7792f1f30458b6692739201271, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2514059053047477625, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_HDR
       value: 0
@@ -8569,6 +8573,7 @@ SceneRoots:
   - {fileID: 2058048511}
   - {fileID: 1724388218}
   - {fileID: 1872419480}
+  - {fileID: 2091129311}
   - {fileID: 1814867692}
   - {fileID: 179056183}
   - {fileID: 1837508198}
@@ -8585,5 +8590,4 @@ SceneRoots:
   - {fileID: 2102009159}
   - {fileID: 197224676}
   - {fileID: 7282566650149100525}
-  - {fileID: 2091129311}
   - {fileID: 143408664}
