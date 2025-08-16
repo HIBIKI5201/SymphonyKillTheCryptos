@@ -35,6 +35,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         public IAttackableData AttackableData => _entityData;
         public IHittableData HittableData => _entityData;
 
+        public float CurrentHealth => _healthEntity.CurrentHealth;
+
         /// <summary>
         /// クリティカル判定を含む、最終的な攻撃力を計算して取得します。
         /// </summary>
