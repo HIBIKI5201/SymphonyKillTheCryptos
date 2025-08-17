@@ -19,9 +19,10 @@ MonoBehaviour:
   _wordRange: {x: 0, y: 2}
   _contentsArray:
   - _content:
-    - rid: 713893369316900958
+    - rid: 713893507150643306
   - _content:
     - rid: 713893369316900958
+    - rid: 713893507150643308
   - _content:
     - rid: 713893369316900958
   _priority: 0
@@ -29,7 +30,17 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 713893369316900958
       type: {class: CardContentAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.Ingame.Entity}
       data:
         _damageScale: 0
+    - rid: 713893507150643306
+      type: {class: CardContentAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
+      data:
+        _damageScale: 1
+    - rid: 713893507150643308
+      type: {class: CardContentAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
+      data:
+        _damageScale: 1
