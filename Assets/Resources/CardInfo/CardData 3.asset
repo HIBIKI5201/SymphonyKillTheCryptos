@@ -20,8 +20,12 @@ MonoBehaviour:
   _contentsArray:
   - _content:
     - rid: 713893507150643310
+  - _content:
+    - rid: 713893507150643310
+  - _content:
+    - rid: 713893507150643310
   _priority: 0
-  _animationClipID: 2
+  _animationClipID: 1
   references:
     version: 2
     RefIds:

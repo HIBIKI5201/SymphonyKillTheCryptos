@@ -20,6 +20,7 @@ MonoBehaviour:
   _contentsArray:
   - _content:
     - rid: 713893507150643309
+    - rid: 713893507150643314
   _priority: 0
   _animationClipID: 0
   references:
@@ -29,3 +30,7 @@ MonoBehaviour:
       type: {class: CardContentAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
       data:
         _damageScale: 1
+    - rid: 713893507150643314
+      type: {class: CardContentHeal, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
+      data:
+        _healAmount: 10
