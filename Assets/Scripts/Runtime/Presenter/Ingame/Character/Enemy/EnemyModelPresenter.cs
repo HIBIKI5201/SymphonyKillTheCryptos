@@ -43,6 +43,16 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
 
         private CharacterEntity<EnemyData> _self;
         private Transform _target;
+        private EnemyAnimeManager _animeManager;
+
+        private void Awake()
+        {
+            _animeManager = GetComponentInChildren<EnemyAnimeManager>();
+            if (_animeManager == null)
+            {
+                Debug.LogError("SymphonyAnimeManager is not found on the GameObject.");
+            }
+        }
 
         private void Update()
         {
