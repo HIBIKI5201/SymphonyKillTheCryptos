@@ -80,9 +80,7 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
             if (!_spawnPointStack.TryPop(out Transform spawnPoint)) return;
 
             EnemyModelPresenter model = Instantiate(_enemyModel, spawnPoint.position, spawnPoint.rotation, _enemyContainer);
-            model.Init(_player.transform);
-
-            enemy.OnDead += model.Dead;
+            model.Init(enemy, _player.transform);
         }
 
         private void OnDrawGizmos()
