@@ -63,7 +63,7 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
 
         private void HandleTakeDamage()
         {
-
+            _animeManager.Hit();
         }
     }
 }

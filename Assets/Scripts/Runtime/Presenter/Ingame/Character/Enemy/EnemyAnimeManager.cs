@@ -5,6 +5,13 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
     [RequireComponent(typeof(Animator))]
     public class EnemyAnimeManager : MonoBehaviour
     {
+        public void Hit()
+        {
+            _animator?.SetTrigger(_hitHash);
+        }
+
+        private readonly int _hitHash = Animator.StringToHash("Hit");
+
         private Animator _animator;
 
         private void Awake()
