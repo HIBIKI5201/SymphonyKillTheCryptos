@@ -17,7 +17,7 @@ namespace Cryptos.Editor.Ingame
         private const string VALIABLE_ANIMATION_CLIP_ID = "_animationClipID"; //アニメーションIDの変数名
         private const string VALIABLE_CONTENTS_ARRAY = "_contentsArray";
 
-        private const string SKILL_EVENT_NAME = "Skill"; // スキルイベントの名前
+        private const string SKILL_EVENT_NAME = "TriggeredSkill"; // スキルイベントの名前
 
         // 解析結果を保持する辞書
         private Dictionary<int, AnimationClip> _skillAnimationClips = new();
@@ -102,7 +102,7 @@ namespace Cryptos.Editor.Ingame
 
             for (int i = 0; i < indexs.Length; i++)
             {
-                int index = indexs[i];
+               int index = indexs[i];
                 if (index < 0 || index >= length)
                 {
                     EditorGUILayout.HelpBox($"Invalid index {index} for contents array.", MessageType.Error);
@@ -181,7 +181,7 @@ namespace Cryptos.Editor.Ingame
 
         [SerializeField] private AnimatorController _animatorController;
         private string _targetStateName = "Skill/Entry";
-        private string _intParameterName = "Skill";
+        private string _intParameterName = "SkillIndex";
 
         private IEnumerable<KeyValuePair<int, AnimationClip>> _skillAnimationClips;
         private void OnEnable()
