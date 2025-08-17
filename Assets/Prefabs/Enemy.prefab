@@ -53,6 +53,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5292628437308476210}
     m_Modifications:
+    - target: {fileID: 3456312130320105590, guid: 24b5fb0c952c9bd4fb8bbffaaa853f21, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0099f3a3ef9eaa34681a75f1000e88cf, type: 2}
     - target: {fileID: 8240661434394411190, guid: 24b5fb0c952c9bd4fb8bbffaaa853f21, type: 3}
       propertyPath: m_Name
       value: Insurgent_Lite_Lite
