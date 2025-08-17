@@ -28,7 +28,6 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         private readonly int _skillTriggerHash = Animator.StringToHash("SkillTrigger");
 
         private Animator _animator;
-        private AnimatorOverrideController _overrideController;
 
         private void Awake()
         {
