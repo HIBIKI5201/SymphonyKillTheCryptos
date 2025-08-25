@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Ingame.System;
@@ -9,6 +10,7 @@ using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.UI.Ingame;
 using Cryptos.Runtime.UseCase.Ingame.Card;
+using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
 using System.Linq;
@@ -37,18 +39,21 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         [Space]
         [SerializeField]
-        private EnemyData _enemyData;
-        private int _enemyAmount = 3;
+        private WaveEntity[] _waveEntities;
 
-        CardUseCase _cardUseCase;
-        CardPresenter _cardPresenter;
-        CharacterEntity<SymphonyData> _symphony;
-        EnemyRepository _enemyRepo;
+        private CardUseCase _cardUseCase;
+        private CardPresenter _cardPresenter;
+        private CharacterEntity<SymphonyData> _symphony;
+        private EnemyRepository _enemyRepo;
+        private WaveUseCase _waveUseCase;
 
         public async void GameInitialize()
         {
             _symphony = new(_symphonyData);
+            _waveUseCase = new(_waveEntities);
+
             _enemyRepo = new();
+            _waveUseCase.OnWaveChanged += _enemyRepo.WaveEnemysCreate;
 
             _cardUseCase = new(_wordDataBase, new());
             _cardUseCase.GetPlayer += () => _symphony;
@@ -68,10 +73,13 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             enemyPresenter.Init(_enemyRepo, symphonyPresenter);
 
             TestCardSpawn();
-            TestEnemySpawn();
+
+            _enemyRepo.WaveEnemysCreate(_waveUseCase.CurrentWave);
 
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
+
+        private void _waveUseCase_OnWaveChanged(WaveEntity obj) => throw new NotImplementedException();
 
         private void TestCardSpawn()
         {
@@ -93,19 +101,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 var instance = _cardUseCase.CreateCard(cardData);
 
                 instance.OnComplete += RandomDraw;
-            }
-        }
-
-        private void TestEnemySpawn()
-        {
-            for (int i = 0; i < _enemyAmount; i++)
-            {
-                var enemy = _enemyRepo.CreateEnemy(_enemyData);
-                if (enemy == null)
-                {
-                    Debug.LogWarning("エネミーの生成に失敗しました。");
-                    continue;
-                }
             }
         }
     }
