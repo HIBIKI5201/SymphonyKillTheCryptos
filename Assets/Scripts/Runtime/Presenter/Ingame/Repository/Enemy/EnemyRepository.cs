@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Character;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,15 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
             EnemyLog(enemy);
 
             return enemy;
+        }
+
+        public void WaveEnemysCreate(WaveEntity waveEntity)
+        {
+            EnemyData[] enemyData = waveEntity.Enemies;
+            foreach (var item in enemyData)
+            {
+                CreateEnemy(item);
+            }
         }
 
         private List<CharacterEntity<EnemyData>> _enemies = new();
