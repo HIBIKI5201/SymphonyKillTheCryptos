@@ -35,6 +35,38 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             return position;
         }
 
+        public void GetPositionAndRotationByDistance(int index, float distance, out Vector3 position, out Quaternion rotation)
+        {
+            if (_splines[index] == null || _splines[index].Spline == null)
+            {
+                position = Vector3.zero;
+                rotation = Quaternion.identity;
+                return;
+            }
+
+            Spline spline = _splines[index].Spline;
+
+            float totalLength = spline.GetLength();
+
+            if (totalLength <= 0f)
+            {
+                position = Vector3.zero;
+                rotation = Quaternion.identity;
+                return;
+            }
+
+            distance = Mathf.Clamp(distance, 0f, totalLength);
+
+            // 正規化パラメータに変換
+            float t = Mathf.Clamp01(distance / totalLength);
+
+            // スプライン上の位置と接線を取得
+            position = spline.EvaluatePosition(t);
+            Vector3 tangent = spline.EvaluateTangent(t);
+
+            rotation = Quaternion.LookRotation(tangent);
+        }
+
         [SerializeField]
         private SplineContainer[] _splines;
     }
