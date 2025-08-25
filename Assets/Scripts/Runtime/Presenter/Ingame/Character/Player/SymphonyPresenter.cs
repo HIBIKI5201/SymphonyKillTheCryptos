@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using UnityEngine;
 
@@ -9,18 +10,20 @@ namespace Cryptos.Runtime.Presenter.Character.Player
     /// </summary>
     public class SymphonyPresenter : MonoBehaviour
     {
-        public void Init(CardUseCase cardUseCase)
+        public void Init(CardUseCase cardUseCase, PlayerPathContainer pathContainer)
         {
-            _cardUseCase = cardUseCase;
-            _cardUseCase.OnCardCompleted += HandleCardComplete;
+            cardUseCase.OnCardCompleted += HandleCardComplete;
 
             destroyCancellationToken.Register(() =>
             {
-                if (_cardUseCase != null)
+                if (cardUseCase != null)
                 {
-                    _cardUseCase.OnCardCompleted -= HandleCardComplete;
+                    cardUseCase.OnCardCompleted -= HandleCardComplete;
                 }
             });
+
+            _cardUseCase = cardUseCase;
+            _pathContainer = pathContainer;
         }
 
         [SerializeField]
@@ -28,6 +31,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
 
         private SymphonyAnimeManager _animeManager;
         private CardUseCase _cardUseCase;
+        private PlayerPathContainer _pathContainer;
 
         private CardEntity _usingCard;
 
