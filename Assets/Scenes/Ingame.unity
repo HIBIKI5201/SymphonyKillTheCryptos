@@ -246,12 +246,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _frameRate: 60
   _ingameStartSequence:
-    rid: 713893158171443313
+    rid: 713893688302108771
   references:
     version: 2
     RefIds:
-    - rid: 713893158171443313
-      type: {class: IngameStartSequence, ns: Cryptos.Runtime.InfraStructure.Ingame.Sequence, asm: Assembly-CSharp}
+    - rid: 713893688302108771
+      type: {class: IngameStartSequence, ns: Cryptos.Runtime.InfraStructure.Ingame.Sequence, asm: Cryptos.InfraStructure}
       data:
         _symphonyData: {fileID: 11400000, guid: fcf3f1f413c8c4348987e4dadd1102f0, type: 2}
         _wordDataBase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
@@ -262,6 +262,7 @@ MonoBehaviour:
         - {fileID: 11400000, guid: 4f81ac41041ba54418d48356df7b134e, type: 2}
         _cardAmount: 3
         _waveEntities:
+        - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
 --- !u!1001 &1595730579
 PrefabInstance:
@@ -346,6 +347,10 @@ PrefabInstance:
     - target: {fileID: 2262141092822937957, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: orthographic size
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2262141092822937957, guid: 15acaf7792f1f30458b6692739201271, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5276011866017680559, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_Name
