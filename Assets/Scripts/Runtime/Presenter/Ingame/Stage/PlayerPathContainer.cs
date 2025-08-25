@@ -37,7 +37,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         public void GetPositionAndRotationByDistance(int index, float distance, out Vector3 position, out Quaternion rotation)
         {
-            if (_splines[index] == null || _splines[index].Spline == null)
+            if (_splines == null || _splines.Length <= 0
+                || _splines[index] == null || _splines[index].Spline == null)
             {
                 position = Vector3.zero;
                 rotation = Quaternion.identity;
