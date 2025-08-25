@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab916905222e6341bb5ad967c477b3e, type: 3}
   m_Name: WaveEntity
   m_EditorClassIdentifier: 
-  _enemies: []
+  _enemies:
+  - {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
