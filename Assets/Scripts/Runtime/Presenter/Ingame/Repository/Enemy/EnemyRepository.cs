@@ -39,15 +39,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
             return enemy;
         }
 
-        public void WaveEnemysCreate(WaveEntity waveEntity)
-        {
-            EnemyData[] enemyData = waveEntity.Enemies;
-            foreach (var item in enemyData)
-            {
-                CreateEnemy(item);
-            }
-        }
-
         private List<CharacterEntity<EnemyData>> _enemies = new();
         private EnemyGenerator _enemyGenerator = new();
 
