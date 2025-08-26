@@ -46,16 +46,16 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         private CardPresenter _cardPresenter;
         private CharacterEntity<SymphonyData> _symphony;
         private EnemyRepository _enemyRepo;
-        private WaveUseCase _waveUseCase;
+        private WaveSystemPresenter _waveSystem;
 
         public async void GameInitialize()
         {
-            WaveUseCase waveUseCase = new(_waveEntities);
             
             CharacterEntity<SymphonyData> symphony = new(_symphonyData);
 
             EnemyRepository enemyRepo = new();
-            waveUseCase.OnWaveChanged += enemyRepo.WaveEnemysCreate;
+
+            WaveSystemPresenter waveSystem = new(_waveEntities, enemyRepo);
 
             CardUseCase cardUseCase = new(_wordDataBase, new());
             cardUseCase.GetPlayer += () => symphony;
@@ -76,20 +76,16 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             EnemyPresenter enemyPresenter = await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
             enemyPresenter.Init(enemyRepo, symphonyPresenter);
 
-            TestCardSpawn();
-
-            _enemyRepo.WaveEnemysCreate(_waveUseCase.CurrentWave);
-
-            _waveUseCase = waveUseCase;
+            _waveSystem = waveSystem;
             _symphony = symphony;
             _enemyRepo = enemyRepo;
             _cardUseCase = cardUseCase;
             _cardPresenter = cardPresenter;
 
+            TestCardSpawn();
+
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
-
-        private void _waveUseCase_OnWaveChanged(WaveEntity obj) => throw new NotImplementedException();
 
         private void TestCardSpawn()
         {
