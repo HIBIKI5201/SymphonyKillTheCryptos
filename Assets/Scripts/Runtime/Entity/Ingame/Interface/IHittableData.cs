@@ -3,7 +3,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// <summary>
     /// 被弾可能なオブジェクトの静的なステータスデータを定義するインターフェースです。
     /// </summary>
-    public interface IHittableData
+    public interface IHittableData : IEntityData
     {
         /// <summary>
         /// 最大体力を取得します。

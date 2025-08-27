@@ -3,7 +3,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// <summary>
     /// 攻撃可能なオブジェクトの静的なステータスデータを定義するインターフェースです。
     /// </summary>
-    public interface IAttackableData
+    public interface IAttackableData : IEntityData
     {
         /// <summary>
         /// 基本攻撃力を取得します。
