@@ -8,7 +8,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// <summary>
     /// カード効果として、ターゲットに攻撃を行うクラスです。
     /// </summary>
-    public class CardContentAttack : ICardContent
+    public class CardContentAllAttack : ICardContent
     {
         /// <summary>
         /// プレイヤーからターゲットに対して攻撃を実行します。
