@@ -36,7 +36,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
 
         public IAttackableData AttackableData => _entityData;
         public IHittableData HittableData => _entityData;
-
+        public string Name => _entityData.Name;
         public float CurrentHealth => _healthEntity.CurrentHealth;
 
         /// <summary>
