@@ -10,6 +10,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     public class SymphonyData : ScriptableObject, IAttackableData, IHittableData
     {
         /// <summary>
+        /// プレイヤー名を取得します。
+        /// </summary>
+        public string Name => _name;
+        /// <summary>
         /// 攻撃力を取得します。
         /// </summary>
         public float AttackPower => _attackPower;
@@ -34,6 +38,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// </summary>
         public float Armor => _armor;
 
+        [SerializeField, Tooltip("プレイヤー名。")]
+        private string _name = "Symphony";
         [SerializeField, Tooltip("攻撃力。")]
         private float _attackPower = 10;
         [SerializeField, Tooltip("クリティカル確率（%）。")]

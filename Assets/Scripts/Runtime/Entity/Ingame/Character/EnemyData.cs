@@ -9,6 +9,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     [CreateAssetMenu(fileName = nameof(EnemyData), menuName = CryptosPathConstant.ASSET_PATH + nameof(EnemyData), order = 1)]
     public class EnemyData : ScriptableObject, IAttackableData, IHittableData
     {
+        public string Name => _name;
         /// <summary>
         /// 攻撃力を取得します。
         /// </summary>
@@ -34,6 +35,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// </summary>
         public float Armor => _armor;
 
+        [SerializeField, Tooltip("敵キャラクターの名前。")]
+        private string _name = "Enemy";
         [SerializeField, Tooltip("攻撃力。")]
         private float _attackPower = 10;
         [SerializeField, Tooltip("クリティカル確率（%）。")]
