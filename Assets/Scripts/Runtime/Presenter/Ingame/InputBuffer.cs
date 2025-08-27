@@ -30,12 +30,6 @@ namespace Cryptos.Runtime.Framework
             }
         }
 
-        private void Start()
-        {
-            OnAlphabetKeyPressed += DebugLogAlphabet;
-            OnNumericKeyPressed += DebugLogNumric;
-        }
-
         private void Update()
         {
             ReadKey();
@@ -71,16 +65,6 @@ namespace Cryptos.Runtime.Framework
                     }
                 }
             }
-        }
-        
-        private void DebugLogAlphabet(char key)
-        {
-            Debug.Log($"pressed {key}");
-        }
-
-        private void DebugLogNumric(int  num)
-        {
-            Debug.Log($"pressed {num}");
         }
     }
 }
