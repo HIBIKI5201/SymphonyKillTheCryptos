@@ -1,5 +1,3 @@
-using SymphonyFrameWork;
-
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
@@ -7,5 +5,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// </summary>
     public interface ICharacter : IAttackable, IHittable
     {
+        public string Name { get; }
     }
 }
