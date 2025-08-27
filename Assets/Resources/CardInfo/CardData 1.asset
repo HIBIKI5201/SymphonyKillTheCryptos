@@ -19,18 +19,18 @@ MonoBehaviour:
   _wordRange: {x: 0, y: 1}
   _contentsArray:
   - _content:
-    - rid: 713893507150643309
+    - rid: 713893723159658585
     - rid: 713893507150643314
   _priority: 0
   _animationClipID: 0
   references:
     version: 2
     RefIds:
-    - rid: 713893507150643309
-      type: {class: CardContentAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
-      data:
-        _damageScale: 1
     - rid: 713893507150643314
       type: {class: CardContentHeal, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
       data:
         _healAmount: 10
+    - rid: 713893723159658585
+      type: {class: CardContentAllAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
+      data:
+        _damageScale: 1
