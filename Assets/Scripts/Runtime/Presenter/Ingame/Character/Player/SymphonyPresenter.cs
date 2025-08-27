@@ -1,6 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Card;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -33,16 +34,13 @@ namespace Cryptos.Runtime.Presenter.Character.Player
             index--; //ウェーブ2への移動はindex=1なので１引く
 
             float distance = 0f;
-            while (_pathContainer
-                .GetPositionAndRotationByDistance(index, distance
-                , out Vector3 position, out Quaternion rotation))
+            while (MovePositionOnSpline(index, distance))
             {
-                transform.position = position;
-                transform.rotation = rotation;
                 distance += _speed * Time.deltaTime;
-
                 await Awaitable.NextFrameAsync();
             }
+
+            EndMoveAnimation();
         }
 
         [SerializeField, Min(0)]
@@ -93,6 +91,39 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         private void HandleSkillEnded()
         {
             _usingCard = null;
+        }
+
+        /// <summary>
+        ///    スプライン上を移動する
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        private bool MovePositionOnSpline(int index, float distance)
+        {
+            //スプライン上の位置と回転を取得
+            bool isSuccess = _pathContainer
+                .GetPositionAndRotationByDistance(index, distance,
+                out Vector3 position, out Quaternion rotation);
+
+            //アニメーションの更新
+            Vector3 localMoveDir = transform.InverseTransformDirection((position - transform.position).normalized);
+            _animeManager.SetDirX(localMoveDir.x);
+            _animeManager.SetDirY(localMoveDir.z);
+            _animeManager.SetVelocity(_speed);
+
+            //座標更新
+            transform.position = position;
+            transform.rotation = rotation;
+
+            return isSuccess;
+        }
+
+        private void EndMoveAnimation()
+        {
+            _animeManager.SetVelocity(0f);
+            _animeManager.SetDirX(0f);
+            _animeManager.SetVelocity(0f);
         }
     }
 }
