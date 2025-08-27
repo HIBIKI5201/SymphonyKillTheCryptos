@@ -1,7 +1,9 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Card;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace Cryptos.Runtime.Presenter.Character.Player
 {
@@ -25,6 +27,26 @@ namespace Cryptos.Runtime.Presenter.Character.Player
             _cardUseCase = cardUseCase;
             _pathContainer = pathContainer;
         }
+
+        public async Task NextWave(int index)
+        {
+            index--; //ウェーブ2への移動はindex=1なので１引く
+
+            float distance = 0f;
+            while (_pathContainer
+                .GetPositionAndRotationByDistance(index, distance
+                , out Vector3 position, out Quaternion rotation))
+            {
+                transform.position = position;
+                transform.rotation = rotation;
+                distance += _speed * Time.deltaTime;
+
+                await Awaitable.NextFrameAsync();
+            }
+        }
+
+        [SerializeField, Min(0)]
+        private float _speed = 1f;
 
         [SerializeField]
         private ParticleSystem _muzzleFlash;
