@@ -55,8 +55,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             EnemyRepository enemyRepo = new();
 
-            WaveSystemPresenter waveSystem = new(_waveEntities, enemyRepo);
-
             CardUseCase cardUseCase = new(_wordDataBase, new());
             cardUseCase.GetPlayer += () => symphony;
             cardUseCase.GetTargets += () => enemyRepo.AllEnemies.ToArray();
@@ -76,6 +74,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             EnemyPresenter enemyPresenter = await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
             enemyPresenter.Init(enemyRepo, symphonyPresenter);
 
+            WaveSystemPresenter waveSystem = new(_waveEntities, symphonyPresenter, enemyRepo);
+
             _waveSystem = waveSystem;
             _symphony = symphony;
             _enemyRepo = enemyRepo;
@@ -83,6 +83,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             _cardPresenter = cardPresenter;
 
             TestCardSpawn();
+            waveSystem.GameStart();
 
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
