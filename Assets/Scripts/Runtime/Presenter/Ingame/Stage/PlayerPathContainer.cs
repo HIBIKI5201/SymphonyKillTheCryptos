@@ -23,6 +23,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             {
                 position = Vector3.zero;
                 rotation = Quaternion.identity;
+                Debug.LogError("SplineContainer or Spline is not assigned.");
                 return false;
             }
 
@@ -34,13 +35,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             {
                 position = Vector3.zero;
                 rotation = Quaternion.identity;
+                Debug.LogError("Spline length is zero or negative.");
                 return false;
             }
 
             if (totalLength < distance)
             {
-                position = Vector3.zero;
-                rotation = Quaternion.identity;
+                position = spline.EvaluatePosition(1);
+                rotation = Quaternion.LookRotation(spline.EvaluateTangent(1));
                 return false;
             }
 
