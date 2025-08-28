@@ -264,6 +264,7 @@ MonoBehaviour:
         _waveEntities:
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
+        - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
 --- !u!1001 &1595730579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -302,19 +303,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9999219
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.000000001862497
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.012497829
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 2.327899e-11
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
