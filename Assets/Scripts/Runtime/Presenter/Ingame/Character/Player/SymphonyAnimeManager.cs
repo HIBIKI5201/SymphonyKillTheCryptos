@@ -3,31 +3,50 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Character.Player
 {
+    /// <summary>
+    ///     プレイヤーのアニメーションを管理するクラス
+    /// </summary>
     [RequireComponent(typeof(Animator), typeof(SkillEndReceiver))]
     public class SymphonyAnimeManager : MonoBehaviour
     {
         public event Action<int> OnSkillTriggered;
         public event Action OnSkillEnded;
 
-        public void SetDirX(float value) => _animator.SetFloat(_dirXHash, value);
-        public void SetDirY(float value) => _animator.SetFloat(_dirYHash, value);
-        public void SetVelocity(float value) => _animator.SetFloat(_velocityHash, value);
-        public void SetSprint(bool value) => _animator.SetBool(_sprintHash, value);
+        public void SetDirX(float value) => _animator.SetFloat(_animatorHash.DirXHash, value);
+        public void SetDirY(float value) => _animator.SetFloat(_animatorHash.DirYHash, value);
+        public void SetVelocity(float value) => _animator.SetFloat(_animatorHash.VelocityHash, value);
+        public void SetSprint(bool value) => _animator.SetBool(_animatorHash.SprintHash, value);
 
         public void ActiveSkill(int index)
         {
-            _animator.SetInteger(_SkillIndexHash, index);
-            _animator.SetTrigger(_skillTriggerHash);
+            _animator.SetInteger(_animatorHash.SkillIndexHash, index);
+            _animator.SetTrigger(_animatorHash.SkillTriggerHash);
         }
 
-        private readonly int _dirXHash = Animator.StringToHash("DirX");
-        private readonly int _dirYHash = Animator.StringToHash("DirY");
-        private readonly int _velocityHash = Animator.StringToHash("Velocity");
-        private readonly int _sprintHash = Animator.StringToHash("IsSprint");
-        private readonly int _SkillIndexHash = Animator.StringToHash("SkillIndex");
-        private readonly int _skillTriggerHash = Animator.StringToHash("SkillTrigger");
+        [SerializeField]
+        private string _dirXParam = "DirX";
+        [SerializeField]
+        private string _dirYParam = "DirY";
+        [SerializeField]
+        private string _velocityParam = "Velocity";
+        [SerializeField]
+        private string _sprintParam = "Sprint";
+        [SerializeField]
+        private string _skillIndexParam = "SkillIndex";
+        [SerializeField]
+        private string _skillTriggerParam = "SkillTrigger";
 
         private Animator _animator;
+        private SymphonyAnimatorHash _animatorHash;
+
+        private void OnValidate()
+        {
+            _animatorHash = new SymphonyAnimatorHash(
+                _dirXParam, _dirYParam,
+                _velocityParam, _sprintParam,
+                _skillIndexParam, _skillTriggerParam
+            );
+        }
 
         private void Awake()
         {
@@ -67,6 +86,35 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         {
             Debug.Log("Skill animation ended");
             OnSkillEnded?.Invoke();
+        }
+
+        private readonly struct SymphonyAnimatorHash
+        {
+            public SymphonyAnimatorHash(string dirX, string dirY,
+                string velocity, string sprint,
+                string skillIndex, string skillTrigger)
+            {
+                _dirXHash = Animator.StringToHash(dirX);
+                _dirYHash = Animator.StringToHash(dirY);
+                _velocityHash = Animator.StringToHash(velocity);
+                _sprintHash = Animator.StringToHash(sprint);
+                _SkillIndexHash = Animator.StringToHash(skillIndex);
+                _skillTriggerHash = Animator.StringToHash(skillTrigger);
+            }
+
+            public int DirXHash => _dirXHash;
+            public int DirYHash => _dirYHash;
+            public int VelocityHash => _velocityHash;
+            public int SprintHash => _sprintHash;
+            public int SkillIndexHash => _SkillIndexHash;
+            public int SkillTriggerHash => _skillTriggerHash;
+
+            private readonly int _dirXHash;
+            private readonly int _dirYHash;
+            private readonly int _velocityHash;
+            private readonly int _sprintHash;
+            private readonly int _SkillIndexHash;
+            private readonly int _skillTriggerHash;
         }
     }
 }
