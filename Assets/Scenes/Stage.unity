@@ -189,8 +189,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6704547}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.000000001862497, y: 0.012497829, z: 2.3278988e-11, w: 0.9999219}
-  m_LocalPosition: {x: -514.3825, y: -30.295033, z: 417.10437}
+  m_LocalRotation: {x: 0.035646178, y: 0, z: 0, w: 0.9993645}
+  m_LocalPosition: {x: -513.6825, y: -30.295033, z: 418.10437}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -209,12 +209,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TrackerSettings:
-    BindingMode: 4
+    BindingMode: 0
     PositionDamping: {x: 2, y: 1, z: 2}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: 2.8, y: 2, z: -8}
+  FollowOffset: {x: 7, y: 2, z: 3.5}
 --- !u!114 &6704551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,26 +224,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6704547}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Composition:
-    ScreenPosition: {x: 0, y: 0}
-    DeadZone:
-      Enabled: 0
-      Size: {x: 0.2, y: 0.2}
-    HardLimits:
-      Enabled: 0
-      Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
-  CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 2, z: 3}
-  Damping: {x: 0.5, y: 0.5}
-  Lookahead:
-    Enabled: 0
-    Time: 0
-    Smoothing: 0
-    IgnoreY: 0
+  LookAtOffset: {x: 0, y: 1.5, z: 3.5}
 --- !u!1001 &31651123
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6239,7 +6223,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -514.3825
+      value: -513.6825
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6247,23 +6231,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 417.10437
+      value: 418.10437
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9999219
+      value: 0.9993645
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.000000001862497
+      value: 0.035646178
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.012497829
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 2.327899e-11
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6440,10 +6424,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 954954782330070615, guid: 32144fb33710117458e592fef6031cb1, type: 3}
-      propertyPath: _speed
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5930209661646628777, guid: 32144fb33710117458e592fef6031cb1, type: 3}
       propertyPath: m_Name
       value: Symphony
