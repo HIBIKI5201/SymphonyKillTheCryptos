@@ -3,6 +3,7 @@ using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.InfraStructure.Ingame.Utility;
 using Cryptos.Runtime.Ingame.System;
 using Cryptos.Runtime.Presenter.Character.Enemy;
 using Cryptos.Runtime.Presenter.Character.Player;
@@ -11,10 +12,8 @@ using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UI.Ingame;
 using Cryptos.Runtime.UseCase.Ingame.Card;
-using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
@@ -50,36 +49,39 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         public async void GameInitialize()
         {
-            
-            CharacterEntity<SymphonyData> symphony = new(_symphonyData);
 
-            EnemyRepository enemyRepo = new();
+            CharacterInitializer.CharacterInitializationData charaInitData =
+                CharacterInitializer.Initialize(_symphonyData);
 
-            CardUseCase cardUseCase = new(_wordDataBase, new());
-            cardUseCase.GetPlayer += () => symphony;
-            cardUseCase.GetTargets += () => enemyRepo.AllEnemies.ToArray();
+            CardInitializer.CardInitializationData cardInitData =
+                CardInitializer.Initialize(_wordDataBase,
+                charaInitData.Symphony, charaInitData.EnemyRepository);
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
-            inputBuffer.OnAlphabetKeyPressed += cardUseCase.InputCharToDeck;
+            inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
 
             PlayerPathContainer playerPathContainer = await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
 
-            IngameUIManager ingameUIManager = await ServiceLocator.GetInstanceAsync<IngameUIManager>();
+            IngameUIManager ingameUIManager = 
+                await ServiceLocator.GetInstanceAsync<IngameUIManager>();
             await InitializeUtility.WaitInitialize(ingameUIManager);
-            CardPresenter cardPresenter = new CardPresenter(cardUseCase, ingameUIManager);
+            CardPresenter cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
 
-            SymphonyPresenter symphonyPresenter = await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
-            symphonyPresenter.Init(cardUseCase, playerPathContainer);
+            SymphonyPresenter symphonyPresenter =
+                await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
+            symphonyPresenter.Init(cardInitData.CardUseCase, playerPathContainer);
 
-            EnemyPresenter enemyPresenter = await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
-            enemyPresenter.Init(enemyRepo, symphonyPresenter);
+            EnemyPresenter enemyPresenter =
+                await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
+            enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter);
 
-            WaveSystemPresenter waveSystem = new(_waveEntities, symphonyPresenter, enemyRepo);
+            WaveSystemPresenter waveSystem = new(_waveEntities, symphonyPresenter,
+                charaInitData.EnemyRepository);
 
             _waveSystem = waveSystem;
-            _symphony = symphony;
-            _enemyRepo = enemyRepo;
-            _cardUseCase = cardUseCase;
+            _symphony = charaInitData.Symphony;
+            _enemyRepo = charaInitData.EnemyRepository;
+            _cardUseCase = cardInitData.CardUseCase;
             _cardPresenter = cardPresenter;
 
             TestCardSpawn();
