@@ -56,6 +56,7 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
                 Debug.LogError("Spawn points are not assigned or empty.");
                 return;
             }
+
             _spawnPointStack = new(_spawnPoints);
         }
 
@@ -79,7 +80,11 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
 
             if (!_spawnPointStack.TryPop(out Transform spawnPoint)) return;
 
-            EnemyModelPresenter model = Instantiate(_enemyModel, spawnPoint.position, spawnPoint.rotation, _enemyContainer);
+            enemy.OnDead += () => _spawnPointStack.Push(spawnPoint);
+
+            EnemyModelPresenter model = Instantiate(_enemyModel,
+                spawnPoint.position, spawnPoint.rotation,
+                _enemyContainer);
             model.Init(enemy, _player.transform);
         }
 
