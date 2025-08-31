@@ -7,9 +7,14 @@ namespace Cryptos.Runtime.Entity.Ingame.System
     [CreateAssetMenu(fileName = nameof(WaveEntity), menuName = "Cryptos/" + nameof(WaveEntity), order = 1)]
     public class WaveEntity : ScriptableObject
     {
+        public int WaveExperiencePoint => _waveExperiencePoint;
         public EnemyData[] Enemies => _enemies;
+
+        [SerializeField, Min(0)]
+        private int _waveExperiencePoint;
 
         [SerializeField]
         private EnemyData[] _enemies;
+
     }
 }
