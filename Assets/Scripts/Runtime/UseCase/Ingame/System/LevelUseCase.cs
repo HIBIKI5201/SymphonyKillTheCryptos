@@ -1,5 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
+using System;
+using System.Threading.Tasks;
 
 namespace Cryptos.Runtime.UseCase.Ingame.System
 {
@@ -8,10 +10,13 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     /// </summary>
     public class LevelUseCase
     {
-        public LevelUseCase(SymphonyData data, float[] levelRequirePoints)
+        public LevelUseCase(LevelSelectData data,
+            Func<string[], Task<string>> onLevelUpSelect)
         {
-            _levelEntity = new LevelEntity(levelRequirePoints);
+            _levelEntity = new LevelEntity(data.LevelRequirePoints);
+
             _data = data;
+            _onLevelUpSelect = onLevelUpSelect;
         }
 
         /// <summary>
@@ -23,7 +28,16 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             return _levelEntity.AddLevelProgress(waveEntity.WaveExperiencePoint);
         }
 
+        public async Task<string> LevelUpSelectAsync()
+        {
+            string selectedCard = await _onLevelUpSelect?.Invoke(_data.LevelCard);
+
+            return selectedCard;
+        }
+
         private LevelEntity _levelEntity;
-        private SymphonyData _data;
+        private LevelSelectData _data;
+
+        private Func<string[], Task<string>> _onLevelUpSelect;
     }
 }
