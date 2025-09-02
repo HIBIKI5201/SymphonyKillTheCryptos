@@ -26,8 +26,10 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         ///     レベル進行度を増加させます。
         /// </summary>
         /// <param name="value"></param>
-        public void AddLevelProgress(float value)
+        public bool AddLevelProgress(float value)
         {
+            bool isLeveledUp = false;
+
             // レベルアップを繰り返す可能性があるためループで処理。
             // 最大レベルに達するか、取得経験値がなくなるまで続ける。
             while (_currentLevel < _requirePoints.Length && 0 < value)
@@ -43,6 +45,8 @@ namespace Cryptos.Runtime.Entity.Ingame.System
 
                     ChangeLevel(_currentLevel + 1);
                     ChangeLevelProgress(0f);
+
+                    if (!isLeveledUp) { isLeveledUp = true; }
                 }
                 else
                 {
@@ -54,6 +58,8 @@ namespace Cryptos.Runtime.Entity.Ingame.System
                     value = 0; // 余りを無くしてループを抜ける。
                 }
             }
+
+            return isLeveledUp;
         }
 
         private int _currentLevel;
@@ -79,6 +85,8 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         /// <param name="value"></param>
         private void ChangeLevel(int value)
         {
+            Debug.Log($"Level Up! {_currentLevel} -> {value}");
+
             _currentLevel = value;
             OnLevelChanged?.Invoke(value);
         }
