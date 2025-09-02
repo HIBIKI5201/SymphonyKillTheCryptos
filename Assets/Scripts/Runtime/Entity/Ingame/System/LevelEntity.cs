@@ -28,18 +28,32 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         /// <param name="value"></param>
         public void AddLevelProgress(float value)
         {
-            if (_requirePoints.Length <= _currentLevel)
+            // レベルアップを繰り返す可能性があるためループで処理。
+            // 最大レベルに達するか、取得経験値がなくなるまで続ける。
+            while (_currentLevel < _requirePoints.Length && 0 < value)
             {
-                Debug.Log("player is max Level");
-                return;
+                float required = _requirePoints[_currentLevel - 1]; // 次のレベルに必要な経験値
+                float remaining = (1f - _levelProgress) * required; // 現在の進行度からレベルアップまでに必要な残り経験値
+
+                if (value >= remaining)
+                {
+                    // 取得経験値が残り経験値を超えている場合、レベルアップ
+
+                    value -= remaining; // 残り経験値を算出
+
+                    ChangeLevel(_currentLevel + 1);
+                    ChangeLevelProgress(0f);
+                }
+                else
+                {
+                    // レベルアップに届かない場合は進捗だけ増加
+
+                    float progress = (value / required) + _levelProgress;
+                    ChangeLevelProgress(progress);
+
+                    value = 0; // 余りなし
+                }
             }
-
-            //必要経験値に対する割合を計算
-            float proportion = value / _requirePoints[_currentLevel - 1];
-            //現在の進行度に加算
-            float progress = proportion + _levelProgress;
-
-            ChangeLevelProgress(progress);
         }
 
         private int _currentLevel;
@@ -55,13 +69,6 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         /// <returns></returns>
         private void ChangeLevelProgress(float value)
         {
-            //進行度が1以下になるまでレベルアップ処理を行う
-            while (1 < value)
-            {
-                value -= 1;
-                ChangeLevel(_currentLevel + 1);
-            }
-
             _levelProgress = value;
             OnLevelProgressChanged?.Invoke(value);
         }
