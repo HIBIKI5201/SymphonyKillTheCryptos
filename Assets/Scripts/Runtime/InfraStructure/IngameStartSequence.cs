@@ -14,6 +14,7 @@ using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
@@ -32,7 +33,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         private WordDataBase _wordDataBase;
 
         [SerializeField]
-        private float[] _levelRequirePoints = new float[] { 100f, 300f, 600f, 1000f };
+        private LevelSelectData _levelSelectData;
 
         [Header("テストコード")]
         [SerializeField]
@@ -54,7 +55,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 charaInitData.Symphony, charaInitData.EnemyRepository);
 
             LevelUseCase levelUseCase =
-                new LevelUseCase(_symphonyData, _levelRequirePoints);
+                new LevelUseCase(_levelSelectData, LevelAsync);
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
@@ -82,6 +83,19 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             waveSystem.GameStart();
 
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
+        }
+
+        private async Task<string> LevelAsync(string[] cards)
+        {
+            Debug.Log($"候補カード {string.Join(' ', cards)}");
+
+            await Awaitable.WaitForSecondsAsync(2f);
+
+            string selectedCard = cards[UnityEngine.Random.Range(0, cards.Length)];
+
+            Debug.Log($"レベルアップカードを選択しました。{selectedCard}");
+
+            return selectedCard;
         }
 
         private void TestCardSpawn(CardUseCase cardUseCase)
