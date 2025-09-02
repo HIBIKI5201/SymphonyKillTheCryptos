@@ -31,6 +31,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField, Tooltip("ワードのデータベース")]
         private WordDataBase _wordDataBase;
 
+        [SerializeField]
+        private float[] _levelRequirePoints = new float[] {100f, 300f, 600f, 1000f };
+
         [Header("テストコード")]
         [SerializeField]
         private CardData[] _cardDatas;
@@ -41,21 +44,17 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField]
         private WaveEntity[] _waveEntities;
 
-        private CardUseCase _cardUseCase;
-        private CardPresenter _cardPresenter;
-        private CharacterEntity<SymphonyData> _symphony;
-        private EnemyRepository _enemyRepo;
-        private WaveSystemPresenter _waveSystem;
-
         public async void GameInitialize()
         {
-
             CharacterInitializer.CharacterInitializationData charaInitData =
                 CharacterInitializer.Initialize(_symphonyData);
 
             CardInitializer.CardInitializationData cardInitData =
                 CardInitializer.Initialize(_wordDataBase,
                 charaInitData.Symphony, charaInitData.EnemyRepository);
+
+            LevelUseCase levelUseCase =
+                new LevelUseCase(_symphonyData, _levelRequirePoints);
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
@@ -75,22 +74,17 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter);
 
-            WaveSystemPresenter waveSystem = new(_waveEntities, symphonyPresenter,
-                charaInitData.EnemyRepository);
+            WaveSystemPresenter waveSystem = new(_waveEntities,
+                symphonyPresenter, charaInitData.EnemyRepository,
+                levelUseCase);
 
-            _waveSystem = waveSystem;
-            _symphony = charaInitData.Symphony;
-            _enemyRepo = charaInitData.EnemyRepository;
-            _cardUseCase = cardInitData.CardUseCase;
-            _cardPresenter = cardPresenter;
-
-            TestCardSpawn();
+            TestCardSpawn(cardInitData.CardUseCase);
             waveSystem.GameStart();
 
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
 
-        private void TestCardSpawn()
+        private void TestCardSpawn(CardUseCase cardUseCase)
         {
             if (_cardDatas == null || _cardDatas.Length == 0)
             {
@@ -107,7 +101,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             {
                 Debug.Log("draw");
                 var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
-                var instance = _cardUseCase.CreateCard(cardData);
+                var instance = cardUseCase.CreateCard(cardData);
 
                 instance.OnComplete += RandomDraw;
             }
