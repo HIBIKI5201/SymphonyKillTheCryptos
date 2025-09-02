@@ -1,21 +1,29 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
-using UnityEngine;
 
-public class LevelUseCase
+namespace Cryptos.Runtime.UseCase.Ingame.System
 {
-    public LevelUseCase(SymphonyData data, float[] levelRequirePoints)
+    /// <summary>
+    ///     レベル管理を行うユースケース。
+    /// </summary>
+    public class LevelUseCase
     {
-        _levelEntity = new LevelEntity(levelRequirePoints);
-        _data = data;
-    }
+        public LevelUseCase(SymphonyData data, float[] levelRequirePoints)
+        {
+            _levelEntity = new LevelEntity(levelRequirePoints);
+            _data = data;
+        }
 
-    public void AddLevelProgress(WaveEntity waveEntity)
-    {
-        float levelProgress = waveEntity.WaveExperiencePoint / 100f;
-        _levelEntity.AddLevelProgress(levelProgress);
-    }
+        /// <summary>
+        ///     ウェーブクリア時に経験値を追加します。
+        /// </summary>
+        /// <param name="waveEntity"></param>
+        public void AddLevelProgress(WaveEntity waveEntity)
+        {
+            _levelEntity.AddLevelProgress(waveEntity.WaveExperiencePoint);
+        }
 
-    private LevelEntity _levelEntity;
-    private SymphonyData _data;
+        private LevelEntity _levelEntity;
+        private SymphonyData _data;
+    }
 }
