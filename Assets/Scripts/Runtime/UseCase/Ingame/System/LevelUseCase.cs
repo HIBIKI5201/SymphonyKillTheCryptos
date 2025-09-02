@@ -18,9 +18,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         ///     ウェーブクリア時に経験値を追加します。
         /// </summary>
         /// <param name="waveEntity"></param>
-        public void AddLevelProgress(WaveEntity waveEntity)
+        public bool AddLevelProgress(WaveEntity waveEntity)
         {
-            _levelEntity.AddLevelProgress(waveEntity.WaveExperiencePoint);
+            return _levelEntity.AddLevelProgress(waveEntity.WaveExperiencePoint);
         }
 
         private LevelEntity _levelEntity;
