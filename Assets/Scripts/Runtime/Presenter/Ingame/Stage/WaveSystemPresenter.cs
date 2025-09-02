@@ -26,19 +26,34 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             WaveEnemysCreate(_waveUseCase.CurrentWave);
         }
 
+        private WaveUseCase _waveUseCase;
+        private SymphonyPresenter _symphony;
+        private EnemyRepository _enemyRepository;
+        private LevelUseCase _levelUseCase;
+
+        private int _enemyCount = 0;
+
+        /// <summary>
+        ///     ウェーブが変更されたときの処理。
+        /// </summary>
+        /// <param name="newWave"></param>
         private async void HandleWaveChanged(WaveEntity newWave)
         {
             await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
             WaveEnemysCreate(newWave);
+
+            bool isLevelUp = _levelUseCase.AddLevelProgress(newWave);
         }
 
+        /// <summary>
+        ///     敵が倒されたときの処理。
+        /// </summary>
         private void HandleEnemyDead()
         {
             _enemyCount--;
             if (_enemyCount <= 0)
             {
-                WaveEntity newWave = _waveUseCase.NextWave();
-                _levelUseCase.AddLevelProgress(newWave);
+                _waveUseCase.NextWave(); // 全ての敵を倒したら次のウェーブへ。
             }
         }
 
@@ -53,12 +68,5 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
                 enemy.OnDead += HandleEnemyDead;
             }
         }
-
-        private WaveUseCase _waveUseCase;
-        private SymphonyPresenter _symphony;
-        private EnemyRepository _enemyRepository;
-        private LevelUseCase _levelUseCase;
-
-        private int _enemyCount = 0;
     }
 }
