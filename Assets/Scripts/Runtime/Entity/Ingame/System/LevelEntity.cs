@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Cryptos.Runtime.Entity.Ingame.System
 {
     /// <summary>
-    ///     レベル管理を行うエンティティ
+    ///     レベル管理を行うエンティティ。
     /// </summary>
     public class LevelEntity
     {
@@ -32,26 +32,26 @@ namespace Cryptos.Runtime.Entity.Ingame.System
             // 最大レベルに達するか、取得経験値がなくなるまで続ける。
             while (_currentLevel < _requirePoints.Length && 0 < value)
             {
-                float required = _requirePoints[_currentLevel - 1]; // 次のレベルに必要な経験値
-                float remaining = (1f - _levelProgress) * required; // 現在の進行度からレベルアップまでに必要な残り経験値
+                float required = _requirePoints[_currentLevel - 1]; // 次のレベルに必要な経験値。
+                float remaining = (1f - _levelProgress) * required; // 現在の進行度からレベルアップまでに必要な残り経験値。
 
                 if (value >= remaining)
                 {
-                    // 取得経験値が残り経験値を超えている場合、レベルアップ
+                    // 取得経験値が残り経験値を超えている場合レベルアップ。
 
-                    value -= remaining; // 残り経験値を算出
+                    value -= remaining; // 残り経験値を算出。
 
                     ChangeLevel(_currentLevel + 1);
                     ChangeLevelProgress(0f);
                 }
                 else
                 {
-                    // レベルアップに届かない場合は進捗だけ増加
+                    // レベルアップに届かない場合は進捗だけ増加。
 
                     float progress = (value / required) + _levelProgress;
                     ChangeLevelProgress(progress);
 
-                    value = 0; // 余りなし
+                    value = 0; // 余りを無くしてループを抜ける。
                 }
             }
         }
