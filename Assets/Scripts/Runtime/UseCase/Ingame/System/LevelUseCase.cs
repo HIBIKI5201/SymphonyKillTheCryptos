@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LevelUseCase
 {
-    public LevelUseCase(SymphonyData data)
+    public LevelUseCase(SymphonyData data, float[] levelRequirePoints)
     {
-        _levelEntity = new LevelEntity();
+        _levelEntity = new LevelEntity(levelRequirePoints);
         _data = data;
     }
 
