@@ -8,10 +8,10 @@ using Cryptos.Runtime.Ingame.System;
 using Cryptos.Runtime.Presenter.Character.Enemy;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Card;
-using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UI.Ingame;
 using Cryptos.Runtime.UseCase.Ingame.Card;
+using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
@@ -32,7 +32,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         private WordDataBase _wordDataBase;
 
         [SerializeField]
-        private float[] _levelRequirePoints = new float[] {100f, 300f, 600f, 1000f };
+        private float[] _levelRequirePoints = new float[] { 100f, 300f, 600f, 1000f };
 
         [Header("テストコード")]
         [SerializeField]
@@ -61,7 +61,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             PlayerPathContainer playerPathContainer = await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
 
-            IngameUIManager ingameUIManager = 
+            IngameUIManager ingameUIManager =
                 await ServiceLocator.GetInstanceAsync<IngameUIManager>();
             await InitializeUtility.WaitInitialize(ingameUIManager);
             CardPresenter cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
