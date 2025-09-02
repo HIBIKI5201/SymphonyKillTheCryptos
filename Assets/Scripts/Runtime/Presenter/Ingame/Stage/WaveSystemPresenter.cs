@@ -3,6 +3,7 @@ using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.System;
+using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
 {
@@ -42,7 +43,11 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
             WaveEnemysCreate(newWave);
 
-            bool isLevelUp = _levelUseCase.AddLevelProgress(newWave);
+            if (_levelUseCase.AddLevelProgress(newWave))
+            {
+                string levelCard = await _levelUseCase.LevelUpSelectAsync();
+                Debug.Log($"Level Up! Selected Card: {levelCard}");
+            }
         }
 
         /// <summary>
