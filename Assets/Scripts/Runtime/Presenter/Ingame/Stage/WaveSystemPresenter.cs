@@ -3,13 +3,14 @@ using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.System;
-using System.Threading.Tasks;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     public class WaveSystemPresenter
     {
-        public WaveSystemPresenter(WaveEntity[] waveEntities, SymphonyPresenter player,  EnemyRepository enemyRepository)
+        public WaveSystemPresenter(WaveEntity[] waveEntities,
+            SymphonyPresenter player, EnemyRepository enemyRepository,
+            LevelUseCase levelUseCase)
         {
             WaveUseCase waveUseCase = new(waveEntities);
             waveUseCase.OnWaveChanged += HandleWaveChanged;
@@ -17,6 +18,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _waveUseCase = waveUseCase;
             _symphony = player;
             _enemyRepository = enemyRepository;
+            _levelUseCase = levelUseCase;
         }
 
         public void GameStart()
@@ -35,7 +37,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _enemyCount--;
             if (_enemyCount <= 0)
             {
-                _waveUseCase.NextWave();
+                WaveEntity newWave = _waveUseCase.NextWave();
+                _levelUseCase.AddLevelProgress(newWave);
             }
         }
 
@@ -54,6 +57,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         private WaveUseCase _waveUseCase;
         private SymphonyPresenter _symphony;
         private EnemyRepository _enemyRepository;
+        private LevelUseCase _levelUseCase;
 
         private int _enemyCount = 0;
     }
