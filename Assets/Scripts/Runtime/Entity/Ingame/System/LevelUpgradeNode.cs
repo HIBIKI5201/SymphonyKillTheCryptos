@@ -17,7 +17,7 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         [SerializeField]
         private Texture2D _texture;
 
-        [SerializeField]
+        [SerializeReference, SubclassSelector]
         private ILevelUpgradeEffect[] _effects;
     }
 }
