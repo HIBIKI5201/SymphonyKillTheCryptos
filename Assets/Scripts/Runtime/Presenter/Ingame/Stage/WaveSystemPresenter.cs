@@ -40,8 +40,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// <param name="newWave"></param>
         private async void HandleWaveChanged(WaveEntity newWave)
         {
-            await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
-            WaveEnemysCreate(newWave);
             _levelUseCase.AddLevelProgress(newWave);
 
             // レベルアップキューに溜まっている分を全て処理。
@@ -50,6 +48,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
                 LevelUpgradeNode upgradeNode = await _levelUseCase.WaitLevelUpSelectAsync();
                 Debug.Log($"Level Up! Selected Card: {upgradeNode}");
             }
+
+            await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
+            WaveEnemysCreate(newWave);
         }
 
         /// <summary>
