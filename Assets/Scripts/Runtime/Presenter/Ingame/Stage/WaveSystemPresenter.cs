@@ -42,11 +42,13 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         {
             await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
             WaveEnemysCreate(newWave);
+            _levelUseCase.AddLevelProgress(newWave);
 
-            if (_levelUseCase.AddLevelProgress(newWave))
+            // レベルアップキューに溜まっている分を全て処理。
+            while (_levelUseCase.LevelUpQueue.TryDequeue(out _))
             {
-                string levelCard = await _levelUseCase.LevelUpSelectAsync();
-                Debug.Log($"Level Up! Selected Card: {levelCard}");
+                LevelUpgradeNode upgradeNode = await _levelUseCase.WaitLevelUpSelectAsync();
+                Debug.Log($"Level Up! Selected Card: {upgradeNode}");
             }
         }
 
