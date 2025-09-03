@@ -4,8 +4,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     ///     バフなどで一時的に変更されるプレイヤーのステータスを表すクラスです。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TentativeCharacterData<T> : IAttackableData, IHittableData
-        where T : IAttackableData, IHittableData
+    public class TentativeCharacterData<T> : IAttackableData, IHittableData where T : CharacterData
     {
         public TentativeCharacterData(T data)
         {
@@ -48,10 +47,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         public float Armor => _armor;
 
         private readonly T _data;
-        private float _attackPower = 10;
-        private float _criticalChance = 3;
-        private float _criticalDamage = 2;
-        private float _maxHealth = 100;
-        private float _armor = 25;
+        private float _attackPower;
+        private float _criticalChance;
+        private float _criticalDamage;
+        private float _maxHealth;
+        private float _armor;
     }
 }
