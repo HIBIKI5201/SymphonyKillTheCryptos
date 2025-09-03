@@ -11,6 +11,6 @@ namespace Cryptos.Runtime.Entity
                 _healthIncreaseAmount);
         }
 
-        [SerializeField, Min(1)] private float _healthIncreaseAmount;
+        [SerializeField, Min(1)] private float _healthIncreaseAmount = 1;
     }
 }
