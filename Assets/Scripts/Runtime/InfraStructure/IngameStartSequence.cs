@@ -14,6 +14,7 @@ using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -85,17 +86,17 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
 
-        private async Task<string> LevelAsync(string[] cards)
+        private async Task<LevelUpgradeNode> LevelAsync(LevelUpgradeNode[] nodes)
         {
-            Debug.Log($"候補カード {string.Join(' ', cards)}");
+            Debug.Log($"候補カード {string.Join(' ', nodes.Select(n => n.NodeName))}");
 
             await Awaitable.WaitForSecondsAsync(2f);
 
-            string selectedCard = cards[UnityEngine.Random.Range(0, cards.Length)];
+            LevelUpgradeNode selectedNode = nodes[UnityEngine.Random.Range(0, nodes.Length)];
 
-            Debug.Log($"レベルアップカードを選択しました。{selectedCard}");
+            Debug.Log($"レベルアップカードを選択しました。{selectedNode}");
 
-            return selectedCard;
+            return selectedNode;
         }
 
         private void TestCardSpawn(CardUseCase cardUseCase)
