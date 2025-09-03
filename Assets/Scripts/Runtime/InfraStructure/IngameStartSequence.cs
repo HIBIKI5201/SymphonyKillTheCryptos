@@ -57,9 +57,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             LevelUseCase levelUseCase =
                 new LevelUseCase(_levelUpgradeData, LevelAsync);
 
-            InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
-            inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
-
             PlayerPathContainer playerPathContainer = await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
 
             IngameUIManager ingameUIManager =
@@ -78,6 +75,13 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             WaveSystemPresenter waveSystem = new(_waveEntities,
                 symphonyPresenter, charaInitData.EnemyRepository,
                 levelUseCase);
+
+            InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
+            // ウェーブ開始時に入力受付を開始、ウェーブクリア時に入力受付を停止する。
+            waveSystem.OnWaveStarted += 
+                () => inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
+            waveSystem.OnWaveCleared += 
+                () => inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
 
             TestCardSpawn(cardInitData.CardUseCase);
             waveSystem.GameStart();
