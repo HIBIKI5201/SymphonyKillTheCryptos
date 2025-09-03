@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd644b1c36a1b2840a04c42bd73076ec, type: 3}
   m_Name: EnemyData
   m_EditorClassIdentifier: 
+  _name: Enemy
   _attackPower: 10
   _criticalChance: 3
   _criticalDamage: 2

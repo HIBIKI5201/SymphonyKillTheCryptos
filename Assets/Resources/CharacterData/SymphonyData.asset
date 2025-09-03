@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b804bc231bb5c74a869f56b8c1e1426, type: 3}
   m_Name: SymphonyData
   m_EditorClassIdentifier: 
+  _name: Symphony
   _attackPower: 10
   _criticalChance: 3
   _criticalDamage: 2
