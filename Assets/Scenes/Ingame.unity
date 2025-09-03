@@ -154,9 +154,13 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: ed2dfb93780c632439a8e93a5222b4d9, type: 3}
   m_SortingOrder: 0
+  m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
 --- !u!4 &854485659
 Transform:
   m_ObjectHideFlags: 0
@@ -254,6 +258,7 @@ MonoBehaviour:
       data:
         _symphonyData: {fileID: 11400000, guid: fcf3f1f413c8c4348987e4dadd1102f0, type: 2}
         _wordDataBase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
+        _levelUpgradeData: {fileID: 11400000, guid: dd172b20880f1164bb428439fc1d1cdd, type: 2}
         _cardDatas:
         - {fileID: 11400000, guid: 5f133e15ad993d141ad05589ec0d0163, type: 2}
         - {fileID: 11400000, guid: db05b835f35190a4bbfa52a418b4a8fb, type: 2}
