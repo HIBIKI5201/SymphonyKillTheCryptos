@@ -12,11 +12,11 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
     /// </summary>
     public class EnemyRepository
     {
-        public event Action<CharacterEntity<EnemyData>> OnEnemyCreated;
+        public event Action<CharacterEntity<CharacterData>> OnEnemyCreated;
 
-        public IReadOnlyList<CharacterEntity<EnemyData>> AllEnemies => _enemies;
+        public IReadOnlyList<CharacterEntity<CharacterData>> AllEnemies => _enemies;
 
-        public CharacterEntity<EnemyData> CreateEnemy(EnemyData data)
+        public CharacterEntity<CharacterData> CreateEnemy(CharacterData data)
         {
             if (data == null)
             {
@@ -24,7 +24,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
                 return null;
             }
 
-            CharacterEntity<EnemyData> enemy = _enemyGenerator.Generate(data);
+            CharacterEntity<CharacterData> enemy = _enemyGenerator.Generate(data);
             if (enemy == null) return null;
 
             _enemies.Add(enemy);
@@ -39,14 +39,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
             return enemy;
         }
 
-        private List<CharacterEntity<EnemyData>> _enemies = new();
+        private List<CharacterEntity<CharacterData>> _enemies = new();
         private EnemyGenerator _enemyGenerator = new();
 
         /// <summary>
         /// 敵キャラクターの体力ログを設定します。
         /// </summary>
         /// <param name="enemy"></param>
-        private void EnemyLog(CharacterEntity<EnemyData> enemy)
+        private void EnemyLog(CharacterEntity<CharacterData> enemy)
         {
             enemy.OnHealthChanged += (currentHealth, maxHealth) =>
             {

@@ -8,13 +8,13 @@ namespace Cryptos.Runtime.Entity.Ingame.System
     public class WaveEntity : ScriptableObject
     {
         public int WaveExperiencePoint => _waveExperiencePoint;
-        public EnemyData[] Enemies => _enemies;
+        public CharacterData[] Enemies => _enemies;
 
         [SerializeField, Min(0)]
         private int _waveExperiencePoint;
 
         [SerializeField]
-        private EnemyData[] _enemies;
+        private CharacterData[] _enemies;
 
     }
 }

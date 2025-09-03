@@ -6,9 +6,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Utility
 {
     public static class CharacterInitializer
     {
-        public static CharacterInitializationData Initialize(SymphonyData symphonyData)
+        public static CharacterInitializationData Initialize(CharacterData symphonyData)
         {
-            CharacterEntity<SymphonyData> symphony = new(symphonyData);
+            CharacterEntity<CharacterData> symphony = new(symphonyData);
             EnemyRepository enemyRepo = new();
 
             return new(symphony, enemyRepo);
@@ -17,17 +17,17 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Utility
         public readonly struct CharacterInitializationData
         {
             public CharacterInitializationData(
-                CharacterEntity<SymphonyData> symphony,
+                CharacterEntity<CharacterData> symphony,
                 EnemyRepository enemyRepository)
             {
                 _symphony = symphony;
                 _enemyRepo = enemyRepository;
             }
 
-            public CharacterEntity<SymphonyData> Symphony => _symphony;
+            public CharacterEntity<CharacterData> Symphony => _symphony;
             public EnemyRepository EnemyRepository => _enemyRepo;
 
-            private readonly CharacterEntity<SymphonyData> _symphony;
+            private readonly CharacterEntity<CharacterData> _symphony;
             private readonly EnemyRepository _enemyRepo;
         }
     }

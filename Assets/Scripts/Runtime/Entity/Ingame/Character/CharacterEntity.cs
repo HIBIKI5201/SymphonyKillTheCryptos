@@ -9,8 +9,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// IAttackableData と IHittableData の両方を実装したデータ型を扱うことができます。
     /// </summary>
     [Serializable]
-    public sealed class CharacterEntity<T> : ICharacter
-        where T : class, IAttackableData, IHittableData
+    public sealed class CharacterEntity<T> : ICharacter where T : CharacterData
     {
         public CharacterEntity(T data)
         {
@@ -18,14 +17,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             _healthEntity = new HealthEntity(data);
         }
 
-        [Tooltip("体力が変化した際に発火します。第一引数は現在値、第二引数は最大値。")]
+        /// <summary> 体力が変化した際に発火します。第一引数は現在値、第二引数は最大値。 </summary>
         public event Action<float, float> OnHealthChanged
         {
             add => _healthEntity.OnHealthChanged += value;
             remove => _healthEntity.OnHealthChanged -= value;
         }
 
-        [Tooltip("死亡時に発火します。")]
+        /// <summary> 死亡時に発火します。 </summary>
         public event Action OnDead
         {
             add => _healthEntity.OnDead += value;

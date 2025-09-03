@@ -5,7 +5,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Character
 {
     public class EnemyGenerator
     {
-        public CharacterEntity<EnemyData> Generate(EnemyData data)
+        public CharacterEntity<CharacterData> Generate(CharacterData data)
         {
             if (data == null)
             {
@@ -13,7 +13,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Character
                 return null;
             }
             // ここで敵キャラクターを生成する
-            return new CharacterEntity<EnemyData>(data);
+            return new CharacterEntity<CharacterData>(data);
         }
     }
 }

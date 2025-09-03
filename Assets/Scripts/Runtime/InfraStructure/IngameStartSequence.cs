@@ -28,7 +28,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         }
 
         [SerializeField, Tooltip("プレイヤーデータ")]
-        private SymphonyData _symphonyData;
+        private CharacterData _symphonyData;
         [SerializeField, Tooltip("ワードのデータベース")]
         private WordDataBase _wordDataBase;
 

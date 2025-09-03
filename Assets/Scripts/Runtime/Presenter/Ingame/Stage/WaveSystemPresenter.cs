@@ -64,12 +64,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         private void WaveEnemysCreate(WaveEntity waveEntity)
         {
-            EnemyData[] enemyData = waveEntity.Enemies;
+            CharacterData[] enemyData = waveEntity.Enemies;
             _enemyCount = enemyData.Length;
 
             foreach (var item in enemyData)
             {
-                CharacterEntity<EnemyData> enemy = _enemyRepository.CreateEnemy(item);
+                CharacterEntity<CharacterData> enemy = _enemyRepository.CreateEnemy(item);
                 enemy.OnDead += HandleEnemyDead;
             }
         }
