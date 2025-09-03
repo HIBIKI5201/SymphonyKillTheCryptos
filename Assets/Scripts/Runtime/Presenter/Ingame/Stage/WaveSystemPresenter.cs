@@ -31,6 +31,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         public void GameStart()
         {
             CreateWaveEnemys(_waveUseCase.CurrentWave);
+            OnWaveStarted?.Invoke();
         }
 
         private WaveUseCase _waveUseCase;
