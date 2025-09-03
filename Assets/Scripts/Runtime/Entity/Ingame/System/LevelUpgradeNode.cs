@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.System
 {
-    public abstract class LevelUpgradeNodeBase : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(LevelUpgradeNode), menuName = "Cryptos/" + nameof(LevelUpgradeNode), order = 0)]
+    public class LevelUpgradeNode : ScriptableObject
     {
         public string NodeName => _nodeName;
         public Texture2D Texture => _texture;
-
-        public abstract void Execute();
+        public ILevelUpgradeEffect[] Effects => _effects;
 
         [SerializeField]
         private string _nodeName = "New Node";
@@ -16,5 +16,8 @@ namespace Cryptos.Runtime.Entity.Ingame.System
 
         [SerializeField]
         private Texture2D _texture;
+
+        [SerializeField]
+        private ILevelUpgradeEffect[] _effects;
     }
 }
