@@ -4,7 +4,6 @@ using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.InfraStructure.Ingame.Utility;
-using Cryptos.Runtime.Ingame.System;
 using Cryptos.Runtime.Presenter.Character.Enemy;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Card;

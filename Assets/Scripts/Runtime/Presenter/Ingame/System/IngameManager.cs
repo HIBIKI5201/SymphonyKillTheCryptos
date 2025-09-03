@@ -4,7 +4,7 @@ using SymphonyFrameWork.System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Ingame.System
+namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     /// <summary>
     ///     インゲームシーンのマネジメントを行う

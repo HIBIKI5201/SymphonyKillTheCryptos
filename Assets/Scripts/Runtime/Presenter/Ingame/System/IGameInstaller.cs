@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Cryptos.Runtime.Ingame.System
+namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     public interface IGameInstaller
     {
