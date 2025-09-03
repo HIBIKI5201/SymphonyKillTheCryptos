@@ -6,8 +6,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// <summary>
     /// 敵キャラクターの静的なステータス情報を保持するScriptableObjectです。
     /// </summary>
-    [CreateAssetMenu(fileName = nameof(EnemyData), menuName = CryptosPathConstant.ASSET_PATH + nameof(EnemyData), order = 1)]
-    public class EnemyData : ScriptableObject, IAttackableData, IHittableData
+    [CreateAssetMenu(fileName = nameof(CharacterData), menuName = CryptosPathConstant.ASSET_PATH + nameof(CharacterData), order = 1)]
+    public class CharacterData : ScriptableObject, IAttackableData, IHittableData
     {
         public string Name => _name;
         /// <summary>
