@@ -18,6 +18,6 @@ MonoBehaviour:
   - 600
   - 1000
   _levelCard:
-  - a
-  - b
-  - c
+  - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
+  - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
+  - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
