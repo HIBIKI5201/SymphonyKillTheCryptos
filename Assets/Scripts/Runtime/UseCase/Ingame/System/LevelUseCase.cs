@@ -1,4 +1,3 @@
-using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
 using System;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     /// </summary>
     public class LevelUseCase
     {
-        public LevelUseCase(LevelSelectData data,
+        public LevelUseCase(LevelUpgradeData data,
             Func<string[], Task<string>> onLevelUpSelect)
         {
             _levelEntity = new LevelEntity(data.LevelRequirePoints);
@@ -36,7 +35,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         }
 
         private LevelEntity _levelEntity;
-        private LevelSelectData _data;
+        private LevelUpgradeData _data;
 
         private Func<string[], Task<string>> _onLevelUpSelect;
     }

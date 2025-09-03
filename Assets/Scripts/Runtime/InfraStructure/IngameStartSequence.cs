@@ -33,7 +33,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         private WordDataBase _wordDataBase;
 
         [SerializeField]
-        private LevelSelectData _levelSelectData;
+        private LevelUpgradeData _levelUpgradeData;
 
         [Header("テストコード")]
         [SerializeField]
@@ -55,7 +55,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 charaInitData.Symphony, charaInitData.EnemyRepository);
 
             LevelUseCase levelUseCase =
-                new LevelUseCase(_levelSelectData, LevelAsync);
+                new LevelUseCase(_levelUpgradeData, LevelAsync);
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
