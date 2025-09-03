@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
@@ -45,6 +47,34 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// 防御力を取得します（割合軽減）。
         /// </summary>
         public float Armor => _armor;
+
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        public void SetNewBuff(BuffType type, float value)
+        {
+            switch (type)
+            {
+                case BuffType.AttackPower: _attackPower *= value; break;
+                case BuffType.CriticalChance: _criticalChance *= value; break;
+                case BuffType.CriticalDamage: _criticalDamage *= value; break;
+                case BuffType.MaxHealth: _maxHealth *= value; break;
+                case BuffType.Armor: _armor *= value; break;
+            }
+
+            Debug.Log($"{_data.Name} StatusUpgrade\nvalue {value}");
+        }
+
+        public enum BuffType
+        {
+            AttackPower,
+            CriticalChance,
+            CriticalDamage,
+            MaxHealth,
+            Armor
+        }
 
         private readonly T _data;
         private float _attackPower;
