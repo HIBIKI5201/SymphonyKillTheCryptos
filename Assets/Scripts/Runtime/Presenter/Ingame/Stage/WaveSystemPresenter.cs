@@ -3,6 +3,7 @@ using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.System;
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
@@ -22,9 +23,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _levelUseCase = levelUseCase;
         }
 
+        /// <summary> ウェーブ開始時 </summary>
+        public event Action OnWaveStarted;
+        /// <summary> ウェーブクリア時 </summary>
+        public event Action OnWaveCleared;
+
         public void GameStart()
         {
-            WaveEnemysCreate(_waveUseCase.CurrentWave);
+            CreateWaveEnemys(_waveUseCase.CurrentWave);
         }
 
         private WaveUseCase _waveUseCase;
@@ -40,6 +46,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// <param name="newWave"></param>
         private async void HandleWaveChanged(WaveEntity newWave)
         {
+            OnWaveCleared?.Invoke();
+
             _levelUseCase.AddLevelProgress(newWave);
 
             // レベルアップキューに溜まっている分を全て処理。
@@ -50,7 +58,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             }
 
             await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
-            WaveEnemysCreate(newWave);
+            CreateWaveEnemys(newWave);
+
+            OnWaveStarted?.Invoke();
         }
 
         /// <summary>
@@ -65,7 +75,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             }
         }
 
-        private void WaveEnemysCreate(WaveEntity waveEntity)
+        private void CreateWaveEnemys(WaveEntity waveEntity)
         {
             CharacterData[] enemyData = waveEntity.Enemies;
             _enemyCount = enemyData.Length;
