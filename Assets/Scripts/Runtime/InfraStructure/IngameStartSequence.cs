@@ -88,7 +88,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         private async Task<LevelUpgradeNode> LevelAsync(LevelUpgradeNode[] nodes)
         {
-            Debug.Log($"候補カード {string.Join(' ', nodes.Select(n => n.NodeName))}");
+            Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
 
             await Awaitable.WaitForSecondsAsync(2f);
 
