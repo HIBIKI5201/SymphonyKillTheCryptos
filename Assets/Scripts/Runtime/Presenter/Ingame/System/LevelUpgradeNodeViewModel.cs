@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.System;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter
+namespace Cryptos.Runtime.Presenter.System
 {
     public readonly struct LevelUpgradeNodeViewModel
     {
