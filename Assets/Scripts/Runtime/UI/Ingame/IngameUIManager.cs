@@ -45,6 +45,8 @@ namespace Cryptos.Runtime.UI.Ingame
 
             await _deck.InitializeTask;
             await _levelUpgrade.InitializeTask;
+
+            _levelUpgrade.CloseWindow();
         }
     }
 }
