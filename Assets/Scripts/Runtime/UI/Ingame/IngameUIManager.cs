@@ -13,12 +13,12 @@ namespace Cryptos.Runtime.UI.Ingame
     [RequireComponent(typeof(UIDocument))]
     public class IngameUIManager : MonoBehaviour, ICardUIManager, IInitializeAsync
     {
-        public void HanldeAddCard(CardViewModel instance)
+        public void AddCard(CardViewModel instance)
         {
             _deck.HandleAddCard(instance);
         }
 
-        public void HandleRemoveCard(CardViewModel instance)
+        public void RemoveCard(CardViewModel instance)
         {
             _deck.HandleRemoveCard(instance);
         }

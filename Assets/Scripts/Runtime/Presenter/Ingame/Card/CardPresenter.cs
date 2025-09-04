@@ -19,12 +19,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.Card
         private void HandleAddCard(CardEntity card)
         {
 
-            _cardUIManager.HanldeAddCard(new(card));
+            _cardUIManager.AddCard(new(card));
         }
 
         private void HandleRemoveCard(CardEntity card)
         {
-            _cardUIManager.HandleRemoveCard(new(card));
+            _cardUIManager.RemoveCard(new(card));
         }
     }
 }

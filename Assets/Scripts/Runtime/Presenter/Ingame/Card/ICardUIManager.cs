@@ -5,7 +5,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Card
 {
     public interface ICardUIManager
     {
-        public void HanldeAddCard(CardViewModel instance);
-        public void HandleRemoveCard(CardViewModel instance);
+        public void AddCard(CardViewModel instance);
+        public void RemoveCard(CardViewModel instance);
     }
 }
