@@ -15,7 +15,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             LevelUseCase levelUseCase)
         {
             WaveUseCase waveUseCase = new(waveEntities);
-            waveUseCase.OnWaveChanged += HandleWaveChanged;
 
             _waveUseCase = waveUseCase;
             _symphony = player;
@@ -42,10 +41,23 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         private int _enemyCount = 0;
 
         /// <summary>
+        ///     敵が倒されたときの処理。
+        /// </summary>
+        private void HandleEnemyDead()
+        {
+            _enemyCount--;
+            if (_enemyCount <= 0)
+            {
+                WaveEntity wave = _waveUseCase.NextWave(); // 全ての敵を倒したら次のウェーブへ。
+                ChangeWave(wave);
+            }
+        }
+
+        /// <summary>
         ///     ウェーブが変更されたときの処理。
         /// </summary>
         /// <param name="newWave"></param>
-        private async void HandleWaveChanged(WaveEntity newWave)
+        private async void ChangeWave(WaveEntity newWave)
         {
             OnWaveCleared?.Invoke();
 
@@ -62,18 +74,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             CreateWaveEnemys(newWave);
 
             OnWaveStarted?.Invoke();
-        }
-
-        /// <summary>
-        ///     敵が倒されたときの処理。
-        /// </summary>
-        private void HandleEnemyDead()
-        {
-            _enemyCount--;
-            if (_enemyCount <= 0)
-            {
-                _waveUseCase.NextWave(); // 全ての敵を倒したら次のウェーブへ。
-            }
         }
 
         private void CreateWaveEnemys(WaveEntity waveEntity)
