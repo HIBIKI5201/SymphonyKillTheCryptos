@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Card
 {
-    public struct CardViewModel
+    public readonly struct CardViewModel
     {
         public CardViewModel(CardEntity cardEntity)
         {
@@ -25,6 +25,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Card
 
         public string CurrentWord => _cardEntity.WordEntity.CurrentWord;
 
-        private CardEntity _cardEntity;
+        private readonly CardEntity _cardEntity;
     }
 }
