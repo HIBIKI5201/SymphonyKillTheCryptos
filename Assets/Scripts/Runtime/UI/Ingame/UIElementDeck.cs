@@ -14,11 +14,6 @@ namespace Cryptos.Runtime.UI.Ingame
     {
         public UIElementDeck() : base("UIToolKit/UXML/Ingame/Deck") { }
 
-        private const string DECK_NAME = "deck";
-
-        private VisualElement _deck;
-        private readonly Dictionary<CardViewModel, UIElementCard> _cards = new();
-
         protected override Task Initialize_S(TemplateContainer container)
         {
             _deck = container.Q<VisualElement>(DECK_NAME);
@@ -52,5 +47,10 @@ namespace Cryptos.Runtime.UI.Ingame
                 _cards.Remove(instance);
             }
         }
+
+        private const string DECK_NAME = "deck";
+
+        private VisualElement _deck;
+        private readonly Dictionary<CardViewModel, UIElementCard> _cards = new();
     }
 }

@@ -13,11 +13,6 @@ namespace Cryptos.Runtime.UI.Ingame
     {
         public UIElementCard() : base("UIToolKit/UXML/Ingame/Card", InitializeType.PickModeIgnore) { }
 
-        private const int SIDE_MARGIN = 10;
-
-        private Label _wordLabel;
-        private VisualElement _progressBar;
-
         /// <summary>
         ///     データをセットする
         /// </summary>
@@ -42,6 +37,12 @@ namespace Cryptos.Runtime.UI.Ingame
 
             return Task.CompletedTask;
         }
+
+
+        private const int SIDE_MARGIN = 10;
+
+        private Label _wordLabel;
+        private VisualElement _progressBar;
 
         /// <summary>
         ///     ワードを更新する
