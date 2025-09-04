@@ -6,6 +6,7 @@ namespace Cryptos.Runtime.Entity.Ingame.System
     public class LevelUpgradeNode : ScriptableObject
     {
         public string NodeName => _nodeName;
+        public string Description => _description;
         public Texture2D Texture => _texture;
         public ILevelUpgradeEffect[] Effects => _effects;
 
