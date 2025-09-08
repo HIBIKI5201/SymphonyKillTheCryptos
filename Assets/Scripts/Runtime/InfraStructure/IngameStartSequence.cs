@@ -8,6 +8,7 @@ using Cryptos.Runtime.Presenter.Character.Enemy;
 using Cryptos.Runtime.Presenter.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.System;
+using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.UI.Ingame;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
@@ -44,6 +45,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [Space]
         [SerializeField]
         private WaveEntity[] _waveEntities;
+
+        [SerializeField]
+        private LevelUpgradeNode[] _levelUpgradeNodes;
+
+        private IngameUIManager _gameUIManager;
 
         public async void GameInitialize()
         {
@@ -83,14 +89,22 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             waveSystem.OnWaveCleared += 
                 () => inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
 
+            inputBuffer.OnAlphabetKeyPressed += ingameUIManager.OnInutChar;
+
             TestCardSpawn(cardInitData.CardUseCase);
             waveSystem.GameStart();
+
+            _gameUIManager = ingameUIManager;
 
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
 
         private async Task<LevelUpgradeNode> LevelAsync(LevelUpgradeNode[] nodes)
         {
+            LevelUpgradeNodeViewModel[] levelUpgradeNodes = _levelUpgradeNodes
+                .Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
+            _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
+
             Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
 
             await Awaitable.WaitForSecondsAsync(2f);
