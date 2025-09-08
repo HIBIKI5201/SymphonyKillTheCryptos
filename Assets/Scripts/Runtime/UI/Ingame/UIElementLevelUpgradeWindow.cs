@@ -14,6 +14,14 @@ namespace Cryptos.Runtime.UI.Ingame
 
         }
 
+        public void InputChar(char c)
+        {
+            foreach (var node in _nodes)
+            {
+                node.OnInputChar(c);
+            }
+        }
+
         public void OnenWindow(LevelUpgradeNodeViewModel[] nodes)
         {
             for(int i = 0; i < _nodes.Length; i++)

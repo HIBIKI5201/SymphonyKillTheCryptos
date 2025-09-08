@@ -28,6 +28,11 @@ namespace Cryptos.Runtime.UI.Ingame
             _levelUpgrade.OnenWindow(nodes);
         }
 
+        public void OnInutChar(char c)
+        {
+            _levelUpgrade.InputChar(c);
+        }
+
         Task IInitializeAsync.InitializeTask { get; set; }
 
         private UIDocument _document;
