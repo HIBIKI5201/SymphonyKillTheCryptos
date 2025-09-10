@@ -33,12 +33,16 @@ namespace Cryptos.Runtime.UI.Ingame
 
         protected override Task Initialize_S(TemplateContainer container)
         {
-            _iconElement = container.Q<VisualElement>("icon");
-            _nameLabel = container.Q<Label>("name");
-            _descriptionLabel = container.Q<Label>("description");
+            _iconElement = container.Q<VisualElement>(ICON_ELEMENT_NAME);
+            _nameLabel = container.Q<Label>(NAME_ELEMENT_NAME);
+            _descriptionLabel = container.Q<Label>(EXPLANATION_ELEMENT_NAME);
 
             return Task.CompletedTask;
         }
+
+        private const string ICON_ELEMENT_NAME = "icon";
+        private const string NAME_ELEMENT_NAME = "name";
+        private const string EXPLANATION_ELEMENT_NAME = "explanation";
 
         private VisualElement _iconElement;
         private Label _nameLabel;
