@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Presenter.Ingame.Word;
+using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork.Utility;
 using System;
 using System.Text.RegularExpressions;
@@ -17,26 +18,29 @@ namespace Cryptos.Runtime.UI.Ingame
         {
         }
 
-        public event Action OnComplete;
+        public bool IsSelected => _isSelected;
+        public LevelUpgradeNodeViewModel NodeViewModel => _nodeViewModel;
 
         public void OnInputChar(char c)
         {
             _wordEntity.InputChar(c);
         }
 
-        public void SetData(Texture2D icon, string name, string description)
+        public void SetData(LevelUpgradeNodeViewModel vm)
         {
-            _iconElement.style.backgroundImage = new StyleBackground(icon);
-            _nameLabel.text = name;
-            _descriptionLabel.text = description;
+            _iconElement.style.backgroundImage = new StyleBackground(vm.Texture);
+            _nameLabel.text = vm.NodeName;
+            _descriptionLabel.text = vm.Description;
+
+            _nodeViewModel = vm;
 
             //アルファベット以外を無くす
             string word = Regex.Replace(name, "[^a-zA-Z]", "");
             _wordEntity = WordGenerator.GetWordEntity(word);
 
-            HandleWordUpdated(_wordEntity.Word, 0);
+            _wordEntity.OnComplete += () => _isSelected = true;
 
-            _wordEntity.OnComplete += () => OnComplete?.Invoke();
+            HandleWordUpdated(_wordEntity.Word, 0);
             _wordEntity.OnWordUpdated += HandleWordUpdated;
         }
 
@@ -60,7 +64,9 @@ namespace Cryptos.Runtime.UI.Ingame
         private Label _nameLabel;
         private Label _descriptionLabel;
 
+        private LevelUpgradeNodeViewModel _nodeViewModel;
         private WordEntityViewModel _wordEntity;
+        private bool _isSelected;
 
         private void HandleWordUpdated(string word, int index)
         {
