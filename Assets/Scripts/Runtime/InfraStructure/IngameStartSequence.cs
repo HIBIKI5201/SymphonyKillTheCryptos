@@ -51,6 +51,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         private IngameUIManager _gameUIManager;
 
+        private InputBuffer _inputBuffer;
+
         public async void GameInitialize()
         {
             CharacterInitializer.CharacterInitializationData charaInitData =
@@ -89,12 +91,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             waveSystem.OnWaveCleared += 
                 () => inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
 
-            inputBuffer.OnAlphabetKeyPressed += ingameUIManager.OnInutChar;
-
             TestCardSpawn(cardInitData.CardUseCase);
             waveSystem.GameStart();
 
             _gameUIManager = ingameUIManager;
+            _inputBuffer = inputBuffer;
 
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
@@ -103,6 +104,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         {
             LevelUpgradeNodeViewModel[] levelUpgradeNodes = _levelUpgradeNodes
                 .Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
+
+            _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInutChar;
             _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
 
             Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
@@ -112,6 +115,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             LevelUpgradeNode selectedNode = nodes[UnityEngine.Random.Range(0, nodes.Length)];
 
             Debug.Log($"レベルアップカードを選択しました。{selectedNode}");
+            _inputBuffer.OnAlphabetKeyPressed -= _gameUIManager.OnInutChar;
 
             return selectedNode;
         }
