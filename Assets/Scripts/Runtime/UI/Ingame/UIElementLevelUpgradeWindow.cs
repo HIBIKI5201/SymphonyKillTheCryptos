@@ -1,6 +1,7 @@
 using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork.Utility;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
@@ -25,16 +26,21 @@ namespace Cryptos.Runtime.UI.Ingame
             }
         }
 
-        public void OnenWindow(LevelUpgradeNodeViewModel[] nodes)
+        public void OnenWindow(
+            LevelUpgradeNodeViewModel[] nodeVMs,
+            CancellationTokenSource cts)
         {
             for(int i = 0; i < _nodes.Length; i++)
             {
-                if(i < nodes.Length)
+                if(i < nodeVMs.Length)
                 {
-                    LevelUpgradeNodeViewModel node = nodes[i];
+                    LevelUpgradeNodeViewModel nodeVM = nodeVMs[i];
+                    UIElementLevelUpgradeNode node = _nodes[i];
 
-                    _nodes[i].SetData(node.Texture, node.NodeName, node.Description);
-                    _nodes[i].style.display = DisplayStyle.Flex;
+                    node.SetData(nodeVM.Texture, nodeVM.NodeName, nodeVM.Description);
+                    node.style.display = DisplayStyle.Flex;
+
+                    node.OnComplete += () => cts.Cancel();
                 }
                 else // 入力以上のノードは非表示にする
                 {
