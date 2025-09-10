@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e594be28686bae47bad446a73ffde19, type: 3}
   m_Name: LevelUpgradeNode
   m_EditorClassIdentifier: Cryptos.Ingame.Entity::Cryptos.Runtime.Entity.Ingame.System.LevelUpgradeNode
-  _nodeName: New Node
-  _description: Description
+  _nodeName: Health Up
+  _description: "\u30D8\u30EB\u30B9\u4E0A\u6607"
   _texture: {fileID: 0}
   _effects:
   - rid: 7654980343680991649
@@ -22,4 +22,5 @@ MonoBehaviour:
     RefIds:
     - rid: 7654980343680991649
       type: {class: HealthStatusUpgrade, ns: Cryptos.Runtime.Entity, asm: Cryptos.Ingame.Entity}
-      data: 
+      data:
+        _healthIncreaseAmount: 1
