@@ -1,8 +1,10 @@
 using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork.Utility;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 namespace Cryptos.Runtime.UI.Ingame
@@ -26,9 +28,7 @@ namespace Cryptos.Runtime.UI.Ingame
             }
         }
 
-        public void OnenWindow(
-            LevelUpgradeNodeViewModel[] nodeVMs,
-            CancellationTokenSource cts)
+        public void OnenWindow(Span<LevelUpgradeNodeViewModel> nodeVMs)
         {
             for(int i = 0; i < _nodes.Length; i++)
             {
@@ -37,10 +37,8 @@ namespace Cryptos.Runtime.UI.Ingame
                     LevelUpgradeNodeViewModel nodeVM = nodeVMs[i];
                     UIElementLevelUpgradeNode node = _nodes[i];
 
-                    node.SetData(nodeVM.Texture, nodeVM.NodeName, nodeVM.Description);
+                    node.SetData(nodeVM);
                     node.style.display = DisplayStyle.Flex;
-
-                    node.OnComplete += () => cts.Cancel();
                 }
                 else // 入力以上のノードは非表示にする
                 {
@@ -55,6 +53,19 @@ namespace Cryptos.Runtime.UI.Ingame
         {
             // とりあえず非表示にするだけ
             style.display = DisplayStyle.None;
+        }
+
+        public UIElementLevelUpgradeNode GetSelectedLevelUpgrade()
+        {
+            foreach (var node in _nodes)
+            {
+                if (node.IsSelected)
+                {
+                    return node;
+                }
+            }
+
+            return null;
         }
 
         protected override Task Initialize_S(TemplateContainer container)
