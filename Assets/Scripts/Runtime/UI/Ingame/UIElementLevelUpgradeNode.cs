@@ -34,6 +34,8 @@ namespace Cryptos.Runtime.UI.Ingame
             string word = Regex.Replace(name, "[^a-zA-Z]", "");
             _wordEntity = WordGenerator.GetWordEntity(word);
 
+            HandleWordUpdated(_wordEntity.Word, 0);
+
             _wordEntity.OnComplete += () => OnComplete?.Invoke();
             _wordEntity.OnWordUpdated += HandleWordUpdated;
         }
