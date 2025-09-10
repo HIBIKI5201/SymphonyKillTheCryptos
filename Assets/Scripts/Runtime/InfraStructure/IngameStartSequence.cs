@@ -107,18 +107,19 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             LevelUpgradeNodeViewModel[] levelUpgradeNodes = _levelUpgradeNodes
                 .Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
 
-            CancellationTokenSource cts = new();
-
             _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInutChar;
-            _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes, cts);
+            _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
 
             Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
 
-            await SymphonyTask.WaitUntil(() => cts.IsCancellationRequested);
+            LevelUpgradeNodeViewModel selectedNodeVM = default;
+            await SymphonyTask.WaitUntil(
+                () => _gameUIManager.TryGetSelectedLevelUpgradeNode(out selectedNodeVM));
 
-            LevelUpgradeNode selectedNode = nodes[UnityEngine.Random.Range(0, nodes.Length)];
+            LevelUpgradeNode selectedNode = selectedNodeVM.LevelUpgradeNode;
 
             Debug.Log($"レベルアップカードを選択しました。{selectedNode}");
+
             _inputBuffer.OnAlphabetKeyPressed -= _gameUIManager.OnInutChar;
             _gameUIManager.CloseLevelUpgradeWindow();
 
