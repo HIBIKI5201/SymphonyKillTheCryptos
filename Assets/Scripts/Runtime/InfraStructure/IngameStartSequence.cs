@@ -65,7 +65,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 charaInitData.Symphony, charaInitData.EnemyRepository);
 
             LevelUseCase levelUseCase =
-                new LevelUseCase(_levelUpgradeData, LevelAsync);
+                new LevelUseCase(_levelUpgradeData, LevelUpAsync);
 
             PlayerPathContainer playerPathContainer = await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
 
@@ -102,7 +102,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
 
-        private async Task<LevelUpgradeNode> LevelAsync(LevelUpgradeNode[] nodes)
+        private async Task<LevelUpgradeNode> LevelUpAsync(LevelUpgradeNode[] nodes)
         {
             LevelUpgradeNodeViewModel[] levelUpgradeNodes = _levelUpgradeNodes
                 .Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
@@ -120,6 +120,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             Debug.Log($"レベルアップカードを選択しました。{selectedNode}");
             _inputBuffer.OnAlphabetKeyPressed -= _gameUIManager.OnInutChar;
+            _gameUIManager.CloseLevelUpgradeWindow();
 
             return selectedNode;
         }
