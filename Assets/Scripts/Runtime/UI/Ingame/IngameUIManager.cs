@@ -33,6 +33,11 @@ namespace Cryptos.Runtime.UI.Ingame
             _levelUpgrade.OnenWindow(nodes, cts);
         }
 
+        public void CloseLevelUpgradeWindow()
+        {
+            _levelUpgrade.CloseWindow();
+        }
+
         public void OnInutChar(char c)
         {
             _levelUpgrade.InputChar(c);
