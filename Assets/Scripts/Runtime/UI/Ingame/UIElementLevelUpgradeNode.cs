@@ -1,10 +1,12 @@
 using Cryptos.Runtime.Presenter.Ingame.Word;
 using SymphonyFrameWork.Utility;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Windows;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
@@ -28,8 +30,11 @@ namespace Cryptos.Runtime.UI.Ingame
             _nameLabel.text = name;
             _descriptionLabel.text = description;
 
-            _wordEntity = WordGenerator.GetWordEntity(name);
-            _wordEntity.OnComplete += OnComplete;
+            //アルファベット以外を無くす
+            string word = Regex.Replace(name, "[^a-zA-Z]", "");
+            _wordEntity = WordGenerator.GetWordEntity(word);
+
+            _wordEntity.OnComplete += () => OnComplete?.Invoke();
             _wordEntity.OnWordUpdated += HandleWordUpdated;
         }
 
