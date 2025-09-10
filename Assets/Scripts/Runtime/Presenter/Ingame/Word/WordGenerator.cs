@@ -31,6 +31,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.Word
             remove => _entity.OnComplete -= value;
         }
 
+        public event Action<string, int> OnWordUpdated
+        {
+            add => _entity.OnWordUpdated += value;
+            remove => _entity.OnWordUpdated -= value;
+        }
+
         public void InputChar(char c) => _entity.OnInputChar(c);
 
         private readonly WordEntity _entity;
