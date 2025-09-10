@@ -14,6 +14,8 @@ namespace Cryptos.Runtime.Presenter.System
         public Texture2D Texture => _node.Texture;
         public string Description => _node.Description;
 
+        public LevelUpgradeNode LevelUpgradeNode => _node;
+
         private readonly LevelUpgradeNode _node;
     }
 }
