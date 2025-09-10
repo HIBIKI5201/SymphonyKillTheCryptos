@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using Cryptos.Runtime.Framework;
 using SymphonyFrameWork.System;
 using System.Threading;
+using System;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
@@ -26,16 +27,24 @@ namespace Cryptos.Runtime.UI.Ingame
             _deck.HandleRemoveCard(instance);
         }
 
-        public void OpenLevelUpgradeWindow(
-            LevelUpgradeNodeViewModel[] nodes,
-            CancellationTokenSource cts)
+        public void OpenLevelUpgradeWindow(Span<LevelUpgradeNodeViewModel> nodes)
         {
-            _levelUpgrade.OnenWindow(nodes, cts);
+            _levelUpgrade.OnenWindow(nodes);
         }
 
         public void CloseLevelUpgradeWindow()
         {
             _levelUpgrade.CloseWindow();
+        }
+
+        public bool TryGetSelectedLevelUpgradeNode(out LevelUpgradeNodeViewModel nodeVM)
+        {
+            UIElementLevelUpgradeNode node = _levelUpgrade.GetSelectedLevelUpgrade();
+
+            bool isNull = node == null;
+            nodeVM = isNull ? default : node.NodeViewModel;
+
+            return !isNull;
         }
 
         public void OnInutChar(char c)
