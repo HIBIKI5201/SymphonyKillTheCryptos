@@ -13,8 +13,10 @@ using Cryptos.Runtime.UI.Ingame;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
+using SymphonyFrameWork.Utility;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -105,12 +107,14 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             LevelUpgradeNodeViewModel[] levelUpgradeNodes = _levelUpgradeNodes
                 .Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
 
+            CancellationTokenSource cts = new();
+
             _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInutChar;
-            _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
+            _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes, cts);
 
             Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
 
-            await Awaitable.WaitForSecondsAsync(2f);
+            await SymphonyTask.WaitUntil(() => cts.IsCancellationRequested);
 
             LevelUpgradeNode selectedNode = nodes[UnityEngine.Random.Range(0, nodes.Length)];
 
