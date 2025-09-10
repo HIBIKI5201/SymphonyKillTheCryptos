@@ -1,6 +1,7 @@
 using Cryptos.Runtime.Presenter.Ingame.Word;
 using SymphonyFrameWork.Utility;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -29,10 +30,12 @@ namespace Cryptos.Runtime.UI.Ingame
 
             _wordEntity = WordGenerator.GetWordEntity(name);
             _wordEntity.OnComplete += OnComplete;
+            _wordEntity.OnWordUpdated += HandleWordUpdated;
         }
 
         protected override Task Initialize_S(TemplateContainer container)
         {
+            _wordLabel = container.Q<Label>(WORD_ELEMENT_NAME);
             _iconElement = container.Q<VisualElement>(ICON_ELEMENT_NAME);
             _nameLabel = container.Q<Label>(NAME_ELEMENT_NAME);
             _descriptionLabel = container.Q<Label>(EXPLANATION_ELEMENT_NAME);
@@ -40,14 +43,21 @@ namespace Cryptos.Runtime.UI.Ingame
             return Task.CompletedTask;
         }
 
+        private const string WORD_ELEMENT_NAME = "word";
         private const string ICON_ELEMENT_NAME = "icon";
         private const string NAME_ELEMENT_NAME = "name";
         private const string EXPLANATION_ELEMENT_NAME = "explanation";
 
+        private Label _wordLabel;
         private VisualElement _iconElement;
         private Label _nameLabel;
         private Label _descriptionLabel;
 
         private WordEntityViewModel _wordEntity;
+
+        private void HandleWordUpdated(string word, int index)
+        {
+            _wordLabel.text = $"<b><color=green>{word[..index]}</color></b>{word[index..]}";
+        }
     }
 }
