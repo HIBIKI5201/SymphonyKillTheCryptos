@@ -18,6 +18,9 @@ namespace Cryptos.Runtime.UI.Ingame
         {
             foreach (var node in _nodes)
             {
+                // 非表示なら更新しない
+                if (node.style.display == DisplayStyle.None) return;
+
                 node.OnInputChar(c);
             }
         }
@@ -51,16 +54,21 @@ namespace Cryptos.Runtime.UI.Ingame
         protected override Task Initialize_S(TemplateContainer container)
         {
             _nodes = new UIElementLevelUpgradeNode[NODE_MAX];
+            VisualElement nodeContainer = container.Q(NODE_CONTAINER);
 
             for (int i = 0; i < NODE_MAX; i++)
             {
-                _nodes[i] = container.Q<UIElementLevelUpgradeNode>($"node{i + 1}");
+                UIElementLevelUpgradeNode node = new();
+                nodeContainer.Add(node);
+
+                _nodes[i] = node;
             }
 
             return Task.CompletedTask;
         }
 
         private const int NODE_MAX = 3;
+        private const string NODE_CONTAINER = "container";
 
         private UIElementLevelUpgradeNode[] _nodes;
     }
