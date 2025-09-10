@@ -4,6 +4,9 @@ using SymphonyFrameWork;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Cryptos.Runtime.Framework;
+using SymphonyFrameWork.System;
+using System.Threading;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
@@ -23,9 +26,11 @@ namespace Cryptos.Runtime.UI.Ingame
             _deck.HandleRemoveCard(instance);
         }
 
-        public void OpenLevelUpgradeWindow(LevelUpgradeNodeViewModel[] nodes)
+        public void OpenLevelUpgradeWindow(
+            LevelUpgradeNodeViewModel[] nodes,
+            CancellationTokenSource cts)
         {
-            _levelUpgrade.OnenWindow(nodes);
+            _levelUpgrade.OnenWindow(nodes, cts);
         }
 
         public void OnInutChar(char c)
@@ -40,6 +45,8 @@ namespace Cryptos.Runtime.UI.Ingame
         private UIElementDeck _deck;
         private UIElementLevelUpgradeWindow _levelUpgrade;
 
+        private InputBuffer _inputBuffer;
+
         async Task IInitializeAsync.InitializeAsync()
         {
             _document = GetComponent<UIDocument>();
@@ -50,6 +57,8 @@ namespace Cryptos.Runtime.UI.Ingame
 
             await _deck.InitializeTask;
             await _levelUpgrade.InitializeTask;
+
+            _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
 
             _levelUpgrade.CloseWindow();
         }
