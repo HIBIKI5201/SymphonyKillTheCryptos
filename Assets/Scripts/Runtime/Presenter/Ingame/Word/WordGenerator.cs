@@ -18,7 +18,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Word
         }
     }
 
-    public struct WordEntityViewModel
+    public readonly struct WordEntityViewModel
     {
         public WordEntityViewModel(WordEntity wordEntity)
         {
@@ -33,6 +33,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Word
 
         public void InputChar(char c) => _entity.OnInputChar(c);
 
-        private WordEntity _entity;
+        private readonly WordEntity _entity;
     }
 }
