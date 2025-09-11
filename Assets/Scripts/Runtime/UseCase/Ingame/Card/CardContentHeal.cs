@@ -13,15 +13,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// ターゲットの体力を指定量だけ回復します。
         /// </summary>
         /// <param name="players">効果の主体となるプレイヤーキャラクターの配列。</param>
-        /// <param name="targets">回復の対象となるキャラクターの配列。</param>
+        /// <param name="targets">敵のキャラクターの配列。</param>
         public void Execute(ICharacter[] players, ICharacter[] targets)
         {
             StringBuilder sb = new StringBuilder($"CardContentHeal: <b>{players[0]}</b> heals for <b>{_healAmount}</b> amount.");
-            foreach(var t in targets)
+            foreach(var p in players)
             {
-                t.AddHealthHeal(_healAmount);
+                p.AddHealthHeal(_healAmount);
 
-                sb.Append($" target : {t}");
+                sb.Append($" target : {p}");
             }
 
             Debug.Log(sb.ToString());
