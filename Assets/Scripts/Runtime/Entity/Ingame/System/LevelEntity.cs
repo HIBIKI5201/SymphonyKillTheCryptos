@@ -8,6 +8,10 @@ namespace Cryptos.Runtime.Entity.Ingame.System
     /// </summary>
     public class LevelEntity
     {
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
+        /// <param name="requirePoints">レベルアップに必要な経験値の配列。</param>
         public LevelEntity(float[] requirePoints)
         {
             _currentLevel = 1;
@@ -16,10 +20,22 @@ namespace Cryptos.Runtime.Entity.Ingame.System
             _requirePoints = requirePoints;
         }
 
+        /// <summary>
+        /// レベルが変更されたときに発行されます。
+        /// </summary>
         public event Action<int> OnLevelChanged;
+        /// <summary>
+        /// レベルの進行状況が変更されたときに発行されます。
+        /// </summary>
         public event Action<float> OnLevelProgressChanged;
 
+        /// <summary>
+        /// 現在のレベル。
+        /// </summary>
         public int CurrentLevel => _currentLevel;
+        /// <summary>
+        /// 現在のレベルの進行状況。
+        /// </summary>
         public float LevelProgress => _levelProgress;
 
         /// <summary>
@@ -66,7 +82,6 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         ///     1を超えた場合、レベルアップします。
         /// </summary>
         /// <param name="value"></param>
-        /// <returns></returns>
         private void ChangeLevelProgress(float value)
         {
             _levelProgress = value;
