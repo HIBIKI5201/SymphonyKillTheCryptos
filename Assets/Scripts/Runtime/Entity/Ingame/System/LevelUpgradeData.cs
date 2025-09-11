@@ -7,10 +7,13 @@ namespace Cryptos.Runtime.Entity.Ingame.System
     {
         public float[] LevelRequirePoints => _levelRequirePoints;
         public LevelUpgradeNode[] LevelCard => _levelCard;
+        public int LevelUpgradeAmount => _levelUpgradeAmount;
 
         [SerializeField]
         private float[] _levelRequirePoints = new float[] { 100f, 300f, 600f, 1000f };
         [SerializeField]
         private LevelUpgradeNode[] _levelCard;
+        [SerializeField]
+        private int _levelUpgradeAmount = 3;
     }
 }
