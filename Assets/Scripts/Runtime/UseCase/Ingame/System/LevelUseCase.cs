@@ -11,6 +11,11 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     /// </summary>
     public class LevelUseCase
     {
+        /// <summary>
+        ///     コンストラクタ。
+        /// </summary>
+        /// <param name="data">レベルアップに関するデータ。</param>
+        /// <param name="onLevelUpSelectNode">レベルアップ時にノードを選択するためのコールバック。</param>
         public LevelUseCase(LevelUpgradeData data,
             Func<LevelUpgradeNode[], Task<LevelUpgradeNode>> onLevelUpSelectNode)
         {
@@ -21,7 +26,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             _levelEntity = levelEntity;
             _onLevelUpSelectNode = onLevelUpSelectNode;
         }
-        /// <summary> 未処理のレベルアップ </summary>
+        /// <summary>
+        ///     未処理のレベルアップ。
+        /// </summary>
         public Queue<int> LevelUpQueue => _levelUpQueue;
 
         /// <summary>
@@ -46,7 +53,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             int[] indices = Enumerable.Range(0, allNode.Length).ToArray();
             var rng = new Random();
 
-            // F-Y法で部分的にシャッフル
+            // F-Y法で部分的にシャッフル。
             for (int i = 0; i < amount; i++)
             {
                 int j = rng.Next(i, indices.Length);
