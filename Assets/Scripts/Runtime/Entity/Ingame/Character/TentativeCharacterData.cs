@@ -8,6 +8,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// <typeparam name="T"></typeparam>
     public class TentativeCharacterData<T> : IAttackableData, IHittableData where T : CharacterData
     {
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
+        /// <param name="data">キャラクターのデータ。</param>
         public TentativeCharacterData(T data)
         {
             _attackPower = data.AttackPower;
@@ -49,10 +53,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         public float Armor => _armor;
 
         /// <summary>
-        ///     
+        /// 新しいバフを設定します。
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="value"></param>
+        /// <param name="type">バフの種類。</param>
+        /// <param name="value">バフの値。</param>
         public void SetNewBuff(BuffType type, float value)
         {
             switch (type)
@@ -67,6 +71,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             Debug.Log($"{_data.Name} StatusUpgrade\nvalue {value}");
         }
 
+                /// <summary>
+        /// バフの種類。
+        /// </summary>
         public enum BuffType
         {
             AttackPower,
