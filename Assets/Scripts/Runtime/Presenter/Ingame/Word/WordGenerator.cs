@@ -9,9 +9,16 @@ namespace Cryptos.Runtime.Presenter.Ingame.Word
     /// </summary>
     public static class WordGenerator
     {
+        private const int DEFAULT_DIFFICULTY = 1;
+
+        /// <summary>
+        ///     ワードエンティティのビューモデルを生成する。
+        /// </summary>
+        /// <param name="word">生成するワード。</param>
+        /// <returns>生成されたワードエンティティのビューモデル。</returns>
         public static WordEntityViewModel GetWordEntity(string word = "void")
         {
-            WordEntity wordEntity = new(word, 1, 1);
+            WordEntity wordEntity = new(word, DEFAULT_DIFFICULTY, DEFAULT_DIFFICULTY);
             WordEntityViewModel wordEntityViewModel = new(wordEntity);
             
             return wordEntityViewModel;
