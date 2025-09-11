@@ -16,15 +16,20 @@ using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 {
+    /// <summary>
+    /// インゲームの開始シーケンスを管理するクラス。
+    /// </summary>
     [Serializable]
     public class IngameStartSequence : IGameInstaller, IDisposable
     {
+        /// <summary>
+        /// このインスタンスが破棄されるときに呼び出されます。
+        /// </summary>
         public void Dispose()
         {
             ServiceLocator.DestroyInstance<CardUseCase>();
@@ -35,23 +40,26 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField, Tooltip("ワードのデータベース")]
         private WordDataBase _wordDataBase;
 
-        [SerializeField]
+        [SerializeField, Tooltip("レベルアップデータ")]
         private LevelUpgradeData _levelUpgradeData;
 
         [Header("テストコード")]
-        [SerializeField]
+        [SerializeField, Tooltip("テスト用のカードデータ")]
         private CardData[] _cardDatas;
-        [SerializeField, Min(1)]
+        [SerializeField, Min(1), Tooltip("テスト用に生成するカードの数")]
         private int _cardAmount = 3;
 
         [Space]
-        [SerializeField]
+        [SerializeField, Tooltip("ウェーブのエンティティ配列")]
         private WaveEntity[] _waveEntities;
 
         private IngameUIManager _gameUIManager;
 
         private InputBuffer _inputBuffer;
 
+        /// <summary>
+        /// ゲームを初期化します。
+        /// </summary>
         public async void GameInitialize()
         {
             CharacterInitializer.CharacterInitializationData charaInitData =
@@ -85,9 +93,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             // ウェーブ開始時に入力受付を開始、ウェーブクリア時に入力受付を停止する。
-            waveSystem.OnWaveStarted += 
+            waveSystem.OnWaveStarted +=
                 () => inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
-            waveSystem.OnWaveCleared += 
+            waveSystem.OnWaveCleared +=
                 () => inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
 
             TestCardSpawn(cardInitData.CardUseCase);
