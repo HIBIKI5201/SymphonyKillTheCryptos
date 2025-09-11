@@ -18,6 +18,9 @@ MonoBehaviour:
   - 600
   - 1000
   _levelCard:
+  - {fileID: 11400000, guid: 0a9efda2ce55e9a468f0930bce68694f, type: 2}
+  - {fileID: 11400000, guid: 9e1ac26784ead3f43ab5a4548e4c6d38, type: 2}
+  - {fileID: 11400000, guid: b1d67a098c23d7041ab89ef5a7fef592, type: 2}
+  - {fileID: 11400000, guid: e8492a21aa48a154a84af77aabbf1ae9, type: 2}
   - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
-  - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
-  - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
+  _levelUpgradeAmount: 3
