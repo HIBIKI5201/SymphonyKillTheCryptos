@@ -107,6 +107,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
         }
 
+        /// <summary>
+        /// レベルアップ時の非同期処理。
+        /// </summary>
+        /// <param name="nodes">レベルアップ候補のノード。</param>
+        /// <returns>選択されたレベルアップノード。</returns>
         private async Task<LevelUpgradeNode> LevelUpAsync(LevelUpgradeNode[] nodes)
         {
             LevelUpgradeNodeViewModel[] levelUpgradeNodes
@@ -114,7 +119,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             Debug.Log($"候補カード {string.Join(", ", levelUpgradeNodes.Select(n => n.NodeName))}");
 
-            // ウィンドウを出現させて待機
+            // ウィンドウを出現させて待機。
             _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
             _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInutChar;
 
@@ -132,6 +137,10 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             return selectedNode;
         }
 
+        /// <summary>
+        /// テスト用にカードを生成します。
+        /// </summary>
+        /// <param name="cardUseCase">カードのユースケース。</param>
         private void TestCardSpawn(CardUseCase cardUseCase)
         {
             if (_cardDatas == null || _cardDatas.Length == 0)
