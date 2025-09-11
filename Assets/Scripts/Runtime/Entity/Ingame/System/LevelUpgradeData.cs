@@ -9,11 +9,11 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         public LevelUpgradeNode[] LevelCard => _levelCard;
         public int LevelUpgradeAmount => _levelUpgradeAmount;
 
-        [SerializeField]
+        [SerializeField, Tooltip("各レベルアップに必要な経験値の配列。")]
         private float[] _levelRequirePoints = new float[] { 100f, 300f, 600f, 1000f };
-        [SerializeField]
+        [SerializeField, Tooltip("レベルアップ時に提示されるカードの配列。")]
         private LevelUpgradeNode[] _levelCard;
-        [SerializeField]
+        [SerializeField, Tooltip("レベルアップ時に提示されるカードの数。")]
         private int _levelUpgradeAmount = 3;
     }
 }
