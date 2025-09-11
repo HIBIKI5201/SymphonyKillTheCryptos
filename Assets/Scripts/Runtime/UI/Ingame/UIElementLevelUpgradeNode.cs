@@ -35,7 +35,7 @@ namespace Cryptos.Runtime.UI.Ingame
             _nodeViewModel = vm;
 
             //アルファベット以外を無くす
-            string word = Regex.Replace(name, "[^a-zA-Z]", "");
+            string word = Regex.Replace(vm.NodeName, "[^a-zA-Z]", "");
             _wordEntity = WordGenerator.GetWordEntity(word);
 
             _wordEntity.OnComplete += () => _isSelected = true;
