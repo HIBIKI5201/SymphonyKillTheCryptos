@@ -9,26 +9,40 @@ using UnityEngine.UIElements;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
+    /// <summary>
+    /// レベルアップ時の選択ウィンドウのUI要素。
+    /// </summary>
     [UxmlElement]
     public partial class UIElementLevelUpgradeWindow : SymphonyVisualElement
     {
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
         public UIElementLevelUpgradeWindow() : base("UIToolKit/UXML/Ingame/LevelUpgradeWindow")
         {
 
         }
 
+        /// <summary>
+        /// 文字入力を処理します。
+        /// </summary>
+        /// <param name="c">入力された文字。</param>
         public void InputChar(char c)
         {
             foreach (var node in _nodes)
             {
-                // 非表示なら更新しない
+                // 非表示なら更新しない。
                 if (node.style.display == DisplayStyle.None) return;
 
                 node.OnInputChar(c);
             }
         }
 
-        public void OnenWindow(Span<LevelUpgradeNodeViewModel> nodeVMs)
+        /// <summary>
+        /// ウィンドウを開き、レベルアップノードを表示します。
+        /// </summary>
+        /// <param name="nodeVMs">表示するノードのビューモデル。</param>
+        public void OpenWindow(Span<LevelUpgradeNodeViewModel> nodeVMs)
         {
             _nodes = new UIElementLevelUpgradeNode[NODE_MAX];
 
