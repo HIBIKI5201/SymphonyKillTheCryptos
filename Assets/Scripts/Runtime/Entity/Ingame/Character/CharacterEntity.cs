@@ -11,6 +11,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     [Serializable]
     public sealed class CharacterEntity<T> : ICharacter where T : CharacterData
     {
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
+        /// <param name="data">キャラクターのデータ。</param>
         public CharacterEntity(T data)
         {
             _entityData = data;
@@ -31,11 +35,26 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             remove => _healthEntity.OnDead -= value;
         }
 
+        /// <summary>
+        /// ダメージを受けたときに発行されます。
+        /// </summary>
         public event Action OnTakeDamage;
 
+        /// <summary>
+        /// 攻撃可能なデータ。
+        /// </summary>
         public IAttackableData AttackableData => _entityData;
+        /// <summary>
+        /// 被ダメージ可能なデータ。
+        /// </summary>
         public IHittableData HittableData => _entityData;
+        /// <summary>
+        /// キャラクター名。
+        /// </summary>
         public string Name => _entityData.Name;
+        /// <summary>
+        /// 現在の体力。
+        /// </summary>
         public float CurrentHealth => _healthEntity.CurrentHealth;
 
         /// <summary>
