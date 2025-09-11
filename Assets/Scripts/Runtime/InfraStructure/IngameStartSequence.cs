@@ -121,7 +121,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             // ウィンドウを出現させて待機。
             _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
-            _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInutChar;
+            _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInputChar;
 
             LevelUpgradeNodeViewModel selectedNodeVM = default;
             await SymphonyTask.WaitUntil(
@@ -131,7 +131,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             Debug.Log($"レベルアップカードを選択しました。{selectedNode}");
 
-            _inputBuffer.OnAlphabetKeyPressed -= _gameUIManager.OnInutChar;
+            _inputBuffer.OnAlphabetKeyPressed -= _gameUIManager.OnInputChar;
             _gameUIManager.CloseLevelUpgradeWindow();
 
             return selectedNode;
