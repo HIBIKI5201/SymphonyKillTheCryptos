@@ -269,10 +269,6 @@ MonoBehaviour:
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
-        _levelUpgradeNodes:
-        - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
-        - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
-        - {fileID: 11400000, guid: 7745dc7cfe2142c46aced799966d6e1e, type: 2}
 --- !u!1001 &1595730579
 PrefabInstance:
   m_ObjectHideFlags: 0
