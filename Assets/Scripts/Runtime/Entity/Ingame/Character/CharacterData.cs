@@ -9,6 +9,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     [CreateAssetMenu(fileName = nameof(CharacterData), menuName = CryptosPathConstant.ASSET_PATH + nameof(CharacterData), order = 1)]
     public class CharacterData : ScriptableObject, IAttackableData, IHittableData
     {
+        /// <summary>
+        /// キャラクターの名前を取得します。
+        /// </summary>
         public string Name => _name;
         /// <summary>
         /// 攻撃力を取得します。
