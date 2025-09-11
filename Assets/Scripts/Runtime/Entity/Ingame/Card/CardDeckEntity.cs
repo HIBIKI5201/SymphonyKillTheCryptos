@@ -4,13 +4,29 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
+    /// <summary>
+    /// カードデッキのエンティティ。
+    /// </summary>
     public class CardDeckEntity
     {
+        /// <summary>
+        /// カードがデッキに追加されたときに発行されます。
+        /// </summary>
         public event Action<CardEntity> OnAddCardInstance;
+        /// <summary>
+        /// カードがデッキから削除されたときに発行されます。
+        /// </summary>
         public event Action<CardEntity> OnRemoveCardInstance;
 
+        /// <summary>
+        /// デッキ内のカードの読み取り専用リスト。
+        /// </summary>
         public IReadOnlyList<CardEntity> DeckCardList => _deckCardList;
 
+        /// <summary>
+        /// カードをデッキに追加します。
+        /// </summary>
+        /// <param name="cardEntity">追加するカード。</param>
         public void AddCardToDeck(CardEntity cardEntity)
         {
             if (cardEntity == null)
@@ -22,6 +38,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             OnAddCardInstance?.Invoke(cardEntity);
         }
 
+        /// <summary>
+        /// カードをデッキから削除します。
+        /// </summary>
+        /// <param name="cardEntity">削除するカード。</param>
         public void RemoveCardFromDeck(CardEntity cardEntity)
         {
             if (cardEntity == null)
