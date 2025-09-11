@@ -1,6 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cryptos.Runtime.UseCase.Ingame.System
@@ -38,8 +39,23 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <returns></returns>
         public async Task<LevelUpgradeNode> WaitLevelUpSelectAsync()
         {
+            LevelUpgradeNode[] allNode = _data.LevelCard;
+            int amount = _data.LevelUpgradeAmount;
+            LevelUpgradeNode[] candidates = new LevelUpgradeNode[amount];
+
+            int[] indices = Enumerable.Range(0, allNode.Length).ToArray();
+            var rng = new Random();
+
+            // F-Y法で部分的にシャッフル
+            for (int i = 0; i < amount; i++)
+            {
+                int j = rng.Next(i, indices.Length);
+                (indices[i], indices[j]) = (indices[j], indices[i]);
+                candidates[i] = allNode[indices[i]];
+            }
+
             LevelUpgradeNode selectedNode =
-                await _onLevelUpSelectNode?.Invoke(_data.LevelCard);
+                await _onLevelUpSelectNode?.Invoke(candidates);
 
             return selectedNode;
         }
