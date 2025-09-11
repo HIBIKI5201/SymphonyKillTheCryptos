@@ -30,20 +30,19 @@ namespace Cryptos.Runtime.UI.Ingame
 
         public void OnenWindow(Span<LevelUpgradeNodeViewModel> nodeVMs)
         {
-            for(int i = 0; i < _nodes.Length; i++)
-            {
-                if(i < nodeVMs.Length)
-                {
-                    LevelUpgradeNodeViewModel nodeVM = nodeVMs[i];
-                    UIElementLevelUpgradeNode node = _nodes[i];
+            _nodes = new UIElementLevelUpgradeNode[NODE_MAX];
 
-                    node.SetData(nodeVM);
-                    node.style.display = DisplayStyle.Flex;
-                }
-                else // 入力以上のノードは非表示にする
-                {
-                    _nodes[i].style.display = DisplayStyle.None;
-                }
+            for (int i = 0; i < NODE_MAX; i++)
+            {
+                if (nodeVMs.Length <= i) break;
+
+                UIElementLevelUpgradeNode node = new();
+                LevelUpgradeNodeViewModel nodeVM = nodeVMs[i];
+
+                node.SetData(nodeVM);
+
+                _nodeContainer.Add(node);
+                _nodes[i] = node;
             }
 
             style.display = DisplayStyle.Flex;
@@ -51,7 +50,16 @@ namespace Cryptos.Runtime.UI.Ingame
 
         public void CloseWindow()
         {
-            // とりあえず非表示にするだけ
+            if (_nodes != null) // ノードを破棄する
+            {
+                foreach (var node in _nodes)
+                {
+                    _nodeContainer.Remove(node);
+                }
+
+                _nodes = null;
+            }
+
             style.display = DisplayStyle.None;
         }
 
@@ -70,22 +78,14 @@ namespace Cryptos.Runtime.UI.Ingame
 
         protected override Task Initialize_S(TemplateContainer container)
         {
-            _nodes = new UIElementLevelUpgradeNode[NODE_MAX];
-            VisualElement nodeContainer = container.Q(NODE_CONTAINER);
-
-            for (int i = 0; i < NODE_MAX; i++)
-            {
-                UIElementLevelUpgradeNode node = new();
-                nodeContainer.Add(node);
-
-                _nodes[i] = node;
-            }
+            _nodeContainer = container.Q(NODE_CONTAINER);
 
             return Task.CompletedTask;
         }
 
         private const int NODE_MAX = 3;
         private const string NODE_CONTAINER = "container";
+        private VisualElement _nodeContainer;
 
         private UIElementLevelUpgradeNode[] _nodes;
     }
