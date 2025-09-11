@@ -1,13 +1,12 @@
-using Cryptos.Runtime.Presenter.System;
+using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Presenter.Ingame.Card;
+using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork;
+using SymphonyFrameWork.System;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Cryptos.Runtime.Framework;
-using SymphonyFrameWork.System;
-using System.Threading;
-using System;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
@@ -91,7 +90,7 @@ namespace Cryptos.Runtime.UI.Ingame
 
             VisualElement root = _document.rootVisualElement;
             _deck = root.Q<UIElementDeck>();
-            _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();  
+            _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();
 
             await _deck.InitializeTask;
             await _levelUpgrade.InitializeTask;
