@@ -11,21 +11,41 @@ using UnityEngine.Windows;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
+    /// <summary>
+    /// レベルアップノードのUI要素。
+    /// </summary>
     [UxmlElement]
     public partial class UIElementLevelUpgradeNode : SymphonyVisualElement
     {
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
         public UIElementLevelUpgradeNode() : base("UIToolKit/UXML/Ingame/LevelUpgradeNode", 0)
         {
         }
 
+        /// <summary>
+        /// このノードが選択されたかどうか。
+        /// </summary>
         public bool IsSelected => _isSelected;
+        /// <summary>
+        /// このノードのビューモデル。
+        /// </summary>
         public LevelUpgradeNodeViewModel NodeViewModel => _nodeViewModel;
 
+        /// <summary>
+        /// 文字入力を処理します。
+        /// </summary>
+        /// <param name="c">入力された文字。</param>
         public void OnInputChar(char c)
         {
             _wordEntity.InputChar(c);
         }
 
+        /// <summary>
+        /// このノードにデータを設定します。
+        /// </summary>
+        /// <param name="vm">設定するデータを含むビューモデル。</param>
         public void SetData(LevelUpgradeNodeViewModel vm)
         {
             _iconElement.style.backgroundImage = new StyleBackground(vm.Texture);
@@ -34,7 +54,7 @@ namespace Cryptos.Runtime.UI.Ingame
 
             _nodeViewModel = vm;
 
-            //アルファベット以外を無くす
+            //アルファベット以外を無くす。
             string word = Regex.Replace(vm.NodeName, "[^a-zA-Z]", "");
             _wordEntity = WordGenerator.GetWordEntity(word);
 
@@ -68,6 +88,11 @@ namespace Cryptos.Runtime.UI.Ingame
         private WordEntityViewModel _wordEntity;
         private bool _isSelected;
 
+        /// <summary>
+        /// ワードの表示を更新します。
+        /// </summary>
+        /// <param name="word">表示するワード。</param>
+        /// <param name="index">入力済みの文字数。</param>
         private void HandleWordUpdated(string word, int index)
         {
             _wordLabel.text = $"<b><color=green>{word[..index]}</color></b>{word[index..]}";
