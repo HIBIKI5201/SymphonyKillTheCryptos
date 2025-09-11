@@ -70,7 +70,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Tooltip("ワードの範囲")]
         private Vector2Int _wordRange = new Vector2Int(0, 1);
 
-        [SerializeField]
+        [SerializeField, Tooltip("このカードが持つ効果の配列。")]
         private CardContents[] _contentsArray = default;
         [SerializeField, Tooltip("カード優先度")]
         private int _priority = 0;
@@ -79,14 +79,23 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Tooltip("アニメーションのID")]
         private int _animationClipID = default;
 
+                /// <summary>
+        /// カード効果の配列を保持するクラス。
+        /// </summary>
         [Serializable]
         public class CardContents
         {
+            /// <summary>
+            /// 指定されたインデックスのカード効果を取得します。
+            /// </summary>
             public ICardContent this[int index] => _content[index];
 
+            /// <summary>
+            /// このカードが持つ効果の配列を取得します。
+            /// </summary>
             public ICardContent[] Contents => _content;
 
-            [SerializeReference, SubclassSelector]
+            [SerializeReference, SubclassSelector, Tooltip("カード効果の配列。")]
             private ICardContent[] _content;
         }
     }

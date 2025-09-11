@@ -35,7 +35,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         public WordEntity WordEntity => _word;
 
+        /// <summary>
+        /// アニメーションクリップのIDを取得します。
+        /// </summary>
         public int AnimationClipID => _data.AnimationClipID;
+        /// <summary>
+        /// 指定されたインデックスのカード効果を取得します。
+        /// </summary>
+        /// <param name="index">取得する効果のインデックス。</param>
+        /// <returns>カード効果の配列。</returns>
         public ICardContent[] GetContents(int index)
         {
             if (index < 0 || index >= _data.ContentsArray.Length)
