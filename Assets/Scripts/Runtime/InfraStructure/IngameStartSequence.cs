@@ -107,8 +107,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             LevelUpgradeNodeViewModel[] levelUpgradeNodes = _levelUpgradeNodes
                 .Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
 
-            _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInutChar;
             _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
+            _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInutChar;
 
             Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
 
