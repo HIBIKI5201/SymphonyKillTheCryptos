@@ -48,9 +48,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField]
         private WaveEntity[] _waveEntities;
 
-        [SerializeField]
-        private LevelUpgradeNode[] _levelUpgradeNodes;
-
         private IngameUIManager _gameUIManager;
 
         private InputBuffer _inputBuffer;
@@ -104,13 +101,14 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         private async Task<LevelUpgradeNode> LevelUpAsync(LevelUpgradeNode[] nodes)
         {
-            LevelUpgradeNodeViewModel[] levelUpgradeNodes = _levelUpgradeNodes
-                .Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
+            LevelUpgradeNodeViewModel[] levelUpgradeNodes
+                = nodes.Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
 
+            Debug.Log($"候補カード {string.Join(", ", levelUpgradeNodes.Select(n => n.NodeName))}");
+
+            // ウィンドウを出現させて待機
             _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
             _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInutChar;
-
-            Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
 
             LevelUpgradeNodeViewModel selectedNodeVM = default;
             await SymphonyTask.WaitUntil(
