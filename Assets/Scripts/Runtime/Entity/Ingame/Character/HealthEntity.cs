@@ -10,6 +10,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     [Serializable]
     public class HealthEntity
     {
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
+        /// <param name="data">体力データ。</param>
         public HealthEntity(IHittableData data)
         {
             _data = data;
@@ -28,6 +32,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         [Tooltip("死亡時に発火します。")]
         public event Action OnDead;
 
+        /// <summary>
+        /// 現在の体力を取得します。
+        /// </summary>
         public float CurrentHealth => _health;
 
         /// <summary>
@@ -37,10 +44,10 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// <param name="damage">受けるダメージ量。</param>
         public void AddHealthDamage(float damage)
         {
-            _health = Mathf.Max(_health - damage, 0); //体力は0未満にならないようにする
+            _health = Mathf.Max(_health - damage, 0); //体力は0未満にならないようにする。
             OnHealthChanged?.Invoke(_health, _data.MaxHealth);
 
-            if (_health <= 0) //体力が無くなったら死亡
+            if (_health <= 0) //体力が無くなったら死亡。
             {
                 Dead();
             }
@@ -53,7 +60,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// <param name="amount">回復量。</param>
         public void AddHealthHeal(float amount)
         {
-            _health = Mathf.Min(_health + amount, _data.MaxHealth); //体力は最大値を超えないようにする
+            _health = Mathf.Min(_health + amount, _data.MaxHealth); //体力は最大値を超えないようにする。
             OnHealthChanged?.Invoke(_health, _data.MaxHealth);
         }
 
