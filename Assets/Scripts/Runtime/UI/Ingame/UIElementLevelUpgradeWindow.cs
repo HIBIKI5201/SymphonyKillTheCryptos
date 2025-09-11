@@ -62,9 +62,12 @@ namespace Cryptos.Runtime.UI.Ingame
             style.display = DisplayStyle.Flex;
         }
 
+        /// <summary>
+        /// ウィンドウを閉じます。
+        /// </summary>
         public void CloseWindow()
         {
-            if (_nodes != null) // ノードを破棄する
+            if (_nodes != null) // ノードを破棄する。
             {
                 foreach (var node in _nodes)
                 {
@@ -77,6 +80,10 @@ namespace Cryptos.Runtime.UI.Ingame
             style.display = DisplayStyle.None;
         }
 
+        /// <summary>
+        /// 選択されたレベルアップノードを取得します。
+        /// </summary>
+        /// <returns>選択されたノード。選択されていない場合はnull。</returns>
         public UIElementLevelUpgradeNode GetSelectedLevelUpgrade()
         {
             foreach (var node in _nodes)
