@@ -5,6 +5,9 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// </summary>
     public interface ICharacter : IAttackable, IHittable
     {
+        /// <summary>
+        /// キャラクター名を取得します。
+        /// </summary>
         public string Name { get; }
     }
 }
