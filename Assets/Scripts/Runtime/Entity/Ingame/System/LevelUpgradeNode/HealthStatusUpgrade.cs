@@ -3,14 +3,21 @@ using UnityEngine;
 
 namespace Cryptos.Runtime.Entity
 {
+    /// <summary>
+    /// 体力をアップグレードするレベルアップ効果。
+    /// </summary>
     public class HealthStatusUpgrade : ILevelUpgradeStatusEffect
     {
+        /// <summary>
+        /// ステータス効果を適用します。
+        /// </summary>
+        /// <param name="target">効果を適用する対象。</param>
         public override void ApplyStatusEffect(TentativeCharacterData<CharacterData> target)
         {
             target.SetNewBuff(TentativeCharacterData<CharacterData>.BuffType.MaxHealth,
                 _healthIncreaseAmount);
         }
 
-        [SerializeField, Min(1)] private float _healthIncreaseAmount = 1;
+        [SerializeField, Min(1), Tooltip("体力増加量。")] private float _healthIncreaseAmount = 1;
     }
 }
