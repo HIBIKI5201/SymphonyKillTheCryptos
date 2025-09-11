@@ -29,7 +29,7 @@ namespace Cryptos.Runtime.UI.Ingame
 
         public void OpenLevelUpgradeWindow(Span<LevelUpgradeNodeViewModel> nodes)
         {
-            _levelUpgrade.OnenWindow(nodes);
+            _levelUpgrade.OpenWindow(nodes);
         }
 
         public void CloseLevelUpgradeWindow()
