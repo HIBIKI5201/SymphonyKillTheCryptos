@@ -25,6 +25,8 @@ namespace Cryptos.Runtime.UI.Ingame
             //初期値を入れる
             HandleWordUpdate(instance.CurrentWord, 0);
             HandleProgressBarUpdate(0);
+
+            _iconElement.style.backgroundImage = new(instance.Icon);
         }
 
         protected override Task Initialize_S(TemplateContainer container)
@@ -32,15 +34,20 @@ namespace Cryptos.Runtime.UI.Ingame
             style.marginRight = SIDE_MARGIN;
             style.marginLeft = SIDE_MARGIN;
 
-            _wordLabel = container.Q<Label>("word");
-            _progressBar = container.Q<VisualElement>("progress-bar");
+            _iconElement = container.Q<VisualElement>(ICON_NAME);
+            _wordLabel = container.Q<Label>(WORD_LABEL_NAME);
+            _progressBar = container.Q<VisualElement>(PROGRESS_BAR_NAME);
 
             return Task.CompletedTask;
         }
 
+        private const string ICON_NAME = "icon";
+        private const string WORD_LABEL_NAME = "word";
+        private const string PROGRESS_BAR_NAME = "progress-bar";
 
         private const int SIDE_MARGIN = 10;
 
+        private VisualElement _iconElement;
         private Label _wordLabel;
         private VisualElement _progressBar;
 
