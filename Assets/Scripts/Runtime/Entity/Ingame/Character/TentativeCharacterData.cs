@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity.Utility;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Character
@@ -6,19 +7,20 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     ///     バフなどで一時的に変更されるプレイヤーのステータスを表すクラスです。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TentativeCharacterData<T> : IAttackableData, IHittableData where T : CharacterData
+    public class TentativeCharacterData : IAttackableData, IHittableData
     {
         /// <summary>
         /// コンストラクタ。
         /// </summary>
         /// <param name="data">キャラクターのデータ。</param>
-        public TentativeCharacterData(T data)
+        public TentativeCharacterData(CharacterData data)
         {
-            _attackPower = data.AttackPower;
-            _criticalChance = data.CriticalChance;
-            _criticalDamage = data.CriticalDamage;
-            _maxHealth = data.MaxHealth;
-            _armor = data.Armor;
+            //DynamicFloat変数を生成する
+            _attackPower = new(data.AttackPower);
+            _criticalChance = new(data.CriticalChance);
+            _criticalDamage = new(data.CriticalDamage);
+            _maxHealth = new(data.MaxHealth);
+            _armor = new(data.Armor);
 
             _data = data;
         }
@@ -30,27 +32,27 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// <summary>
         /// 攻撃力を取得します。
         /// </summary>
-        public float AttackPower => _attackPower;
+        public float AttackPower => _attackPower.Value;
 
         /// <summary>
         /// クリティカルヒットの確率を取得します（%）。
         /// </summary>
-        public float CriticalChance => _criticalChance;
+        public float CriticalChance => _criticalChance.Value;
 
         /// <summary>
         /// クリティカルヒット時のダメージ倍率を取得します。
         /// </summary>
-        public float CriticalDamage => _criticalDamage;
+        public float CriticalDamage => _criticalDamage.Value;
 
         /// <summary>
         /// 最大体力を取得します。
         /// </summary>
-        public float MaxHealth => _maxHealth;
+        public float MaxHealth => _maxHealth.Value;
 
         /// <summary>
         /// 防御力を取得します（割合軽減）。
         /// </summary>
-        public float Armor => _armor;
+        public float Armor => _armor.Value;
 
         /// <summary>
         /// 新しいバフを設定します。
@@ -59,19 +61,21 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// <param name="value">バフの値。</param>
         public void SetNewBuff(BuffType type, float value)
         {
+            const int MULTIPLY_PRIORITY = 0;
+
             switch (type)
             {
-                case BuffType.AttackPower: _attackPower *= value; break;
-                case BuffType.CriticalChance: _criticalChance *= value; break;
-                case BuffType.CriticalDamage: _criticalDamage *= value; break;
-                case BuffType.MaxHealth: _maxHealth *= value; break;
-                case BuffType.Armor: _armor *= value; break;
+                case BuffType.AttackPower: _attackPower.AddMultiplier(value, MULTIPLY_PRIORITY); break;
+                case BuffType.CriticalChance: _criticalChance.AddMultiplier(value, MULTIPLY_PRIORITY); break;
+                case BuffType.CriticalDamage: _criticalDamage.AddMultiplier(value, MULTIPLY_PRIORITY); break;
+                case BuffType.MaxHealth: _maxHealth.AddMultiplier(value, MULTIPLY_PRIORITY); break;
+                case BuffType.Armor: _armor.AddMultiplier(value, MULTIPLY_PRIORITY); break;
             }
 
             Debug.Log($"{_data.Name} StatusUpgrade\nvalue {value}");
         }
 
-                /// <summary>
+        /// <summary>
         /// バフの種類。
         /// </summary>
         public enum BuffType
@@ -83,11 +87,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             Armor
         }
 
-        private readonly T _data;
-        private float _attackPower;
-        private float _criticalChance;
-        private float _criticalDamage;
-        private float _maxHealth;
-        private float _armor;
+        private readonly CharacterData _data;
+
+        private DynamicFloatVariable _attackPower;
+        private DynamicFloatVariable _criticalChance;
+        private DynamicFloatVariable _criticalDamage;
+        private DynamicFloatVariable _maxHealth;
+        private DynamicFloatVariable _armor;
     }
 }
