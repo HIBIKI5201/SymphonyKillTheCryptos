@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: Super Attack
   _cardExplanation: 
-  _cardIcon: {fileID: 0}
-  _cardDifficulty: 0
-  _wordRange: {x: 0, y: 0}
+  _cardIcon: {fileID: 2800000, guid: 0f6e7aa54403efe4796989b67d95145f, type: 3}
+  _cardDifficulty: 3
+  _wordRange: {x: 0, y: 1}
   _contentsArray:
   - _content:
     - rid: 7654980560202760936

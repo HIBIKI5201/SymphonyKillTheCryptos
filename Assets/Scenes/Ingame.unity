@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b312261619b7843ad3818bbd0a1a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _requireScenes: 04000000
   _ingameStartSequence:
     rid: 713893688302108771
   references:
