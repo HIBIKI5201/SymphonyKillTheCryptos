@@ -3,7 +3,7 @@ using Cryptos.Runtime.Framework;
 using UnityEngine;
 using static Cryptos.Runtime.Entity.Ingame.Card.CardData;
 
-namespace Cryptos.Runtime.Presenter
+namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
 {
     /// <summary>
     ///     カードデータのデータアセット
