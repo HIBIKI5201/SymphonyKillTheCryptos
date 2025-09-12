@@ -50,6 +50,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             int amount = _data.LevelUpgradeAmount;
             LevelUpgradeNode[] candidates = new LevelUpgradeNode[amount];
 
+            //シャッフル用のインデックス配列を作る
             int[] indices = Enumerable.Range(0, allNode.Length).ToArray();
             var rng = new Random();
 
@@ -61,6 +62,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 candidates[i] = allNode[indices[i]];
             }
 
+            //候補を渡して選択されるのを待機
             LevelUpgradeNode selectedNode =
                 await _onLevelUpSelectNode?.Invoke(candidates);
 
