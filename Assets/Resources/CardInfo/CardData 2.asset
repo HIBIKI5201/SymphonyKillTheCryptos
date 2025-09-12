@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: 
   _cardExplanation: 
-  _cardIcon: {fileID: 2800000, guid: d6f80e414d197db43a97d7f097817229, type: 3}
+  _cardIcon: {fileID: 2800000, guid: e4bb01bea4900be4dbf4b2a4bce541c9, type: 3}
   _cardDifficulty: 3
   _wordRange: {x: 0, y: 2}
   _contentsArray:
