@@ -9,23 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bedc8b2577346748b87c348bbc76e50, type: 3}
+  m_Script: {fileID: 11500000, guid: 6447d439d91306a44999d40e5763c5bc, type: 3}
   m_Name: CardData
   m_EditorClassIdentifier: 
   _cardName: 
   _cardExplanation: 
   _cardIcon: {fileID: 0}
-  _cardDifficulty: 1
-  _wordRange: {x: 2, y: 4}
-  _contentsArray:
-  - _content:
-    - rid: 713893723159658589
+  _cardDifficulty: 0
+  _wordRange: {x: 0, y: 0}
+  _contentsArray: []
   _priority: 0
   _animationClipID: 0
   references:
     version: 2
-    RefIds:
-    - rid: 713893723159658589
-      type: {class: CardContentAllAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
-      data:
-        _damageScale: 1
+    RefIds: []
