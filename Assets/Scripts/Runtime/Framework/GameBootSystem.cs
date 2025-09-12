@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.Framework
     public class GameBootSystem : MonoBehaviour
     {
         [SerializeField, Tooltip("初期シーン")]
-        private SceneListEnum firstScene;
+        private SceneListEnum _firstScene;
 
         private async void Awake()
         {
@@ -15,7 +15,7 @@ namespace Cryptos.Runtime.Framework
             Scene activeScene = SceneManager.GetActiveScene();
             await SceneLoader.UnloadScene(activeScene.name);
 
-            string sceneName = firstScene.ToString();
+            string sceneName = _firstScene.ToString();
 
             //初期シーンをロードする
             await SceneLoader.LoadScene(sceneName);
