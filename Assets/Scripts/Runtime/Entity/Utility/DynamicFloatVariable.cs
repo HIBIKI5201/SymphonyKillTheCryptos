@@ -23,14 +23,24 @@ namespace Cryptos.Runtime.Entity.Utility
         public float BaseValue => _baseValue;
         public float Value => _value;
 
+        /// <summary>
+        ///     乗算値を追加する
+        /// </summary>
+        /// <param name="multiplier"> バフの値。(%) </param>
+        /// <param name="priority"> バフの優先度。 </param>
         public void AddMultiplier(float multiplier, int priority)
         {
+            //リストが存在しない時は生成する。
             if (!_multipliers.TryGetValue(priority, out var list))
             {
-                list = new List<float>();
+                list = new List<float>() { multiplier };
                 _multipliers.Add(priority, list);
             }
-            list.Add(multiplier);
+            else
+            {
+                list.Add(multiplier);
+            }
+
             _value = Recalculate();
         }
 
@@ -73,7 +83,7 @@ namespace Cryptos.Runtime.Entity.Utility
                 value += add;
 
             foreach (var group in _multipliers)
-                value *= group.Value.Sum();
+                value *= 1 + group.Value.Sum() / 100;
 
             return value;
         }
