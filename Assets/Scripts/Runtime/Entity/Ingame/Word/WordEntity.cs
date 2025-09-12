@@ -37,12 +37,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         /// <param name="wordDifficulty">新しい単語の難易度</param>
         public void SetNewWord(string newWord, int wordDifficulty)
         {
+            _matcher = new(newWord);
             _currentWord = newWord;
             _currentDifficulty = wordDifficulty;
-            _inputIndex = 0;
 
             // UI更新イベントを発火
-            OnWordUpdated?.Invoke(_currentWord, _inputIndex);
+            OnWordUpdated?.Invoke(_currentWord, _matcher.Count);
             InvokeProgressEvent();
         }
 
@@ -53,21 +53,11 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
         /// <returns>カード全体の入力が完了した場合true</returns>
         public bool OnInputChar(char input)
         {
-            // 入力された文字が現在の単語の文字と一致するか確認
-            if (!IsMatch(input))
-            {
-                // 一致しない場合、入力インデックスをリセットして再度チェック
-                ResetIndex();
-                if (!IsMatch(input))
-                {
-                    OnWordUpdated?.Invoke(_currentWord, _inputIndex);
-                    return false;
-                }
-            }
+            bool isCorrect = _matcher.ProccessInput(input);
 
-            _inputIndex++;
+            OnWordUpdated?.Invoke(_currentWord, _matcher.Count);
 
-            if (_currentWord.Length <= _inputIndex) // 現在の単語が完了
+            if (_matcher.IsCompleted) // 現在の単語が完了
             {
                 _remainDifficulty -= _currentDifficulty;
                 OnCurrentWordCompleted?.Invoke(); // ★ 現在の単語が完了したことを通知
@@ -78,22 +68,17 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
                     return true;
                 }
             }
-            else
-            {
-                OnWordUpdated?.Invoke(_currentWord, _inputIndex);
-            }
 
             return false;
         }
 
-        public void ResetIndex()
-        {
-            _inputIndex = 0;
-            OnWordUpdated?.Invoke(_currentWord, _inputIndex);
-        }
+        /// <summary>
+        ///     カウントをリセットする
+        /// </summary>
+        public void ResetIndex() => _matcher.ResetCount();
 
+        private WordMatcher _matcher;
         private string _currentWord;
-        private int _inputIndex;
         private readonly float _difficulty;
         private float _remainDifficulty;
         private int _currentDifficulty;
@@ -103,7 +88,5 @@ namespace Cryptos.Runtime.Entity.Ingame.Word
             float progress = 1f - Mathf.Clamp01(_remainDifficulty / _difficulty);
             OnProgressUpdate?.Invoke(progress);
         }
-
-        private bool IsMatch(char input) => _currentWord.ToUpper()[_inputIndex] == input;
     }
 }
