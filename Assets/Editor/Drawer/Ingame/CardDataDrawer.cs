@@ -1,4 +1,4 @@
-using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Cryptos.Editor.Ingame
 {
-    [CustomEditor(typeof(CardData))]
+    [CustomEditor(typeof(CardDataAsset))]
     public class CardDataDrawer : UnityEditor.Editor
     {
         public const string SKILL_ANIMATION_GUID_MAP_KEY = "skill-animation-guid-map"; // EditorUserSettingsに保存するためのキー
@@ -102,14 +102,14 @@ namespace Cryptos.Editor.Ingame
 
             for (int i = 0; i < indexs.Length; i++)
             {
-               int index = indexs[i];
+                int index = indexs[i];
                 if (index < 0 || index >= length)
                 {
                     EditorGUILayout.HelpBox($"Invalid index {index} for contents array.", MessageType.Error);
                     continue;
                 }
             }
-#endregion
+            #endregion
         }
 
         private void DrawAnalyzer()
