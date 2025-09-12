@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 
@@ -13,7 +14,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Utility
         /// </summary>
         /// <param name="symphonyData"></param>
         /// <returns></returns>
-        public static CharacterInitializationData Initialize(CharacterData symphonyData)
+        public static CharacterInitializationData Initialize(ICharacterData symphonyData)
         {
             CharacterEntity symphony = new(symphonyData);
             EnemyRepository enemyRepo = new();

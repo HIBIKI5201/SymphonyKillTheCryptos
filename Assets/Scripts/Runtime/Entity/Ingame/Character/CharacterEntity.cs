@@ -15,7 +15,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// コンストラクタ。
         /// </summary>
         /// <param name="data">キャラクターのデータ。</param>
-        public CharacterEntity(CharacterData data)
+        public CharacterEntity(ICharacterData data)
         {
             _entityData = data;
             _healthEntity = new HealthEntity(data);
@@ -95,7 +95,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// </summary>
         public void Dead() => _healthEntity.Dead();
 
-        private readonly CharacterData _entityData;
+        private readonly ICharacterData _entityData;
         
         [SerializeField, ReadOnly, Tooltip("キャラクターの体力情報を管理するエンティティです。")]
         private readonly HealthEntity _healthEntity;
