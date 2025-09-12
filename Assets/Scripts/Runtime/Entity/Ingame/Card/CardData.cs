@@ -1,5 +1,4 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Framework;
 using System;
 using UnityEngine;
 
@@ -71,14 +70,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         public int AnimationClipID => _animationClipID;
 
-        private string _cardName = "empty";
-        private string _cardExplanation = "explanation";
-        private Texture2D _cardIcon = default;
-        private int _cardDifficulty = 1;
-        private Vector2Int _wordRange = new Vector2Int(0, 1);
-        private CardContents[] _contentsArray = default;
-        private int _priority = 0;
-        private int _animationClipID = default;
+        private readonly string _cardName = "empty";
+        private readonly string _cardExplanation = "explanation";
+        private readonly Texture2D _cardIcon = default;
+        private readonly int _cardDifficulty = 1;
+        private readonly Vector2Int _wordRange = new Vector2Int(0, 1);
+        private readonly CardContents[] _contentsArray = default;
+        private readonly int _priority = 0;
+        private readonly int _animationClipID = default;
 
         /// <summary>
         /// カード効果の配列を保持するクラス。
@@ -86,16 +85,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [Serializable]
         public class CardContents
         {
-            /// <summary>
-            /// 指定されたインデックスのカード効果を取得します。
-            /// </summary>
-            public ICardContent this[int index] => _content[index];
-
-            /// <summary>
-            /// このカードが持つ効果の配列を取得します。
-            /// </summary>
-            public ICardContent[] Contents => _content;
-
             public void ExcuteAllContent(ICharacter[] players, ICharacter[] enemies)
             {
                 if (_content == null) return;
