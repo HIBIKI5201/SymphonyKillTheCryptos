@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelUpgradeNode_AttackUp
   m_EditorClassIdentifier: Cryptos.Ingame.Entity::Cryptos.Runtime.Entity.Ingame.System.LevelUpgradeNode
   _nodeName: Attack Up
-  _description: "\u4F53\u529B\u4E0A\u6607"
+  _description: "\u653B\u6483\u529B\u4E0A\u6607"
   _texture: {fileID: 0}
   _effects:
   - rid: 7654980343680991649
@@ -23,4 +23,4 @@ MonoBehaviour:
     - rid: 7654980343680991649
       type: {class: HealthStatusUpgrade, ns: Cryptos.Runtime.Entity, asm: Cryptos.Ingame.Entity}
       data:
-        _healthIncreaseAmount: 1
+        _healthIncreaseAmount: 2

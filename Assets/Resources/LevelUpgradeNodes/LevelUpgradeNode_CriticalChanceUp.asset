@@ -23,4 +23,4 @@ MonoBehaviour:
     - rid: 7654980343680991649
       type: {class: HealthStatusUpgrade, ns: Cryptos.Runtime.Entity, asm: Cryptos.Ingame.Entity}
       data:
-        _healthIncreaseAmount: 1
+        _healthIncreaseAmount: 2
