@@ -99,6 +99,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 () => inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
             waveSystem.OnWaveCleared +=
                 () => inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
+            waveSystem.OnAllWaveEnded += GoToOutGameScene;
 
             TestCardSpawn(cardInitData.CardUseCase);
             waveSystem.GameStart();
@@ -164,6 +165,16 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
                 instance.OnComplete += RandomDraw;
             }
+        }
+
+        private async void GoToOutGameScene()
+        {
+            await SceneLoader.UnloadScene(SceneListEnum.Stage.ToString());
+            await SceneLoader.UnloadScene(SceneListEnum.Ingame.ToString());
+
+            await SceneLoader.LoadScene(SceneListEnum.Outgame.ToString());
+            await SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
+            SceneLoader.SetActiveScene(SceneListEnum.Stage.ToString());
         }
     }
 }
