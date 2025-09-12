@@ -7,13 +7,13 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     ///     バフなどで一時的に変更されるプレイヤーのステータスを表すクラスです。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TentativeCharacterData : IAttackableData, IHittableData
+    public class TentativeCharacterData : ICharacterData
     {
         /// <summary>
         /// コンストラクタ。
         /// </summary>
         /// <param name="data">キャラクターのデータ。</param>
-        public TentativeCharacterData(CharacterData data)
+        public TentativeCharacterData(ICharacterData data)
         {
             //DynamicFloat変数を生成する
             _attackPower = new(data.AttackPower);
@@ -22,13 +22,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             _maxHealth = new(data.MaxHealth);
             _armor = new(data.Armor);
 
-            _data = data;
+            _name = data.Name;
         }
 
         /// <summary>
         /// プレイヤー名を取得します。
         /// </summary>
-        public string Name => _data.Name;
+        public string Name => _name;
+
         /// <summary>
         /// 攻撃力を取得します。
         /// </summary>
@@ -72,7 +73,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
                 case BuffType.Armor: _armor.AddMultiplier(value, MULTIPLY_PRIORITY); break;
             }
 
-            Debug.Log($"{_data.Name} StatusUpgrade\nvalue {value}");
+            Debug.Log($"{_name} StatusUpgrade\nvalue {value}");
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             Armor
         }
 
-        private readonly CharacterData _data;
+        private readonly string _name;
 
         private DynamicFloatVariable _attackPower;
         private DynamicFloatVariable _criticalChance;
