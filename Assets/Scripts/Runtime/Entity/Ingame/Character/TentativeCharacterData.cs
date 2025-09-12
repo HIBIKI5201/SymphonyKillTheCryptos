@@ -1,5 +1,7 @@
 using Cryptos.Runtime.Entity.Utility;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
@@ -60,20 +62,18 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// </summary>
         /// <param name="type">バフの種類。</param>
         /// <param name="value">バフの値。</param>
-        public void SetNewBuff(BuffType type, float value)
+        public void SetNewBuff(BuffType type, float value, int priority = 0)
         {
-            const int MULTIPLY_PRIORITY = 0;
-
             switch (type)
             {
-                case BuffType.AttackPower: _attackPower.AddMultiplier(value, MULTIPLY_PRIORITY); break;
-                case BuffType.CriticalChance: _criticalChance.AddMultiplier(value, MULTIPLY_PRIORITY); break;
-                case BuffType.CriticalDamage: _criticalDamage.AddMultiplier(value, MULTIPLY_PRIORITY); break;
-                case BuffType.MaxHealth: _maxHealth.AddMultiplier(value, MULTIPLY_PRIORITY); break;
-                case BuffType.Armor: _armor.AddMultiplier(value, MULTIPLY_PRIORITY); break;
+                case BuffType.AttackPower: _attackPower.AddMultiplier(value, priority); break;
+                case BuffType.CriticalChance: _criticalChance.AddMultiplier(value, priority); break;
+                case BuffType.CriticalDamage: _criticalDamage.AddMultiplier(value, priority); break;
+                case BuffType.MaxHealth: _maxHealth.AddMultiplier(value, priority); break;
+                case BuffType.Armor: _armor.AddMultiplier(value, priority); break;
             }
 
-            Debug.Log($"{_name} StatusUpgrade\nvalue {value}");
+            BuffLog(type);
         }
 
         /// <summary>
@@ -95,5 +95,23 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         private DynamicFloatVariable _criticalDamage;
         private DynamicFloatVariable _maxHealth;
         private DynamicFloatVariable _armor;
+
+        /// <summary>
+        ///     バフのログを出力
+        /// </summary>
+        /// <param name="type"></param>
+        [Conditional("UNITY_EDITOR")]
+        private void BuffLog(BuffType type)
+        {
+            switch (type)
+            {
+                case BuffType.AttackPower: Debug.Log($"{_name} is buffed AttackPower {_attackPower.Value}"); break;
+                case BuffType.CriticalChance: Debug.Log($"{_name} is buffed CriticalChance {_criticalChance.Value}"); break;
+                case BuffType.CriticalDamage: Debug.Log($"{_name} is buffed CriticalDamage {_criticalDamage.Value}"); break;
+                case BuffType.MaxHealth: Debug.Log($"{_name} is buffed MaxHealth {_maxHealth.Value}"); break;
+                case BuffType.Armor: Debug.Log($"{_name} is buffed Armor {_armor.Value}"); break;
+                default: Debug.LogWarning($"{_name} is buffed unknown"); break;
+            }
+        }
     }
 }
