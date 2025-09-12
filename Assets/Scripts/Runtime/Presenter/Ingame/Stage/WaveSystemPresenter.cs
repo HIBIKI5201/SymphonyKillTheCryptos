@@ -29,6 +29,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// <summary> ウェーブクリア時 </summary>
         public event Action OnWaveCleared;
 
+        /// <summary> ウェーブ完遂時 </summary>
+        public event Action OnAllWaveEnded;
+
         public void GameStart()
         {
             CreateWaveEnemys(_waveUseCase.CurrentWave);
@@ -53,6 +56,13 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             if (_enemyCount <= 0)
             {
                 WaveEntity wave = _waveUseCase.NextWave(); // 全ての敵を倒したら次のウェーブへ。
+
+                if (wave == null) //次のウェーブが無くなったら終了処理を発火
+                {
+                    OnAllWaveEnded?.Invoke();
+                    return;
+                }
+
                 ChangeWave(wave);
             }
         }
