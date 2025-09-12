@@ -62,8 +62,10 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         /// </summary>
         public async void GameInitialize()
         {
+            TentativeCharacterData symphonyData = new(_symphonyData);
+
             CharacterInitializer.CharacterInitializationData charaInitData =
-                CharacterInitializer.Initialize(_symphonyData);
+                CharacterInitializer.Initialize(symphonyData);
 
             CardInitializer.CardInitializationData cardInitData =
                 CardInitializer.Initialize(_wordDataBase,
@@ -89,7 +91,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             WaveSystemPresenter waveSystem = new(_waveEntities,
                 symphonyPresenter, charaInitData.EnemyRepository,
-                levelUseCase);
+                levelUseCase, symphonyData);
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             // ウェーブ開始時に入力受付を開始、ウェーブクリア時に入力受付を停止する。
