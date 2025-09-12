@@ -10,7 +10,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Utility
     {
         public static CardInitializationData Initialize(
             WordDataBase wordDataBase,
-            CharacterEntity<CharacterData> symphony,
+            CharacterEntity symphony,
             EnemyRepository enemyRepo)
         {
             CardUseCase cardUseCase = new(wordDataBase, new());

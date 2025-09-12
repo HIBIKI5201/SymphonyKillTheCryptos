@@ -83,7 +83,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
             foreach (var item in enemyData)
             {
-                CharacterEntity<CharacterData> enemy = _enemyRepository.CreateEnemy(item);
+                CharacterEntity enemy = _enemyRepository.CreateEnemy(item);
                 enemy.OnDead += HandleEnemyDead;
             }
         }

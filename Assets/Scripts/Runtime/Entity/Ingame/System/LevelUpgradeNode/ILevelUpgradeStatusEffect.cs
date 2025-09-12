@@ -4,6 +4,6 @@ namespace Cryptos.Runtime.Entity
 {
     public abstract class ILevelUpgradeStatusEffect : ILevelUpgradeEffect
     {
-        public abstract void ApplyStatusEffect(TentativeCharacterData<CharacterData> target);
+        public abstract void ApplyStatusEffect(TentativeCharacterData target);
     }
 }

@@ -1,9 +1,9 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Character;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Character
 {
@@ -12,11 +12,13 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
     /// </summary>
     public class EnemyRepository
     {
-        public event Action<CharacterEntity<CharacterData>> OnEnemyCreated;
+        /// <summary> 敵が生成された時のイベント </summary>
+        public event Action<CharacterEntity> OnEnemyCreated;
 
-        public IReadOnlyList<CharacterEntity<CharacterData>> AllEnemies => _enemies;
+        /// <summary> 存在している全ての敵 </summary>
+        public IReadOnlyList<CharacterEntity> AllEnemies => _enemies;
 
-        public CharacterEntity<CharacterData> CreateEnemy(CharacterData data)
+        public CharacterEntity CreateEnemy(CharacterData data)
         {
             if (data == null)
             {
@@ -24,7 +26,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
                 return null;
             }
 
-            CharacterEntity<CharacterData> enemy = _enemyGenerator.Generate(data);
+            CharacterEntity enemy = _enemyGenerator.Generate(data);
             if (enemy == null) return null;
 
             _enemies.Add(enemy);
@@ -39,14 +41,15 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
             return enemy;
         }
 
-        private List<CharacterEntity<CharacterData>> _enemies = new();
+        private List<CharacterEntity> _enemies = new();
         private EnemyGenerator _enemyGenerator = new();
 
         /// <summary>
         /// 敵キャラクターの体力ログを設定します。
         /// </summary>
         /// <param name="enemy"></param>
-        private void EnemyLog(CharacterEntity<CharacterData> enemy)
+        [Conditional("UNITY_EDITOR")]
+        private void EnemyLog(CharacterEntity enemy)
         {
             enemy.OnHealthChanged += (currentHealth, maxHealth) =>
             {

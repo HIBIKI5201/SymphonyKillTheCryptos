@@ -12,9 +12,9 @@ namespace Cryptos.Runtime.Entity
         /// ステータス効果を適用します。
         /// </summary>
         /// <param name="target">効果を適用する対象。</param>
-        public override void ApplyStatusEffect(TentativeCharacterData<CharacterData> target)
+        public override void ApplyStatusEffect(TentativeCharacterData target)
         {
-            target.SetNewBuff(TentativeCharacterData<CharacterData>.BuffType.MaxHealth,
+            target.SetNewBuff(TentativeCharacterData.BuffType.MaxHealth,
                 _healthIncreaseAmount);
         }
 

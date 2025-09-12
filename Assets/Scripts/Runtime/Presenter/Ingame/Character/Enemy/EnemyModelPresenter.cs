@@ -8,7 +8,7 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
     /// </summary>
     public class EnemyModelPresenter : MonoBehaviour
     {
-        public void Init(CharacterEntity<CharacterData> self, Transform target)
+        public void Init(CharacterEntity self, Transform target)
         {
             if (self == null)
             {
@@ -41,7 +41,7 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
             Destroy(gameObject);
         }
 
-        private CharacterEntity<CharacterData> _self;
+        private CharacterEntity _self;
         private Transform _target;
         private EnemyAnimeManager _animeManager;
 

@@ -60,7 +60,7 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
             _spawnPointStack = new(_spawnPoints);
         }
 
-        private void HandleEnemyCreated(CharacterEntity<CharacterData> enemy)
+        private void HandleEnemyCreated(CharacterEntity enemy)
         {
             if (enemy == null) return;
             // ここで敵キャラクターの表示や初期化を行う
@@ -68,7 +68,7 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
             CreateEnemyModel(enemy);
         }
 
-        private void CreateEnemyModel(CharacterEntity<CharacterData> enemy)
+        private void CreateEnemyModel(CharacterEntity enemy)
         {
             Debug.Log($"Creating enemy model for: {enemy}");
 
