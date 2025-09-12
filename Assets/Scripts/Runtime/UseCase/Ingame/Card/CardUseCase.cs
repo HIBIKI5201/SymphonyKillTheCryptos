@@ -71,7 +71,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// 指定されたカード効果を実行します。
         /// </summary>
         /// <param name="contents">実行するICardContentの配列。</param>
-        public void ExecuteCardEffect(ICardContent[] contents)
+        public void ExecuteCardEffect(CardData.CardContents contents)
         {
             ICharacter[] players = new ICharacter[1] { GetPlayer?.Invoke() };
             ICharacter[] targets = GetTargets?.Invoke() ?? Array.Empty<ICharacter>();
@@ -82,25 +82,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
                 return;
             }
 
-            if (contents == null || contents.Length <= 0)
-            {
-                Debug.LogWarning("No contents to execute.");
-                return;
-            }
-
-            foreach (var content in contents)
-            {
-                if (content == null) continue;
-
-                try
-                {
-                    content.Execute(players, targets);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"コンテンツの実行に失敗しました: {content.GetType().Name}{e.Message}stack trace{e.StackTrace}");
-                }
-            }
+            contents.ExcuteAllContent(players, targets);
         }
 
         private readonly CardDeckEntity _cardDeckEntity;
