@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Framework;
 using System;
 using UnityEngine;
@@ -79,7 +80,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Tooltip("アニメーションのID")]
         private int _animationClipID = default;
 
-                /// <summary>
+        /// <summary>
         /// カード効果の配列を保持するクラス。
         /// </summary>
         [Serializable]
@@ -94,6 +95,16 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             /// このカードが持つ効果の配列を取得します。
             /// </summary>
             public ICardContent[] Contents => _content;
+
+            public void ExcuteAllContent(ICharacter[] players, ICharacter[] enemies)
+            {
+                if (_content == null) return;
+
+                foreach (var item in _content)
+                {
+                    item.Execute(players, enemies);
+                }
+            }
 
             [SerializeReference, SubclassSelector, Tooltip("カード効果の配列。")]
             private ICardContent[] _content;
