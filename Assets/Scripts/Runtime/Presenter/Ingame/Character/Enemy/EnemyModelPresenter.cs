@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter.Character.Enemy
+namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
 {
     /// <summary>
     ///   敵キャラクターのモデルを操作するクラスです。
@@ -43,11 +43,11 @@ namespace Cryptos.Runtime.Presenter.Character.Enemy
 
         private CharacterEntity _self;
         private Transform _target;
-        private EnemyAnimeManager _animeManager;
+        private IEnemyAnimeManager _animeManager;
 
         private void Awake()
         {
-            _animeManager = GetComponentInChildren<EnemyAnimeManager>();
+            _animeManager = GetComponentInChildren<IEnemyAnimeManager>();
             if (_animeManager == null)
             {
                 Debug.LogError("SymphonyAnimeManager is not found on the GameObject.");
