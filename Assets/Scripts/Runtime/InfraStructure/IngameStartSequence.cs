@@ -1,4 +1,3 @@
-using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
@@ -18,6 +17,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 {
@@ -45,7 +45,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         [Header("テストコード")]
         [SerializeField, Tooltip("テスト用のカードデータ")]
-        private CardData[] _cardDatas;
+        private CardDataAsset[] _cardDatas;
         [SerializeField, Min(1), Tooltip("テスト用に生成するカードの数")]
         private int _cardAmount = 3;
 
@@ -160,7 +160,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             void RandomDraw()
             {
                 Debug.Log("draw");
-                var cardData = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
+                var cardDataAsset = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
+                var cardData = cardDataAsset.CreateCardData();
                 var instance = cardUseCase.CreateCard(cardData);
 
                 instance.OnComplete += RandomDraw;
