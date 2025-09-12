@@ -24,6 +24,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Card
         }
 
         public string CurrentWord => _cardEntity.WordEntity.CurrentWord;
+        public Texture2D Icon => _cardEntity.Icon;
 
         private readonly CardEntity _cardEntity;
     }
