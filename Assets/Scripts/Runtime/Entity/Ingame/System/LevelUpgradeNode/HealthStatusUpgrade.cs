@@ -6,7 +6,7 @@ namespace Cryptos.Runtime.Entity
     /// <summary>
     /// 体力をアップグレードするレベルアップ効果。
     /// </summary>
-    public class HealthStatusUpgrade : ILevelUpgradeStatusEffect
+    public class HealthStatusUpgrade : LevelUpgradeStatusEffect
     {
         /// <summary>
         /// ステータス効果を適用します。
