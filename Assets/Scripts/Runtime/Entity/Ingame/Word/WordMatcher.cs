@@ -1,10 +1,11 @@
 namespace Cryptos.Runtime.Entity.Ingame.Word
 {
-    public class WordMatcher
+    public struct WordMatcher
     {
         public WordMatcher(string word)
         {
             _word = word.ToUpper(); //判定用に大文字で保存
+            _count = 0;
         }
 
         public int Count => _count;
