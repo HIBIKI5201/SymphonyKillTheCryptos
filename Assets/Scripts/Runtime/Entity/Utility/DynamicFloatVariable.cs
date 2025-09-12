@@ -17,6 +17,7 @@ namespace Cryptos.Runtime.Entity.Utility
         public DynamicFloatVariable(float baseValue)
         {
             _baseValue = baseValue;
+            _value = baseValue;
         }
 
         public float BaseValue => _baseValue;
