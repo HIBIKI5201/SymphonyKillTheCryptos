@@ -45,14 +45,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         /// <param name="index">取得する効果のインデックス。</param>
         /// <returns>カード効果の配列。</returns>
-        public ICardContent[] GetContents(int index)
+        public CardData.CardContents GetContents(int index)
         {
             if (index < 0 || index >= _data.ContentsArray.Length)
             {
                 throw new IndexOutOfRangeException($"Index {index} is out of range for contents array.\ndata {_data.name}");
             }
 
-            return _data.ContentsArray[index].Contents;
+            return _data.ContentsArray[index];
         }
 
         private readonly CardData _data;
