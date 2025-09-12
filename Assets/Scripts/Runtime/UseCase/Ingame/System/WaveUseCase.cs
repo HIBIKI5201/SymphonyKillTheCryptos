@@ -35,6 +35,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             else
             {
                 Debug.LogWarning("No more waves available.");
+                return null;
             }
 
             WaveEntity newWave = _waveEntities[_currentWaveIndex];
