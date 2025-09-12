@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Presenter.Character.Player;
@@ -12,7 +13,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     {
         public WaveSystemPresenter(WaveEntity[] waveEntities,
             SymphonyPresenter player, EnemyRepository enemyRepository,
-            LevelUseCase levelUseCase)
+            LevelUseCase levelUseCase, TentativeCharacterData symphonyData)
         {
             WaveUseCase waveUseCase = new(waveEntities);
 
@@ -20,6 +21,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _symphony = player;
             _enemyRepository = enemyRepository;
             _levelUseCase = levelUseCase;
+            _symphonyData = symphonyData;
         }
 
         /// <summary> ウェーブ開始時 </summary>
@@ -37,6 +39,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         private SymphonyPresenter _symphony;
         private EnemyRepository _enemyRepository;
         private LevelUseCase _levelUseCase;
+
+        private TentativeCharacterData _symphonyData;
 
         private int _enemyCount = 0;
 
@@ -67,6 +71,15 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             while (_levelUseCase.LevelUpQueue.TryDequeue(out _))
             {
                 LevelUpgradeNode upgradeNode = await _levelUseCase.WaitLevelUpSelectAsync();
+                
+                foreach (ILevelUpgradeEffect effect in upgradeNode.Effects)
+                {
+                    if (effect is LevelUpgradeStatusEffect statusEffect)
+                    {
+                        statusEffect.ApplyStatusEffect(_symphonyData);
+                    }
+                }
+
                 Debug.Log($"Level Up! Selected Card: {upgradeNode}");
             }
 
