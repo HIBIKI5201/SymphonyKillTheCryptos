@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter.Character.Player
+namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 {
     /// <summary>
     ///     プレイヤーのアニメーションを管理するクラス

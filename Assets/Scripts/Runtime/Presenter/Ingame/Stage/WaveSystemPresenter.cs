@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
-using Cryptos.Runtime.Presenter.Character.Player;
+using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using System;
