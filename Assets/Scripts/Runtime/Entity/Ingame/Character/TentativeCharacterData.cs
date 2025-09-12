@@ -61,7 +61,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// 新しいバフを設定します。
         /// </summary>
         /// <param name="type">バフの種類。</param>
-        /// <param name="value">バフの値。</param>
+        /// <param name="value">バフの値。(%) </param>
+        /// <param name="priority"> バフの優先度 </param>
         public void SetNewBuff(BuffType type, float value, int priority = 0)
         {
             switch (type)

@@ -18,6 +18,6 @@ namespace Cryptos.Runtime.Entity
                 _healthIncreaseAmount);
         }
 
-        [SerializeField, Min(1), Tooltip("体力増加量。")] private float _healthIncreaseAmount = 1;
+        [SerializeField, Min(0), Tooltip("体力増加量。(%)")] private float _healthIncreaseAmount = 0;
     }
 }
