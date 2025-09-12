@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter.Character.Enemy
+namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
 {
     [RequireComponent(typeof(Animator))]
-    public class EnemyAnimeManager : MonoBehaviour
+    public class EnemyAnimeManager : MonoBehaviour, IEnemyAnimeManager
     {
         public void Hit()
         {
