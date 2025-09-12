@@ -49,7 +49,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
         [SerializeField]
         private ParticleSystem _muzzleFlash;
 
-        private SymphonyAnimeManager _animeManager;
+        private ISymphonyAnimeManager _animeManager;
         private CardUseCase _cardUseCase;
         private PlayerPathContainer _pathContainer;
 
@@ -57,7 +57,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
 
         private void Awake()
         {
-            _animeManager = GetComponentInChildren<SymphonyAnimeManager>();
+            _animeManager = GetComponentInChildren<ISymphonyAnimeManager>();
             if (_animeManager == null)
             {
                 Debug.LogError("SymphonyAnimeManager is not found on the GameObject.");
