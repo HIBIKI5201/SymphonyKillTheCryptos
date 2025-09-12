@@ -7,7 +7,7 @@ namespace Cryptos.Runtime.Presenter.Character.Player
     ///     プレイヤーのアニメーションを管理するクラス
     /// </summary>
     [RequireComponent(typeof(Animator), typeof(SkillEndReceiver))]
-    public class SymphonyAnimeManager : MonoBehaviour
+    public class SymphonyAnimeManager : MonoBehaviour, ISymphonyAnimeManager
     {
         public event Action<int> OnSkillTriggered;
         public event Action OnSkillEnded;
@@ -88,6 +88,9 @@ namespace Cryptos.Runtime.Presenter.Character.Player
             OnSkillEnded?.Invoke();
         }
 
+        /// <summary>
+        ///     ハッシュ値を保存する構造体。
+        /// </summary>
         private readonly struct SymphonyAnimatorHash
         {
             public SymphonyAnimatorHash(string dirX, string dirY,
