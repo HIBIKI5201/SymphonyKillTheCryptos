@@ -30,12 +30,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             }
         }
 
-        [SerializeField]
-        private readonly SceneListEnum[] _requireScenes = { SceneListEnum.Stage };
+        [SerializeField, Tooltip("依存しているシーン。")]
+        private SceneListEnum[] _requireScenes = { SceneListEnum.Stage };
 
         [Space]
 
-        [SerializeReference, SubclassSelector]
+        [SerializeReference, SubclassSelector, Tooltip("初期化処理。")]
         private IGameInstaller _ingameStartSequence;
     }
 }
