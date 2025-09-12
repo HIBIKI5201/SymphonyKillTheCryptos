@@ -1,8 +1,10 @@
 using Cryptos.Runtime.Framework;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
 {
@@ -11,16 +13,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     /// </summary>
     public class IngameManager : MonoBehaviour, IInitializeAsync
     {
-        private readonly string[] scenes = { SceneListEnum.Stage.ToString() };
-
         Task IInitializeAsync.InitializeTask { get; set; }
 
         async Task IInitializeAsync.InitializeAsync()
         {
             _ingameStartSequence.GameInitialize();
 
-            await MultiSceneLoader.LoadScenes(scenes);
-            if (SceneLoader.GetExistScene(SceneListEnum.Stage.ToString(), out var stageScene))
+            await MultiSceneLoader.LoadScenes(_requireScenes.Select(s => s.ToString()).ToArray());
+            if (SceneLoader.GetExistScene(SceneListEnum.Stage.ToString(), out Scene stageScene))
             {
                 SceneLoader.SetActiveScene(stageScene.name);
             }
@@ -29,6 +29,11 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
                 Debug.LogError($"Failed to load scene: {SceneListEnum.Stage}");
             }
         }
+
+        [SerializeField]
+        private readonly SceneListEnum[] _requireScenes = { SceneListEnum.Stage };
+
+        [Space]
 
         [SerializeReference, SubclassSelector]
         private IGameInstaller _ingameStartSequence;
