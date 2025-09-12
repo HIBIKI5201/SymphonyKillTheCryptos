@@ -1,6 +1,6 @@
 using System;
 
-namespace Cryptos.Runtime.Presenter.Character.Player
+namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 {
     public interface ISymphonyAnimeManager
     {

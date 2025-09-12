@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Cryptos.Runtime.Presenter.Character.Player;
+using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 
 namespace Cryptos.Runtime.Develop
 {

@@ -1,10 +1,9 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Presenter.Character.Player;
-using Cryptos.Runtime.Presenter.Ingame.Character;
+using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter.Character.Enemy
+namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
 {
     /// <summary>
     ///     敵キャラクターモデルの生成と管理を行うクラスです。
