@@ -58,23 +58,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         public float CurrentHealth => _healthEntity.CurrentHealth;
 
         /// <summary>
-        /// クリティカル判定を含む、最終的な攻撃力を計算して取得します。
-        /// </summary>
-        /// <returns>計算後の攻撃力。</returns>
-        public float GetAttackPower()
-        {
-            float power = _entityData.AttackPower;
-
-            // クリティカル時に倍率を掛けます。
-            if (UnityEngine.Random.Range(0, 1) < _entityData.CriticalChance)
-            {
-                power *= _entityData.CriticalDamage;
-            }
-
-            return power;
-        }
-
-        /// <summary>
         /// キャラクターにダメージを与えます。
         /// </summary>
         /// <param name="damage">与えるダメージ情報を含んだCombatContext。</param>
