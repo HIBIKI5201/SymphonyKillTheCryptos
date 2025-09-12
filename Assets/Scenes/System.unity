@@ -119,6 +119,61 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &171030328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 171030330}
+  - component: {fileID: 171030329}
+  m_Layer: 0
+  m_Name: CRIWARE
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!114 &171030329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171030328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f529aa944b914449d62b8c40f188fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtom
+  acfFile: C:/Users/takut/GameProject/SymphonyKillTheCryptos/Assets/Arts/Audio/CRI
+    Data/SteamingAssets/SymphonyKillTheCryptos.acf
+  cueSheets:
+  - name: BGM
+    acbFile: C:/Users/takut/GameProject/SymphonyKillTheCryptos/Assets/Arts/Audio/CRI
+      Data/SteamingAssets/BGM.acb
+    awbFile: 
+    loaderStatus: 0
+  dspBusSetting: 
+  dontDestroyOnLoad: 0
+  dontRemoveExistsCueSheet: 0
+--- !u!4 &171030330
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171030328}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &179215760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +352,7 @@ MonoBehaviour:
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 4478489944188285789}
+  m_Camera: {fileID: 0}
 --- !u!114 &1075319875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,8 +367,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 1075319872}
   _locateType: 1
-  _autoSet: 1
-  _autoDestroy: 1
+  _autoRegister: 1
+  _autoUnregister: 1
 --- !u!114 &1075319876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,11 +556,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 260c957ff25e8a94da5a1d6a3dbee381, type: 3}
---- !u!20 &4478489944188285789 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 8993028535224828440, guid: 260c957ff25e8a94da5a1d6a3dbee381, type: 3}
-  m_PrefabInstance: {fileID: 4478489944188285788}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -513,3 +563,4 @@ SceneRoots:
   - {fileID: 4478489944188285788}
   - {fileID: 698226697}
   - {fileID: 1075319873}
+  - {fileID: 171030330}
