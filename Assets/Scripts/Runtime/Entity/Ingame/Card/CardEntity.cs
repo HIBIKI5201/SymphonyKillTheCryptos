@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Word;
 using System;
+using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
@@ -30,15 +31,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             remove => _word.OnComplete -= value;
         }
 
-        /// <summary>
-        /// このカードに関連付けられたワードタイピングのエンティティを取得します。
-        /// </summary>
+        /// <summary> このカードに関連付けられたワードタイピングのエンティティを取得します。 </summary>
         public WordEntity WordEntity => _word;
 
-        /// <summary>
-        /// アニメーションクリップのIDを取得します。
-        /// </summary>
+        /// <summary> アニメーションクリップのIDを取得します。 </summary>
         public int AnimationClipID => _data.AnimationClipID;
+
+        /// <summary> カードのアイコン </summary>
+        public Texture2D Icon => _data.CardIcon;
+
         /// <summary>
         /// 指定されたインデックスのカード効果を取得します。
         /// </summary>
