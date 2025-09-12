@@ -2,6 +2,7 @@
 {
     None = 0,
     System = 1,
-    Ingame = 2,
-    Stage = 3,
+    Outgame = 2,
+    Ingame = 3,
+    Stage = 4,
 }

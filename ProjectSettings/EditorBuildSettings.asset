@@ -9,11 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/System.unity
     guid: 558027e0f13315c4e8e1a2127a7f4265
   - enabled: 1
+    path: Assets/Scenes/Outgame.unity
+    guid: 623160e2bdc970f439b93d37b79cdbbe
+  - enabled: 1
     path: Assets/Scenes/Ingame.unity
     guid: 6681562bee7aaa4438ec4d7898c05b49
   - enabled: 1
     path: Assets/Scenes/Stage.unity
-    guid: f94d2a9380944e04d9c3881c883e7a99
+    guid: 1a7edba2f718d2549b6c4d3bdda60227
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4a89a99d7cb983b4290128282a52fc7a, type: 2}
     com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}
