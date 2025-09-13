@@ -18,6 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
+using Cryptos.Runtime.Entity.Ingame.Card;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 {
@@ -42,6 +43,10 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         [SerializeField, Tooltip("レベルアップデータ")]
         private LevelUpgradeData _levelUpgradeData;
+
+        [Space]
+        [SerializeField, Tooltip("戦闘パイプライン")]
+        private CombatPipelineAsset _combatPipelineAsset;
 
         [Header("テストコード")]
         [SerializeField, Tooltip("テスト用のカードデータ")]
@@ -160,12 +165,22 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             void RandomDraw()
             {
                 Debug.Log("draw");
-                var cardDataAsset = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
-                var cardData = cardDataAsset.CreateCardData();
-                var instance = cardUseCase.CreateCard(cardData);
+                CardDataAsset cardDataAsset = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
+                CardData cardData = GetCardData(cardDataAsset);
+                CardEntity instance = cardUseCase.CreateCard(cardData);
 
                 instance.OnComplete += RandomDraw;
             }
+        }
+
+        /// <summary>
+        ///     カードデータをインスタンス化します。
+        /// </summary>
+        /// <param name="dataAsset"></param>
+        /// <returns></returns>
+        private CardData GetCardData(CardDataAsset dataAsset)
+        {
+            return dataAsset.CreateCardData(_combatPipelineAsset);
         }
 
         private async void GoToOutGameScene()
