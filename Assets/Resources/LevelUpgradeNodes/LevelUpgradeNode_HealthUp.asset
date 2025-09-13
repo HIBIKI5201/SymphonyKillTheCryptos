@@ -16,11 +16,11 @@ MonoBehaviour:
   _description: "\u4F53\u529B\u4E0A\u6607"
   _texture: {fileID: 0}
   _effects:
-  - rid: 7654980343680991649
+  - rid: 7654980578585870621
   references:
     version: 2
     RefIds:
-    - rid: 7654980343680991649
-      type: {class: HealthStatusUpgrade, ns: Cryptos.Runtime.Entity, asm: Cryptos.Ingame.Entity}
+    - rid: 7654980578585870621
+      type: {class: HealthStatusUpgrade, ns: Cryptos.Runtime.Entity.Ingame.System, asm: Cryptos.Ingame.Entity}
       data:
         _healthIncreaseAmount: 50
