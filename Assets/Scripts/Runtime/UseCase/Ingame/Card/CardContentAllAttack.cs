@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.CombatSystem;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -10,6 +11,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// </summary>
     public class CardContentAllAttack : ICardContent
     {
+        public void InitializeCombatHandler(ICombatHandler[] handlers)
+        {
+            ICombatHandler[] myHandlers = GetMyCombatHandler();
+            _handlers = handlers.Concat(myHandlers).ToArray();
+        }
+
         /// <summary>
         /// プレイヤーからターゲットに対して攻撃を実行します。
         /// ダメージ計算はCombatProcessorを介して行われます。
@@ -24,7 +31,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
             foreach (var target in targets)
             {
-                CombatContext context = CombatProcessor.Execute(player, target, Handlers);
+                CombatContext context = CombatProcessor.Execute(player, target, _handlers);
 
                 target.AddHealthDamage(context);
 
@@ -37,16 +44,15 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Min(0), Tooltip("ダメージの倍率。")]
         private float _damageScale = 1;
 
-        private ICombatHandler[] Handlers
+        private ICombatHandler[] _handlers;
+
+        private ICombatHandler[] GetMyCombatHandler()
         {
-            get
+            return new ICombatHandler[]
             {
-                return new ICombatHandler[]
-                {
-                    new CriticalCalcHandler(),
-                    new MultiplyHandler(_damageScale)
-                };
-            }
+                new MultiplyHandler(_damageScale)
+            };
         }
+
     }
 }
