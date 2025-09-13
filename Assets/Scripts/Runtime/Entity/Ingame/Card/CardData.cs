@@ -93,6 +93,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
                 foreach (var item in _contents)
                 {
+                    if (item == null) continue;
+
                     item.Execute(players, enemies);
                 }
             }
