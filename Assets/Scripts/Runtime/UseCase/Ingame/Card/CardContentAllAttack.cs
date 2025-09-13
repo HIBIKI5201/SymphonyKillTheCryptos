@@ -11,12 +11,6 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
     /// </summary>
     public class CardContentAllAttack : CardContentBaseAttack
     {
-        public override void InitializeCombatHandler(ICombatHandler[] handlers)
-        {
-            ICombatHandler[] myHandlers = GetMyCombatHandler();
-            _handlers = handlers.Concat(myHandlers).ToArray();
-        }
-
         /// <summary>
         /// プレイヤーからターゲットに対して攻撃を実行します。
         /// ダメージ計算はCombatProcessorを介して行われます。
