@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 226d32a0385b5b548879e5372547c588, type: 3}
   m_Name: CombatPipelineAsset
   m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.CombatPipelineAsset
-  _combatHandlers: []
+  _combatHandlers:
+  - rid: 7654980560202761070
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 7654980560202761070
+      type: {class: CriticalCalcHandler, ns: Cryptos.Runtime.UseCase.Ingame.CombatSystem, asm: Cryptos.UseCase}
+      data: 
