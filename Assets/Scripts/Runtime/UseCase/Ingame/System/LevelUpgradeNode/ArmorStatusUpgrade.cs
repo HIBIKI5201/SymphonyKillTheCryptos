@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Entity.Ingame.System
+namespace Cryptos.Runtime.UseCase.Ingame.System
 {
     public class ArmorStatusUpgrade : LevelUpgradeStatusEffect
     {
