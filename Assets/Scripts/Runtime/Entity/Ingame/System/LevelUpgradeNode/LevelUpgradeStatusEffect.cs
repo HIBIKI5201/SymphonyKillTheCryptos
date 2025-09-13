@@ -1,6 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 
-namespace Cryptos.Runtime.Entity
+namespace Cryptos.Runtime.Entity.Ingame.System
 {
     public abstract class LevelUpgradeStatusEffect : ILevelUpgradeEffect
     {

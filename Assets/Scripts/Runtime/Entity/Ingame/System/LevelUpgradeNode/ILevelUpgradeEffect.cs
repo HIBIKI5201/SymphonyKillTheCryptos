@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Cryptos.Runtime.Entity
+namespace Cryptos.Runtime.Entity.Ingame.System
 {
     /// <summary>
     /// レベルアップ効果の共通インターフェース。
