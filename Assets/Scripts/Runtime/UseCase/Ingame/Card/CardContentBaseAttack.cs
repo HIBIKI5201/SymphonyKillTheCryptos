@@ -10,7 +10,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         public virtual void InitializeCombatHandler(ICombatHandler[] handlers)
         {
             ICombatHandler[] myHandlers = GetMyCombatHandler();
-            _handlers = handlers.Concat(myHandlers).ToArray();
+            ICombatHandler[] resultHandlers = handlers.Concat(myHandlers).ToArray();
+
+            _handlers = resultHandlers;
         }
 
         public abstract void Execute(ICharacter[] players, ICharacter[] targets);
