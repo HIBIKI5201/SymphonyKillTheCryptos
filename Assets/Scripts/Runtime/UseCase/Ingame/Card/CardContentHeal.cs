@@ -2,7 +2,7 @@ using Cryptos.Runtime.Entity.Ingame.Character;
 using System.Text;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Entity.Ingame.Card
+namespace Cryptos.Runtime.UseCase.Ingame.Card
 {
     /// <summary>
     /// カード効果として、ターゲットの体力を回復するクラスです。
