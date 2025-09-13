@@ -1,4 +1,3 @@
-using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -15,5 +14,11 @@ namespace Cryptos.Runtime.Presenter
 
         [SerializeReference, SubclassSelector]
         private IGameInstaller _outgameInstaller;
+
+        private async void Start()
+        {
+            await SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
+            _outgameInstaller.GameInitialize();
+        }
     }
 }
