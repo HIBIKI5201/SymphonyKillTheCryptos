@@ -11,6 +11,7 @@ namespace Cryptos.Runtime.Entity.Ingame.System
                 _armorIncreaseAmount);
         }
 
-        [SerializeField, Min(0), Tooltip("装甲増加量。(%)")] private float _armorIncreaseAmount = 0;
+        [SerializeField, Min(0), Tooltip("装甲増加量。(%)")]
+        private float _armorIncreaseAmount = 0;
     }
 }
