@@ -1,6 +1,6 @@
 {
     "name": "Cryptos.UseCase",
-    "rootNamespace": "",
+    "rootNamespace": "Cryptos.Runtime.UseCase",
     "references": [
         "GUID:83b371f8bd104ee45b1cb38cf205ac72",
         "GUID:68a532f43eeefd5408e4e8871b769ee4"
