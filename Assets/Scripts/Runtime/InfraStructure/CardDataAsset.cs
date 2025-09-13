@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.UseCase.Ingame.Card;
 using UnityEngine;
 using static Cryptos.Runtime.Entity.Ingame.Card.CardData;
 
@@ -28,7 +29,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
             {
                 foreach (var content in cardContents.Contents)
                 {
-                    if (content is CardContentAllAttack attack)
+                    if (content is CardContentBaseAttack attack)
                     {
                         attack.InitializeCombatHandler(combatPipelineAsset.CombatHandler);
                     }
