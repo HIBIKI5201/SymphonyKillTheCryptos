@@ -12,9 +12,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
     menuName = CryptosPathConstant.ASSET_PATH + nameof(CardData))]
     public class CardDataAsset : ScriptableObject
     {
-        public CardData CreateCardData()
+        public CardData CreateCardData(CombatPipelineAsset combatPipelineAsset)
         {
-            return new(
+            CardData data = new(
                 _cardName,
                 _cardExplanation,
                 _cardIcon,
@@ -23,6 +23,19 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
                 _contentsArray,
                 _priority,
                 _animationClipID);
+
+            foreach (var cardContents in data.ContentsArray)
+            {
+                foreach (var content in cardContents.Contents)
+                {
+                    if (content is CardContentAllAttack attack)
+                    {
+                        attack.InitializeCombatHandler(combatPipelineAsset.CombatHandler);
+                    }
+                }
+            }
+
+            return data;
         }
 
         [Header("基本情報")]
