@@ -5,7 +5,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.CombatSystem
     /// <summary>
     /// 戦闘計算の各ステップを処理するハンドラーの共通インターフェースです。
     /// </summary>
-    internal interface ICombatHandler
+    public interface ICombatHandler
     {
         /// <summary>
         /// 戦闘コンテキストを受け取り、特定の計算処理を適用した新しいコンテキストを返します。
