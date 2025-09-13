@@ -19,25 +19,25 @@ MonoBehaviour:
   _wordRange: {x: 0, y: 1}
   _contentsArray:
   - _contents:
-    - rid: 7654980560202761080
+    - rid: 7654980578585870344
   - _contents:
-    - rid: 7654980560202761093
+    - rid: 7654980578585870345
   - _contents:
-    - rid: 7654980560202761084
+    - rid: 7654980578585870346
   _priority: 0
   _animationClipID: 1
   references:
     version: 2
     RefIds:
-    - rid: 7654980560202761080
-      type: {class: CardContentAllAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
+    - rid: 7654980578585870344
+      type: {class: CardContentRandomAttack, ns: Cryptos.Runtime.UseCase.Ingame.Card, asm: Cryptos.UseCase}
       data:
         _damageScale: 1
-    - rid: 7654980560202761084
-      type: {class: CardContentAllAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
+    - rid: 7654980578585870345
+      type: {class: CardContentRandomAttack, ns: Cryptos.Runtime.UseCase.Ingame.Card, asm: Cryptos.UseCase}
+      data:
+        _damageScale: 1
+    - rid: 7654980578585870346
+      type: {class: CardContentRandomAttack, ns: Cryptos.Runtime.UseCase.Ingame.Card, asm: Cryptos.UseCase}
       data:
         _damageScale: 1.5
-    - rid: 7654980560202761093
-      type: {class: CardContentAllAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
-      data:
-        _damageScale: 1

@@ -19,13 +19,13 @@ MonoBehaviour:
   _wordRange: {x: 0, y: 1}
   _contentsArray:
   - _contents:
-    - rid: 7654980560202761082
+    - rid: 7654980578585870348
   _priority: 0
   _animationClipID: 3
   references:
     version: 2
     RefIds:
-    - rid: 7654980560202761082
-      type: {class: CardContentAllAttack, ns: Cryptos.Runtime.Entity.Ingame.Card, asm: Cryptos.UseCase}
+    - rid: 7654980578585870348
+      type: {class: CardContentNearerAttack, ns: Cryptos.Runtime.UseCase.Ingame.Card, asm: Cryptos.UseCase}
       data:
         _damageScale: 3
