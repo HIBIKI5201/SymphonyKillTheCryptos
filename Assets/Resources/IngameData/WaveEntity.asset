@@ -15,3 +15,5 @@ MonoBehaviour:
   _waveExperiencePoint: 1000
   _enemies:
   - {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
+  - {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
+  - {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
