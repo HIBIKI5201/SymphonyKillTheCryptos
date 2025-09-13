@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Entity.Ingame.Card
+namespace Cryptos.Runtime.UseCase.Ingame.Card
 {
     /// <summary>
     /// カード効果として、ターゲットに攻撃を行うクラスです。
     /// </summary>
-    public class CardContentAllAttack : ICardContent
+    public class CardContentAllAttack : CardContentBaseAttack
     {
-        public void InitializeCombatHandler(ICombatHandler[] handlers)
+        public override void InitializeCombatHandler(ICombatHandler[] handlers)
         {
             ICombatHandler[] myHandlers = GetMyCombatHandler();
             _handlers = handlers.Concat(myHandlers).ToArray();
@@ -23,7 +23,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         /// </summary>
         /// <param name="players">攻撃の主体となるプレイヤーキャラクターの配列。</param>
         /// <param name="targets">攻撃の対象となるキャラクターの配列。</param>
-        public void Execute(ICharacter[] players, ICharacter[] targets)
+        public override void Execute(ICharacter[] players, ICharacter[] targets)
         {
             StringBuilder sb = new($"CardContentAttack: Player <b>{players[0]}</b>\n");
 
@@ -44,9 +44,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [SerializeField, Min(0), Tooltip("ダメージの倍率。")]
         private float _damageScale = 1;
 
-        private ICombatHandler[] _handlers;
-
-        private ICombatHandler[] GetMyCombatHandler()
+        protected override ICombatHandler[] GetMyCombatHandler()
         {
             return new ICombatHandler[]
             {
