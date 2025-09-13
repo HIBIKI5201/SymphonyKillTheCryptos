@@ -85,18 +85,20 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         [Serializable]
         public class CardContents
         {
+            public ICardContent[] Contents => _contents;
+
             public void ExcuteAllContent(ICharacter[] players, ICharacter[] enemies)
             {
-                if (_content == null) return;
+                if (_contents == null) return;
 
-                foreach (var item in _content)
+                foreach (var item in _contents)
                 {
                     item.Execute(players, enemies);
                 }
             }
 
             [SerializeReference, SubclassSelector, Tooltip("カード効果の配列。")]
-            private ICardContent[] _content;
+            private ICardContent[] _contents;
         }
     }
 }
