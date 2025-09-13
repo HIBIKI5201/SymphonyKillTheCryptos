@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using System.Text;
 using UnityEngine;
