@@ -14,9 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.CombatPipelineAsset
   _combatHandlers:
   - rid: 7654980560202761070
+  - rid: 7654980609837367554
   references:
     version: 2
     RefIds:
     - rid: 7654980560202761070
       type: {class: CriticalCalcHandler, ns: Cryptos.Runtime.UseCase.Ingame.CombatSystem, asm: Cryptos.UseCase}
       data: 
+    - rid: 7654980609837367554
+      type: {class: ArmorCalcHandler, ns: Cryptos.Runtime.UseCase.Ingame.CombatSystem, asm: Cryptos.UseCase}
+      data:
+        _armorThreshold: 100
