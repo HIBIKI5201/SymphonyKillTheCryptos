@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Presenter.Ingame.Character;
 using SymphonyFrameWork.Utility;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -13,9 +14,9 @@ namespace Cryptos.Runtime.UI
 
         }
 
-        public void SetData(float damage, Vector3 position)
+        public void SetData(CombatContextViewModel context, Vector3 position)
         {
-            _textLabel.text = damage.ToString();
+            _textLabel.text = context.Damage.ToString();
 
             _backGround.RegisterCallback<GeometryChangedEvent>(PositionChanged);
 

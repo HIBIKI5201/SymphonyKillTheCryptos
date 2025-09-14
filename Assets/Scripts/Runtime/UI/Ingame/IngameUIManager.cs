@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork;
@@ -75,9 +76,9 @@ namespace Cryptos.Runtime.UI.Ingame
             _levelUpgrade.InputChar(c);
         }
 
-        public void ShowDamageText(float damage, Vector3 position)
+        public void ShowDamageText(CombatContextViewModel context, Vector3 position)
         {
-            _damageTextPool.ShowDamageText(damage, position + _damageTextOffset);
+            _damageTextPool.ShowDamageText(context, position + _damageTextOffset);
         }
 
         Task IInitializeAsync.InitializeTask { get; set; }

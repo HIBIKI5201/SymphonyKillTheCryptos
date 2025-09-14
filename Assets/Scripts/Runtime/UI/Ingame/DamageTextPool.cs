@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Presenter.Ingame.Character;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UIElements;
@@ -15,10 +16,10 @@ namespace Cryptos.Runtime.UI
                 );
         }
 
-        public async void ShowDamageText(float damage, Vector3 position, float duration = 1)
+        public async void ShowDamageText(CombatContextViewModel context, Vector3 position, float duration = 1)
         {
             UIElementDamageText text = _pool.Get();
-            text.SetData(damage, position);
+            text.SetData(context, position);
 
             await Awaitable.WaitForSecondsAsync(duration);
 
