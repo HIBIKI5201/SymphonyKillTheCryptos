@@ -90,6 +90,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             public void ExcuteAllContent(ICharacter[] players, ICharacter[] enemies)
             {
                 if (_contents == null) return;
+                if (enemies.Length <= 0 || players.Length <= 0) return;
 
                 foreach (var item in _contents)
                 {
