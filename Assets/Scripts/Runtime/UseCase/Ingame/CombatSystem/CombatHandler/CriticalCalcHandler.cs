@@ -33,11 +33,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.CombatSystem
             float damageScale = 1 + (criticalWeight * (context.AttackerData.CriticalDamage - 1));
             float damage = context.Damage * damageScale;
 
-            return new CombatContext(
-                context.AttackerData,
-                context.TargetData,
-                damage
-            );
+            return new CombatContext(context.AttackerData, context.TargetData, damage, criticalWeight);
         }
     }
 }
