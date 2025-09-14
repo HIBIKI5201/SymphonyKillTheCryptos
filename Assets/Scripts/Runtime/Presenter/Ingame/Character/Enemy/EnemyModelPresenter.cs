@@ -26,13 +26,13 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             _target = target;
 
             self.OnDead += Dead;
-            self.OnTakeDamage += HandleTakeDamage;
+            self.OnTakedDamage += HandleTakeDamage;
 
             destroyCancellationToken.Register(() =>
             {
                 if (_self == null) return;
                 _self.OnDead -= Dead;
-                _self.OnTakeDamage -= HandleTakeDamage;
+                _self.OnTakedDamage -= HandleTakeDamage;
             });
         }
 
@@ -61,7 +61,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             transform.rotation = Quaternion.LookRotation(_target.position - transform.position);
         }
 
-        private void HandleTakeDamage()
+        private void HandleTakeDamage(CombatContext cc)
         {
             _animeManager.Hit();
         }
