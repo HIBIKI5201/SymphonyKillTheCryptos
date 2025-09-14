@@ -18,6 +18,18 @@ namespace Cryptos.Runtime.UI
         {
             _textLabel.text = context.Damage.ToString();
 
+            if (0 < context.CriticalCount)
+            {
+                Color color = context.CriticalCount switch
+                {
+                    1 => Color.yellow,
+                    2 => Color.orange,
+                    _ => Color.red,
+                };
+
+                _textLabel.style.color = color;
+            }
+
             _backGround.RegisterCallback<GeometryChangedEvent>(PositionChanged);
 
             void PositionChanged(GeometryChangedEvent e)
