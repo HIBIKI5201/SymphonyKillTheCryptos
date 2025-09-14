@@ -75,12 +75,21 @@ namespace Cryptos.Runtime.UI.Ingame
             _levelUpgrade.InputChar(c);
         }
 
+        public void ShowDamageText(float damage, Vector3 position)
+        {
+            _damageTextPool.ShowDamageText(damage, position + _damageTextOffset);
+        }
+
         Task IInitializeAsync.InitializeTask { get; set; }
+
+        [SerializeField]
+        private Vector3 _damageTextOffset;
 
         private UIDocument _document;
 
         private UIElementDeck _deck;
         private UIElementLevelUpgradeWindow _levelUpgrade;
+        private DamageTextPool _damageTextPool;
 
         private InputBuffer _inputBuffer;
 
@@ -94,6 +103,8 @@ namespace Cryptos.Runtime.UI.Ingame
 
             await _deck.InitializeTask;
             await _levelUpgrade.InitializeTask;
+
+            _damageTextPool = new(root);
 
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
 
