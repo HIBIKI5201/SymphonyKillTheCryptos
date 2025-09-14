@@ -35,10 +35,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             remove => _healthEntity.OnDead -= value;
         }
 
-        /// <summary>
-        /// ダメージを受けたときに発行されます。
-        /// </summary>
-        public event Action OnTakeDamage;
+        /// <summary> ダメージを受けた時のイベント </summary>
+        public event Action<CombatContext> OnTakedDamage;
 
         /// <summary>
         /// 攻撃可能なデータ。
@@ -64,7 +62,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         public void AddHealthDamage(CombatContext damage)
         {
             _healthEntity.AddHealthDamage(damage.Damage);
-            OnTakeDamage?.Invoke();
+            OnTakedDamage?.Invoke(damage);
         }
 
         /// <summary>
