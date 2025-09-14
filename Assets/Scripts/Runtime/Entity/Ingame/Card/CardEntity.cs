@@ -49,7 +49,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
         {
             if (index < 0 || index >= _data.ContentsArray.Length)
             {
-                throw new IndexOutOfRangeException($"Index {index} is out of range for contents array.\ndata {_data.name}");
+                throw new IndexOutOfRangeException($"Index {index} is out of range for contents array.\ndata {_data.CardName}");
             }
 
             return _data.ContentsArray[index];

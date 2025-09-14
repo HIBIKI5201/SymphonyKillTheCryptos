@@ -32,7 +32,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         {
             if (Mathf.Abs(data.WordRange.x - data.WordRange.y) < 1)
             {
-                Debug.LogWarning($"{data.name}のWordRnageが不適切です");
+                Debug.LogWarning($"{data.CardName}のWordRnageが不適切です");
                 availableWords = null;
                 return null;
             }
