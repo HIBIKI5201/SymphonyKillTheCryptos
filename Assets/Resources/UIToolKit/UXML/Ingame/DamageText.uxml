@@ -1,0 +1,5 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="back" style="width: 150px; height: 50px; position: absolute; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0); border-top-left-radius: 100px; border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-bottom-left-radius: 100px; background-image: url(&quot;project://database/Assets/Arts/Sprites/circle_gradient_mask.png?fileID=2800000&amp;guid=c1aa4227454d6d247a1b83f19326dd08&amp;type=3#circle_gradient_mask&quot;); -unity-background-image-tint-color: rgb(48, 48, 48);">
+        <ui:Label text="00000" name="text" style="color: rgb(255, 255, 255); -unity-text-align: middle-center; white-space: pre; font-size: 25px; text-shadow: 2px 2px 5px rgb(0, 0, 0); height: 20px; width: 100%;" />
+    </ui:VisualElement>
+</ui:UXML>
