@@ -59,7 +59,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         private WaveEntity[] _waveEntities;
 
         private IngameUIManager _gameUIManager;
-
         private InputBuffer _inputBuffer;
 
         /// <summary>
@@ -84,6 +83,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             IngameUIManager ingameUIManager =
                 await ServiceLocator.GetInstanceAsync<IngameUIManager>();
             await InitializeUtility.WaitInitialize(ingameUIManager);
+
             CardPresenter cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
 
             SymphonyPresenter symphonyPresenter =
@@ -93,6 +93,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             EnemyPresenter enemyPresenter =
                 await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter);
+
+            enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
 
             WaveSystemPresenter waveSystem = new(_waveEntities,
                 symphonyPresenter, charaInitData.EnemyRepository,
@@ -181,6 +183,16 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         private CardData GetCardData(CardDataAsset dataAsset)
         {
             return dataAsset.CreateCardData(_combatPipelineAsset);
+        }
+
+        private void HandleEnemyCreated(CharacterEntity enemy, EnemyModelPresenter model)
+        {
+            enemy.OnHealthChanged += DamageHealthChange;
+
+            void DamageHealthChange(float current, float max)
+            {
+                _gameUIManager.ShowDamageText(current, model.transform.position);
+            }
         }
 
         private async void GoToOutGameScene()
