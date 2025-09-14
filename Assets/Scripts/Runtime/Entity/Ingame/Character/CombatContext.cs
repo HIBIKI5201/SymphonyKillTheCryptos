@@ -1,3 +1,5 @@
+using Unity.VisualScripting.YamlDotNet.Serialization;
+
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
@@ -6,6 +8,36 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// </summary>
     public readonly struct CombatContext
     {
+        /// <summary>
+        ///     CombatContextの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="attackerData">攻撃側の静的データ。</param>
+        /// <param name="targetData">防御側の静的データ。</param>
+        /// <param name="damage">初期ダメージ量。</param>
+        public CombatContext(IAttackableData attackerData, IHittableData targetData,
+            float damage, int criticalCount = 0)
+        {
+            _attackerData = attackerData;
+            _targetData = targetData;
+
+            _damage = damage;
+            _criticalCount = criticalCount;
+        }
+
+        /// <summary>
+        ///     元のデータからダメージだけを変更します
+        /// </summary>
+        /// <param name="original"></param>
+        /// <param name="damage"></param>
+        public CombatContext(CombatContext original, float damage)
+        {
+            _attackerData = original._attackerData;
+            _targetData = original.TargetData;
+
+            _damage = damage;
+            _criticalCount = original.CriticalCount;
+        }
+
         /// <summary>
         /// 攻撃側の静的データを取得します。
         /// </summary>
@@ -22,22 +54,14 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         public float Damage => _damage;
 
         /// <summary>
-        /// CombatContextの新しいインスタンスを初期化します。
+        /// クリティカルの重複数を取得します。
         /// </summary>
-        /// <param name="attackerData">攻撃側の静的データ。</param>
-        /// <param name="targetData">防御側の静的データ。</param>
-        /// <param name="damage">初期ダメージ量。</param>
-        public CombatContext(IAttackableData attackerData, IHittableData targetData, float damage)
-        {
-            _attackerData = attackerData;
-            _targetData = targetData;
-
-            _damage = damage;
-        }
+        public int CriticalCount => _criticalCount;
 
         private readonly IAttackableData _attackerData;
         private readonly IHittableData _targetData;
 
         private readonly float _damage;
+        private readonly int _criticalCount;
     }
 }
