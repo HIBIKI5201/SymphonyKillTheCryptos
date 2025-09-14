@@ -1407,7 +1407,7 @@ OcclusionArea:
   m_GameObject: {fileID: 345708716}
   serializedVersion: 2
   m_Size: {x: 1265, y: 1000, z: 1400}
-  m_Center: {x: 130, y: 0, z: 65}
+  m_Center: {x: -463, y: 0, z: 294}
   m_IsViewVolume: 1
 --- !u!4 &345708718
 Transform:
@@ -1418,7 +1418,7 @@ Transform:
   m_GameObject: {fileID: 345708716}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -593, y: 0, z: 229}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
