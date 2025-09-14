@@ -1,5 +1,3 @@
-using Unity.VisualScripting.YamlDotNet.Serialization;
-
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
