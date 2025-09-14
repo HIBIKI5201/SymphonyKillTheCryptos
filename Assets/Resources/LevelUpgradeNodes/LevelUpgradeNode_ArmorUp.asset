@@ -16,11 +16,11 @@ MonoBehaviour:
   _description: "\u88C5\u7532\u4E0A\u6607"
   _texture: {fileID: 0}
   _effects:
-  - rid: 7654980581786386438
+  - rid: 7654980604480717316
   references:
     version: 2
     RefIds:
-    - rid: 7654980581786386438
-      type: {class: ArmorStatusUpgrade, ns: Cryptos.Runtime.Entity.Ingame.System, asm: Cryptos.UseCase}
+    - rid: 7654980604480717316
+      type: {class: ArmorStatusUpgrade, ns: Cryptos.Runtime.UseCase.Ingame.System, asm: Cryptos.UseCase}
       data:
-        _armorIncreaseAmount: 0
+        _armorIncreaseAmount: 50
