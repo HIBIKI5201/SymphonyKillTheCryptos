@@ -187,11 +187,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         private void HandleEnemyCreated(CharacterEntity enemy, EnemyModelPresenter model)
         {
-            enemy.OnHealthChanged += DamageHealthChange;
+            enemy.OnTakedDamage += DamageHealthChange;
 
-            void DamageHealthChange(float current, float max)
+            void DamageHealthChange(CombatContext cc)
             {
-                _gameUIManager.ShowDamageText(current, model.transform.position);
+                _gameUIManager.ShowDamageText(new(cc), model.transform.position);
             }
         }
 
