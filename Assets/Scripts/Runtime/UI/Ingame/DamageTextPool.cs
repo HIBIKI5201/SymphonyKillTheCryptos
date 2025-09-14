@@ -6,7 +6,7 @@ namespace Cryptos.Runtime.UI
 {
     public class DamageTextPool
     {
-        public DamageTextPool(VisualElement root, Vector3 offset)
+        public DamageTextPool(VisualElement root)
         {
             _pool = new(
                 createFunc: () => new UIElementDamageText(),
