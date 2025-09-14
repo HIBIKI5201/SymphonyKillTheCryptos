@@ -8,7 +8,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     /// ゲーム内のカードの静的なデータ情報を持つクラス。
     /// カードの名前、説明、難易度、アイコン、ワードの範囲、およびカード効果の配列を定義します。
     /// </summary>
-    public class CardData : ScriptableObject
+    public class CardData
     {
         public CardData(
             string cardName,
