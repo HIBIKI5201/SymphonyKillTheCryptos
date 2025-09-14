@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
     /// </summary>
     public class EnemyPresenter : MonoBehaviour
     {
+        public Action<CharacterEntity, EnemyModelPresenter> OnCreatedEnemyModel;
+
         public void Init(EnemyRepository repository, SymphonyPresenter player)
         {
             _enemyRepository = repository;
@@ -85,6 +88,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
                 spawnPoint.position, spawnPoint.rotation,
                 _enemyContainer);
             model.Init(enemy, _player.transform);
+
+            OnCreatedEnemyModel?.Invoke(enemy, model);
         }
 
         private void OnDrawGizmos()
