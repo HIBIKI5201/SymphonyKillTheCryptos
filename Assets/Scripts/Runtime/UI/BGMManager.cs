@@ -1,10 +1,11 @@
 using CriWare;
 using UnityEngine;
+using Cryptos.Runtime.Presenter.System.Audio;
 
 namespace Cryptos.Runtime.UI.System.Audio
 {
     [RequireComponent(typeof(CriAtomSource))]
-    public class BGMManager : MonoBehaviour
+    public class BGMManager : MonoBehaviour, IBGMPlayer
     {
         public void PlayBGM(string cue)
         {
