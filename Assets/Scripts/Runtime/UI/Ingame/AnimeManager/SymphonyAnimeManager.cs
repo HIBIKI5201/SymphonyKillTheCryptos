@@ -98,7 +98,19 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
 
         private void TriggerFirearm(FirearmKind kind)
         {
-            Debug.Log($"triggerd firearm {kind}");
+            FirearmAnimeManager firearm = kind switch
+            {
+                FirearmKind.Handgun => _handgun,
+                _ => null
+            };
+
+            if (firearm == null)
+            {
+                Debug.LogError($"{kind} のfirearmがアサインされていません。");
+                return;
+            }
+
+            firearm.Fire();
         }
 
         private void EndSkill()
