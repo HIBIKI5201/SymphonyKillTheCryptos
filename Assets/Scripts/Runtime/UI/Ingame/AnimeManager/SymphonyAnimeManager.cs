@@ -1,9 +1,9 @@
 using CriWare;
 using System;
 using UnityEngine;
-using UnityEngine.Events;
+using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 
-namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
+namespace Cryptos.Runtime.UI.Ingame.Character.Player
 {
     /// <summary>
     ///     プレイヤーのアニメーションを管理するクラス
@@ -37,6 +37,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private string _skillIndexParam = "SkillIndex";
         [SerializeField]
         private string _skillTriggerParam = "SkillTrigger";
+
+        [SerializeField]
+        private FirearmAnimeManager _handgun;
 
         private Animator _animator;
         private SymphonyAnimatorHash _animatorHash;

@@ -2,7 +2,7 @@ using CriWare;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Cryptos.Runtime.UI
+namespace Cryptos.Runtime.UI.Ingame.Character.Player
 {
     public class FirearmAnimeManager : MonoBehaviour
     {

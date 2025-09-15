@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter
+namespace Cryptos.Runtime.UI.Ingame.Character.Player
 {
     public class SkillEndNotifier : StateMachineBehaviour
     {

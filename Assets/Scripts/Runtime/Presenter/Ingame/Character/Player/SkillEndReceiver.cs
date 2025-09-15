@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter
+namespace Cryptos.Runtime.UI.Ingame.Character.Player
 {
     public class SkillEndReceiver : MonoBehaviour
     {
