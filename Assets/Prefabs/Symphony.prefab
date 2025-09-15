@@ -1163,6 +1163,9 @@ MonoBehaviour:
   _sprintParam: Sprint
   _skillIndexParam: SkillIndex
   _skillTriggerParam: SkillTrigger
+  _firearms:
+  - _kind: handgun
+    _animeManager: {fileID: 2274916461675709368}
 --- !u!114 &7199176807245152589
 MonoBehaviour:
   m_ObjectHideFlags: 0
