@@ -1,6 +1,7 @@
 using CriWare;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 {
@@ -90,12 +91,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             OnSkillTriggered?.Invoke(number);
         }
 
-        private void PlaySound(string cue)
+        private void TriggerFirearm(FirearmKind kind)
         {
-            if (_atomSource == null) return;
-
-            _atomSource.cueName = cue;
-            _atomSource.Play();
+            Debug.Log($"triggerd firearm {kind}");
         }
 
         private void EndSkill()
@@ -134,6 +132,11 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             private readonly int _sprintHash;
             private readonly int _SkillIndexHash;
             private readonly int _skillTriggerHash;
+        }
+
+        private enum FirearmKind
+        {
+            Handgun = 0,
         }
     }
 }
