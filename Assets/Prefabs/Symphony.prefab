@@ -226,6 +226,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1728013695380148634, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7199176807245152589}
+    - targetCorrespondingSourceObject: {fileID: -1728013695380148634, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6538324770047717902}
   m_SourcePrefab: {fileID: -3956505258223990651, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
 --- !u!4 &5440363351542359190 stripped
 Transform:
@@ -267,3 +270,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c99bf414007b74fbf4f6ddba1fcbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6538324770047717902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7213758392126178944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomSource
+  _playOnStart: 0
+  _regionOnStart: {fileID: 0}
+  _listenerOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _freezeOrientation: 0
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
+  _use3dRandomization: 0
+  _randomPositionListMaxLength: 0
+  randomize3dConfig:
+    followsOriginalSource: 0
+    calculationType: 0
+    calculationParameters:
+    - 0
+    - 0
+    - 0
+  _cueName: 
+  _cueSheet: SE
