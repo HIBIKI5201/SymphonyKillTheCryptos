@@ -6,6 +6,7 @@ using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using System;
 using UnityEngine;
+using Cryptos.Runtime.Presenter.System.Audio;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
 {
@@ -13,7 +14,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     {
         public WaveSystemPresenter(WaveEntity[] waveEntities,
             SymphonyPresenter player, EnemyRepository enemyRepository,
-            LevelUseCase levelUseCase, TentativeCharacterData symphonyData)
+            LevelUseCase levelUseCase, TentativeCharacterData symphonyData,
+            IBGMPlayer bgmPlayer)
         {
             WaveUseCase waveUseCase = new(waveEntities);
 
@@ -22,6 +24,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _enemyRepository = enemyRepository;
             _levelUseCase = levelUseCase;
             _symphonyData = symphonyData;
+            _bgmPlayer = bgmPlayer;
         }
 
         /// <summary> ウェーブ開始時 </summary>
@@ -34,7 +37,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         public void GameStart()
         {
-            CreateWaveEnemys(_waveUseCase.CurrentWave);
+            WaveEntity nextWave = _waveUseCase.CurrentWave;
+            CreateWaveEnemys(nextWave);
+            _bgmPlayer.PlayBGM(nextWave.BGMCueName);
             OnWaveStarted?.Invoke();
         }
 
@@ -42,6 +47,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         private SymphonyPresenter _symphony;
         private EnemyRepository _enemyRepository;
         private LevelUseCase _levelUseCase;
+        private IBGMPlayer _bgmPlayer;
 
         private TentativeCharacterData _symphonyData;
 
@@ -70,12 +76,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// <summary>
         ///     ウェーブが変更されたときの処理。
         /// </summary>
-        /// <param name="newWave"></param>
-        private async void ChangeWave(WaveEntity newWave)
+        /// <param name="nextWave"></param>
+        private async void ChangeWave(WaveEntity nextWave)
         {
             OnWaveCleared?.Invoke();
 
-            _levelUseCase.AddLevelProgress(newWave);
+            _levelUseCase.AddLevelProgress(nextWave);
 
             // レベルアップキューに溜まっている分を全て処理。
             while (_levelUseCase.LevelUpQueue.TryDequeue(out _))
@@ -94,7 +100,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             }
 
             await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
-            CreateWaveEnemys(newWave);
+            CreateWaveEnemys(nextWave);
+
+            _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
             OnWaveStarted?.Invoke();
         }
