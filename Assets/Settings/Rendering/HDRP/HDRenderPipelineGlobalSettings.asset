@@ -327,7 +327,7 @@ MonoBehaviour:
       type: {class: LookDevVolumeProfileSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:
         m_Version: 0
-        m_VolumeProfile: {fileID: 11400000, guid: 64282572795b72148a864947aedc006c, type: 2}
+        m_VolumeProfile: {fileID: 11400000, guid: d0a51c36395a81344a02dbeeda3c6dda, type: 2}
     - rid: 713893285731500306
       type: {class: DiffusionProfileDefaultSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:
