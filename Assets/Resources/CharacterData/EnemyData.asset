@@ -17,4 +17,4 @@ MonoBehaviour:
   _criticalChance: 3
   _criticalDamage: 2
   _maxHealth: 100
-  _armor: 25
+  _armor: 10
