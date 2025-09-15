@@ -38,6 +38,8 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
         [SerializeField]
         private string _skillTriggerParam = "SkillTrigger";
 
+        [Space]
+
         [SerializeField]
         private FirearmAnimeManager _handgun;
 
