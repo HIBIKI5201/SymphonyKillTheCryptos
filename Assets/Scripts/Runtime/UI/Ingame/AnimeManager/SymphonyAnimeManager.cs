@@ -1,3 +1,4 @@
+using CriWare;
 using System;
 using UnityEngine;
 
@@ -39,6 +40,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private Animator _animator;
         private SymphonyAnimatorHash _animatorHash;
 
+        private CriAtomSource _atomSource;
+
         private void OnValidate()
         {
             _animatorHash = new SymphonyAnimatorHash(
@@ -53,8 +56,13 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             if (!TryGetComponent(out _animator))
             {
                 Debug.LogError("Animator component is not found on the GameObject.");
-                return;
             }
+
+            if (!TryGetComponent(out _atomSource))
+            {
+                Debug.LogError("CRI Atom Source is not found");
+            }
+
 
             if (TryGetComponent(out SkillEndReceiver skillEndReceiver))
             {
@@ -80,6 +88,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         {
             Debug.Log($"Skill animation event{number} triggered");
             OnSkillTriggered?.Invoke(number);
+        }
+
+        private void PlaySound(string cue)
+        {
+            if (_atomSource == null) return;
+
+            _atomSource.cueName = cue;
+            _atomSource.Play();
         }
 
         private void EndSkill()
