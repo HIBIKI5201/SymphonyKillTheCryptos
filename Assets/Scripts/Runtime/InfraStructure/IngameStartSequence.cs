@@ -1,7 +1,9 @@
+using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
 using Cryptos.Runtime.InfraStructure.Ingame.Utility;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character.Enemy;
@@ -9,6 +11,7 @@ using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.UI.Ingame;
+using Cryptos.Runtime.UI.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
@@ -17,9 +20,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
-using Cryptos.Runtime.Entity.Ingame.Card;
-using Cryptos.Runtime.Presenter.System.Audio;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 {
@@ -87,15 +87,15 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
             EnemyPresenter enemyPresenter =
                 await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
-            IBGMPlayer bgmPlayer =
-                await ServiceLocator.GetInstanceAsync<IBGMPlayer>();
+            BGMManager bgmPlayer =
+                await ServiceLocator.GetInstanceAsync<BGMManager>();
 
             await InitializeUtility.WaitInitialize(ingameUIManager);
 
             CardPresenter cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
 
             symphonyPresenter.Init(cardInitData.CardUseCase, playerPathContainer);
-            
+
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter);
 
             enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
