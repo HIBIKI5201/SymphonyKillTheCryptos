@@ -2,6 +2,8 @@ using CriWare;
 using System;
 using UnityEngine;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Cryptos.Runtime.UI.Ingame.Character.Player
 {
@@ -41,7 +43,7 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
         [Space]
 
         [SerializeField]
-        private FirearmAnimeManager _handgun;
+        private FirearmInfo[] _firearms;
 
         private Animator _animator;
         private SymphonyAnimatorHash _animatorHash;
@@ -90,19 +92,31 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
             }
         }
 
-        private void TriggeredSkill(int number)
+        private void TriggeredSkill(string info)
         {
-            Debug.Log($"Skill animation event{number} triggered");
-            OnSkillTriggered?.Invoke(number);
+            const string NumberPattern = @"\d+"; // 1桁以上の数字
+            Match numberMatch = Regex.Match(info, NumberPattern);
+            if (numberMatch.Success)
+            {
+                Debug.Log($"Skill animation event{numberMatch} triggered");
+                int number = int.Parse(numberMatch.Value);
+                OnSkillTriggered?.Invoke(number);
+            }
+
+            const string KIND_PATTERN = @"\[(.*?)\]"; //種類の文字列
+            Match kindMatch = Regex.Match(info, KIND_PATTERN);
+            if (kindMatch.Success)
+            {
+                string kind = kindMatch.Groups[1].Value; //最初にマッチしたグループ
+                TriggerFirearm(kind); 
+            }
         }
 
-        private void TriggerFirearm(FirearmKind kind)
+        private void TriggerFirearm(string kind)
         {
-            FirearmAnimeManager firearm = kind switch
-            {
-                FirearmKind.Handgun => _handgun,
-                _ => null
-            };
+            kind = kind.ToLower();
+            FirearmAnimeManager firearm =
+                _firearms.FirstOrDefault(f => f.Kind.ToLower() == kind).AnimeManager;
 
             if (firearm == null)
             {
@@ -151,9 +165,16 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
             private readonly int _skillTriggerHash;
         }
 
-        private enum FirearmKind
+        [Serializable]
+        private struct FirearmInfo
         {
-            Handgun = 0,
+            public string Kind => _kind;
+            public FirearmAnimeManager AnimeManager => _animeManager;
+
+            [SerializeField]
+            private string _kind;
+            [SerializeField]
+            private FirearmAnimeManager _animeManager;
         }
     }
 }
