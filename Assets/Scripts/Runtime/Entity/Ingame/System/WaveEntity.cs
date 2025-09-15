@@ -16,5 +16,8 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         [SerializeField]
         private CharacterData[] _enemies;
 
+        [SerializeField]
+        private string _bgmCueName = "Normal";
+
     }
 }
