@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
 using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Presenter.System.Audio;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 {
@@ -78,27 +79,31 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             LevelUseCase levelUseCase =
                 new LevelUseCase(_levelUpgradeData, LevelUpAsync);
 
-            PlayerPathContainer playerPathContainer = await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
-
+            PlayerPathContainer playerPathContainer =
+                await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
             IngameUIManager ingameUIManager =
                 await ServiceLocator.GetInstanceAsync<IngameUIManager>();
+            SymphonyPresenter symphonyPresenter =
+                await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
+            EnemyPresenter enemyPresenter =
+                await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
+            IBGMPlayer bgmPlayer =
+                await ServiceLocator.GetInstanceAsync<IBGMPlayer>();
+
             await InitializeUtility.WaitInitialize(ingameUIManager);
 
             CardPresenter cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
 
-            SymphonyPresenter symphonyPresenter =
-                await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
             symphonyPresenter.Init(cardInitData.CardUseCase, playerPathContainer);
-
-            EnemyPresenter enemyPresenter =
-                await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
+            
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter);
 
             enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
 
             WaveSystemPresenter waveSystem = new(_waveEntities,
                 symphonyPresenter, charaInitData.EnemyRepository,
-                levelUseCase, symphonyData);
+                levelUseCase, symphonyData,
+                bgmPlayer);
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             // ウェーブ開始時に入力受付を開始、ウェーブクリア時に入力受付を停止する。
