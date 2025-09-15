@@ -11,10 +11,14 @@ namespace Cryptos.Runtime.UseCase.Ingame.CombatSystem
         public CombatContext Execute(CombatContext context)
         {
             float armor = context.TargetData.Armor;
-            float reduction = _armorThreshold / (_armorThreshold + armor); // f/(f+a)でa=fの時に減衰率50%になる。
 
-            float damage = context.Damage * (1 - reduction);
-            return new CombatContext(context, damage);
+            // armor = _armorThreshold のとき軽減率50%になる式。
+            float reductionRate = armor / (_armorThreshold + armor);
+
+            // 最終的に与えるダメージ。
+            float finalDamage = context.Damage * (1f - reductionRate);
+
+            return new CombatContext(context, finalDamage);
         }
 
         [SerializeField, Tooltip("装甲値がこの値と等しい場合、減衰率が50%になる基準点")]
