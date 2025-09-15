@@ -100,7 +100,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
                 }
             }
 
-            [SerializeReference, SubclassSelector, Tooltip("カード効果の配列。")]
+            [SerializeReference, MySubclassSelector, Tooltip("カード効果の配列。")]
             private ICardContent[] _contents;
         }
     }

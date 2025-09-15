@@ -35,7 +35,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         [Space]
 
-        [SerializeReference, SubclassSelector, Tooltip("初期化処理。")]
+        [SerializeReference, MySubclassSelector, Tooltip("初期化処理。")]
         private IGameInstaller _ingameStartSequence;
     }
 }
