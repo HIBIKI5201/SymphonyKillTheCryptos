@@ -9,6 +9,7 @@ namespace Cryptos.Runtime.Entity.Ingame.System
     {
         public int WaveExperiencePoint => _waveExperiencePoint;
         public CharacterData[] Enemies => _enemies;
+        public string BGMCueName => _bgmCueName;
 
         [SerializeField, Min(0)]
         private int _waveExperiencePoint;
