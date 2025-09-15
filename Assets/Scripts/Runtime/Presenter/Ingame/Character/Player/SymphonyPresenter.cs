@@ -46,9 +46,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         [SerializeField, Min(0)]
         private float _speed = 1f;
 
-        [SerializeField]
-        private ParticleSystem _muzzleFlash;
-
         private ISymphonyAnimeManager _animeManager;
         private CardUseCase _cardUseCase;
         private PlayerPathContainer _pathContainer;
