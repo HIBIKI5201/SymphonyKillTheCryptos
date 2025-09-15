@@ -196,12 +196,12 @@ AnimatorStateMachine:
   - {fileID: 7631234927903360445}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -4072052569091958711}
-    second:
-    - {fileID: 2896159113454022945}
   - first: {fileID: -8836085169755118151}
     second:
     - {fileID: 2406017315144757162}
+  - first: {fileID: -4072052569091958711}
+    second:
+    - {fileID: 2896159113454022945}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 40, y: 350, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
@@ -642,11 +642,26 @@ AnimatorController:
     m_Name: FireArms Layer
     m_StateMachine: {fileID: -7364410830362285629}
     m_Mask: {fileID: 0}
-    m_Motions: []
+    m_Motions:
+    - serializedVersion: 2
+      m_State: {fileID: 0}
+      m_Motion: {fileID: 7400000, guid: c4313ef6a306456439ce9c588caf97be, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 7368197709386211877}
+      m_Motion: {fileID: 7400000, guid: c4313ef6a306456439ce9c588caf97be, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -2853166494571987893}
+      m_Motion: {fileID: 7400000, guid: 094c7561befa09d4fab226f475f55f27, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 6410263702855315343}
+      m_Motion: {fileID: 7400000, guid: 4c1f23c7a246c5d43bb2f5cdc651fb4b, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -4490208311794606895}
+      m_Motion: {fileID: 7400000, guid: 12be4dcb5d253c1409ad2ebd6c71c3b1, type: 2}
     m_Behaviours: []
     m_BlendingMode: 1
     m_SyncedLayerIndex: 0
-    m_DefaultWeight: 0
+    m_DefaultWeight: 1
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
