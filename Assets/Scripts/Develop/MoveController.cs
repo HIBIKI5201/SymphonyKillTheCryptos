@@ -4,17 +4,17 @@ using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 
 namespace Cryptos.Runtime.Develop
 {
-    [RequireComponent(typeof(SymphonyAnimeManager))]
+    [RequireComponent(typeof(ISymphonyAnimeManager))]
     public class MoveController : MonoBehaviour
     {
         [SerializeField, Range(0, 10)] private float _lerpSpeed = 5f;
         
-        private SymphonyAnimeManager _symphonyAnimeManager;
+        private ISymphonyAnimeManager _symphonyAnimeManager;
         
         private Vector2 _lastDir;
         private void Start()
         {
-            _symphonyAnimeManager = GetComponent<SymphonyAnimeManager>();
+            _symphonyAnimeManager = GetComponent<ISymphonyAnimeManager>();
         }
 
         void Update()
