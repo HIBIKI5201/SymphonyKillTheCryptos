@@ -371,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SymphonyFrameWork::SymphonyFrameWork.Utility.SymphonyLocate
-  _target: {fileID: 907536087}
+  _target: {fileID: 907536088}
   _locateType: 1
   _autoRegister: 1
   _autoUnregister: 1
