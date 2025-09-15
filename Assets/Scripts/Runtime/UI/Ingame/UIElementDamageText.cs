@@ -16,19 +16,16 @@ namespace Cryptos.Runtime.UI
 
         public void SetData(CombatContextViewModel context, Vector3 position)
         {
-            _textLabel.text = context.Damage.ToString();
+            _textLabel.text = Mathf.Floor(context.Damage).ToString();
 
-            if (0 < context.CriticalCount)
+            Color color = context.CriticalCount switch
             {
-                Color color = context.CriticalCount switch
-                {
-                    1 => Color.yellow,
-                    2 => Color.orange,
-                    _ => Color.red,
-                };
-
-                _textLabel.style.color = color;
-            }
+                0 => Color.white,
+                1 => Color.yellow,
+                2 => Color.orange,
+                _ => Color.red,
+            };
+            _textLabel.style.color = color;
 
             _backGround.RegisterCallback<GeometryChangedEvent>(PositionChanged);
 
