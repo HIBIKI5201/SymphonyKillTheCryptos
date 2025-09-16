@@ -116,10 +116,16 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             // ウェーブ開始時に入力受付を開始、ウェーブクリア時に入力受付を停止する。
-            waveSystem.OnWaveStarted +=
-                () => inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
-            waveSystem.OnWaveCleared +=
-                () => inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
+            waveSystem.OnWaveStarted += () =>
+                {
+                    inputBuffer.OnAlphabetKeyPressed += cardInitData.CardUseCase.InputCharToDeck;
+                    inputBuffer.OnAlphabetKeyPressed += ingameUIManager.CardInputChar;
+                };
+            waveSystem.OnWaveCleared += () =>
+            {
+                inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
+                inputBuffer.OnAlphabetKeyPressed -= ingameUIManager.CardInputChar;
+            };
             waveSystem.OnAllWaveEnded += GoToOutGameScene;
 
             _gameUIManager = ingameUIManager;
@@ -143,7 +149,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             // ウィンドウを出現させて待機。
             _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
-            _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnInputChar;
+            _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnLevelUpgradeInputChar;
 
             LevelUpgradeNodeViewModel selectedNodeVM = default;
             await SymphonyTask.WaitUntil(
@@ -153,7 +159,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             Debug.Log($"レベルアップカードを選択しました。{selectedNode}");
 
-            _inputBuffer.OnAlphabetKeyPressed -= _gameUIManager.OnInputChar;
+            _inputBuffer.OnAlphabetKeyPressed -= _gameUIManager.OnLevelUpgradeInputChar;
             _gameUIManager.CloseLevelUpgradeWindow();
 
             return selectedNode;
