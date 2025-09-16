@@ -1,9 +1,8 @@
-using CriWare;
-using System;
-using UnityEngine;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
-using System.Text.RegularExpressions;
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace Cryptos.Runtime.UI.Ingame.Character.Player
 {
@@ -96,11 +95,11 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
             if (kindMatch.Success)
             {
                 string kind = kindMatch.Groups[1].Value; //最初にマッチしたグループ
-                TriggerFirearm(kind); 
+                ShootFirearm(kind);
             }
         }
 
-        private void TriggerFirearm(string kind)
+        private void ShootFirearm(string kind)
         {
             kind = kind.ToLower();
             FirearmAnimeManager firearm =
@@ -113,6 +112,47 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
             }
 
             firearm.Fire();
+        }
+
+        private void ShowFirearm(string kind)
+        {
+            kind = kind.ToLower();
+
+            int index = _firearms.ToList().FindIndex(f => f.Kind.ToLower() == kind);
+
+            if (index < 0)
+            {
+                Debug.LogError($"{kind} のfirearmがアサインされていません。");
+                return;
+            }
+
+            for (int i = 0; i < _firearms.Length; i++)
+            {
+                FirearmAnimeManager firearm = _firearms[i].AnimeManager;
+
+                if (i == index)
+                {
+                    firearm.Show();
+                }
+                else
+                {
+                    firearm.Hide();
+                }
+            }
+        }
+
+        private void HideFirearm(string kind)
+        {
+            FirearmAnimeManager firearm =
+                _firearms.FirstOrDefault(f => f.Kind.ToLower() == kind).AnimeManager;
+
+            if (firearm == null)
+            {
+                Debug.LogError($"{kind} のfirearmがアサインされていません。");
+                return;
+            }
+
+            firearm.Hide();
         }
 
         private void EndSkill()
