@@ -25,7 +25,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: EnemyAI Blackboard
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.RuntimeBlackboardAsset
-  VersionTimestamp: 638936292131359181
+  VersionTimestamp: 638936374558527594
   AssetID:
     m_Value0: 10714665706246875128
     m_Value1: 5985097929320621625
@@ -36,6 +36,7 @@ MonoBehaviour:
     - rid: 7654980637919019318
     - rid: 7654980637919019820
     - rid: 7654980637919019743
+    - rid: 7654980640459719018
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
@@ -80,6 +81,14 @@ MonoBehaviour:
           m_Value1: 6133591988426170687
         Name: CombatPipeline
         m_Value: {fileID: 0}
+    - rid: 7654980640459719018
+      type: {class: 'BlackboardVariable`1[[Cryptos.Runtime.UI.Ingame.Character.Player.FirearmAnimeManager, Cryptos.UI]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 9535506880700814235
+          m_Value1: 14835777069961443995
+        Name: Firearm Anime Manager
+        m_Value: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +109,8 @@ MonoBehaviour:
   - rid: 7654980637919019490
   - rid: 7654980637919019699
   - rid: 7654980637919019721
-  m_VersionTimestamp: 638936297121928571
+  - rid: 7654980640459719542
+  m_VersionTimestamp: 638936374599917450
   m_DebugInfo: {fileID: -3710647277250974251}
   m_RuntimeGraph: {fileID: 1484543632468465082}
   AssetID:
@@ -177,6 +187,30 @@ MonoBehaviour:
       Type:
         m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    NamedChildren: []
+  - Name: FirearmInvoker
+    Story: 'Invoke [firearm]'
+    RuntimeTypeID:
+      m_Value0: 11733156969088592651
+      m_Value1: 16418063227447695903
+    Variables:
+    - Name: Firearm
+      Type:
+        m_SerializableType: Cryptos.Runtime.UI.Ingame.Character.Player.FirearmAnimeManager,
+          Cryptos.UI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      Tooltip: 
+    NamedChildren: []
+  - Name: Send Event Message
+    Story: 
+    RuntimeTypeID:
+      m_Value0: 9965463903622711961
+      m_Value1: 5344335246459382461
+    Variables:
+    - Name: ChannelVariable
+      Type:
+        m_SerializableType: Unity.Behavior.BlackboardVariable, Unity.Behavior, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
   - Name: Log Message
@@ -479,7 +513,7 @@ MonoBehaviour:
         LocalValue:
           rid: 7654980637919019706
         LinkedVariable:
-          rid: 7654980637919019760
+          rid: 7654980640459719078
     - rid: 7654980637919019704
       type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
@@ -518,7 +552,7 @@ MonoBehaviour:
     - rid: 7654980637919019721
       type: {class: SequenceNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
-        Position: {x: -49.439533, y: 278.06238}
+        Position: {x: -16.79954, y: 278.06238}
         ID:
           m_Value0: 653624996298657299
           m_Value1: 1555180123120203290
@@ -529,6 +563,7 @@ MonoBehaviour:
         Nodes:
         - rid: 7654980637919019490
         - rid: 7654980637919019699
+        - rid: 7654980640459719542
     - rid: 7654980637919019722
       type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
@@ -548,16 +583,6 @@ MonoBehaviour:
         m_NodeModel:
           rid: 7654980637919019721
         m_Connections: []
-    - rid: 7654980637919019760
-      type: {class: 'TypedVariableModel`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        ID:
-          m_Value0: 8610303048306593858
-          m_Value1: 416925391549581135
-        Name: Animator
-        IsExposed: 1
-        m_IsShared: 0
-        m_Value: {fileID: 0}
     - rid: 7654980637919019817
       type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
@@ -587,6 +612,83 @@ MonoBehaviour:
         IsExposed: 1
         m_IsShared: 0
         m_Value: {fileID: 0}
+    - rid: 7654980640459719078
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 8610303048306593858
+          m_Value1: 416925391549581135
+        Name: Animator
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 7654980640459719542
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -41.99944, y: 376.31125}
+        ID:
+          m_Value0: 1939010872722241046
+          m_Value1: 7768751153877447199
+        Parents:
+        - rid: 7654980637919019721
+        PortModels:
+        - rid: 7654980640459719543
+        - rid: 7654980640459719544
+        NodeType:
+          m_SerializableType: FirearmInvokerAction, Cryptos.UI, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 11733156969088592651
+          m_Value1: 16418063227447695903
+        m_FieldValues:
+        - rid: 7654980640459719545
+    - rid: 7654980640459719543
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 7654980640459719542
+        m_Connections: []
+    - rid: 7654980640459719544
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 7654980640459719542
+        m_Connections: []
+    - rid: 7654980640459719545
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Firearm
+        Type:
+          m_SerializableType: Cryptos.Runtime.UI.Ingame.Character.Player.FirearmAnimeManager,
+            Cryptos.UI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 7654980640459719546
+        LinkedVariable:
+          rid: 7654980640459719587
+    - rid: 7654980640459719546
+      type: {class: 'BlackboardVariable`1[[Cryptos.Runtime.UI.Ingame.Character.Player.FirearmAnimeManager, Cryptos.UI]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 7654980640459719587
+      type: {class: 'TypedVariableModel`1[[Cryptos.Runtime.UI.Ingame.Character.Player.FirearmAnimeManager, Cryptos.UI]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 9535506880700814235
+          m_Value1: 14835777069961443995
+        Name: Firearm Anime Manager
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
 --- !u!114 &1484543632468465082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,16 +702,16 @@ MonoBehaviour:
   m_Name: EnemyAI
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraph
   Graphs:
-  - rid: 7654980637919019924
+  - rid: 7654980640459719588
   RootGraph:
-    rid: 7654980637919019924
+    rid: 7654980640459719588
   m_DebugInfo: {fileID: -3710647277250974251}
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 7654980637919019835
+    - rid: 7654980640459719562
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -617,7 +719,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 5
-    - rid: 7654980637919019836
+    - rid: 7654980640459719563
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -625,7 +727,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 8
-    - rid: 7654980637919019840
+    - rid: 7654980640459719566
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -633,7 +735,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: Fire
-    - rid: 7654980637919019841
+    - rid: 7654980640459719567
       type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -641,7 +743,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 1
-    - rid: 7654980637919019924
+    - rid: 7654980640459719588
       type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         AuthoringAssetID:
@@ -649,66 +751,67 @@ MonoBehaviour:
           m_Value1: 5985097929320621625
         m_DebugInfo: {fileID: 0}
         BlackboardReference:
-          rid: 7654980637919019925
+          rid: 7654980640459719589
         BlackboardGroupReferences: []
         Root:
-          rid: 7654980637919019926
+          rid: 7654980640459719590
         m_ActiveNodes: []
         m_NodesToTick: []
         m_NodesToEnd:
-          rid: 7654980637919019927
+          rid: 7654980640459719591
         m_EndedNodes:
-          rid: 7654980637919019928
-        m_VersionTimestamp: 638936297121928571
-    - rid: 7654980637919019925
+          rid: 7654980640459719592
+        m_VersionTimestamp: 638936374599917450
+    - rid: 7654980640459719589
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Blackboard:
-          rid: 7654980637919019929
+          rid: 7654980640459719593
         m_Source: {fileID: -3082564717925895234}
-    - rid: 7654980637919019926
+    - rid: 7654980640459719590
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 15185826945911891466
           m_Value1: 13099775668215870434
         Graph:
-          rid: 7654980637919019924
+          rid: 7654980640459719588
         m_Parent:
           rid: -2
         m_Child:
-          rid: 7654980637919019930
+          rid: 7654980640459719594
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
-    - rid: 7654980637919019927
+    - rid: 7654980640459719591
       type: {class: 'Stack`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: mscorlib}
       data: 
-    - rid: 7654980637919019928
+    - rid: 7654980640459719592
       type: {class: 'HashSet`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: System.Core}
       data: 
-    - rid: 7654980637919019929
+    - rid: 7654980640459719593
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 7654980637919019931
-        - rid: 7654980637919019932
-        - rid: 7654980637919019933
-        - rid: 7654980637919019934
-        - rid: 7654980637919019935
-    - rid: 7654980637919019930
+        - rid: 7654980640459719595
+        - rid: 7654980640459719596
+        - rid: 7654980640459719597
+        - rid: 7654980640459719598
+        - rid: 7654980640459719599
+        - rid: 7654980640459719600
+    - rid: 7654980640459719594
       type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 457650565595773058
           m_Value1: 7115506968118092060
         Graph:
-          rid: 7654980637919019924
+          rid: 7654980640459719588
         m_Parent:
-          rid: 7654980637919019926
+          rid: 7654980640459719590
         m_Children:
-        - rid: 7654980637919019936
-        - rid: 7654980637919019937
-    - rid: 7654980637919019931
+        - rid: 7654980640459719601
+        - rid: 7654980640459719602
+    - rid: 7654980640459719595
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -716,7 +819,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 0}
-    - rid: 7654980637919019932
+    - rid: 7654980640459719596
       type: {class: 'BlackboardVariable`1[[Cryptos.Runtime.Presenter.Ingame.Character.Enemy.EnemyModelPresenter, Cryptos.Presenter]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -724,7 +827,7 @@ MonoBehaviour:
           m_Value1: 1001006620221669048
         Name: SelfCharacter
         m_Value: {fileID: 0}
-    - rid: 7654980637919019933
+    - rid: 7654980640459719597
       type: {class: 'BlackboardVariable`1[[Cryptos.Runtime.Presenter.Ingame.Character.Player.SymphonyPresenter, Cryptos.Presenter]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -732,7 +835,7 @@ MonoBehaviour:
           m_Value1: 7732001559329750360
         Name: TargetCharacter
         m_Value: {fileID: 0}
-    - rid: 7654980637919019934
+    - rid: 7654980640459719598
       type: {class: 'BlackboardVariable`1[[Cryptos.Runtime.Presenter.CombatPipelineWrapper, Cryptos.Presenter]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -740,7 +843,7 @@ MonoBehaviour:
           m_Value1: 6133591988426170687
         Name: CombatPipeline
         m_Value: {fileID: 0}
-    - rid: 7654980637919019935
+    - rid: 7654980640459719599
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -748,65 +851,86 @@ MonoBehaviour:
           m_Value1: 416925391549581135
         Name: Animator
         m_Value: {fileID: 0}
-    - rid: 7654980637919019936
+    - rid: 7654980640459719600
+      type: {class: 'BlackboardVariable`1[[Cryptos.Runtime.UI.Ingame.Character.Player.FirearmAnimeManager, Cryptos.UI]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 9535506880700814235
+          m_Value1: 14835777069961443995
+        Name: Firearm Anime Manager
+        m_Value: {fileID: 0}
+    - rid: 7654980640459719601
       type: {class: WaitRangeAction, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 457650565595773058
           m_Value1: 7115506968118092060
         Graph:
-          rid: 7654980637919019924
+          rid: 7654980640459719588
         m_Parent:
-          rid: 7654980637919019930
+          rid: 7654980640459719594
         Min:
-          rid: 7654980637919019835
+          rid: 7654980640459719562
         Max:
-          rid: 7654980637919019836
-    - rid: 7654980637919019937
+          rid: 7654980640459719563
+    - rid: 7654980640459719602
       type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 653624996298657299
           m_Value1: 1555180123120203290
         Graph:
-          rid: 7654980637919019924
+          rid: 7654980640459719588
         m_Parent:
-          rid: 7654980637919019930
+          rid: 7654980640459719594
         m_Children:
-        - rid: 7654980637919019938
-        - rid: 7654980637919019939
-    - rid: 7654980637919019938
+        - rid: 7654980640459719603
+        - rid: 7654980640459719604
+        - rid: 7654980640459719605
+    - rid: 7654980640459719603
       type: {class: NearAttackAction, ns: , asm: Cryptos.Presenter}
       data:
         ID:
           m_Value0: 5414704007639579242
           m_Value1: 14610243618989990072
         Graph:
-          rid: 7654980637919019924
+          rid: 7654980640459719588
         m_Parent:
-          rid: 7654980637919019937
+          rid: 7654980640459719602
         Self:
-          rid: 7654980637919019932
+          rid: 7654980640459719596
         Target:
-          rid: 7654980637919019933
+          rid: 7654980640459719597
         Pipeline:
-          rid: 7654980637919019934
-    - rid: 7654980637919019939
+          rid: 7654980640459719598
+    - rid: 7654980640459719604
       type: {class: SetAnimatorTriggerAction, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 2360937640720181531
           m_Value1: 11359106039046357180
         Graph:
-          rid: 7654980637919019924
+          rid: 7654980640459719588
         m_Parent:
-          rid: 7654980637919019937
+          rid: 7654980640459719602
         Trigger:
-          rid: 7654980637919019840
+          rid: 7654980640459719566
         Animator:
-          rid: 7654980637919019935
+          rid: 7654980640459719599
         TriggerState:
-          rid: 7654980637919019841
+          rid: 7654980640459719567
+    - rid: 7654980640459719605
+      type: {class: FirearmInvokerAction, ns: , asm: Cryptos.UI}
+      data:
+        ID:
+          m_Value0: 1939010872722241046
+          m_Value1: 7768751153877447199
+        Graph:
+          rid: 7654980640459719588
+        m_Parent:
+          rid: 7654980640459719602
+        Firearm:
+          rid: 7654980640459719600
 --- !u!114 &4937619276465216278
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -828,7 +952,8 @@ MonoBehaviour:
   - rid: 7654980637919019317
   - rid: 7654980637919019819
   - rid: 7654980637919019742
-  m_VersionTimestamp: 638936292131359181
+  - rid: 7654980640459719017
+  m_VersionTimestamp: 638936374558527594
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -3082564717925895234}
@@ -882,6 +1007,16 @@ MonoBehaviour:
           m_Value0: 16083317071831138152
           m_Value1: 6133591988426170687
         Name: CombatPipeline
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 7654980640459719017
+      type: {class: 'TypedVariableModel`1[[Cryptos.Runtime.UI.Ingame.Character.Player.FirearmAnimeManager, Cryptos.UI]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 9535506880700814235
+          m_Value1: 14835777069961443995
+        Name: Firearm Anime Manager
         IsExposed: 1
         m_IsShared: 0
         m_Value: {fileID: 0}
