@@ -49,8 +49,7 @@ namespace Cryptos.Runtime.UI.Ingame
         private VisualElement _redBar;
         private VisualElement _greenBar;
 
-        private Transform _trackingTarget;
-        private float _lastValue;
+        private float _lastValue = 1;
         private CancellationTokenSource _cts;
 
         private async void RegisterTrackingTarget(Transform transform, CancellationToken token)
@@ -82,7 +81,7 @@ namespace Cryptos.Runtime.UI.Ingame
                 DamageEffect(proportion, _cts.Token);
             }
 
-            _lastValue = value;
+            _lastValue = proportion;
         }
 
 
