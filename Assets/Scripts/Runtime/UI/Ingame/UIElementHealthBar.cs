@@ -25,6 +25,8 @@ namespace Cryptos.Runtime.UI.Ingame
             healthBarVM.Token.Register(() =>
             {
                 healthBarVM.OnHealthChaged -= GuageChange;
+
+                parent.Remove(this);
             });
         }
 
@@ -41,9 +43,9 @@ namespace Cryptos.Runtime.UI.Ingame
         private const string RED_BAR_NAME = "red-bar";
         private const string GREEN_BAR_NAME = "green-bar";
 
-        private const float GREEN_DURATION = 0.5f;
-        private const float RED_DURATION = 0.8f;
-        private const float DERAY_BETWEEN = 1.5f;
+        private const float GREEN_DURATION = 0.2f;
+        private const float RED_DURATION = 0.6f;
+        private const float DERAY_BETWEEN = 1.2f;
 
         private VisualElement _base;
         private VisualElement _redBar;
