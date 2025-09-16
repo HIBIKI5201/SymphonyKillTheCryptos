@@ -87,16 +87,4 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             _animeManager.Hit();
         }
     }
-
-    public class CombatPipelineWrapper : ScriptableObject
-    {
-        public CombatPipelineWrapper(ICombatHandler[] combatHandlers)
-        {
-            _combatHaldlers = combatHandlers;
-        }
-
-        public ICombatHandler[] CombatHandlers => _combatHaldlers;
-
-        ICombatHandler[] _combatHaldlers;
-    }
 }
