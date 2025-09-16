@@ -28,6 +28,8 @@ namespace Cryptos.Runtime.Presenter
 
         public Transform TrackingTarget => _trackingTarget;
         public CancellationToken Token => _token;
+        public float CurrentHealth => _entity.CurrentHealth;
+        public float MaxHealth => _entity.HittableData.MaxHealth;
 
         private readonly CharacterEntity _entity;
         private readonly Transform _trackingTarget;
