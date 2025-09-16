@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Card;
@@ -15,7 +16,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
     /// </summary>
     public class SymphonyPresenter : MonoBehaviour
     {
-        public void Init(CardUseCase cardUseCase, PlayerPathContainer pathContainer)
+        public CharacterEntity Self => _self;
+
+        public void Init(CardUseCase cardUseCase, PlayerPathContainer pathContainer, CharacterEntity self)
         {
             cardUseCase.OnCardCompleted += HandleCardComplete;
 
@@ -29,6 +32,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 
             _cardUseCase = cardUseCase;
             _pathContainer = pathContainer;
+            _self = self;
         }
 
         public void ResetUsingCard()
@@ -51,6 +55,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         [SerializeField, Min(0)]
         private float _speed = 1f;
 
+        private CharacterEntity _self;
         private ISymphonyAnimeManager _animeManager;
         private CardUseCase _cardUseCase;
         private PlayerPathContainer _pathContainer;
