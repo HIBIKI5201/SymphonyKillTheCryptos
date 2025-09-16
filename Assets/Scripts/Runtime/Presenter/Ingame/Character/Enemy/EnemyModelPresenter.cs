@@ -1,5 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
+using Cryptos.Runtime.UseCase.Ingame.CombatSystem;
+using System;
 using Unity.Behavior;
 using UnityEngine;
 
@@ -10,7 +12,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
     /// </summary>
     public class EnemyModelPresenter : MonoBehaviour
     {
-        public void Init(CharacterEntity self, SymphonyPresenter target)
+        public CharacterEntity Self => _self;
+        public void Init(CharacterEntity self, SymphonyPresenter target, ICombatHandler[] combatHandlers)
         {
             if (self == null)
             {
@@ -42,6 +45,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
                 BlackboardReference blackboard = agent.BlackboardReference;
                 blackboard.SetVariableValue(_behavorSelfParameter, this);
                 blackboard.SetVariableValue(_behaviorTargetParameter, target);
+                blackboard.SetVariableValue(_behaviorPipelineParameter,
+                    new CombatPipelineWrapper(combatHandlers));
             }
         }
 
@@ -54,6 +59,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
         private string _behavorSelfParameter = "SelfCharacter";
         [SerializeField]
         private string _behaviorTargetParameter = "TargetCharacter";
+        [SerializeField]
+        private string _behaviorPipelineParameter = "CombatPipeline";
 
         private CharacterEntity _self;
         private Transform _target;
@@ -79,5 +86,17 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
         {
             _animeManager.Hit();
         }
+    }
+
+    public class CombatPipelineWrapper : ScriptableObject
+    {
+        public CombatPipelineWrapper(ICombatHandler[] combatHandlers)
+        {
+            _combatHaldlers = combatHandlers;
+        }
+
+        public ICombatHandler[] CombatHandlers => _combatHaldlers;
+
+        ICombatHandler[] _combatHaldlers;
     }
 }
