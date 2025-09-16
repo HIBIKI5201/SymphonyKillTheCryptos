@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5292628437308476210}
   - component: {fileID: -5759449780507556943}
+  - component: {fileID: 257419365983223660}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -45,6 +46,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d47085389f0b4842a432ea4d620e903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &257419365983223660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4589234490198651425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
+  m_Graph: {fileID: 1484543632468465082, guid: f8a7e7ebb023b29439e61437db560f53, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 7654980637919019299
+  - rid: 7654980637919019316
+  m_IsInitialised: 0
+  m_IsStarted: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 7654980637919019299
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 4589234490198651425}
+    - rid: 7654980637919019316
+      type: {class: 'BlackboardVariable`1[[Cryptos.Runtime.Presenter.Ingame.Character.Enemy.EnemyModelPresenter, Cryptos.Presenter]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11081032058519682524
+          m_Value1: 1001006620221669048
+        Name: MyCharacter
+        m_Value: {fileID: -5759449780507556943}
 --- !u!1001 &1372139273577691868
 PrefabInstance:
   m_ObjectHideFlags: 0
