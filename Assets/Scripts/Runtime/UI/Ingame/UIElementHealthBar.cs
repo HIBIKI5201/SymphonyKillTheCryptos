@@ -19,6 +19,7 @@ namespace Cryptos.Runtime.UI.Ingame
         public void RegisterTarget(HealthBarViewModel healthBarVM)
         {
             healthBarVM.OnHealthChaged += GuageChange;
+            GuageChange(healthBarVM.CurrentHealth, healthBarVM.MaxHealth);
 
             RegisterTrackingTarget(healthBarVM.TrackingTarget, healthBarVM.Token);
 
@@ -35,6 +36,7 @@ namespace Cryptos.Runtime.UI.Ingame
             _base = container.Q(BASE_NAME);
             _redBar = container.Q(RED_BAR_NAME);
             _greenBar = container.Q(GREEN_BAR_NAME);
+            _healthCounter = container.Q<Label>(HEALTH_COUNTER_NAME);
 
             return Task.CompletedTask;
         }
@@ -42,6 +44,7 @@ namespace Cryptos.Runtime.UI.Ingame
         private const string BASE_NAME = "base";
         private const string RED_BAR_NAME = "red-bar";
         private const string GREEN_BAR_NAME = "green-bar";
+        private const string HEALTH_COUNTER_NAME = "health-counter";
 
         private const float GREEN_DURATION = 0.2f;
         private const float RED_DURATION = 0.6f;
@@ -50,6 +53,7 @@ namespace Cryptos.Runtime.UI.Ingame
         private VisualElement _base;
         private VisualElement _redBar;
         private VisualElement _greenBar;
+        private Label _healthCounter;
 
         private float _lastValue = 1;
         private CancellationTokenSource _cts;
@@ -84,6 +88,8 @@ namespace Cryptos.Runtime.UI.Ingame
             }
 
             _lastValue = proportion;
+
+            _healthCounter.text = $"{value}/{maxValue}";
         }
 
 
