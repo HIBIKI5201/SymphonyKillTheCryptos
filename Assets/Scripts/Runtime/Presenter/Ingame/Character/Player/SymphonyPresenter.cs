@@ -1,7 +1,9 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
+using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -50,7 +52,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private CardUseCase _cardUseCase;
         private PlayerPathContainer _pathContainer;
 
-        private CardEntity _usingCard;
+
+        private Stack<CardEntity> _usingCard = new();
 
         private void Awake()
         {
@@ -73,21 +76,30 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         {
             if (cardEntity == null) return;
 
-            _animeManager.ActiveSkill(cardEntity.AnimationClipID);
+            if (_usingCard.Count <= 0) //もしスキル中でなければ発動する。
+            {
+                _animeManager.ActiveSkill(cardEntity.AnimationClipID);
+            }
 
-            _usingCard = cardEntity;
+            _usingCard.Push(cardEntity);
         }
 
         private void HandleSkillTriggered(int index)
         {
-            if (_usingCard == null) return;
+            if (!_usingCard.TryPeek(out var card)) return;
 
-            _cardUseCase.ExecuteCardEffect(_usingCard.GetContents(index));
+            _cardUseCase.ExecuteCardEffect(card.GetContents(index));
         }
 
         private void HandleSkillEnded()
         {
-            
+            _usingCard.Pop();
+
+            //もし残っていれば発動する。
+            if (_usingCard.TryPeek(out var card))
+            {
+                _animeManager.ActiveSkill(card.AnimationClipID);
+            }
         }
 
         /// <summary>
