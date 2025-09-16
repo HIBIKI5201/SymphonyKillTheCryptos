@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
+    [UxmlElement]
     public partial class UIElementHealthBar : SymphonyVisualElement
     {
         public UIElementHealthBar() : base("UIToolKit/UXML/Ingame/HealthBar")
@@ -24,7 +25,6 @@ namespace Cryptos.Runtime.UI.Ingame
             healthBarVM.Token.Register(() =>
             {
                 healthBarVM.OnHealthChaged -= GuageChange;
-
             });
         }
 
@@ -135,13 +135,13 @@ namespace Cryptos.Runtime.UI.Ingame
                 _base.resolvedStyle.height)
                 / 2;
 
-            Vector2 selfPivot = center - size;
+            Vector2 selfPosition = center - size;
 
             //UITK座標系では値が高いほど下に移動する
-            selfPivot = new(selfPivot.x, Screen.height - selfPivot.y);
+            selfPosition = new(selfPosition.x, Screen.height - selfPosition.y);
 
-            style.width = selfPivot.x;
-            style.height = selfPivot.y;
+            style.left = selfPosition.x;
+            style.top = selfPosition.y;
         }
     }
 }
