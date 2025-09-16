@@ -95,10 +95,14 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             CardPresenter cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
 
             symphonyPresenter.Init(cardInitData.CardUseCase, playerPathContainer, charaInitData.Symphony);
+            
+            //SymphonyのUI表示
             ingameUIManager.CreateHealthBar(
                 new(charaInitData.Symphony,
                 symphonyPresenter.transform,
                 symphonyPresenter.destroyCancellationToken));
+            charaInitData.Symphony.OnTakedDamage += c =>
+                ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
 
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter,
                 new(_combatPipelineAsset.CombatHandler));
