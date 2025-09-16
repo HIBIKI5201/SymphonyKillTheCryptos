@@ -55,11 +55,6 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
                 Debug.LogError("Animator component is not found on the GameObject.");
             }
 
-            foreach (var clip in _animator.runtimeAnimatorController.animationClips)
-            {
-                Debug.Log("含まれているアニメーション: " + clip.name);
-            }
-
             if (TryGetComponent(out SkillEndReceiver skillEndReceiver))
             {
                 skillEndReceiver.OnSkillEnd += EndSkill;
