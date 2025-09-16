@@ -13,7 +13,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
     {
         public Action<CharacterEntity, EnemyModelPresenter> OnCreatedEnemyModel;
 
-        public void Init(EnemyRepository repository, SymphonyPresenter player)
+        public void Init(EnemyRepository repository, SymphonyPresenter playerModel, ICharacter player)
         {
             _enemyRepository = repository;
             repository.OnEnemyCreated += HandleEnemyCreated;
@@ -24,6 +24,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
                 repository.OnEnemyCreated -= HandleEnemyCreated;
             });
 
+            _playerModel = playerModel;
             _player = player;
 
             foreach (var enemy in repository.AllEnemies)
@@ -42,7 +43,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
         private Transform _enemyContainer;
 
         private EnemyRepository _enemyRepository;
-        private SymphonyPresenter _player;
+        private SymphonyPresenter _playerModel;
+        private ICharacter _player;
 
         private Stack<Transform> _spawnPointStack;
 
@@ -87,7 +89,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             EnemyModelPresenter model = Instantiate(_enemyModel,
                 spawnPoint.position, spawnPoint.rotation,
                 _enemyContainer);
-            model.Init(enemy, _player.transform);
+            model.Init(enemy, _playerModel.transform);
 
             OnCreatedEnemyModel?.Invoke(enemy, model);
         }

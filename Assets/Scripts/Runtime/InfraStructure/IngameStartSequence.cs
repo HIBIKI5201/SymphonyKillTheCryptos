@@ -100,7 +100,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 symphonyPresenter.transform,
                 symphonyPresenter.destroyCancellationToken));
 
-            enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter);
+            enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter, charaInitData.Symphony);
 
             enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
 
