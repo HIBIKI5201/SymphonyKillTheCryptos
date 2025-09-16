@@ -69,13 +69,19 @@ namespace Cryptos.Runtime.UI.Ingame
             return !isNull;
         }
 
+        public void CardInputChar(char c)
+        {
+            _typingSoundSource?.Play();
+        }
+
         /// <summary>
         /// 文字入力を処理します。
         /// </summary>
         /// <param name="c">入力された文字。</param>
-        public void OnInputChar(char c)
+        public void OnLevelUpgradeInputChar(char c)
         {
             _levelUpgrade.InputChar(c);
+
             _typingSoundSource?.Play();
         }
 
