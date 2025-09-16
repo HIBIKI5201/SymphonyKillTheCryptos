@@ -35,8 +35,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// <summary> ウェーブ完遂時 </summary>
         public event Action OnAllWaveEnded;
 
-        public void GameStart()
+        public async void GameStart()
         {
+            await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
             WaveEntity nextWave = _waveUseCase.CurrentWave;
             CreateWaveEnemys(nextWave);
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
@@ -82,6 +83,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             OnWaveCleared?.Invoke();
 
             _levelUseCase.AddLevelProgress(nextWave);
+            _symphony.ResetUsingCard();
 
             // レベルアップキューに溜まっている分を全て処理。
             while (_levelUseCase.LevelUpQueue.TryDequeue(out _))
