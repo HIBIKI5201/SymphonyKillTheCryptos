@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Cryptos.Runtime.Presenter;
+using CriWare;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
@@ -75,6 +76,7 @@ namespace Cryptos.Runtime.UI.Ingame
         public void OnInputChar(char c)
         {
             _levelUpgrade.InputChar(c);
+            _typingSoundSource?.Play();
         }
 
         /// <summary>
@@ -100,6 +102,7 @@ namespace Cryptos.Runtime.UI.Ingame
         private Vector3 _damageTextOffset;
 
         private UIDocument _document;
+        private CriAtomSource _typingSoundSource;
 
         private UIElementDeck _deck;
         private UIElementLevelUpgradeWindow _levelUpgrade;
@@ -123,6 +126,14 @@ namespace Cryptos.Runtime.UI.Ingame
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
 
             _levelUpgrade.CloseWindow();
+        }
+
+        private void Awake()
+        {
+            if (!TryGetComponent(out _typingSoundSource))
+            {
+                Debug.LogWarning("ui typing sound source is not found");
+            }
         }
     }
 }
