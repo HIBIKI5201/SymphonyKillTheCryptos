@@ -79,6 +79,14 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
                 _skillIndexParam, _skillTriggerParam);
         }
 
+        private void Start()
+        {
+            foreach (FirearmInfo firearm in _firearms)
+            {
+                firearm.AnimeManager.Hide();
+            }
+        }
+
         private void TriggeredSkill(string info)
         {
             const string NumberPattern = @"\d+"; // 1桁以上の数字
