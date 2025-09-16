@@ -69,7 +69,7 @@ namespace Cryptos.Runtime.UI.Ingame
 
         private void GuageChange(float value, float maxValue)
         {
-            float proportion = Mathf.Floor(value) / maxValue;
+            float proportion = value / maxValue;
 
             if (_lastValue < proportion)
             {
@@ -89,7 +89,7 @@ namespace Cryptos.Runtime.UI.Ingame
 
             _lastValue = proportion;
 
-            _healthCounter.text = $"{value}/{maxValue}";
+            _healthCounter.text = $"{Mathf.Floor(value)}/{maxValue}";
         }
 
 
