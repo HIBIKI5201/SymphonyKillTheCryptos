@@ -9,7 +9,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
     /// IAttackableData と IHittableData の両方を実装したデータ型を扱うことができます。
     /// </summary>
     [Serializable]
-    public sealed class CharacterEntity : ICharacter
+    public class CharacterEntity : ICharacter
     {
         /// <summary>
         /// コンストラクタ。
@@ -76,9 +76,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// </summary>
         public void Dead() => _healthEntity.Dead();
 
-        private readonly ICharacterData _entityData;
-        
-        [SerializeField, ReadOnly, Tooltip("キャラクターの体力情報を管理するエンティティです。")]
-        private readonly HealthEntity _healthEntity;
+        protected readonly ICharacterData _entityData;
+        protected readonly HealthEntity _healthEntity;
     }
 }
