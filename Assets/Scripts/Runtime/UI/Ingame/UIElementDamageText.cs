@@ -40,12 +40,12 @@ namespace Cryptos.Runtime.UI
                     _backGround.resolvedStyle.height)
                     / 2;
 
-                Vector2 selfPivot = center - size;
+                Vector2 selfPosition = center - size;
 
                 //UITK座標系では値が高いほど下に移動する
-                selfPivot = new(selfPivot.x, Screen.height - selfPivot.y);
+                selfPosition = new(selfPosition.x, Screen.height - selfPosition.y);
 
-                SetPosition(selfPivot);
+                SetPosition(selfPosition);
 
                 _backGround.UnregisterCallback<GeometryChangedEvent>(PositionChanged); //イベント解放。
             }
