@@ -26,9 +26,5 @@ public partial class NearAttackAction : Action
 
         return Status.Success;
     }
-
-    protected override void OnEnd()
-    {
-    }
 }
 
