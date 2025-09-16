@@ -21,15 +21,13 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         }
 
         /// <summary>
-        /// 体力が変化した際に発火します。
+        /// 体力が変化した際に発火します。第一引数は現在値、第二引数は最大値。
         /// </summary>
-        [Tooltip("体力が変化した際に発火します。第一引数は現在値、第二引数は最大値。")]
         public event Action<float, float> OnHealthChanged;
 
         /// <summary>
         /// 体力が0になり、死亡した際に発火します。
         /// </summary>
-        [Tooltip("死亡時に発火します。")]
         public event Action OnDead;
 
         /// <summary>
