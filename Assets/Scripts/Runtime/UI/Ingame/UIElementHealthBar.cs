@@ -65,7 +65,7 @@ namespace Cryptos.Runtime.UI.Ingame
         {
             float proportion = _lastValue / value;
 
-            if (_lastValue < value)
+            if (_lastValue < proportion)
             {
                 //回復だった時
 
