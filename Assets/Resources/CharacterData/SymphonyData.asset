@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SymphonyData
   m_EditorClassIdentifier: 
   _name: Symphony
-  _attackPower: 1000
-  _criticalChance: 3
+  _attackPower: 10
+  _criticalChance: 25
   _criticalDamage: 2
   _maxHealth: 100
-  _armor: 25
+  _armor: 50

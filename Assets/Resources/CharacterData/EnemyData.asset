@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EnemyData
   m_EditorClassIdentifier: 
   _name: Enemy
-  _attackPower: 10
-  _criticalChance: 3
+  _attackPower: 5
+  _criticalChance: 5
   _criticalDamage: 2
   _maxHealth: 100
   _armor: 10
