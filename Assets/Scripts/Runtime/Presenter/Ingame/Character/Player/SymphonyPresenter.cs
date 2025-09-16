@@ -33,6 +33,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 
         public async Task NextWave(int index)
         {
+            ResetUsingCard();
+
             index--; //ウェーブ2への移動はindex=1なので１引く
 
             float distance = 0f;
@@ -53,7 +55,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private PlayerPathContainer _pathContainer;
 
 
-        private Stack<CardEntity> _usingCard = new();
+        private Queue<CardEntity> _usingCard = new();
 
         private void Awake()
         {
@@ -76,12 +78,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         {
             if (cardEntity == null) return;
 
-            if (_usingCard.Count <= 0) //もしスキル中でなければ発動する。
+            _usingCard.Enqueue(cardEntity);
+
+            if (_usingCard.Count <= 1) //もしスキル中でなければ発動する。
             {
                 _animeManager.ActiveSkill(cardEntity.AnimationClipID);
             }
-
-            _usingCard.Push(cardEntity);
         }
 
         private void HandleSkillTriggered(int index)
@@ -93,13 +95,18 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 
         private void HandleSkillEnded()
         {
-            _usingCard.Pop();
+            if (!_usingCard.TryDequeue(out _)) return;
 
             //もし残っていれば発動する。
-            if (_usingCard.TryPeek(out var card))
+            if (_usingCard.TryPeek(out var nextCard))
             {
-                _animeManager.ActiveSkill(card.AnimationClipID);
+                _animeManager.ActiveSkill(nextCard.AnimationClipID);
             }
+        }
+
+        private void ResetUsingCard()
+        {
+            _usingCard.Clear();
         }
 
         /// <summary>
