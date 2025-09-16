@@ -13,7 +13,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
     public class EnemyModelPresenter : MonoBehaviour
     {
         public CharacterEntity Self => _self;
-        public void Init(CharacterEntity self, SymphonyPresenter target, ICombatHandler[] combatHandlers)
+        public void Init(CharacterEntity self, SymphonyPresenter target,
+            CombatPipelineWrapper combatPipeline)
         {
             if (self == null)
             {
@@ -45,8 +46,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
                 BlackboardReference blackboard = agent.BlackboardReference;
                 blackboard.SetVariableValue(_behavorSelfParameter, this);
                 blackboard.SetVariableValue(_behaviorTargetParameter, target);
-                blackboard.SetVariableValue(_behaviorPipelineParameter,
-                    new CombatPipelineWrapper(combatHandlers));
+                blackboard.SetVariableValue(_behaviorPipelineParameter, combatPipeline);
             }
         }
 

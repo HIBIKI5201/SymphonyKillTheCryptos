@@ -7,6 +7,7 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.CombatSystem;
+using Cryptos.Runtime.Presenter;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "NearAttack", story: "[Self] attack [Target] with [Pipeline]", category: "Action", id: "5520661cb56cb58e427cb2f3ce1088ef")]

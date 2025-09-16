@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
+using Cryptos.Runtime.UseCase.Ingame.CombatSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
     {
         public Action<CharacterEntity, EnemyModelPresenter> OnCreatedEnemyModel;
 
-        public void Init(EnemyRepository repository, SymphonyPresenter playerModel)
+        public void Init(EnemyRepository repository, SymphonyPresenter playerModel,
+            CombatPipelineWrapper pipeline)
         {
             _enemyRepository = repository;
             repository.OnEnemyCreated += HandleEnemyCreated;
@@ -30,6 +32,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             {
                 CreateEnemyModel(enemy);
             }
+
+            _combatPipeline = pipeline;
         }
 
         [SerializeField]
@@ -43,6 +47,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
 
         private EnemyRepository _enemyRepository;
         private SymphonyPresenter _playerModel;
+        private CombatPipelineWrapper _combatPipeline;
 
         private Stack<Transform> _spawnPointStack;
 
@@ -87,7 +92,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             EnemyModelPresenter model = Instantiate(_enemyModel,
                 spawnPoint.position, spawnPoint.rotation,
                 _enemyContainer);
-            model.Init(enemy, _playerModel);
+            model.Init(enemy, _playerModel, _combatPipeline);
 
             OnCreatedEnemyModel?.Invoke(enemy, model);
         }
