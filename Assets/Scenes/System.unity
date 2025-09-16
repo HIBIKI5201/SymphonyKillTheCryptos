@@ -161,6 +161,11 @@ MonoBehaviour:
       Data/SteamingAssets/SE.acb
     awbFile: 
     loaderStatus: 0
+  - name: UI
+    acbFile: C:/Users/takut/GameProject/SymphonyKillTheCryptos/Assets/Arts/Audio/CRI
+      Data/SteamingAssets/UI.acb
+    awbFile: 
+    loaderStatus: 0
   dspBusSetting: 
   dontDestroyOnLoad: 0
   dontRemoveExistsCueSheet: 0
