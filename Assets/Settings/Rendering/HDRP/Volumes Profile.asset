@@ -1011,7 +1011,7 @@ MonoBehaviour:
     m_Value: 8
   shapeOffset:
     m_OverrideState: 1
-    m_Value: {x: 0.99, y: 11.01, z: 2.7}
+    m_Value: {x: 5.91, y: 11.47, z: 2.7}
   erosionFactor:
     m_OverrideState: 1
     m_Value: 1
