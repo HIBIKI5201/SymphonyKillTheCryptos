@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Cryptos.Ingame.Entity::Cryptos.Runtime.Entity.Ingame.System.LevelUpgradeNode
   _nodeName: Attack Up
   _description: "\u653B\u6483\u529B\u4E0A\u6607"
-  _texture: {fileID: 0}
+  _texture: {fileID: 2800000, guid: c9581c2162623c149959a8fc7d54f4b8, type: 3}
   _effects:
   - rid: 7654980604480717315
   references:

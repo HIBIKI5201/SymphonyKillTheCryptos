@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Cryptos.Ingame.Entity::Cryptos.Runtime.Entity.Ingame.System.LevelUpgradeNode
   _nodeName: Critical Damage Up
   _description: "\u30AF\u30EA\u30C6\u30A3\u30AB\u30EB\u78BA\u7387\u4E0A\u6607"
-  _texture: {fileID: 0}
+  _texture: {fileID: 2800000, guid: bf1df01caaa0af84fb793ea07283b976, type: 3}
   _effects:
   - rid: 7654980604480717318
   references:
