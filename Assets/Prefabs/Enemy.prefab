@@ -184,6 +184,7 @@ MonoBehaviour:
   - rid: 7654980637919019299
   - rid: 7654980637919019316
   - rid: 7654980637919019907
+  - rid: 7654980640459719606
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -213,6 +214,14 @@ MonoBehaviour:
           m_Value1: 416925391549581135
         Name: Animator
         m_Value: {fileID: 4394837001353788074}
+    - rid: 7654980640459719606
+      type: {class: 'BlackboardVariable`1[[Cryptos.Runtime.UI.Ingame.Character.Player.FirearmAnimeManager, Cryptos.UI]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 9535506880700814235
+          m_Value1: 14835777069961443995
+        Name: Firearm Anime Manager
+        m_Value: {fileID: 5865025771818397225}
 --- !u!1 &4851071564913236896
 GameObject:
   m_ObjectHideFlags: 0
