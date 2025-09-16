@@ -190,7 +190,7 @@ Transform:
   m_GameObject: {fileID: 6704547}
   serializedVersion: 2
   m_LocalRotation: {x: 0.035200484, y: -0.070844874, z: 0.0025016214, w: 0.99686295}
-  m_LocalPosition: {x: -476.17, y: -30.11, z: 418.42}
+  m_LocalPosition: {x: -512.6825, y: -30.295029, z: 418.1044}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -639,7 +639,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: -510.96, y: -32.140915, z: 425.77}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: -0.3499756, y: -0.030914307, z: -30.289978}
+  - {x: -0.6655884, y: 0.15411377, z: 6.2225037}
   m_RotationOffsets:
   - {x: 0, y: -90, z: 0}
   m_AffectTranslationX: 1
@@ -1125,7 +1125,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: -513.32, y: -32.53486, z: 427.85483}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: -2.4348145, y: -0.4248581, z: -32.649994}
+  - {x: -2.7504272, y: -0.23983002, z: 3.8624878}
   m_RotationOffsets:
   - {x: 0, y: -90, z: 0}
   m_AffectTranslationX: 1
@@ -6243,15 +6243,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -476.17
+      value: -512.6825
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -30.11
+      value: -30.295029
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 418.42
+      value: 418.1044
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6387,7 +6387,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: -508.91653, y: -32.16173, z: 427.68}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: -2.2599792, y: -0.05173111, z: -28.246521}
+  - {x: -2.575592, y: 0.13329697, z: 8.265961}
   m_RotationOffsets:
   - {x: 0, y: -90, z: 0}
   m_AffectTranslationX: 1
@@ -6478,15 +6478,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8550076933737589049, guid: 32144fb33710117458e592fef6031cb1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -480.67
+      value: -517.1825
       objectReference: {fileID: 0}
     - target: {fileID: 8550076933737589049, guid: 32144fb33710117458e592fef6031cb1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -32.11
+      value: -32.29503
       objectReference: {fileID: 0}
     - target: {fileID: 8550076933737589049, guid: 32144fb33710117458e592fef6031cb1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 425.42
+      value: 425.1044
       objectReference: {fileID: 0}
     - target: {fileID: 8550076933737589049, guid: 32144fb33710117458e592fef6031cb1, type: 3}
       propertyPath: m_LocalRotation.w
