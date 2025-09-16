@@ -2065,7 +2065,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: 
+  _cueName: Revolver_Fire
   _cueSheet: SE
 --- !u!1001 &8377846343573084311
 PrefabInstance:
@@ -2345,7 +2345,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: 
+  _cueName: Shotgun_Fire
   _cueSheet: SE
 --- !u!4 &8921239649414064990 stripped
 Transform:
