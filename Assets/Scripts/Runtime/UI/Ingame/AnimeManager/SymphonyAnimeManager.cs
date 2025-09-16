@@ -48,17 +48,6 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
         private Animator _animator;
         private SymphonyAnimatorHash _animatorHash;
 
-        private CriAtomSource _atomSource;
-
-        private void OnValidate()
-        {
-            _animatorHash = new SymphonyAnimatorHash(
-                _dirXParam, _dirYParam,
-                _velocityParam, _sprintParam,
-                _skillIndexParam, _skillTriggerParam
-            );
-        }
-
         private void Awake()
         {
             if (!TryGetComponent(out _animator))
@@ -66,11 +55,10 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
                 Debug.LogError("Animator component is not found on the GameObject.");
             }
 
-            if (!TryGetComponent(out _atomSource))
+            foreach (var clip in _animator.runtimeAnimatorController.animationClips)
             {
-                Debug.LogError("CRI Atom Source is not found");
+                Debug.Log("含まれているアニメーション: " + clip.name);
             }
-
 
             if (TryGetComponent(out SkillEndReceiver skillEndReceiver))
             {
@@ -90,6 +78,11 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
                 Debug.LogError("SkillEndReceiver component is not found on the GameObject.");
                 return;
             }
+
+            _animatorHash = new SymphonyAnimatorHash(
+                _dirXParam, _dirYParam,
+                _velocityParam, _sprintParam,
+                _skillIndexParam, _skillTriggerParam);
         }
 
         private void TriggeredSkill(string info)
