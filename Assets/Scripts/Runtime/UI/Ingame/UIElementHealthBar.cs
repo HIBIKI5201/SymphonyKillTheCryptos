@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Presenter;
 using SymphonyFrameWork.Utility;
 using System;
 using System.Threading;
@@ -14,9 +15,17 @@ namespace Cryptos.Runtime.UI.Ingame
 
         }
 
-        public void RegisterTarget()
+        public void RegisterTarget(HealthBarViewModel healthBarVM)
         {
+            healthBarVM.OnHealthChaged += GuageChange;
 
+            RegisterTrackingTarget(healthBarVM.TrackingTarget, healthBarVM.Token);
+
+            healthBarVM.Token.Register(() =>
+            {
+                healthBarVM.OnHealthChaged -= GuageChange;
+
+            });
         }
 
         protected override Task Initialize_S(TemplateContainer container)
@@ -44,9 +53,9 @@ namespace Cryptos.Runtime.UI.Ingame
         private float _lastValue;
         private CancellationTokenSource _cts;
 
-        private async void RegisterTrackingTarget(Transform transform)
+        private async void RegisterTrackingTarget(Transform transform, CancellationToken token)
         {
-            while (transform != null)
+            while (!token.IsCancellationRequested)
             {
                 MovePosition(transform.position);
                 await Awaitable.NextFrameAsync();
