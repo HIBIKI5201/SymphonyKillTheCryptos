@@ -1,4 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Presenter.Ingame.Character.Player;
+using Unity.Behavior;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
@@ -8,7 +10,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
     /// </summary>
     public class EnemyModelPresenter : MonoBehaviour
     {
-        public void Init(CharacterEntity self, Transform target)
+        public void Init(CharacterEntity self, SymphonyPresenter target)
         {
             if (self == null)
             {
@@ -23,7 +25,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             }
 
             _self = self;
-            _target = target;
+            _target = target.transform;
 
             self.OnDead += Dead;
             self.OnTakedDamage += HandleTakeDamage;
@@ -34,12 +36,24 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
                 _self.OnDead -= Dead;
                 _self.OnTakedDamage -= HandleTakeDamage;
             });
+
+            if (TryGetComponent<BehaviorGraphAgent>(out var agent))
+            {
+                BlackboardReference blackboard = agent.BlackboardReference;
+                blackboard.SetVariableValue(_behavorSelfParameter, this);
+                blackboard.SetVariableValue(_behaviorTargetParameter, target);
+            }
         }
 
         public void Dead()
         {
             Destroy(gameObject);
         }
+
+        [SerializeField]
+        private string _behavorSelfParameter = "SelfCharacter";
+        [SerializeField]
+        private string _behaviorTargetParameter = "TargetCharacter";
 
         private CharacterEntity _self;
         private Transform _target;
