@@ -63,7 +63,7 @@ namespace Cryptos.Runtime.UI.Ingame
 
         private void GuageChange(float value, float maxValue)
         {
-            float proportion = _lastValue / value;
+            float proportion = value / maxValue;
 
             if (_lastValue < proportion)
             {
