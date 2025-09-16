@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Cryptos.Runtime.Presenter;
 
 namespace Cryptos.Runtime.UI.Ingame
 {
@@ -76,9 +77,21 @@ namespace Cryptos.Runtime.UI.Ingame
             _levelUpgrade.InputChar(c);
         }
 
+        /// <summary>
+        ///     ダメージテキストを表示する。
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="position"></param>
         public void ShowDamageText(CombatContextViewModel context, Vector3 position)
         {
             _damageTextPool.ShowDamageText(context, position + _damageTextOffset);
+        }
+
+        public void CreateHealthBar(HealthBarViewModel healthBarVM)
+        {
+            UIElementHealthBar healthBar = new();
+            healthBar.RegisterTarget(healthBarVM);
+            _document.rootVisualElement.Add(healthBar);
         }
 
         Task IInitializeAsync.InitializeTask { get; set; }
