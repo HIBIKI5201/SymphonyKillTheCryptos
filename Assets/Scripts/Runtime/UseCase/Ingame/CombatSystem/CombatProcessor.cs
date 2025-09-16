@@ -8,7 +8,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.CombatSystem
     /// 戦闘における一連のダメージ計算処理を統括するクラスです。
     /// 複数のICombatHandlerを登録し、順番に実行することで最終的なダメージを算出します。
     /// </summary>
-    internal class CombatProcessor
+    public class CombatProcessor
     {
         /// <summary>
         /// 登録された全ての戦闘ハンドラーを実行し、最終的な戦闘結果を計算します。
