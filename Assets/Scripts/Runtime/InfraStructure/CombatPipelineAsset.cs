@@ -10,7 +10,7 @@ namespace Cryptos.Runtime.InfraStructure
     {
         public ICombatHandler[] CombatHandler => _combatHandlers;
 
-        [SerializeReference, MySubclassSelector, Tooltip("戦闘処理のパイプライン")]
+        [SerializeReference, SymphonySubclassSelector, Tooltip("戦闘処理のパイプライン")]
         private ICombatHandler[] _combatHandlers;
     }
 }

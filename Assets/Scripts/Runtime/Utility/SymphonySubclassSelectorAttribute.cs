@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-public class MySubclassSelectorAttribute : PropertyAttribute
+public class SymphonySubclassSelectorAttribute : PropertyAttribute
 {
 	bool m_includeMono;
 
-	public MySubclassSelectorAttribute(bool includeMono = false)
+	public SymphonySubclassSelectorAttribute(bool includeMono = false)
 	{
 		m_includeMono = includeMono;
 	}

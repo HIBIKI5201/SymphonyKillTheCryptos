@@ -12,7 +12,7 @@ namespace Cryptos.Runtime.Presenter
             await SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
         }
 
-        [SerializeReference, MySubclassSelector]
+        [SerializeReference, SymphonySubclassSelector]
         private IGameInstaller _outgameInstaller;
 
         private async void Start()

@@ -7,8 +7,8 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(MySubclassSelectorAttribute))]
-public class MySubclassSelectorDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(SymphonySubclassSelectorAttribute))]
+public class SymphonySubclassSelectorDrawer : PropertyDrawer
 {
     /// <summary>
     /// 型情報をキャッシュするための静的な辞書。
@@ -38,7 +38,7 @@ public class MySubclassSelectorDrawer : PropertyDrawer
 
         if (!s_TypeCache.TryGetValue(baseType, out var cachedData))
         {
-            cachedData = CreateInheritedTypesCache(baseType, ((MySubclassSelectorAttribute)attribute).IsIncludeMono());
+            cachedData = CreateInheritedTypesCache(baseType, ((SymphonySubclassSelectorAttribute)attribute).IsIncludeMono());
             s_TypeCache.Add(baseType, cachedData);
         }
         var (inheritedTypes, typePopupNameArray, typeFullNameArray) = cachedData;
