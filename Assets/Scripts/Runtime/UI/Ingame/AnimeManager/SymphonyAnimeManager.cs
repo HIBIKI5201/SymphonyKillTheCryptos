@@ -20,6 +20,10 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
         public void SetVelocity(float value) => _animator.SetFloat(_animatorHash.VelocityHash, value);
         public void SetSprint(bool value) => _animator.SetBool(_animatorHash.SprintHash, value);
 
+        /// <summary>
+        ///     スキルのパラメータをセットした上でトリガーする。
+        /// </summary>
+        /// <param name="index">遷移パラメータ</param>
         public void ActiveSkill(int index)
         {
             _animator.SetInteger(_animatorHash.SkillIndexHash, index);
