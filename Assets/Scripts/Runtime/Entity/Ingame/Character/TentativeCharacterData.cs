@@ -107,6 +107,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
                     newValue = _armor.Value;
                     break;
             }
+
             OnStatusChanged?.Invoke(type, oldValue, newValue);
             BuffLog(type);
         }

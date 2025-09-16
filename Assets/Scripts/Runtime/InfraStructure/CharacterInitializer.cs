@@ -16,7 +16,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Utility
         /// <returns></returns>
         public static CharacterInitializationData Initialize(ICharacterData symphonyData)
         {
-            CharacterEntity symphony = new(symphonyData);
+            SymphonyEntity symphony = new(symphonyData);
             EnemyRepository enemyRepo = new();
 
             return new(symphony, enemyRepo);
