@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d47085389f0b4842a432ea4d620e903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _behavorSelfParameter: SelfCharacter
+  _behaviorTargetParameter: TargetCharacter
+  _behaviorPipelineParameter: CombatPipeline
 --- !u!114 &257419365983223660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +65,7 @@ MonoBehaviour:
   m_BlackboardVariableOverridesList:
   - rid: 7654980637919019299
   - rid: 7654980637919019316
+  - rid: 7654980637919019907
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -81,8 +85,16 @@ MonoBehaviour:
         GUID:
           m_Value0: 11081032058519682524
           m_Value1: 1001006620221669048
-        Name: MyCharacter
+        Name: SelfCharacter
         m_Value: {fileID: -5759449780507556943}
+    - rid: 7654980637919019907
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 8610303048306593858
+          m_Value1: 416925391549581135
+        Name: Animator
+        m_Value: {fileID: 4394837001353788074}
 --- !u!1001 &1372139273577691868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163,6 +175,11 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 6427895819493657896}
   m_SourcePrefab: {fileID: 100100000, guid: 24b5fb0c952c9bd4fb8bbffaaa853f21, type: 3}
+--- !u!95 &4394837001353788074 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3456312130320105590, guid: 24b5fb0c952c9bd4fb8bbffaaa853f21, type: 3}
+  m_PrefabInstance: {fileID: 1372139273577691868}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7013904038653786730 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8240661434394411190, guid: 24b5fb0c952c9bd4fb8bbffaaa853f21, type: 3}
