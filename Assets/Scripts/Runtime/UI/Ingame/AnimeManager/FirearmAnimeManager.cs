@@ -15,17 +15,15 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
 
         public void Show()
         {
-            if (_visible) return;
+            if (!gameObject.activeSelf) return;
 
-            _visible = true;
             gameObject.SetActive(true);
         }
 
         public void Hide()
         {
-            if (!_visible) return;
+            if (!gameObject.activeSelf) return;
 
-            _visible = false;
             gameObject.SetActive(false);
         }
 
@@ -33,7 +31,5 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
         private UnityEvent _onFire;
         [SerializeField]
         private CriAtomSource _source;
-
-        private bool _visible;
     }
 }
