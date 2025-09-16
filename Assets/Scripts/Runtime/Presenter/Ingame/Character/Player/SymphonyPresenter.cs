@@ -31,12 +31,13 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             _pathContainer = pathContainer;
         }
 
+        public void ResetUsingCard()
+        {
+            _usingCard.Clear();
+        }
+
         public async Task NextWave(int index)
         {
-            ResetUsingCard();
-
-            index--; //ウェーブ2への移動はindex=1なので１引く
-
             float distance = 0f;
             while (MovePositionOnSpline(index, distance))
             {
@@ -102,11 +103,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             {
                 _animeManager.ActiveSkill(nextCard.AnimationClipID);
             }
-        }
-
-        private void ResetUsingCard()
-        {
-            _usingCard.Clear();
         }
 
         /// <summary>
