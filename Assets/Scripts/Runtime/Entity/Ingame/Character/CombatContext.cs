@@ -20,6 +20,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
 
             _damage = damage;
             _criticalCount = criticalCount;
+            _element = string.Empty;
         }
 
         /// <summary>
@@ -34,6 +35,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
 
             _damage = damage;
             _criticalCount = original.CriticalCount;
+            _element = string.Empty;
         }
 
         /// <summary>
@@ -56,10 +58,16 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// </summary>
         public int CriticalCount => _criticalCount;
 
+        /// <summary>
+        /// 属性を取得します。
+        /// </summary>
+        public string Element => _element;
+
         private readonly IAttackableData _attackerData;
         private readonly IHittableData _targetData;
 
         private readonly float _damage;
         private readonly int _criticalCount;
+        private readonly string _element;
     }
 }
