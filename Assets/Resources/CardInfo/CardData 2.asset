@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: CardData 2
   m_EditorClassIdentifier: 
   _cardName: Third Attack
-  _cardExplanation: 
+  _cardExplanation: "\u30CF\u30F3\u30C9\u30AC\u30F3\u306E\u4E09\u9023\u5C04"
   _cardIcon: {fileID: 2800000, guid: 9e08c7e4b4e1d934f9be977f32e38c2d, type: 3}
-  _cardDifficulty: 3
-  _wordRange: {x: 0, y: 1}
+  _cardDifficulty: 6
+  _wordRange: {x: 0, y: 3}
   _contentsArray:
   - _contents:
     - rid: 7654980578585870344

@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6447d439d91306a44999d40e5763c5bc, type: 3}
   m_Name: CardData 3
   m_EditorClassIdentifier: 
-  _cardName: All Attack
-  _cardExplanation: 
+  _cardName: Super Attack
+  _cardExplanation: "\u30CF\u30F3\u30C9\u30AC\u30F3\u306E\u901A\u5E38\u653B\u6483"
   _cardIcon: {fileID: 2800000, guid: 2a6d105f6f3b23f45a6b8f83a5c64c10, type: 3}
-  _cardDifficulty: 2
+  _cardDifficulty: 1
   _wordRange: {x: 0, y: 1}
   _contentsArray:
   - _contents:
-    - rid: 7654980578585870347
+    - rid: 7654980637919019018
   _priority: 0
   _animationClipID: 2
   references:
     version: 2
     RefIds:
-    - rid: 7654980578585870347
-      type: {class: CardContentAllAttack, ns: Cryptos.Runtime.UseCase.Ingame.Card, asm: Cryptos.UseCase}
+    - rid: 7654980637919019018
+      type: {class: CardContentNearerAttack, ns: Cryptos.Runtime.UseCase.Ingame.Card, asm: Cryptos.UseCase}
       data:
         _damageScale: 1
