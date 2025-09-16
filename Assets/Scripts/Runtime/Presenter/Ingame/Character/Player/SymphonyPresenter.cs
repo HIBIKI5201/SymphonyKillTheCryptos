@@ -87,7 +87,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 
         private void HandleSkillEnded()
         {
-            _usingCard = null;
+            
         }
 
         /// <summary>
