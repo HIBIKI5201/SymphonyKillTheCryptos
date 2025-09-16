@@ -198,6 +198,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             {
                 _gameUIManager.ShowDamageText(new(cc), model.transform.position);
             }
+
+            _gameUIManager.CreateHealthBar(new(enemy, model.transform, model.destroyCancellationToken));
         }
 
         private async void GoToOutGameScene()
