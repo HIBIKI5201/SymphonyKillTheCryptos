@@ -113,13 +113,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 () => inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
             waveSystem.OnAllWaveEnded += GoToOutGameScene;
 
-            TestCardSpawn(cardInitData.CardUseCase);
-            waveSystem.GameStart();
-
             _gameUIManager = ingameUIManager;
             _inputBuffer = inputBuffer;
 
-            SymphonyFrameWork.Debugger.SymphonyDebugHUD.AddText($"screen time{Time.time}");
+            TestCardSpawn(cardInitData.CardUseCase);
+            waveSystem.GameStart();
         }
 
         /// <summary>
