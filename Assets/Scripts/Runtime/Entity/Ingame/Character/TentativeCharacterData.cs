@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Utility;
+using System;
 using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -26,6 +27,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
 
             _name = data.Name;
         }
+
+        /// <summary>
+        /// ステータスが変化した時のイベント。
+        /// 第一引数は変化したステータス、第二引数は元の値、第三引数は新しい値。
+        /// </summary>
+        public event Action<BuffType, float, float> OnStatusChanged;
 
         /// <summary>
         /// プレイヤー名を取得します。
@@ -65,15 +72,42 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// <param name="priority"> バフの優先度。 </param>
         public void SetNewBuff(BuffType type, float value, int priority = 0)
         {
+            float oldValue = 0;
+            float newValue = 0;
+
             switch (type)
             {
-                case BuffType.AttackPower: _attackPower.AddMultiplier(value, priority); break;
-                case BuffType.CriticalChance: _criticalChance.AddMultiplier(value, priority); break;
-                case BuffType.CriticalDamage: _criticalDamage.AddMultiplier(value, priority); break;
-                case BuffType.MaxHealth: _maxHealth.AddMultiplier(value, priority); break;
-                case BuffType.Armor: _armor.AddMultiplier(value, priority); break;
-            }
+                case BuffType.AttackPower:
+                    oldValue = _attackPower.Value;
+                    _attackPower.AddMultiplier(value, priority);
+                    newValue = _attackPower.Value;
+                    break;
 
+                case BuffType.CriticalChance:
+                    oldValue = _criticalChance.Value;
+                    _criticalChance.AddMultiplier(value, priority); 
+                    newValue = _criticalChance.Value;
+                    break;
+
+                case BuffType.CriticalDamage:
+                    oldValue = _criticalDamage.Value;
+                    _criticalDamage.AddMultiplier(value, priority);
+                    newValue = _criticalDamage.Value;
+                    break;
+                
+                case BuffType.MaxHealth: 
+                    oldValue = _maxHealth.Value;
+                    _maxHealth.AddMultiplier(value, priority);
+                    newValue = _maxHealth.Value;
+                    break;
+
+                case BuffType.Armor:
+                    oldValue = _armor.Value;
+                    _armor.AddMultiplier(value, priority);
+                    newValue = _armor.Value;
+                    break;
+            }
+            OnStatusChanged?.Invoke(type, oldValue, newValue);
             BuffLog(type);
         }
 
