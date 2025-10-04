@@ -8,6 +8,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     /// </summary>
     public class PlayerPathContainer : MonoBehaviour
     {
+        public void MoveBattleCore(Vector3 position, Quaternion rotation)
+        {
+            _battleCore.position = position;
+            _battleCore.rotation = rotation;
+        }
+
         /// <summary>
         ///    指定されたスプラインインデックスと距離に基づいて、スプライン上の位置と回転を取得します。
         /// </summary>
@@ -59,6 +65,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
             return true;
         }
+
+        [SerializeField]
+        private Transform _battleCore;
 
         [SerializeField]
         private SplineContainer[] _splines;
