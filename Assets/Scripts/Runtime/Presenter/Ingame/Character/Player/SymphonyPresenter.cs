@@ -133,6 +133,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             transform.position = position;
             transform.rotation = rotation;
 
+            _pathContainer.MoveBattleCore(position, rotation);
+
             return isSuccess;
         }
 
