@@ -1,13 +1,10 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Card;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 {
@@ -18,7 +15,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
     {
         public CharacterEntity Self => _self;
 
-        public void Init(CardUseCase cardUseCase, PlayerPathContainer pathContainer, CharacterEntity self)
+        public void Init(CardUseCase cardUseCase, CharacterEntity self)
         {
             cardUseCase.OnCardCompleted += HandleCardComplete;
 
@@ -31,7 +28,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             });
 
             _cardUseCase = cardUseCase;
-            _pathContainer = pathContainer;
             _self = self;
         }
 
@@ -40,25 +36,42 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             _usingCard.Clear();
         }
 
-        public async Task NextWave(int index)
+        /// <summary>
+        ///    スプライン上を移動する
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public void MovePosition()
         {
-            float distance = 0f;
-            while (MovePositionOnSpline(index, distance))
-            {
-                distance += _speed * Time.deltaTime;
-                await Awaitable.NextFrameAsync();
-            }
+            Vector3 moveVec = _spawnPoint.position - transform.position;
 
-            EndMoveAnimation();
+            //アニメーションの更新
+            Vector3 localMoveDir = transform.InverseTransformDirection(moveVec.normalized);
+            _animeManager.SetDirX(localMoveDir.x);
+            _animeManager.SetDirY(localMoveDir.z);
+            _animeManager.SetVelocity(moveVec.magnitude);
+
+            transform.position = _spawnPoint.position;
+            transform.rotation = _spawnPoint.rotation;
         }
 
-        [SerializeField, Min(0)]
-        private float _speed = 1f;
+        /// <summary>
+        ///     移動アニメーション終了
+        /// </summary>
+        public void EndMoveAnimation()
+        {
+            _animeManager.SetVelocity(0f);
+            _animeManager.SetDirX(0f);
+            _animeManager.SetVelocity(0f);
+        }
+
+        [SerializeField]
+        private Transform _spawnPoint;
 
         private CharacterEntity _self;
         private ISymphonyAnimeManager _animeManager;
         private CardUseCase _cardUseCase;
-        private PlayerPathContainer _pathContainer;
 
 
         private Queue<CardEntity> _usingCard = new();
@@ -108,41 +121,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             {
                 _animeManager.ActiveSkill(nextCard.AnimationClipID);
             }
-        }
-
-        /// <summary>
-        ///    スプライン上を移動する
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
-        private bool MovePositionOnSpline(int index, float distance)
-        {
-            //スプライン上の位置と回転を取得
-            bool isSuccess = _pathContainer
-                .GetPositionAndRotationByDistance(index, distance,
-                out Vector3 position, out Quaternion rotation);
-
-            //アニメーションの更新
-            Vector3 localMoveDir = transform.InverseTransformDirection((position - transform.position).normalized);
-            _animeManager.SetDirX(localMoveDir.x);
-            _animeManager.SetDirY(localMoveDir.z);
-            _animeManager.SetVelocity(_speed);
-
-            //座標更新
-            transform.position = position;
-            transform.rotation = rotation;
-
-            _pathContainer.MoveBattleCore(position, rotation);
-
-            return isSuccess;
-        }
-
-        private void EndMoveAnimation()
-        {
-            _animeManager.SetVelocity(0f);
-            _animeManager.SetDirX(0f);
-            _animeManager.SetVelocity(0f);
         }
     }
 }

@@ -1,7 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
-using Cryptos.Runtime.UseCase.Ingame.CombatSystem;
-using System;
 using Unity.Behavior;
 using UnityEngine;
 
