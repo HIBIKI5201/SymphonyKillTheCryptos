@@ -13,13 +13,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     public class WaveSystemPresenter
     {
         public WaveSystemPresenter(WaveEntity[] waveEntities,
+            WavePathPresenter wavePathPresenter,
             SymphonyPresenter player, EnemyRepository enemyRepository,
             LevelUseCase levelUseCase, TentativeCharacterData symphonyData,
             IBGMPlayer bgmPlayer)
         {
             WaveUseCase waveUseCase = new(waveEntities);
-
             _waveUseCase = waveUseCase;
+            _wavePath = wavePathPresenter;
             _symphony = player;
             _enemyRepository = enemyRepository;
             _levelUseCase = levelUseCase;
@@ -37,7 +38,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         public async void GameStart()
         {
-            await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
+            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
             WaveEntity nextWave = _waveUseCase.CurrentWave;
             CreateWaveEnemys(nextWave);
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
@@ -45,6 +46,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         }
 
         private WaveUseCase _waveUseCase;
+        private WavePathPresenter _wavePath;
         private SymphonyPresenter _symphony;
         private EnemyRepository _enemyRepository;
         private LevelUseCase _levelUseCase;
@@ -101,7 +103,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
                 Debug.Log($"Level Up! Selected Card: {upgradeNode}");
             }
 
-            await _symphony.NextWave(_waveUseCase.CurrentWaveIndex);
+            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
             CreateWaveEnemys(nextWave);
 
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
