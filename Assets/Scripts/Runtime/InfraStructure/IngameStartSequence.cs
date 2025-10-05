@@ -59,6 +59,10 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField, Tooltip("ウェーブのエンティティ配列")]
         private WaveEntity[] _waveEntities;
 
+        [Space]
+        [SerializeField, Tooltip("ウェーブ移動速度")]
+        private float _waveMoveSpeed = 3;
+
         private IngameUIManager _gameUIManager;
         private InputBuffer _inputBuffer;
 
@@ -79,6 +83,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             LevelUseCase levelUseCase =
                 new LevelUseCase(_levelUpgradeData, LevelUpAsync);
 
+            InputBuffer inputBuffer = 
+                await ServiceLocator.GetInstanceAsync<InputBuffer>();
             PlayerPathContainer playerPathContainer =
                 await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
             IngameUIManager ingameUIManager =
@@ -93,8 +99,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             await InitializeUtility.WaitInitialize(ingameUIManager);
 
             CardPresenter cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
+            WavePathPresenter wavePathPresenter = new(playerPathContainer, symphonyPresenter, _waveMoveSpeed);
 
-            symphonyPresenter.Init(cardInitData.CardUseCase, playerPathContainer, charaInitData.Symphony);
+            symphonyPresenter.Init(cardInitData.CardUseCase, charaInitData.Symphony);
             
             //SymphonyのUI表示
             ingameUIManager.CreateHealthBar(
@@ -110,11 +117,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
 
             WaveSystemPresenter waveSystem = new(_waveEntities,
+                wavePathPresenter,
                 symphonyPresenter, charaInitData.EnemyRepository,
                 levelUseCase, symphonyData,
                 bgmPlayer);
 
-            InputBuffer inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             // ウェーブ開始時に入力受付を開始、ウェーブクリア時に入力受付を停止する。
             waveSystem.OnWaveStarted += () =>
                 {
