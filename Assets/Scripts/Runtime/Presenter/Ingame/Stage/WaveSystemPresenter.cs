@@ -38,12 +38,18 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// <summary> ウェーブ完遂時 </summary>
         public event Action OnAllWaveEnded;
 
+        /// <summary>
+        ///     ゲームを開始する。
+        /// </summary>
         public async void GameStart()
         {
-            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
+            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // 最初のウェーブ位置へ移動。
+
+            // 最初のウェーブの敵を生成。
             WaveEntity nextWave = _waveUseCase.CurrentWave;
             CreateWaveEnemies(nextWave);
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
+
             OnWaveStarted?.Invoke();
         }
 
