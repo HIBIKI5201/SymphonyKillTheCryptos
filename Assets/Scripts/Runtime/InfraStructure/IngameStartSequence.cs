@@ -10,7 +10,7 @@ using Cryptos.Runtime.Presenter.Ingame.Character.Enemy;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.Presenter.System;
-using Cryptos.Runtime.UI.Ingame;
+using Cryptos.Runtime.UI.Ingame.Manager;
 using Cryptos.Runtime.UI.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
@@ -83,7 +83,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             LevelUseCase levelUseCase =
                 new LevelUseCase(_levelUpgradeData, LevelUpAsync);
 
-            InputBuffer inputBuffer = 
+            InputBuffer inputBuffer =
                 await ServiceLocator.GetInstanceAsync<InputBuffer>();
             PlayerPathContainer playerPathContainer =
                 await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
@@ -102,7 +102,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             WavePathPresenter wavePathPresenter = new(playerPathContainer, symphonyPresenter, _waveMoveSpeed);
 
             symphonyPresenter.Init(cardInitData.CardUseCase, charaInitData.Symphony);
-            
+
             //SymphonyのUI表示
             ingameUIManager.CreateHealthBar(
                 new(charaInitData.Symphony,

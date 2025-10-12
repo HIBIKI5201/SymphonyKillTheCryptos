@@ -1,15 +1,17 @@
-using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
-using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.Character;
+using Cryptos.Runtime.Presenter.Ingame.Character.Player;
+using Cryptos.Runtime.Presenter.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using System;
 using UnityEngine;
-using Cryptos.Runtime.Presenter.System.Audio;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
 {
+    /// <summary>
+    ///     ウェーブの進行を管理するクラス。
+    /// </summary>
     public class WaveSystemPresenter
     {
         public WaveSystemPresenter(WaveEntity[] waveEntities,
@@ -91,7 +93,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             while (_levelUseCase.LevelUpQueue.TryDequeue(out _))
             {
                 LevelUpgradeNode upgradeNode = await _levelUseCase.WaitLevelUpSelectAsync();
-                
+
                 foreach (ILevelUpgradeEffect effect in upgradeNode.Effects)
                 {
                     if (effect is LevelUpgradeStatusEffect statusEffect)

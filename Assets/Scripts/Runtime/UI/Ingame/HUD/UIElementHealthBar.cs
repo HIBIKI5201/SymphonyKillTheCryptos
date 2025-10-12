@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.UI.Ingame
+namespace Cryptos.Runtime.UI.Ingame.Character
 {
     [UxmlElement]
     public partial class UIElementHealthBar : SymphonyVisualElement

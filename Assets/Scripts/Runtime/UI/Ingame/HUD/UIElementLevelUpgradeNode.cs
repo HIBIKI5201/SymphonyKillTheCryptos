@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.UI.Ingame
+namespace Cryptos.Runtime.UI.Ingame.LevelUp
 {
     /// <summary>
     /// レベルアップノードのUI要素。

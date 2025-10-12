@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.UI.Ingame
+namespace Cryptos.Runtime.UI.Ingame.Card
 {
     /// <summary>
     ///     デッキのUI

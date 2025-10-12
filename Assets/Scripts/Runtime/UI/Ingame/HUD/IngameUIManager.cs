@@ -1,17 +1,20 @@
+using CriWare;
 using Cryptos.Runtime.Framework;
-using Cryptos.Runtime.Presenter.Ingame.Character;
+using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.Card;
+using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.Presenter.System;
+using Cryptos.Runtime.UI.Ingame.Character;
+using Cryptos.Runtime.UI.Ingame.Card;
+using Cryptos.Runtime.UI.Ingame.LevelUp;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Cryptos.Runtime.Presenter;
-using CriWare;
 
-namespace Cryptos.Runtime.UI.Ingame
+namespace Cryptos.Runtime.UI.Ingame.Manager
 {
     /// <summary>
     ///     インゲームのUIを管理します。

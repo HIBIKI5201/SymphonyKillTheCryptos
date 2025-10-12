@@ -1,13 +1,10 @@
-using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork.Utility;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.UI.Ingame
+namespace Cryptos.Runtime.UI.Ingame.LevelUp
 {
     /// <summary>
     /// レベルアップ時の選択ウィンドウのUI要素。
