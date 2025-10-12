@@ -15,6 +15,8 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
         public event Action<int> OnSkillTriggered;
         public event Action OnSkillEnded;
 
+        public bool IsAttacking => _isAttacking;
+
         public void SetDirX(float value) => _animator.SetFloat(_animatorHash.DirXHash, value);
         public void SetDirY(float value) => _animator.SetFloat(_animatorHash.DirYHash, value);
         public void SetVelocity(float value) => _animator.SetFloat(_animatorHash.VelocityHash, value);
@@ -50,6 +52,8 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
 
         private Animator _animator;
         private SymphonyAnimatorHash _animatorHash;
+
+        private bool _isAttacking = false;
 
         private void Awake()
         {
@@ -109,6 +113,16 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
                 string kind = kindMatch.Groups[1].Value; //最初にマッチしたグループ
                 ShootFirearm(kind);
             }
+
+            _isAttacking = true;
+        }
+
+        private void EndSkill()
+        {
+            Debug.Log("Skill animation ended");
+            OnSkillEnded?.Invoke();
+
+            _isAttacking = false;
         }
 
         private void ShootFirearm(string kind)
@@ -165,12 +179,6 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
             }
 
             firearm.Hide();
-        }
-
-        private void EndSkill()
-        {
-            Debug.Log("Skill animation ended");
-            OnSkillEnded?.Invoke();
         }
 
         /// <summary>

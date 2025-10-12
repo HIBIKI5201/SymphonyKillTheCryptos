@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Card;
+using SymphonyFrameWork.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -15,6 +15,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
     {
         public CharacterEntity Self => _self;
 
+        /// <summary>
+        ///     カードユースケースに攻撃完了イベントを登録する。
+        ///     自分のキャラクターエンティティも登録する。
+        /// </summary>
+        /// <param name="cardUseCase"></param>
+        /// <param name="self"></param>
         public void Init(CardUseCase cardUseCase, CharacterEntity self)
         {
             cardUseCase.OnCardCompleted += HandleCardComplete;
@@ -31,13 +37,16 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             _self = self;
         }
 
+        /// <summary>
+        ///     キューに登録されているカードをリセットする。
+        /// </summary>
         public void ResetUsingCard()
         {
-            _usingCard.Clear();
+            _usingCardQueue.Clear();
         }
 
         /// <summary>
-        ///    スプライン上を移動する
+        ///    ターゲットのもとへ移動する。
         /// </summary>
         /// <param name="index"></param>
         /// <param name="distance"></param>
@@ -66,6 +75,15 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             _animeManager.SetVelocity(0f);
         }
 
+        /// <summary>
+        ///     攻撃アニメーションが終了するまで待機する。
+        /// </summary>
+        /// <returns></returns>
+        public async Task WaitForEndAttack()
+        {
+            await SymphonyTask.WaitUntil(() => !_animeManager.IsAttacking, destroyCancellationToken);
+        }
+
         [SerializeField]
         private Transform _spawnPoint;
 
@@ -74,7 +92,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private CardUseCase _cardUseCase;
 
 
-        private Queue<CardEntity> _usingCard = new();
+        private Queue<CardEntity> _usingCardQueue = new();
 
         private void Awake()
         {
@@ -97,9 +115,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         {
             if (cardEntity == null) return;
 
-            _usingCard.Enqueue(cardEntity);
+            _usingCardQueue.Enqueue(cardEntity);
 
-            if (_usingCard.Count <= 1) //もしスキル中でなければ発動する。
+            if (_usingCardQueue.Count <= 1) //もしスキル中でなければ発動する。
             {
                 _animeManager.ActiveSkill(cardEntity.AnimationClipID);
             }
@@ -107,20 +125,29 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 
         private void HandleSkillTriggered(int index)
         {
-            if (!_usingCard.TryPeek(out var card)) return;
+            if (!_usingCardQueue.TryPeek(out var card)) return;
 
             _cardUseCase.ExecuteCardEffect(card.GetContents(index));
         }
 
         private void HandleSkillEnded()
         {
-            if (!_usingCard.TryDequeue(out _)) return;
+            if (!_usingCardQueue.TryDequeue(out _)) return;
 
             //もし残っていれば発動する。
-            if (_usingCard.TryPeek(out var nextCard))
+            if (_usingCardQueue.TryPeek(out var nextCard))
             {
                 _animeManager.ActiveSkill(nextCard.AnimationClipID);
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_spawnPoint == null) return;
+            Gizmos.color = Color.cyan;
+
+            Vector3 size = new Vector3(1, 2, 1);
+            Gizmos.DrawWireCube(_spawnPoint.position + Vector3.up * size.y / 2, size);
         }
     }
 }
