@@ -221,7 +221,7 @@ MonoBehaviour:
   _playOnStart: 0
   _regionOnStart: {fileID: 0}
   _listenerOnStart: {fileID: 0}
-  _use3dPositioning: 1
+  _use3dPositioning: 0
   _freezeOrientation: 0
   _loop: 0
   _volume: 1
@@ -306,6 +306,7 @@ MonoBehaviour:
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
+        _waveMoveSpeed: 3
 --- !u!1001 &1595730579
 PrefabInstance:
   m_ObjectHideFlags: 0
