@@ -42,7 +42,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         {
             await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
             WaveEntity nextWave = _waveUseCase.CurrentWave;
-            CreateWaveEnemys(nextWave);
+            CreateWaveEnemies(nextWave);
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
             OnWaveStarted?.Invoke();
         }
@@ -106,14 +106,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             }
 
             await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
-            CreateWaveEnemys(nextWave);
+            CreateWaveEnemies(nextWave);
 
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
             OnWaveStarted?.Invoke();
         }
 
-        private void CreateWaveEnemys(WaveEntity waveEntity)
+        private void CreateWaveEnemies(WaveEntity waveEntity)
         {
             CharacterData[] enemyData = waveEntity.Enemies;
             _enemyCount = enemyData.Length;
