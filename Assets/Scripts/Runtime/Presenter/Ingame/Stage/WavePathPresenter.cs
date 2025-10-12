@@ -5,7 +5,9 @@ using UnityEngine;
 namespace Cryptos.Runtime.Presenter.Ingame.System
 
 {
-
+    /// <summary>
+    ///     パス移動を管理するクラス。
+    /// </summary>
     public class WavePathPresenter
     {
         public WavePathPresenter(PlayerPathContainer pathContainer,
@@ -17,6 +19,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _speed = speed;
         }
 
+        /// <summary>
+        ///     ウェーブの次の地点へ移動する。
+        ///     プレイヤーの移動アニメーションも開始する。
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public async Task NextWave(int index)
         {
             float distance = 0f;
