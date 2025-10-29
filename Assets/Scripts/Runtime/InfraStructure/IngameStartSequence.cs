@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;

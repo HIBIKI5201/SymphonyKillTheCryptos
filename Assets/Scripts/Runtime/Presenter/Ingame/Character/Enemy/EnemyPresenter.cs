@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.UseCase.Ingame.CombatSystem;
 using System;

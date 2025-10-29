@@ -1,6 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using Cryptos.Runtime.Entity.Ingame.System;
-using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.System;

@@ -1,19 +1,22 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using UnityEngine;
 
 namespace Cryptos.Runtime.UseCase.Ingame.Character
 {
     /// <summary>
-    ///     敵のエンティティを生成するクラス
+    /// 敵のエンティティを生成するファクトリークラス。
+    /// IEnemyFactoryインターフェースを実装し、UseCase層のビジネスロジックを
+    /// Entity層のEnemyRepositoryに注入します。
     /// </summary>
-    public class EnemyGenerator
+    public class EnemyGenerator : IEnemyFactory
     {
         /// <summary>
-        ///     敵のデータからエンティティを生成する
+        /// 敵のデータからエンティティを生成する
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public CharacterEntity Generate(CharacterData data)
+        /// <param name="data">敵のデータ</param>
+        /// <returns>生成された敵エンティティ</returns>
+        public CharacterEntity Create(CharacterData data)
         {
             if (data == null)
             {
@@ -26,3 +29,4 @@ namespace Cryptos.Runtime.UseCase.Ingame.Character
         }
     }
 }
+

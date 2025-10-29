@@ -1,6 +1,6 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using Cryptos.Runtime.Entity.Ingame.Word;
-using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using System.Linq;
 

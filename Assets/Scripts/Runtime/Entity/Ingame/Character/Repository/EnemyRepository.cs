@@ -1,17 +1,26 @@
-using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.UseCase.Ingame.Character;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
-namespace Cryptos.Runtime.Presenter.Ingame.Character
+namespace Cryptos.Runtime.Entity.Ingame.Character.Repository
 {
     /// <summary>
     /// 敵キャラクターの生成と管理を行うリポジトリクラスです。
+    /// 依存性逆転の原則により、IEnemyFactoryインターフェースを通じて
+    /// エンティティの生成を行います。
     /// </summary>
     public class EnemyRepository
     {
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="factory">敵エンティティを生成するファクトリー</param>
+        public EnemyRepository(IEnemyFactory factory)
+        {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+        }
+
         /// <summary> 敵が生成された時のイベント </summary>
         public event Action<CharacterEntity> OnEnemyCreated;
 
@@ -26,7 +35,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
                 return null;
             }
 
-            CharacterEntity enemy = _enemyGenerator.Generate(data);
+            // ファクトリーを通じてEntityを生成（DI注入）
+            CharacterEntity enemy = _factory.Create(data);
             if (enemy == null) return null;
 
             _enemies.Add(enemy);
@@ -42,7 +52,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
         }
 
         private List<CharacterEntity> _enemies = new();
-        private EnemyGenerator _enemyGenerator = new();
+        private readonly IEnemyFactory _factory;
 
         /// <summary>
         /// 敵キャラクターの体力ログを設定します。
@@ -63,3 +73,4 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character
         }
     }
 }
+

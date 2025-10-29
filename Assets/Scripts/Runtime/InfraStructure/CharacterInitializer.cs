@@ -1,6 +1,7 @@
 using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Presenter.Ingame.Character;
+using Cryptos.Runtime.Entity.Ingame.Character.Repository;
+using Cryptos.Runtime.UseCase.Ingame.Character;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.Utility
 {
@@ -17,7 +18,10 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Utility
         public static CharacterInitializationData Initialize(ICharacterData symphonyData)
         {
             SymphonyEntity symphony = new(symphonyData);
-            EnemyRepository enemyRepo = new();
+            
+            // DI: EnemyGeneratorをIEnemyFactoryとして注入
+            IEnemyFactory enemyFactory = new EnemyGenerator();
+            EnemyRepository enemyRepo = new(enemyFactory);
 
             return new(symphony, enemyRepo);
         }
