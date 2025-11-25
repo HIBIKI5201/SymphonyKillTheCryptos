@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8a5411e1611cc54fa2c5b274c50edd5, type: 3}
   m_Name: AutoEnumGeneratorConfig
-  m_EditorClassIdentifier: 
-  _autoSceneListUpdate: 0
+  m_EditorClassIdentifier: SymphonyFrameWork.Editor::SymphonyFrameWork.Editor.AutoEnumGeneratorConfig
+  _autoSceneListUpdate: 1
   _autoTagsUpdate: 0
   _autoLayersUpdate: 0
