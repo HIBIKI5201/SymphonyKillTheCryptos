@@ -225,6 +225,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
         private async void GoToOutGameScene()
         {
+            if (_isTransitioning) return;
+            _isTransitioning = true;
+            
             await SceneLoader.UnloadScene(SceneListEnum.Stage.ToString());
             await SceneLoader.UnloadScene(SceneListEnum.Ingame.ToString());
 
@@ -232,5 +235,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             await SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
             SceneLoader.SetActiveScene(SceneListEnum.Stage.ToString());
         }
+
+        private bool _isTransitioning;
     }
 }
