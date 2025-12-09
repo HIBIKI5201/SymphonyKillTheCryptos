@@ -11,7 +11,7 @@ namespace Cryptos.Runtime.UI.Ingame.Character
     [UxmlElement]
     public partial class UIElementHealthBar : SymphonyVisualElement
     {
-        public UIElementHealthBar() : base("UIToolKit/UXML/Ingame/HealthBar")
+        public UIElementHealthBar() : base("UIToolKit/UXML/InGame/HealthBar")
         {
 
         }

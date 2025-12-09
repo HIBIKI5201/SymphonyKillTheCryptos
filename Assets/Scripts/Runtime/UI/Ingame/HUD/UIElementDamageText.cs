@@ -9,7 +9,7 @@ namespace Cryptos.Runtime.UI
     [UxmlElement]
     public partial class UIElementDamageText : SymphonyVisualElement
     {
-        public UIElementDamageText() : base("UIToolKit/UXML/Ingame/DamageText")
+        public UIElementDamageText() : base("UIToolKit/UXML/InGame/DamageText")
         {
 
         }

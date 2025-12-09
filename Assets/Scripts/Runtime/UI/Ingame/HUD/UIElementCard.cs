@@ -11,7 +11,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
     [UxmlElement]
     public partial class UIElementCard : SymphonyVisualElement
     {
-        public UIElementCard() : base("UIToolKit/UXML/Ingame/Card", InitializeType.PickModeIgnore) { }
+        public UIElementCard() : base("UIToolKit/UXML/InGame/Card", InitializeType.PickModeIgnore) { }
 
         /// <summary>
         ///     データをセットする
