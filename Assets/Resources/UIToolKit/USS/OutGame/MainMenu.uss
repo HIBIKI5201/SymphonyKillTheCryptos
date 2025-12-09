@@ -1,0 +1,7 @@
+:root {
+}
+
+.main-button {
+    height: 100px;
+    font-size: 40px;
+}
