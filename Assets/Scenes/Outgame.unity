@@ -211,11 +211,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Cryptos.Presenter::Cryptos.Runtime.Presenter.OutgameManager
   _outgameInstaller:
-    rid: 7654980581786386733
+    rid: 7747501085857677691
   references:
     version: 2
     RefIds:
-    - rid: 7654980581786386733
+    - rid: 7747501085857677691
       type: {class: OutgameStartSequience, ns: Cryptos.Runtime.InfraStructure, asm: Cryptos.InfraStructure}
       data: 
 --- !u!4 &1963193919
