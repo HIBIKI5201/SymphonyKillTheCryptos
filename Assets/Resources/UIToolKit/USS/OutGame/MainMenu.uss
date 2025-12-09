@@ -4,4 +4,14 @@
 .main-button {
     height: 100px;
     font-size: 40px;
+    transition-timing-function: ease-in;
+    transition-duration: 0.2s;
+}
+
+.main-button:focus {
+    height: 100px;
+    font-size: 40px;
+    scale: 1.2 1.2;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
 }
