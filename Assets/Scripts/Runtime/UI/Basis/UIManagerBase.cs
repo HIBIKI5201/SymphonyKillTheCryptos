@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.Presenter
+namespace Cryptos.Runtime.UI.Basis
 {
     [RequireComponent(typeof(UIDocument))]
     public abstract class UIManagerBase : MonoBehaviour, IInitializeAsync
