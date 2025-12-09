@@ -1,14 +1,12 @@
 using CriWare;
-using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.Presenter.System;
-using Cryptos.Runtime.UI.Ingame.Character;
+using Cryptos.Runtime.UI.Basis;
 using Cryptos.Runtime.UI.Ingame.Card;
+using Cryptos.Runtime.UI.Ingame.Character;
 using Cryptos.Runtime.UI.Ingame.LevelUp;
-using SymphonyFrameWork;
-using SymphonyFrameWork.System;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -19,8 +17,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// <summary>
     ///     インゲームのUIを管理します。
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
-    public class IngameUIManager : MonoBehaviour, ICardUIManager, IInitializeAsync
+    public class IngameUIManager : UIManagerBase, ICardUIManager
     {
         /// <summary>
         /// カードをUIに追加します。
@@ -105,25 +102,8 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             _document.rootVisualElement.Add(healthBar);
         }
 
-        Task IInitializeAsync.InitializeTask { get; set; }
-
-        [SerializeField]
-        private Vector3 _damageTextOffset;
-
-        private UIDocument _document;
-        private CriAtomSource _typingSoundSource;
-
-        private UIElementDeck _deck;
-        private UIElementLevelUpgradeWindow _levelUpgrade;
-        private DamageTextPool _damageTextPool;
-
-        private InputBuffer _inputBuffer;
-
-        async Task IInitializeAsync.InitializeAsync()
+        protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
-            _document = GetComponent<UIDocument>();
-
-            VisualElement root = _document.rootVisualElement;
             _deck = root.Q<UIElementDeck>();
             _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();
 
@@ -132,10 +112,18 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
 
             _damageTextPool = new(root);
 
-            _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
-
-            _levelUpgrade.CloseWindow();
+            _levelUpgrade.CloseWindow(); // 念のためにクローズする。
         }
+
+
+        [SerializeField]
+        private Vector3 _damageTextOffset;
+
+        private CriAtomSource _typingSoundSource;
+
+        private UIElementDeck _deck;
+        private UIElementLevelUpgradeWindow _levelUpgrade;
+        private DamageTextPool _damageTextPool;
 
         private void Awake()
         {
