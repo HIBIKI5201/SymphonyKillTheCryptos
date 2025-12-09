@@ -18,6 +18,8 @@ namespace Cryptos.Runtime.UI.Outgame
         protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
             VisualElement buttonContainer = root.Q<VisualElement>(BUTTONS_NAME);
+           if (buttonContainer == null) { return; }
+
             _startButton = buttonContainer.Q<Button>(START_BUTTON_NAME);
 
             if (_startButton == null) { return; }
