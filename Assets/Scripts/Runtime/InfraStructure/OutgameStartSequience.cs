@@ -12,6 +12,8 @@ namespace Cryptos.Runtime.InfraStructure
             OutgameUIManager uiManager = await ServiceLocator.GetInstanceAsync<OutgameUIManager>();
             OutgameManager outgameManager = await ServiceLocator.GetInstanceAsync<OutgameManager>();
 
+            await InitializeUtility.WaitInitialize(uiManager);
+
             uiManager.OnPressedStartButton += HandlePressedStartButton;
 
             void HandlePressedStartButton()
