@@ -15,7 +15,7 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         /// <summary>
         /// コンストラクタ。
         /// </summary>
-        public UIElementLevelUpgradeWindow() : base("UIToolKit/UXML/Ingame/LevelUpgradeWindow")
+        public UIElementLevelUpgradeWindow() : base("UIToolKit/UXML/InGame/LevelUpgradeWindow")
         {
 
         }

@@ -155,7 +155,7 @@ public class SymphonySubclassSelectorDrawer : PropertyDrawer
 
     // 15. 内部メソッド、抽出メソッド
     /// <summary>
-    /// SerializedPropertyから、そのプロパティの基底となる型を取得する。
+    ///     SerializedPropertyから、そのプロパティの基底となる型を取得する。
     /// </summary>
     /// <param name="property">対象のプロパティ。</param>
     /// <returns>プロパティの基底型。</returns>
@@ -186,7 +186,7 @@ public class SymphonySubclassSelectorDrawer : PropertyDrawer
     }
 
     /// <summary>
-    /// SerializedPropertyのパスを解析し、対応するFieldInfoを取得する。
+    ///     SerializedPropertyのパスを解析し、対応するFieldInfoを取得する。
     /// </summary>
     /// <param name="property">対象のプロパティ。</param>
     /// <returns>対応するFieldInfo。</returns>

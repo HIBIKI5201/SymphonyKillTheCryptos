@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Presenter.Ingame.System;
 using SymphonyFrameWork.System;
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter
@@ -17,8 +18,12 @@ namespace Cryptos.Runtime.Presenter
 
         private async void Start()
         {
-            await SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
-            _outgameInstaller.GameInitialize();
+            try
+            {
+                await SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
+                _outgameInstaller.GameInitialize();
+            }
+            catch (Exception ex) { return; }
         }
     }
 }
