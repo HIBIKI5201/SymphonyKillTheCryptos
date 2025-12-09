@@ -1,19 +1,14 @@
-using UnityEngine;
+using Cryptos.Runtime.UI.Basis;
+using System.Threading.Tasks;
+using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.UI
+namespace Cryptos.Runtime.UI.Outgame
 {
-    public class OutgameUIManager : MonoBehaviour
+    public class OutgameUIManager : UIManagerBase
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
-        
-        }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
         }
     }
 }
