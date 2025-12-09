@@ -33,10 +33,10 @@ namespace Cryptos.Runtime.UI.Basis
 
         public async Task FadeIn(float duration, CancellationToken token = default)
         {
-            float elapsed = 1;
+            float elapsed = duration;
             Color baseColor = _fadeGround.style.backgroundColor.value;
 
-            while (!token.IsCancellationRequested && elapsed < duration)
+            while (!token.IsCancellationRequested && 0 < elapsed)
             {
                 elapsed -= Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / duration);
@@ -56,7 +56,7 @@ namespace Cryptos.Runtime.UI.Basis
         
         private void Awake()
         {
-            ServiceLocator.RegisterInstance<IMasterUIManager>(this);
+            ServiceLocator.RegisterInstance<IMasterUIManager>(this, ServiceLocator.LocateType.Locator);
             _document = GetComponent<UIDocument>();
         }
 
