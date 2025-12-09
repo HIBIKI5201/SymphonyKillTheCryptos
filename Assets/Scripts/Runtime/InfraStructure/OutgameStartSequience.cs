@@ -22,6 +22,5 @@ namespace Cryptos.Runtime.InfraStructure
                 uiManager.OnPressedStartButton -= HandlePressedStartButton;
             }
         }
-
     }
 }
