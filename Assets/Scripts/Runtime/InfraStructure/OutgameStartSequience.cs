@@ -1,6 +1,6 @@
-using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.System;
+using Cryptos.Runtime.UI.Outgame;
 using SymphonyFrameWork.System;
 
 namespace Cryptos.Runtime.InfraStructure
@@ -9,15 +9,15 @@ namespace Cryptos.Runtime.InfraStructure
     {
         public async void GameInitialize()
         {
-            InputBuffer buffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
+            OutgameUIManager uiManager = await ServiceLocator.GetInstanceAsync<OutgameUIManager>();
             OutgameManager outgameManager = await ServiceLocator.GetInstanceAsync<OutgameManager>();
 
-            buffer.OnAlphabetKeyPressed += HandleAlphabetKey;
+            uiManager.OnPressedStartButton += HandlePressedStartButton;
 
-            void HandleAlphabetKey(char c)
+            void HandlePressedStartButton()
             {
                 outgameManager.StartIngame();
-                buffer.OnAlphabetKeyPressed -= HandleAlphabetKey;
+                uiManager.OnPressedStartButton -= HandlePressedStartButton;
             }
         }
 
