@@ -7,7 +7,9 @@ using Cryptos.Runtime.UI.Basis;
 using Cryptos.Runtime.UI.Ingame.Card;
 using Cryptos.Runtime.UI.Ingame.Character;
 using Cryptos.Runtime.UI.Ingame.LevelUp;
+using SymphonyFrameWork.Utility; // SymphonyTask を使用するため追加
 using System;
+using System.Linq; // Select を使用するため追加
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -19,6 +21,29 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// </summary>
     public class IngameUIManager : UIManagerBase, ICardUIManager
     {
+        /// <summary>
+        /// レベルアップ時の非同期処理。
+        /// </summary>
+        /// <param name="nodes">レベルアップ候補のノード。</param>
+        /// <returns>選択されたレベルアップノード。</returns>
+        public async Task<LevelUpgradeNodeViewModel> LevelUpSelectAsync(LevelUpgradeNodeViewModel[] nodes)
+        {
+            Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
+
+            // ウィンドウを出現させて待機。
+            OpenLevelUpgradeWindow(nodes.AsSpan());
+
+            LevelUpgradeNodeViewModel selectedNodeVM = default;
+            await SymphonyTask.WaitUntil(
+                () => TryGetSelectedLevelUpgradeNode(out selectedNodeVM));
+
+            Debug.Log($"レベルアップカードを選択しました。{selectedNodeVM.NodeName}"); // NodeName に変更
+
+            CloseLevelUpgradeWindow();
+
+            return selectedNodeVM;
+        }
+
         /// <summary>
         /// カードをUIに追加します。
         /// </summary>

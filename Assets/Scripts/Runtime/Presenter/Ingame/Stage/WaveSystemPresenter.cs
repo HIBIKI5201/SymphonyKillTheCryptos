@@ -14,19 +14,15 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     /// </summary>
     public class WaveSystemPresenter
     {
-        public WaveSystemPresenter(WaveEntity[] waveEntities,
+        public WaveSystemPresenter(WaveUseCase waveUseCase,
             WavePathPresenter wavePathPresenter,
             SymphonyPresenter player, EnemyRepository enemyRepository,
-            LevelUseCase levelUseCase, TentativeCharacterData symphonyData,
             IBGMPlayer bgmPlayer)
         {
-            WaveUseCase waveUseCase = new(waveEntities);
             _waveUseCase = waveUseCase;
             _wavePath = wavePathPresenter;
             _symphony = player;
             _enemyRepository = enemyRepository;
-            _levelUseCase = levelUseCase;
-            _symphonyData = symphonyData;
             _bgmPlayer = bgmPlayer;
         }
 
@@ -37,6 +33,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         /// <summary> ウェーブ完遂時 </summary>
         public event Action OnAllWaveEnded;
+        /// <summary> 現在のウェーブが完了した時（次のウェーブがある場合も含む） </summary>
+        public event Action OnWaveCompleted;
 
         /// <summary>
         ///     ゲームを開始する。
@@ -57,10 +55,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         private WavePathPresenter _wavePath;
         private SymphonyPresenter _symphony;
         private EnemyRepository _enemyRepository;
-        private LevelUseCase _levelUseCase;
         private IBGMPlayer _bgmPlayer;
-
-        private TentativeCharacterData _symphonyData;
 
         private int _enemyCount = 0;
 
@@ -72,6 +67,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _enemyCount--;
             if (_enemyCount <= 0)
             {
+                OnWaveCompleted?.Invoke(); // ウェーブ完了イベントを発火
+
                 WaveEntity wave = _waveUseCase.NextWave(); // 全ての敵を倒したら次のウェーブへ。
 
                 if (wave == null) //次のウェーブが無くなったら終了処理を発火
@@ -92,24 +89,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         {
             OnWaveCleared?.Invoke();
 
-            _levelUseCase.AddLevelProgress(nextWave);
             _symphony.ResetUsingCard();
-
-            // レベルアップキューに溜まっている分を全て処理。
-            while (_levelUseCase.LevelUpQueue.TryDequeue(out _))
-            {
-                LevelUpgradeNode upgradeNode = await _levelUseCase.WaitLevelUpSelectAsync();
-
-                foreach (ILevelUpgradeEffect effect in upgradeNode.Effects)
-                {
-                    if (effect is LevelUpgradeStatusEffect statusEffect)
-                    {
-                        statusEffect.ApplyStatusEffect(_symphonyData);
-                    }
-                }
-
-                Debug.Log($"Level Up! Selected Card: {upgradeNode}");
-            }
 
             await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
             CreateWaveEnemies(nextWave);

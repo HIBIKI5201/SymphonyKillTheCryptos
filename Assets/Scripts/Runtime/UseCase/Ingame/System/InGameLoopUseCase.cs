@@ -1,11 +1,11 @@
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.UseCase.Ingame.Card;
-using Cryptos.Runtime.UseCase.Ingame.System;
+using Cryptos.Runtime.UseCase.Ingame.System; // LevelUpgradeOption のため
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Cryptos.Runtime.UseCase.Ingame
+namespace Cryptos.Runtime.UseCase.Ingame.System
 {
     /// <summary>
     ///     ゲームのメインループ（フェーズ遷移、ターン管理など）を管理するユースケースです。
@@ -32,6 +32,8 @@ namespace Cryptos.Runtime.UseCase.Ingame
         private readonly LevelUseCase _levelUseCase;
         /// <summary> ウェーブ管理関連のユースケースへの参照です。 </summary>
         private readonly WaveUseCase _waveUseCase;
+        /// <summary> レベルアップ時にノード選択を行うためのコールバック関数。 </summary>
+        private readonly Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> _onLevelUpSelectNodeCallback;
 
         /// <summary>
         ///     InGameLoopUseCaseの新しいインスタンスを初期化します。
@@ -39,11 +41,14 @@ namespace Cryptos.Runtime.UseCase.Ingame
         /// <param name="cardUseCase">カード関連のユースケース。</param>
         /// <param name="levelUseCase">レベル管理関連のユースケース。</param>
         /// <param name="waveUseCase">ウェーブ管理関連のユースケース。</param>
-        public InGameLoopUseCase(CardUseCase cardUseCase, LevelUseCase levelUseCase, WaveUseCase waveUseCase /*, ... */)
+        /// <param name="onLevelUpSelectNodeCallback">レベルアップ時のノード選択コールバック。</param>
+        public InGameLoopUseCase(CardUseCase cardUseCase, LevelUseCase levelUseCase, WaveUseCase waveUseCase,
+            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNodeCallback)
         {
             _cardUseCase = cardUseCase;
             _levelUseCase = levelUseCase;
             _waveUseCase = waveUseCase;
+            _onLevelUpSelectNodeCallback = onLevelUpSelectNodeCallback;
         }
 
         /// <summary>
@@ -77,50 +82,55 @@ namespace Cryptos.Runtime.UseCase.Ingame
         private async Task RunGameLoop()
         {
             // ゲーム終了条件が満たされるまでループを継続します。
-            while (true /* TODO: 適切なゲーム終了条件を設定してください。 */)
+            while (_waveUseCase.HasNextWave)
             {
                 OnTurnStarted?.Invoke();
-                Debug.Log($"InGameLoopUseCase: ターン開始！現在のウェーブ: {_waveUseCase.CurrentWaveIndex + 1}"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
+                Debug.Log($"InGameLoopUseCase: ターン開始！現在のウェーブ: {_waveUseCase.CurrentWaveIndex + 1}");
 
                 // プレイヤーフェーズの処理を実行します。
                 OnPlayerPhaseStarted?.Invoke();
-                Debug.Log("InGameLoopUseCase: プレイヤーフェーズ開始"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
+                Debug.Log("InGameLoopUseCase: プレイヤーフェーズ開始");
                 await HandlePlayerPhase(); // プレイヤーの行動が完了するのを待ちます。
-                Debug.Log("InGameLoopUseCase: プレイヤーフェーズ終了"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
+                Debug.Log("InGameLoopUseCase: プレイヤーフェーズ終了");
 
                 // 敵フェーズの処理を実行します。
                 OnEnemyPhaseStarted?.Invoke();
-                Debug.Log("InGameLoopUseCase: 敵フェーズ開始"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
+                Debug.Log("InGameLoopUseCase: 敵フェーズ開始");
                 await HandleEnemyPhase(); // 敵の行動が完了するのを待ちます。
-                Debug.Log("InGameLoopUseCase: 敵フェーズ終了"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
+                Debug.Log("InGameLoopUseCase: 敵フェーズ終了");
 
                 OnTurnEnded?.Invoke();
-                Debug.Log("InGameLoopUseCase: ターン終了"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
-
-                // レベルアップ処理の確認と実行を行います。
-                // レベルアップキューに新しいレベルアップが検出された場合、選択処理を実行します。
-                while (_levelUseCase.LevelUpQueue.TryDequeue(out var newLevel))
-                {
-                    Debug.Log($"InGameLoopUseCase: レベルアップ！ 新しいレベル: {newLevel}"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
-                    // UIからのノード選択を非同期で待機します。
-                    LevelUpgradeNode selectedNode = await _levelUseCase.WaitLevelUpSelectAsync();
-                    Debug.Log($"InGameLoopUseCase: 選択されたノード: {selectedNode?.NodeName}"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
-                    // 選択されたノードの効果を適用するUseCaseを呼び出します。
-                }
-
-                // ウェーブ終了判定を行い、条件を満たしていれば次のウェーブへ遷移します。
-                if (CheckWaveCompleted())
-                {
-                    Cryptos.Runtime.Entity.Ingame.System.WaveEntity nextWave = _waveUseCase.NextWave();
-                    if (nextWave == null)
-                    {
-                        Debug.Log("InGameLoopUseCase: 全てのウェーブが終了しました。"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
-                        break; // 全てのウェーブが終了した場合、ゲームループを抜けます。
-                    }
-                    Debug.Log($"InGameLoopUseCase: 次のウェーブへ: {nextWave.name}"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
-                }
+                Debug.Log("InGameLoopUseCase: ターン終了");
 
                 await Task.Delay(1000); // ターン間の処理を待機します。（仮）
+            }
+        }
+
+        /// <summary>
+        /// ウェーブが完了した際に呼び出され、次のウェーブへの遷移とレベルアップ処理を行います。
+        /// </summary>
+        public async Task HandleWaveCompleted()
+        {
+            // 次のウェーブへ遷移します。
+            Cryptos.Runtime.Entity.Ingame.System.WaveEntity nextWave = _waveUseCase.NextWave();
+            if (nextWave == null)
+            {
+                Debug.Log("InGameLoopUseCase: 全てのウェーブが終了しました。");
+                // TODO: ゲーム終了処理を呼び出す
+                return;
+            }
+            Debug.Log($"InGameLoopUseCase: 次のウェーブへ: {nextWave.name}");
+
+            // レベルアップ処理の確認と実行を行います。
+            // レベルアップキューに新しいレベルアップが検出された場合、選択処理を実行します。
+            while (_levelUseCase.LevelUpQueue.TryDequeue(out var newLevel))
+            {
+                Debug.Log($"InGameLoopUseCase: レベルアップ！ 新しいレベル: {newLevel}");
+                // UIからのノード選択を非同期で待機します。
+                LevelUpgradeNode selectedNode = await _levelUseCase.WaitLevelUpSelectAsync(_onLevelUpSelectNodeCallback);
+                Debug.Log($"InGameLoopUseCase: 選択されたノード: {selectedNode?.NodeName}");
+                // 選択されたノードの効果を適用するUseCaseを呼び出します。
+                // TODO: 選択されたノードの効果を適用するUseCaseを実装し、呼び出す
             }
         }
 
@@ -144,14 +154,6 @@ namespace Cryptos.Runtime.UseCase.Ingame
             await Task.Delay(500); // 処理の完了をシミュレートするための待機です。（仮）
         }
 
-        /// <summary>
-        ///     現在のウェーブ完了条件をチェックします。
-        /// </summary>
-        /// <returns>ウェーブが完了していればtrue、そうでなければfalseを返します。</returns>
-        private bool CheckWaveCompleted()
-        {
-            // 現在のウェーブの全ての敵が倒されたかなどの条件をチェックします。（例）
-            return true; // 仮の条件を返します。
-        }
+
     }
 }

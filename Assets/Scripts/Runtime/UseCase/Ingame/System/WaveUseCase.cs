@@ -22,6 +22,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <summary> 現在のウェーブのインデックス </summary>
         public int CurrentWaveIndex => _currentWaveIndex;
 
+        /// <summary> 次のウェーブが存在するかどうか </summary>
+        public bool HasNextWave => _currentWaveIndex < _waveEntities.Length;
+
         /// <summary>
         ///     次のウェーブにする。
         /// </summary>

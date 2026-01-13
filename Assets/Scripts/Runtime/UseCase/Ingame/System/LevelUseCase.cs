@@ -15,16 +15,13 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         ///     コンストラクタ。
         /// </summary>
         /// <param name="data">レベルアップに関するデータ。</param>
-        /// <param name="onLevelUpSelectNode">レベルアップ時にノードを選択するためのコールバック。</param>
-        public LevelUseCase(LevelUpgradeData data,
-            Func<LevelUpgradeNode[], Task<LevelUpgradeNode>> onLevelUpSelectNode)
+        public LevelUseCase(LevelUpgradeData data)
         {
             LevelEntity levelEntity = new LevelEntity(data.LevelRequirePoints);
             levelEntity.OnLevelChanged += newLevel => _levelUpQueue.Enqueue(newLevel);
 
             _data = data;
             _levelEntity = levelEntity;
-            _onLevelUpSelectNode = onLevelUpSelectNode;
         }
         /// <summary>
         ///     未処理のレベルアップ。
@@ -44,15 +41,17 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         ///     レベルアップのノード選択を待機します。
         /// </summary>
         /// <returns></returns>
-        public async Task<LevelUpgradeNode> WaitLevelUpSelectAsync()
+        public async Task<LevelUpgradeNode> WaitLevelUpSelectAsync(Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNode)
         {
             LevelUpgradeNode[] allNode = _data.LevelCard;
             int amount = _data.LevelUpgradeAmount;
-            LevelUpgradeNode[] candidates = new LevelUpgradeNode[amount];
-
+            
             //シャッフル用のインデックス配列を作る
             int[] indices = Enumerable.Range(0, allNode.Length).ToArray();
             var rng = new Random();
+
+            LevelUpgradeNode[] candidates = new LevelUpgradeNode[amount];
+            LevelUpgradeOption[] candidateOptions = new LevelUpgradeOption[amount];
 
             // F-Y法で部分的にシャッフル。
             for (int i = 0; i < amount; i++)
@@ -60,19 +59,19 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 int j = rng.Next(i, indices.Length);
                 (indices[i], indices[j]) = (indices[j], indices[i]);
                 candidates[i] = allNode[indices[i]];
+                candidateOptions[i] = new LevelUpgradeOption(allNode[indices[i]]);
             }
 
             //候補を渡して選択されるのを待機
-            LevelUpgradeNode selectedNode =
-                await _onLevelUpSelectNode?.Invoke(candidates);
+            LevelUpgradeOption selectedOption =
+                await onLevelUpSelectNode?.Invoke(candidateOptions);
 
-            return selectedNode;
+            return selectedOption.OriginalNode;
         }
 
         private LevelEntity _levelEntity;
         private LevelUpgradeData _data;
 
-        private Func<LevelUpgradeNode[], Task<LevelUpgradeNode>> _onLevelUpSelectNode;
         private Queue<int> _levelUpQueue = new();
     }
 }

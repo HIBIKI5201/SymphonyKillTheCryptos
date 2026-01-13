@@ -82,14 +82,38 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 charaInitData.Symphony, charaInitData.EnemyRepository);
 
             LevelUseCase levelUseCase =
-                new LevelUseCase(_levelUpgradeData, LevelUpAsync);
+                new LevelUseCase(_levelUpgradeData); // Func引数を削除
+            ServiceLocator.RegisterInstance(levelUseCase); // LevelUseCaseをServiceLocatorに登録
+
+            WaveUseCase waveUseCase = new(_waveEntities); // WaveUseCaseをここで生成
+            ServiceLocator.RegisterInstance(waveUseCase); // WaveUseCaseをServiceLocatorに登録
 
             InputBuffer inputBuffer =
                 await ServiceLocator.GetInstanceAsync<InputBuffer>();
             PlayerPathContainer playerPathContainer =
                 await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
             IngameUIManager ingameUIManager =
-                await ServiceLocator.GetInstanceAsync<IngameUIManager>();
+                await ServiceLocator.GetInstanceAsync<IngameUIManager>(); // IngameUIManagerをここで取得
+
+            // ラッパー関数を定義
+            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback =
+                async (options) =>
+                {
+                    // LevelUpgradeOption[] を LevelUpgradeNodeViewModel[] に変換
+                    LevelUpgradeNodeViewModel[] viewModels = options.Select(o => new LevelUpgradeNodeViewModel(o.OriginalNode)).ToArray();
+                    LevelUpgradeNodeViewModel selectedViewModel = await ingameUIManager.LevelUpSelectAsync(viewModels);
+                    // 選択されたViewModelから対応するLevelUpgradeOptionを見つけて返す
+                    return options.First(o => o.OriginalNode == selectedViewModel.LevelUpgradeNode);
+                };
+
+            // InGameLoopUseCaseの生成と登録
+            InGameLoopUseCase inGameLoopUseCase = new(
+                cardInitData.CardUseCase,
+                levelUseCase,
+                waveUseCase,
+                levelUpSelectCallback // onLevelUpSelectNodeCallback として渡す
+            );
+            ServiceLocator.RegisterInstance(inGameLoopUseCase);
             SymphonyPresenter symphonyPresenter =
                 await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
             EnemyPresenter enemyPresenter =
@@ -117,11 +141,17 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
 
-            WaveSystemPresenter waveSystem = new(_waveEntities,
+            // WaveSystemPresenterの生成 (WaveUseCaseをDIで渡す)
+            WaveSystemPresenter waveSystem = new(
+                waveUseCase,
                 wavePathPresenter,
                 symphonyPresenter, charaInitData.EnemyRepository,
-                levelUseCase, symphonyData,
-                bgmPlayer);
+                bgmPlayer
+            );
+
+            // InGameLoopUseCaseとWaveSystemPresenterのイベント購読
+            waveSystem.OnWaveCompleted += async () => await inGameLoopUseCase.HandleWaveCompleted(); // ウェーブ完了時にInGameLoopUseCaseに通知
+            inGameLoopUseCase.OnGameStarted += waveSystem.GameStart; // ゲーム開始時にWaveSystemPresenter.GameStartを呼び出す
 
             // ウェーブ開始時に入力受付を開始、ウェーブクリア時に入力受付を停止する。
             waveSystem.OnWaveStarted += () =>
@@ -140,43 +170,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             _inputBuffer = inputBuffer;
 
             TestCardSpawn(cardInitData.CardUseCase);
-            waveSystem.GameStart();
+            await inGameLoopUseCase.StartGameAsync(); // ゲームループを開始
         }
 
-        /// <summary>
-        /// レベルアップ時の非同期処理。
-        /// </summary>
-        /// <param name="nodes">レベルアップ候補のノード。</param>
-        /// <returns>選択されたレベルアップノード。</returns>
-        private async Task<LevelUpgradeNode> LevelUpAsync(LevelUpgradeNode[] nodes)
-        {
-            LevelUpgradeNodeViewModel[] levelUpgradeNodes
-                = nodes.Select(n => new LevelUpgradeNodeViewModel(n)).ToArray();
-
-            Debug.Log($"候補カード {string.Join(", ", levelUpgradeNodes.Select(n => n.NodeName))}");
-
-            // ウィンドウを出現させて待機。
-            _gameUIManager.OpenLevelUpgradeWindow(levelUpgradeNodes);
-            _inputBuffer.OnAlphabetKeyPressed += _gameUIManager.OnLevelUpgradeInputChar;
-
-            LevelUpgradeNodeViewModel selectedNodeVM = default;
-            await SymphonyTask.WaitUntil(
-                () => _gameUIManager.TryGetSelectedLevelUpgradeNode(out selectedNodeVM));
-
-            LevelUpgradeNode selectedNode = selectedNodeVM.LevelUpgradeNode;
-
-            Debug.Log($"レベルアップカードを選択しました。{selectedNode}");
-
-            _inputBuffer.OnAlphabetKeyPressed -= _gameUIManager.OnLevelUpgradeInputChar;
-            _gameUIManager.CloseLevelUpgradeWindow();
-
-            return selectedNode;
-        }
-
-        /// <summary>
-        /// テスト用にカードを生成します。
-        /// </summary>
-        /// <param name="cardUseCase">カードのユースケース。</param>
         private void TestCardSpawn(CardUseCase cardUseCase)
         {
             if (_cardDatas == null || _cardDatas.Length == 0)
