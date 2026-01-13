@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork;
 using SymphonyFrameWork.System;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         async Task IInitializeAsync.InitializeAsync()
         {
+
+            IMasterUIManager masterUI = await ServiceLocator.GetInstanceAsync<IMasterUIManager>();
+            await masterUI.FadeIn(2, destroyCancellationToken);
             _ingameStartSequence.GameInitialize();
 
             await MultiSceneLoader.LoadScenes(_requireScenes.Select(s => s.ToString()).ToArray());
