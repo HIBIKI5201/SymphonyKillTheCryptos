@@ -54,6 +54,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         public void MovePosition()
         {
             Vector3 moveVec = _spawnPoint.position - transform.position;
+            moveVec.Normalize();
 
             //アニメーションの更新
             Vector3 localMoveDir = transform.InverseTransformDirection(moveVec.normalized);
