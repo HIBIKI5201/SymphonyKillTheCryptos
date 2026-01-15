@@ -4,7 +4,6 @@ using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.System;
-using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
@@ -12,34 +11,40 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     /// <summary>
     ///     ウェーブの進行を管理するクラス。
     /// </summary>
-    public class WaveSystemPresenter
+    public class WaveSystemPresenter : IInGameLoopHandler
     {
-        public WaveSystemPresenter(WaveUseCase waveUseCase,
+        private readonly WaveUseCase _waveUseCase;
+        private readonly WavePathPresenter _wavePath;
+        private readonly SymphonyPresenter _symphony;
+        private readonly EnemyRepository _enemyRepository;
+        private readonly IBGMPlayer _bgmPlayer;
+        private readonly IWaveStateReceiver _waveStateReceiver;
+        private IWaveHandler _waveHandler;
+
+        private int _enemyCount = 0;
+
+        public WaveSystemPresenter(
+            WaveUseCase waveUseCase,
             WavePathPresenter wavePathPresenter,
-            SymphonyPresenter player, EnemyRepository enemyRepository,
-            IBGMPlayer bgmPlayer)
+            SymphonyPresenter player,
+            EnemyRepository enemyRepository,
+            IBGMPlayer bgmPlayer,
+            IWaveStateReceiver waveStateReceiver)
         {
             _waveUseCase = waveUseCase;
             _wavePath = wavePathPresenter;
             _symphony = player;
             _enemyRepository = enemyRepository;
             _bgmPlayer = bgmPlayer;
+            _waveStateReceiver = waveStateReceiver;
         }
 
-        /// <summary> ウェーブ開始時 </summary>
-        public event Action OnWaveStarted;
-        /// <summary> ウェーブクリア時 </summary>
-        public event Action OnWaveCleared;
+        public void SetWaveHandler(IWaveHandler waveHandler)
+        {
+            _waveHandler = waveHandler;
+        }
 
-        /// <summary> ウェーブ完遂時 </summary>
-        public event Action OnAllWaveEnded;
-        /// <summary> 現在のウェーブが完了した時（次のウェーブがある場合も含む） </summary>
-        public event Action OnWaveCompleted;
-
-        /// <summary>
-        ///     ゲームを開始する。
-        /// </summary>
-        public async void GameStart()
+        public async void OnGameStarted()
         {
             await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // 最初のウェーブ位置へ移動。
 
@@ -48,16 +53,28 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             CreateWaveEnemies(nextWave);
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
-            OnWaveStarted?.Invoke();
+            _waveStateReceiver.OnWaveStarted();
         }
 
-        private WaveUseCase _waveUseCase;
-        private WavePathPresenter _wavePath;
-        private SymphonyPresenter _symphony;
-        private EnemyRepository _enemyRepository;
-        private IBGMPlayer _bgmPlayer;
+        public async void OnWaveChanged(WaveEntity nextWave)
+        {
+            _waveStateReceiver.OnWaveCleared();
 
-        private int _enemyCount = 0;
+            _symphony.ResetUsingCard();
+
+            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
+            CreateWaveEnemies(nextWave);
+
+            _bgmPlayer.PlayBGM(nextWave.BGMCueName);
+
+            _waveStateReceiver.OnWaveStarted();
+        }
+
+        public void OnGameEnded()
+        {
+            // ゲーム終了時の演出などが必要な場合はここに記述
+            _waveStateReceiver.OnWaveCleared(); // 念のため入力を止める
+        }
 
         /// <summary>
         ///     敵が倒されたときの処理。
@@ -67,26 +84,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _enemyCount--;
             if (_enemyCount <= 0)
             {
-                OnWaveCompleted?.Invoke(); // ウェーブ完了イベントを発火
+                _waveHandler.OnWaveCompleted(); // ウェーブ完了を通知
             }
-        }
-
-        /// <summary>
-        ///     ウェーブが変更されたときの処理。
-        /// </summary>
-        /// <param name="nextWave"></param>
-        public async void ChangeWave(WaveEntity nextWave)
-        {
-            OnWaveCleared?.Invoke();
-
-            _symphony.ResetUsingCard();
-
-            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
-            CreateWaveEnemies(nextWave);
-
-            _bgmPlayer.PlayBGM(nextWave.BGMCueName);
-
-            OnWaveStarted?.Invoke();
         }
 
         private void CreateWaveEnemies(WaveEntity waveEntity)
