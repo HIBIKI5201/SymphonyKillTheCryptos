@@ -3,6 +3,7 @@ using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.Presenter.System;
+using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UI.Basis;
 using Cryptos.Runtime.UI.Ingame.Card;
 using Cryptos.Runtime.UI.Ingame.Character;
@@ -19,7 +20,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// <summary>
     ///     インゲームのUIを管理します。
     /// </summary>
-    public class IngameUIManager : UIManagerBase, ICardUIManager
+    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager
     {
         /// <summary>
         /// レベルアップ時の非同期処理。
