@@ -8,9 +8,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     {
         private readonly InputBuffer _inputBuffer;
         private readonly CardUseCase _cardUseCase;
-        private readonly IngameUIManager _ingameUIManager;
+        private readonly IIngameUIManager _ingameUIManager;
 
-        public InputPresenter(InputBuffer inputBuffer, CardUseCase cardUseCase, IngameUIManager ingameUIManager)
+        public InputPresenter(InputBuffer inputBuffer, CardUseCase cardUseCase, IIngameUIManager ingameUIManager)
         {
             _inputBuffer = inputBuffer;
             _cardUseCase = cardUseCase;
