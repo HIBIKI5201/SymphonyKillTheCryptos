@@ -15,14 +15,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     {
         /// <summary> ゲーム開始時に発火するイベントです。 </summary>
         public event Action OnGameStarted;
-        /// <summary> ターン開始時に発火するイベントです。 </summary>
-        public event Action OnTurnStarted;
-        /// <summary> プレイヤーフェーズ開始時に発火するイベントです。 </summary>
-        public event Action OnPlayerPhaseStarted;
-        /// <summary> 敵フェーズ開始時に発火するイベントです。 </summary>
-        public event Action OnEnemyPhaseStarted;
-        /// <summary> ターン終了時に発火するイベントです。 </summary>
-        public event Action OnTurnEnded;
+        /// <summary> 新しいウェーブに変わった時に発火するイベントです。 </summary>
+        public event Action<WaveEntity> OnWaveChanged;
         /// <summary> ゲーム終了時に発火するイベントです。 </summary>
         public event Action OnGameEnded;
 
@@ -57,13 +51,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         public async Task StartGameAsync()
         {
             OnGameStarted?.Invoke();
-            Debug.Log("InGameLoopUseCase: ゲーム開始！"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
+            Debug.Log("InGameLoopUseCase: ゲーム開始！"); 
 
             await InitializeGame();
-            await RunGameLoop();
-
-            OnGameEnded?.Invoke();
-            Debug.Log("InGameLoopUseCase: ゲーム終了！"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
         }
 
         /// <summary>
@@ -72,38 +62,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         private async Task InitializeGame()
         {
             // プレイヤーデータロード、カードデッキ初期化、最初のウェーブ設定などの初期化処理を行います。
-            Debug.Log("InGameLoopUseCase: ゲーム初期化完了"); // NOTE: ログ出力はUseCase層ではなく、外部のロギングサービスを介することが望ましいです。
+            Debug.Log("InGameLoopUseCase: ゲーム初期化完了");
             await Task.Delay(100); // 初期化処理の完了をシミュレートするための待機です。（仮）
-        }
-
-        /// <summary>
-        ///     メインゲームループを実行します。ゲーム終了条件が満たされるまでフェーズを繰り返し処理します。
-        /// </summary>
-        private async Task RunGameLoop()
-        {
-            // ゲーム終了条件が満たされるまでループを継続します。
-            while (_waveUseCase.HasNextWave)
-            {
-                OnTurnStarted?.Invoke();
-                Debug.Log($"InGameLoopUseCase: ターン開始！現在のウェーブ: {_waveUseCase.CurrentWaveIndex + 1}");
-
-                // プレイヤーフェーズの処理を実行します。
-                OnPlayerPhaseStarted?.Invoke();
-                Debug.Log("InGameLoopUseCase: プレイヤーフェーズ開始");
-                await HandlePlayerPhase(); // プレイヤーの行動が完了するのを待ちます。
-                Debug.Log("InGameLoopUseCase: プレイヤーフェーズ終了");
-
-                // 敵フェーズの処理を実行します。
-                OnEnemyPhaseStarted?.Invoke();
-                Debug.Log("InGameLoopUseCase: 敵フェーズ開始");
-                await HandleEnemyPhase(); // 敵の行動が完了するのを待ちます。
-                Debug.Log("InGameLoopUseCase: 敵フェーズ終了");
-
-                OnTurnEnded?.Invoke();
-                Debug.Log("InGameLoopUseCase: ターン終了");
-
-                await Task.Delay(1000); // ターン間の処理を待機します。（仮）
-            }
         }
 
         /// <summary>
@@ -111,15 +71,11 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// </summary>
         public async Task HandleWaveCompleted()
         {
+             // 経験値を追加
+            _levelUseCase.AddLevelProgress(_waveUseCase.CurrentWave);
+
             // 次のウェーブへ遷移します。
-            Cryptos.Runtime.Entity.Ingame.System.WaveEntity nextWave = _waveUseCase.NextWave();
-            if (nextWave == null)
-            {
-                Debug.Log("InGameLoopUseCase: 全てのウェーブが終了しました。");
-                // TODO: ゲーム終了処理を呼び出す
-                return;
-            }
-            Debug.Log($"InGameLoopUseCase: 次のウェーブへ: {nextWave.name}");
+            WaveEntity nextWave = _waveUseCase.NextWave();
 
             // レベルアップ処理の確認と実行を行います。
             // レベルアップキューに新しいレベルアップが検出された場合、選択処理を実行します。
@@ -132,28 +88,16 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 // 選択されたノードの効果を適用するUseCaseを呼び出します。
                 // TODO: 選択されたノードの効果を適用するUseCaseを実装し、呼び出す
             }
+
+            if (nextWave == null)
+            {
+                Debug.Log("InGameLoopUseCase: 全てのウェーブが終了しました。");
+                OnGameEnded?.Invoke();
+                return;
+            }
+            
+            Debug.Log($"InGameLoopUseCase: 次のウェーブへ: {nextWave.name}");
+            OnWaveChanged?.Invoke(nextWave);
         }
-
-        /// <summary>
-        ///     プレイヤーフェーズ内の詳細な処理を実行します。
-        ///     プレイヤーからの入力（カード選択、ターゲット選択）を待ち、関連するUseCaseを呼び出します。
-        /// </summary>
-        private async Task HandlePlayerPhase()
-        {
-            // プレイヤーからの入力（カード選択、ターゲット選択）を待ち、CardUseCaseなどを呼び出すロジックをここに実装します。（例）
-            await Task.Delay(500); // 処理の完了をシミュレートするための待機です。（仮）
-        }
-
-        /// <summary>
-        ///     敵フェーズ内の詳細な処理を実行します。
-        ///     敵AIの行動ロジックを実装し、関連するUseCaseを呼び出します。
-        /// </summary>
-        private async Task HandleEnemyPhase()
-        {
-            // 敵AIの行動ロジックを実行し、CardUseCaseなどを呼び出すロジックをここに実装します。（例）
-            await Task.Delay(500); // 処理の完了をシミュレートするための待機です。（仮）
-        }
-
-
-    }
+}
 }

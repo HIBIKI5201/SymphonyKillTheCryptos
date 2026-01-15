@@ -1,6 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
 using Cryptos.Runtime.Framework;
@@ -16,7 +15,6 @@ using Cryptos.Runtime.UI.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
-using SymphonyFrameWork.Utility;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -82,18 +80,18 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 charaInitData.Symphony, charaInitData.EnemyRepository);
 
             LevelUseCase levelUseCase =
-                new LevelUseCase(_levelUpgradeData); // Func引数を削除
-            ServiceLocator.RegisterInstance(levelUseCase); // LevelUseCaseをServiceLocatorに登録
+                new LevelUseCase(_levelUpgradeData);
+            ServiceLocator.RegisterInstance(levelUseCase);
 
-            WaveUseCase waveUseCase = new(_waveEntities); // WaveUseCaseをここで生成
-            ServiceLocator.RegisterInstance(waveUseCase); // WaveUseCaseをServiceLocatorに登録
+            WaveUseCase waveUseCase = new(_waveEntities);
+            ServiceLocator.RegisterInstance(waveUseCase);
 
             InputBuffer inputBuffer =
                 await ServiceLocator.GetInstanceAsync<InputBuffer>();
             PlayerPathContainer playerPathContainer =
                 await ServiceLocator.GetInstanceAsync<PlayerPathContainer>();
             IngameUIManager ingameUIManager =
-                await ServiceLocator.GetInstanceAsync<IngameUIManager>(); // IngameUIManagerをここで取得
+                await ServiceLocator.GetInstanceAsync<IngameUIManager>();
 
             // ラッパー関数を定義
             Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback =
@@ -101,7 +99,17 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 {
                     // LevelUpgradeOption[] を LevelUpgradeNodeViewModel[] に変換
                     LevelUpgradeNodeViewModel[] viewModels = options.Select(o => new LevelUpgradeNodeViewModel(o.OriginalNode)).ToArray();
+                    
+                    // 入力ハンドラをレベルアップ用に切り替え
+                    inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
+                    inputBuffer.OnAlphabetKeyPressed -= ingameUIManager.CardInputChar;
+                    inputBuffer.OnAlphabetKeyPressed += ingameUIManager.OnLevelUpgradeInputChar;
+
                     LevelUpgradeNodeViewModel selectedViewModel = await ingameUIManager.LevelUpSelectAsync(viewModels);
+                    
+                    // 入力ハンドラを元に戻す
+                    inputBuffer.OnAlphabetKeyPressed -= ingameUIManager.OnLevelUpgradeInputChar;
+
                     // 選択されたViewModelから対応するLevelUpgradeOptionを見つけて返す
                     return options.First(o => o.OriginalNode == selectedViewModel.LevelUpgradeNode);
                 };
@@ -152,6 +160,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             // InGameLoopUseCaseとWaveSystemPresenterのイベント購読
             waveSystem.OnWaveCompleted += async () => await inGameLoopUseCase.HandleWaveCompleted(); // ウェーブ完了時にInGameLoopUseCaseに通知
             inGameLoopUseCase.OnGameStarted += waveSystem.GameStart; // ゲーム開始時にWaveSystemPresenter.GameStartを呼び出す
+            inGameLoopUseCase.OnWaveChanged += waveSystem.ChangeWave; // ウェーブ変更時にWaveSystemPresenter.ChangeWaveを呼び出す
 
             // ウェーブ開始時に入力受付を開始、ウェーブクリア時に入力受付を停止する。
             waveSystem.OnWaveStarted += () =>
@@ -164,7 +173,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 inputBuffer.OnAlphabetKeyPressed -= cardInitData.CardUseCase.InputCharToDeck;
                 inputBuffer.OnAlphabetKeyPressed -= ingameUIManager.CardInputChar;
             };
-            waveSystem.OnAllWaveEnded += GoToOutGameScene;
+            inGameLoopUseCase.OnGameEnded += GoToOutGameScene; // ゲーム終了時にアウトゲームシーンへ遷移
 
             _gameUIManager = ingameUIManager;
             _inputBuffer = inputBuffer;
@@ -223,7 +232,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         {
             if (_isTransitioning) return;
             _isTransitioning = true;
-            
+
             await SceneLoader.UnloadScene(SceneListEnum.Stage.ToString());
             await SceneLoader.UnloadScene(SceneListEnum.Ingame.ToString());
 

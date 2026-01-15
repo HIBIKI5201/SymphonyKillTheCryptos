@@ -68,16 +68,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             if (_enemyCount <= 0)
             {
                 OnWaveCompleted?.Invoke(); // ウェーブ完了イベントを発火
-
-                WaveEntity wave = _waveUseCase.NextWave(); // 全ての敵を倒したら次のウェーブへ。
-
-                if (wave == null) //次のウェーブが無くなったら終了処理を発火
-                {
-                    OnAllWaveEnded?.Invoke();
-                    return;
-                }
-
-                ChangeWave(wave);
             }
         }
 
@@ -85,7 +75,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         ///     ウェーブが変更されたときの処理。
         /// </summary>
         /// <param name="nextWave"></param>
-        private async void ChangeWave(WaveEntity nextWave)
+        public async void ChangeWave(WaveEntity nextWave)
         {
             OnWaveCleared?.Invoke();
 
