@@ -115,9 +115,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 levelUseCase,
                 waveUseCase,
                 levelUpSelectCallback,
-                waveSystemPresenter, // IInGameLoopHandler
-                inputPresenter,      // ILevelUpPhaseHandler
-                GoToOutGameScene     // onGameEndedCallback
+                waveSystemPresenter,
+                inputPresenter,
+                GoToOutGameScene 
             );
             
             // セッター注入で循環参照を解決
@@ -136,7 +136,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             await inGameLoopUseCase.StartGameAsync();
         }
         
-        // ... (rest of the methods are kept)
         private void TestCardSpawn(CardUseCase cardUseCase)
         {
             if (_cardDatas == null || _cardDatas.Length == 0)
@@ -154,16 +153,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             {
                 Debug.Log("draw");
                 CardDataAsset cardDataAsset = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
-                CardData cardData = GetCardData(cardDataAsset);
+                CardData cardData = cardDataAsset.CreateCardData(_combatPipelineAsset);
                 CardEntity instance = cardUseCase.CreateCard(cardData);
 
                 instance.OnComplete += RandomDraw;
             }
-        }
-        
-        private CardData GetCardData(CardDataAsset dataAsset)
-        {
-            return dataAsset.CreateCardData(_combatPipelineAsset);
         }
 
         private void HandleEnemyCreated(CharacterEntity enemy, EnemyModelPresenter model)
