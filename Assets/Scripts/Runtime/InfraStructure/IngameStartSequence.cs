@@ -64,7 +64,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         /// <summary>
         /// ゲームを初期化します。
         /// </summary>
-        public async void GameInitialize()
+        public async ValueTask GameInitialize()
         {
             // --- 1. 初期化とインスタンス取得 ---
             var symphonyData = new TentativeCharacterData(_symphonyData);
@@ -98,7 +98,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 symphonyPresenter,
                 charaInitData.EnemyRepository,
                 bgmPlayer,
-                inputPresenter // IWaveStateReceiver
+                inputPresenter
             );
 
             // レベルアップ時のコールバックを定義（入力ロジックは削除）
@@ -122,6 +122,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             
             // セッター注入で循環参照を解決
             waveSystemPresenter.SetWaveHandler(inGameLoopUseCase);
+
+            await InitializeUtility.WaitInitialize(_gameUIManager);
 
             // --- 3. その他の初期化 ---
             var cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);

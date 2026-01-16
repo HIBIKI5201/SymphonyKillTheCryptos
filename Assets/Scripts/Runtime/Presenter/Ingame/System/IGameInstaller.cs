@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     public interface IGameInstaller
     {
-        public void GameInitialize();
+        public ValueTask GameInitialize();
     }
 }

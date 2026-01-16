@@ -2,12 +2,13 @@ using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UI.Outgame;
 using SymphonyFrameWork.System;
+using System.Threading.Tasks;
 
 namespace Cryptos.Runtime.InfraStructure
 {
     public class OutgameStartSequience : IGameInstaller
     {
-        public async void GameInitialize()
+        public async ValueTask GameInitialize()
         {
             OutgameUIManager uiManager = await ServiceLocator.GetInstanceAsync<OutgameUIManager>();
             OutgameManager outgameManager = await ServiceLocator.GetInstanceAsync<OutgameManager>();
