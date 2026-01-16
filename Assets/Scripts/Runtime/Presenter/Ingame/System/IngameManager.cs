@@ -20,7 +20,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         {
             await _ingameStartSequence.GameInitialize();
 
-            await MultiSceneLoader.LoadScenes(_requireScenes.Select(s => s.ToString()).ToArray());
+            await SceneLoader.LoadScenes(_requireScenes.Select(s => s.ToString()).ToArray());
             if (SceneLoader.GetExistScene(SceneListEnum.Stage.ToString(), out Scene stageScene))
             {
                 SceneLoader.SetActiveScene(stageScene.name);
