@@ -83,11 +83,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 while (_levelUseCase.LevelUpQueue.TryDequeue(out var newLevel))
                 {
                     Debug.Log($"InGameLoopUseCase: レベルアップ！ 新しいレベル: {newLevel}");
-                    // UIからのノード選択を非同期で待機します。
-                    LevelUpgradeNode selectedNode = await _levelUseCase.WaitLevelUpSelectAsync(_onLevelUpSelectNodeCallback);
-                    Debug.Log($"InGameLoopUseCase: 選択されたノード: {selectedNode?.NodeName}");
-                    // 選択されたノードの効果を適用するUseCaseを呼び出します。
-                    // TODO: 選択されたノードの効果を適用するUseCaseを実装し、呼び出す
+                    // レベルアップ処理（UI表示、ノード選択、効果適用）をLevelUseCaseに委譲します。
+                    await _levelUseCase.HandleLevelUpAsync(_onLevelUpSelectNodeCallback);
                 }
                 
                 _levelUpPhaseHandler.OnLevelUpPhaseEnded();
