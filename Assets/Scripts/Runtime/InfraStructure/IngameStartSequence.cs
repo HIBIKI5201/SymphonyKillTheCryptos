@@ -66,15 +66,15 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         /// </summary>
         public async ValueTask GameInitialize()
         {
-            // --- 1. 初期化とインスタンス取得 ---
-            var symphonyData = new TentativeCharacterData(_symphonyData);
+            // 初期化とインスタンス取得。
+            TentativeCharacterData symphonyData = new(_symphonyData);
             var charaInitData = CharacterInitializer.Initialize(symphonyData);
             var cardInitData = CardInitializer.Initialize(_wordDataBase, charaInitData.Symphony, charaInitData.EnemyRepository);
 
-            var levelUseCase = new LevelUseCase(_levelUpgradeData);
+            LevelUseCase levelUseCase = new(_levelUpgradeData, symphonyData);
             ServiceLocator.RegisterInstance(levelUseCase);
 
-            var waveUseCase = new WaveUseCase(_waveEntities);
+            WaveUseCase waveUseCase = new(_waveEntities);
             ServiceLocator.RegisterInstance(waveUseCase);
 
             var inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
@@ -86,7 +86,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             _gameUIManager = ingameUIManager;
 
-            // --- 2. PresenterとUseCaseのインスタンス生成とDI ---
+            // PresenterとUseCaseのインスタンス生成とDI注入。
 
             // InputPresenterを作成
             var inputPresenter = new InputPresenter(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
@@ -117,7 +117,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 levelUpSelectCallback,
                 waveSystemPresenter,
                 inputPresenter,
-                GoToOutGameScene 
+                GoToOutGameScene
             );
             
             // セッター注入で循環参照を解決
