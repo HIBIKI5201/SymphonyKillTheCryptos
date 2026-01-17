@@ -1,0 +1,1 @@
+コードを生成する場合は"\Assets\Scripts\README.md"及び"\Scripts\DesignPhilosophy.md"のコード規定に従う。
