@@ -6,10 +6,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     public class InputPresenter : ILevelUpPhaseHandler, IWaveStateReceiver
     {
-        private readonly InputBuffer _inputBuffer;
-        private readonly CardUseCase _cardUseCase;
-        private readonly IIngameUIManager _ingameUIManager;
-
         public InputPresenter(InputBuffer inputBuffer, CardUseCase cardUseCase, IIngameUIManager ingameUIManager)
         {
             _inputBuffer = inputBuffer;
@@ -19,40 +15,43 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         public void OnWaveStarted()
         {
-            RegisterWaveInputs();
+            RegisterBattleInputs();
         }
 
         public void OnWaveCleared()
         {
-            UnregisterWaveInputs();
+            UnregisterBattleInputs();
         }
 
         public void OnLevelUpPhaseStarted()
         {
-            // ウェーブ中の入力を一旦停止
-            UnregisterWaveInputs();
-            // レベルアップ用の入力を開始
+            // ウェーブ中の入力を一旦停止。
+            UnregisterBattleInputs();
+            // レベルアップ用の入力を開始。
             _inputBuffer.OnAlphabetKeyPressed += _ingameUIManager.OnLevelUpgradeInputChar;
         }
 
         public void OnLevelUpPhaseEnded()
         {
-            // レベルアップ用の入力を停止
+            // レベルアップ用の入力を停止。
             _inputBuffer.OnAlphabetKeyPressed -= _ingameUIManager.OnLevelUpgradeInputChar;
-            // 次のウェーブが開始されるときに OnWaveStarted が呼ばれて入力が再登録される
         }
 
-        private void RegisterWaveInputs()
+        private void RegisterBattleInputs()
         {
-            UnregisterWaveInputs(); // 念のため解除してから登録
+            UnregisterBattleInputs(); // 念のため解除してから登録。
             _inputBuffer.OnAlphabetKeyPressed += _cardUseCase.InputCharToDeck;
             _inputBuffer.OnAlphabetKeyPressed += _ingameUIManager.CardInputChar;
         }
 
-        private void UnregisterWaveInputs()
+        private void UnregisterBattleInputs()
         {
             _inputBuffer.OnAlphabetKeyPressed -= _cardUseCase.InputCharToDeck;
             _inputBuffer.OnAlphabetKeyPressed -= _ingameUIManager.CardInputChar;
         }
+
+        private readonly InputBuffer _inputBuffer;
+        private readonly CardUseCase _cardUseCase;
+        private readonly IIngameUIManager _ingameUIManager;
     }
 }
