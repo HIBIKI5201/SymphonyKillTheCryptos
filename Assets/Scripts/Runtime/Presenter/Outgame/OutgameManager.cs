@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Presenter.Ingame.System;
+using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
@@ -9,6 +10,9 @@ namespace Cryptos.Runtime.Presenter
     {
         public async void StartIngame()
         {
+            IMasterUIManager masterUI = await ServiceLocator.GetInstanceAsync<IMasterUIManager>();
+            await masterUI.FadeOut(2, destroyCancellationToken);
+
             await SceneLoader.UnloadScene(SceneListEnum.Outgame.ToString());
             await SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
         }

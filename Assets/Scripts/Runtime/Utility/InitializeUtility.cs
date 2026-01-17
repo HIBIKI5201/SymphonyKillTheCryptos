@@ -5,13 +5,14 @@ using UnityEngine;
 
 public static class InitializeUtility
 {
-    public static async Task WaitInitialize(IInitializeAsync initialize)
+    public static async ValueTask WaitInitialize(IInitializeAsync initialize)
     {
         if (initialize == null)
         {
             Debug.LogError("Initialize instance is null.");
             return;
         }
+
         await SymphonyTask.WaitUntil(() => initialize.IsDone);
     }
 }

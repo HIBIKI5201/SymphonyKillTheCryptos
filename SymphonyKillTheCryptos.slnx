@@ -16,8 +16,8 @@
   <Project Path="UniHumanoid.csproj" />
   <Project Path="UniGLTF.UniUnlit.csproj" />
   <Project Path="SpringBoneJobs.csproj" />
-  <Project Path="VRM10.Editor.csproj" />
   <Project Path="Cryptos.Presenter.csproj" />
+  <Project Path="VRM10.Editor.csproj" />
   <Project Path="Cryptos.InfraStructure.csproj" />
   <Project Path="CriMw.CriWare.Editor.csproj" />
   <Project Path="VRM10.MToon10.Editor.csproj" />
