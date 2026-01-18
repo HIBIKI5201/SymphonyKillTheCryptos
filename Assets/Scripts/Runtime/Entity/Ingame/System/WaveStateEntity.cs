@@ -3,7 +3,7 @@ namespace Cryptos.Runtime.Entity.Ingame.System
     /// <summary>
     /// 現在のウェーブの状態を管理するエンティティである。
     /// </summary>
-    public class WaveStateEntity
+    public struct WaveStateEntity
     {
         /// <summary>
         /// 生存している敵の数。
