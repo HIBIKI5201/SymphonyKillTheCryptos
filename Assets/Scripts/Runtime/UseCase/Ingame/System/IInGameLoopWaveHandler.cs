@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.System;
+using System.Threading.Tasks;
 
 namespace Cryptos.Runtime.UseCase.Ingame.System
 {
@@ -10,13 +11,13 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <summary>
         ///     ゲームが開始されたことを通知する。
         /// </summary>
-        void OnGameStarted();
+        Task OnGameStarted();
 
         /// <summary>
         ///     Waveが変更されたことを通知する。
         /// </summary>
         /// <param name="nextWave">次のWaveエンティティ。</param>
-        void OnWaveChanged(WaveEntity nextWave);
+        Task OnWaveChanged(WaveEntity nextWave);
 
         /// <summary>
         ///     ゲームが終了したことを通知する。
