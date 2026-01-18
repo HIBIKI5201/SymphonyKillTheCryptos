@@ -8,8 +8,8 @@ using UnityEngine;
 namespace Cryptos.Runtime.UseCase.Ingame.System
 {
     /// <summary>
-    ///     ゲームのメインループを管理するユースケースです。
-    ///     主要なイベントを発火し、他のUseCaseやPresenterに処理を促します。
+    ///     ゲームのメインループを管理するユースケースである。
+    ///     主要なイベントを発火し、他のUseCaseやPresenterに処理を促す。
     /// </summary>
     public class InGameLoopUseCase : IWaveHandler
     {
@@ -18,19 +18,19 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         private readonly WaveUseCase _waveUseCase;
         private readonly Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> _onLevelUpSelectNodeCallback;
 
-        private readonly IInGameLoopWaveHandler _inGameLoopHandler;
+        private readonly IInGameLoopWaveHandler _inGameLoopWaveHandler;
         private readonly ILevelUpPhaseHandler _levelUpPhaseHandler;
         private readonly Action _onGameEndedCallback;
 
         /// <summary>
-        ///     InGameLoopUseCaseの新しいインスタンスを初期化します。
+        ///     InGameLoopUseCaseの新しいインスタンスを初期化する。
         /// </summary>
         public InGameLoopUseCase(
             CardUseCase cardUseCase,
             LevelUseCase levelUseCase,
             WaveUseCase waveUseCase,
             Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNodeCallback,
-            IInGameLoopWaveHandler inGameLoopHandler,
+            IInGameLoopWaveHandler inGameLoopWaveHandler,
             ILevelUpPhaseHandler levelUpPhaseHandler,
             Action onGameEndedCallback)
         {
@@ -38,43 +38,43 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             _levelUseCase = levelUseCase;
             _waveUseCase = waveUseCase;
             _onLevelUpSelectNodeCallback = onLevelUpSelectNodeCallback;
-            _inGameLoopHandler = inGameLoopHandler;
+            _inGameLoopWaveHandler = inGameLoopWaveHandler;
             _levelUpPhaseHandler = levelUpPhaseHandler;
             _onGameEndedCallback = onGameEndedCallback;
         }
 
         /// <summary>
-        ///     ゲーム開始シーケンスを実行します。
+        ///     ゲーム開始シーケンスを実行する。
         /// </summary>
         public async ValueTask StartGameAsync()
         {
-            _inGameLoopHandler.OnGameStarted();
+            _inGameLoopWaveHandler.OnGameStarted();
             Debug.Log("InGameLoopUseCase: ゲーム開始！");
 
             await InitializeGame();
         }
 
         /// <summary>
-        ///     ゲーム開始時の初期化処理を実行します。
+        ///     ゲーム開始時の初期化処理を実行する。
         /// </summary>
         private async ValueTask InitializeGame()
         {
             // プレイヤーデータロード、カードデッキ初期化、最初のウェーブ設定などの初期化処理を行う。
-            Debug.Log("InGameLoopUseCase: ゲーム初期化完了");
+            Debug.Log("InGameLoopUseCase: ゲーム初期化完了。");
         }
 
         /// <summary>
-        /// ウェーブが完了した際に呼び出され、次のウェーブへの遷移とレベルアップ処理を行います。
+        ///     ウェーブが完了した際に呼び出され、次のウェーブへの遷移とレベルアップ処理を行う。
         /// </summary>
         public async Task OnWaveCompleted()
         {
-            // 経験値を追加
+            // 経験値を追加する。
             _levelUseCase.AddLevelProgress(_waveUseCase.CurrentWave);
 
-            // 次のウェーブへ遷移します。
+            // 次のウェーブへ遷移する。
             WaveEntity nextWave = _waveUseCase.NextWave();
 
-            // レベルアップ処理の確認と実行を行います。
+            // レベルアップ処理の確認と実行を行う。
             if (_levelUseCase.LevelUpQueue.Any())
             {
                 _levelUpPhaseHandler.OnLevelUpPhaseStarted();
@@ -82,7 +82,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 while (_levelUseCase.LevelUpQueue.TryDequeue(out var newLevel))
                 {
                     Debug.Log($"InGameLoopUseCase: レベルアップ！ 新しいレベル: {newLevel}");
-                    // レベルアップ処理（UI表示、ノード選択、効果適用）をLevelUseCaseに委譲します。
+                    // レベルアップ処理（UI表示、ノード選択、効果適用）をLevelUseCaseに委譲する。
                     await _levelUseCase.HandleLevelUpAsync(_onLevelUpSelectNodeCallback);
                 }
                 
@@ -92,13 +92,13 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             if (nextWave == null)
             {
                 Debug.Log("InGameLoopUseCase: 全てのウェーブが終了しました。");
-                _inGameLoopHandler.OnGameEnded();
+                _inGameLoopWaveHandler.OnGameEnded();
                 _onGameEndedCallback?.Invoke();
                 return;
             }
 
             Debug.Log($"InGameLoopUseCase: 次のウェーブへ: {nextWave.name}");
-            _inGameLoopHandler.OnWaveChanged(nextWave);
+            _inGameLoopWaveHandler.OnWaveChanged(nextWave);
         }
     }
 }

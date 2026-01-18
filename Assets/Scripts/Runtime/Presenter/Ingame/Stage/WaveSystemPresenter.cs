@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     /// <summary>
-    ///     ウェーブの進行を管理するクラス。
+    ///     ウェーブの進行を管理するクラスである。
     /// </summary>
     public class WaveSystemPresenter : IInGameLoopWaveHandler
     {
@@ -21,8 +21,11 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         private readonly IWaveStateReceiver _waveStateReceiver;
         private IWaveHandler _waveHandler;
 
-        private int _enemyCount = 0;
+        private int _enemyCount;
 
+        /// <summary>
+        ///     WaveSystemPresenterの新しいインスタンスを初期化する。
+        /// </summary>
         public WaveSystemPresenter(
             WaveUseCase waveUseCase,
             WavePathPresenter wavePathPresenter,
@@ -39,19 +42,23 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _waveStateReceiver = waveStateReceiver;
         }
 
+        /// <summary>
+        ///     IWaveHandlerを設定する。
+        /// </summary>
+        /// <param name="waveHandler">設定するIWaveHandler。</param>
         public void SetWaveHandler(IWaveHandler waveHandler)
         {
             _waveHandler = waveHandler;
         }
 
         /// <summary>
-        ///     最初のウェーブを開始。
+        ///     ゲーム開始時に最初のウェーブを開始する。
         /// </summary>
         public async void OnGameStarted()
         {
-            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
+            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // 最初のウェーブ位置へ移動する。
 
-            // 最初のウェーブの敵を生成。
+            // 最初のウェーブの敵を生成する。
             WaveEntity nextWave = _waveUseCase.CurrentWave;
             CreateWaveEnemies(nextWave);
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
@@ -62,7 +69,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// <summary>
         ///     次のウェーブに移行する。
         /// </summary>
-        /// <param name="nextWave"></param>
+        /// <param name="nextWave">次のWaveエンティティ。</param>
         public async void OnWaveChanged(WaveEntity nextWave)
         {
             _waveStateReceiver.OnWaveCleared();
@@ -77,27 +84,32 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _waveStateReceiver.OnWaveStarted();
         }
 
+        /// <summary>
+        ///     ゲーム終了時の処理を実行する。
+        /// </summary>
         public void OnGameEnded()
         {
-            _waveStateReceiver.OnWaveCleared();
+            // ゲーム終了時の演出などが必要な場合はここに記述する。
+            _waveStateReceiver.OnWaveCleared(); // 念のため入力を止める。
         }
 
         /// <summary>
-        ///     敵が倒されたときの処理。
+        ///     敵が倒されたときの処理を実行する。
         /// </summary>
         private void HandleEnemyDead()
         {
             _enemyCount--;
             if (_enemyCount <= 0)
             {
+                // ウェーブ完了を通知する。
                 _waveHandler.OnWaveCompleted();
             }
         }
 
         /// <summary>
-        ///     ウェーブの敵を生成する。
+        ///     ウェーブに対応する敵を生成する。
         /// </summary>
-        /// <param name="waveEntity"></param>
+        /// <param name="waveEntity">対象のWaveエンティティ。</param>
         private void CreateWaveEnemies(WaveEntity waveEntity)
         {
             CharacterData[] enemyData = waveEntity.Enemies;
