@@ -107,6 +107,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 waveControlUseCase
             );
 
+            CardExecutionUseCase cardExecutionUseCase = new(
+                cardInitData.CardUseCase,
+                symphonyPresenter
+            );
+
             // レベルアップ時のコールバックを定義。
             Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = 
                 async (options) =>
@@ -132,7 +137,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             // その他の初期化を行う。
             CardPresenter cardPresenter = new(cardInitData.CardUseCase, ingameUIManager);
-            symphonyPresenter.Init(cardInitData.CardUseCase, charaInitData.Symphony);
+            symphonyPresenter.Init(charaInitData.Symphony, cardExecutionUseCase);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter, new(_combatPipelineAsset.CombatHandler));
