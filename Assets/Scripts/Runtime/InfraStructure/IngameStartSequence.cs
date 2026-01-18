@@ -128,7 +128,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             await InitializeUtility.WaitInitialize(_gameUIManager);
 
-            // --- 3. その他の初期化 ---
+            // その他の初期化を行う。
             CardPresenter cardPresenter = new(cardInitData.CardUseCase, ingameUIManager);
             symphonyPresenter.Init(cardInitData.CardUseCase, charaInitData.Symphony);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
@@ -136,7 +136,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter, new(_combatPipelineAsset.CombatHandler));
             enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
 
-            // --- 4. ゲーム開始 ---
+            // ゲーム開始の処理を行う。
             TestCardSpawn(cardInitData.CardUseCase);
             await inGameLoopUseCase.StartGameAsync();
         }
