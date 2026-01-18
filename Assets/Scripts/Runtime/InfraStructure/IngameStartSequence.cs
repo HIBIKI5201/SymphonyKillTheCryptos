@@ -119,12 +119,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 levelUseCase,
                 waveUseCase,
                 levelUpSelectCallback,
+                symphonyPresenter,
                 waveSystemPresenter,
                 inputPresenter,
                 GoToOutGameScene
             );
-            
-            waveSystemPresenter.SetWaveHandler(inGameLoopUseCase);
 
             await InitializeUtility.WaitInitialize(_gameUIManager);
 
