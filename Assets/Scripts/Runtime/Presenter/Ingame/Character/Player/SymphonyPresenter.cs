@@ -1,6 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.Card;
+using Cryptos.Runtime.UseCase.Ingame.Character;
 using SymphonyFrameWork.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
     /// <summary>
     ///     プレイヤーのマネージャークラス
     /// </summary>
-    public class SymphonyPresenter : MonoBehaviour
+    public class SymphonyPresenter : MonoBehaviour, ISymphonyPresenter
     {
         public CharacterEntity Self => _self;
 
