@@ -11,7 +11,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
     /// <summary>
     ///     ウェーブの進行を管理するクラス。
     /// </summary>
-    public class WaveSystemPresenter : IInGameLoopHandler
+    public class WaveSystemPresenter : IInGameLoopWaveHandler
     {
         private readonly WaveUseCase _waveUseCase;
         private readonly WavePathPresenter _wavePath;
@@ -44,9 +44,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _waveHandler = waveHandler;
         }
 
+        /// <summary>
+        ///     最初のウェーブを開始。
+        /// </summary>
         public async void OnGameStarted()
         {
-            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // 最初のウェーブ位置へ移動。
+            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
 
             // 最初のウェーブの敵を生成。
             WaveEntity nextWave = _waveUseCase.CurrentWave;
@@ -56,6 +59,10 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _waveStateReceiver.OnWaveStarted();
         }
 
+        /// <summary>
+        ///     次のウェーブに移行する。
+        /// </summary>
+        /// <param name="nextWave"></param>
         public async void OnWaveChanged(WaveEntity nextWave)
         {
             _waveStateReceiver.OnWaveCleared();
@@ -72,8 +79,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
         public void OnGameEnded()
         {
-            // ゲーム終了時の演出などが必要な場合はここに記述
-            _waveStateReceiver.OnWaveCleared(); // 念のため入力を止める
+            _waveStateReceiver.OnWaveCleared();
         }
 
         /// <summary>
@@ -84,10 +90,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _enemyCount--;
             if (_enemyCount <= 0)
             {
-                _waveHandler.OnWaveCompleted(); // ウェーブ完了を通知
+                _waveHandler.OnWaveCompleted();
             }
         }
 
+        /// <summary>
+        ///     ウェーブの敵を生成する。
+        /// </summary>
+        /// <param name="waveEntity"></param>
         private void CreateWaveEnemies(WaveEntity waveEntity)
         {
             CharacterData[] enemyData = waveEntity.Enemies;

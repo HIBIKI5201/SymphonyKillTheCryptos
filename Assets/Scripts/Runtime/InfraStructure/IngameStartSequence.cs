@@ -88,28 +88,32 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             // PresenterとUseCaseのインスタンス生成とDI注入。
 
-            // InputPresenterを作成
-            var inputPresenter = new InputPresenter(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
+            // InputPresenterを作成。
+            InputPresenter inputPresenter = 
+                new(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
 
-            // WaveSystemPresenterを作成
-            var waveSystemPresenter = new WaveSystemPresenter(
+            // WaveSystemPresenterを作成。
+            WavePathPresenter wavePathPresenter = 
+                new(playerPathContainer, symphonyPresenter, _waveMoveSpeed);
+            WaveSystemPresenter waveSystemPresenter = new(
                 waveUseCase,
-                new WavePathPresenter(playerPathContainer, symphonyPresenter, _waveMoveSpeed),
+                wavePathPresenter,
                 symphonyPresenter,
                 charaInitData.EnemyRepository,
                 bgmPlayer,
                 inputPresenter
             );
 
-            // レベルアップ時のコールバックを定義（入力ロジックは削除）
-            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = async (options) =>
+            // レベルアップ時のコールバックを定義。
+            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = 
+                async (options) =>
             {
                 var viewModels = options.Select(o => new LevelUpgradeNodeViewModel(o.OriginalNode)).ToArray();
                 var selectedViewModel = await ingameUIManager.LevelUpSelectAsync(viewModels);
                 return options.First(o => o.OriginalNode == selectedViewModel.LevelUpgradeNode);
             };
 
-            // InGameLoopUseCaseを作成し、依存を注入
+            // InGameLoopUseCaseを作成し、依存を注入。
             var inGameLoopUseCase = new InGameLoopUseCase(
                 cardInitData.CardUseCase,
                 levelUseCase,
@@ -120,13 +124,12 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 GoToOutGameScene
             );
             
-            // セッター注入で循環参照を解決
             waveSystemPresenter.SetWaveHandler(inGameLoopUseCase);
 
             await InitializeUtility.WaitInitialize(_gameUIManager);
 
             // --- 3. その他の初期化 ---
-            var cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
+            CardPresenter cardPresenter = new(cardInitData.CardUseCase, ingameUIManager);
             symphonyPresenter.Init(cardInitData.CardUseCase, charaInitData.Symphony);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Cryptos.Runtime.UseCase.Ingame.System
 {
     /// <summary>
-    ///     ゲームのメインループ（フェーズ遷移、ターン管理など）を管理するユースケースです。
+    ///     ゲームのメインループを管理するユースケースです。
     ///     主要なイベントを発火し、他のUseCaseやPresenterに処理を促します。
     /// </summary>
     public class InGameLoopUseCase : IWaveHandler
@@ -18,7 +18,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         private readonly WaveUseCase _waveUseCase;
         private readonly Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> _onLevelUpSelectNodeCallback;
 
-        private readonly IInGameLoopHandler _inGameLoopHandler;
+        private readonly IInGameLoopWaveHandler _inGameLoopHandler;
         private readonly ILevelUpPhaseHandler _levelUpPhaseHandler;
         private readonly Action _onGameEndedCallback;
 
@@ -30,7 +30,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             LevelUseCase levelUseCase,
             WaveUseCase waveUseCase,
             Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNodeCallback,
-            IInGameLoopHandler inGameLoopHandler,
+            IInGameLoopWaveHandler inGameLoopHandler,
             ILevelUpPhaseHandler levelUpPhaseHandler,
             Action onGameEndedCallback)
         {
@@ -46,7 +46,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <summary>
         ///     ゲーム開始シーケンスを実行します。
         /// </summary>
-        public async Task StartGameAsync()
+        public async ValueTask StartGameAsync()
         {
             _inGameLoopHandler.OnGameStarted();
             Debug.Log("InGameLoopUseCase: ゲーム開始！");
@@ -57,11 +57,10 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <summary>
         ///     ゲーム開始時の初期化処理を実行します。
         /// </summary>
-        private async Task InitializeGame()
+        private async ValueTask InitializeGame()
         {
-            // プレイヤーデータロード、カードデッキ初期化、最初のウェーブ設定などの初期化処理を行います。
+            // プレイヤーデータロード、カードデッキ初期化、最初のウェーブ設定などの初期化処理を行う。
             Debug.Log("InGameLoopUseCase: ゲーム初期化完了");
-            await Task.Delay(100); // 初期化処理の完了をシミュレートするための待機です。（仮）
         }
 
         /// <summary>
