@@ -1,5 +1,3 @@
-using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.System.Audio;
@@ -17,12 +15,11 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         private readonly WaveUseCase _waveUseCase;
         private readonly WavePathPresenter _wavePath;
         private readonly SymphonyPresenter _symphony;
-        private readonly EnemyRepository _enemyRepository;
         private readonly IBGMPlayer _bgmPlayer;
         private readonly IWaveStateReceiver _waveStateReceiver;
+        private readonly WaveControlUseCase _waveControlUseCase;
 
         private TaskCompletionSource<bool> _waveCompletionSource;
-        private int _enemyCount;
 
         /// <summary>
         ///     WaveSystemPresenterの新しいインスタンスを初期化する。
@@ -31,16 +28,18 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             WaveUseCase waveUseCase,
             WavePathPresenter wavePathPresenter,
             SymphonyPresenter player,
-            EnemyRepository enemyRepository,
             IBGMPlayer bgmPlayer,
-            IWaveStateReceiver waveStateReceiver)
+            IWaveStateReceiver waveStateReceiver,
+            WaveControlUseCase waveControlUseCase)
         {
             _waveUseCase = waveUseCase;
             _wavePath = wavePathPresenter;
             _symphony = player;
-            _enemyRepository = enemyRepository;
             _bgmPlayer = bgmPlayer;
             _waveStateReceiver = waveStateReceiver;
+            _waveControlUseCase = waveControlUseCase;
+            
+            _waveControlUseCase.OnWaveCompleted += HandleWaveCompleted;
         }
 
         /// <summary>
@@ -53,9 +52,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             WaveEntity nextWave = _waveUseCase.CurrentWave;
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
-            _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // awaitしない
+            _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
 
-            CreateWaveEnemies(nextWave);
+            _waveControlUseCase.SpawnEnemies(nextWave);
 
             _waveStateReceiver.OnWaveStarted();
 
@@ -74,9 +73,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
 
             _symphony.ResetUsingCard();
 
-            _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // awaitしない
+            _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
 
-            CreateWaveEnemies(nextWave);
+            _waveControlUseCase.SpawnEnemies(nextWave);
 
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
@@ -90,37 +89,15 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// </summary>
         public void OnGameEnded()
         {
-            // ゲーム終了時の演出などが必要な場合はここに記述する。
-            _waveStateReceiver.OnWaveCleared(); // 念のため入力を止める。
+            _waveControlUseCase.Dispose();
+            _waveControlUseCase.OnWaveCompleted -= HandleWaveCompleted;
+            
+            _waveStateReceiver.OnWaveCleared();
         }
 
-        /// <summary>
-        ///     敵が倒されたときの処理を実行する。
-        /// </summary>
-        private void HandleEnemyDead()
+        private void HandleWaveCompleted()
         {
-            _enemyCount--;
-            if (_enemyCount <= 0)
-            {
-                // ウェーブ完了を通知する。
-                _waveCompletionSource.TrySetResult(true);
-            }
-        }
-
-        /// <summary>
-        ///     ウェーブに対応する敵を生成する。
-        /// </summary>
-        /// <param name="waveEntity">対象のWaveエンティティ。</param>
-        private void CreateWaveEnemies(WaveEntity waveEntity)
-        {
-            CharacterData[] enemyData = waveEntity.Enemies;
-            _enemyCount = enemyData.Length;
-
-            foreach (var item in enemyData)
-            {
-                CharacterEntity enemy = _enemyRepository.CreateEnemy(item);
-                enemy.OnDead += HandleEnemyDead;
-            }
+            _waveCompletionSource.TrySetResult(true);
         }
     }
 }
