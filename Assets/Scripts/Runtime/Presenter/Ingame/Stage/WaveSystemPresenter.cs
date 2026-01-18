@@ -4,6 +4,7 @@ using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
@@ -19,8 +20,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         private readonly EnemyRepository _enemyRepository;
         private readonly IBGMPlayer _bgmPlayer;
         private readonly IWaveStateReceiver _waveStateReceiver;
-        private IWaveHandler _waveHandler;
 
+        private TaskCompletionSource<bool> _waveCompletionSource;
         private int _enemyCount;
 
         /// <summary>
@@ -43,46 +44,45 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         }
 
         /// <summary>
-        ///     IWaveHandlerを設定する。
-        /// </summary>
-        /// <param name="waveHandler">設定するIWaveHandler。</param>
-        public void SetWaveHandler(IWaveHandler waveHandler)
-        {
-            _waveHandler = waveHandler;
-        }
-
-        /// <summary>
         ///     ゲーム開始時に最初のウェーブを開始する。
         /// </summary>
-        public async void OnGameStarted()
+        public Task OnGameStarted()
         {
-            // 最初のウェーブの敵を生成する。
+            _waveCompletionSource = new TaskCompletionSource<bool>();
+
             WaveEntity nextWave = _waveUseCase.CurrentWave;
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
-            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // 最初のウェーブ位置へ移動する。
+            _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // awaitしない
 
             CreateWaveEnemies(nextWave);
 
             _waveStateReceiver.OnWaveStarted();
+
+            return _waveCompletionSource.Task;
         }
 
         /// <summary>
         ///     次のウェーブに移行する。
         /// </summary>
         /// <param name="nextWave">次のWaveエンティティ。</param>
-        public async void OnWaveChanged(WaveEntity nextWave)
+        public Task OnWaveChanged(WaveEntity nextWave)
         {
+            _waveCompletionSource = new TaskCompletionSource<bool>();
+
             _waveStateReceiver.OnWaveCleared();
 
             _symphony.ResetUsingCard();
 
-            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
+            _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // awaitしない
+
             CreateWaveEnemies(nextWave);
 
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
             _waveStateReceiver.OnWaveStarted();
+
+            return _waveCompletionSource.Task;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             if (_enemyCount <= 0)
             {
                 // ウェーブ完了を通知する。
-                _waveHandler.OnWaveCompleted();
+                _waveCompletionSource.TrySetResult(true);
             }
         }
 
