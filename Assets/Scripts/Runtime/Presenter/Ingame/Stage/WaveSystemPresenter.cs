@@ -56,12 +56,13 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         /// </summary>
         public async void OnGameStarted()
         {
-            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // 最初のウェーブ位置へ移動する。
-
             // 最初のウェーブの敵を生成する。
             WaveEntity nextWave = _waveUseCase.CurrentWave;
-            CreateWaveEnemies(nextWave);
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
+
+            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // 最初のウェーブ位置へ移動する。
+
+            CreateWaveEnemies(nextWave);
 
             _waveStateReceiver.OnWaveStarted();
         }
