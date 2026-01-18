@@ -304,8 +304,8 @@ MonoBehaviour:
         _cardAmount: 3
         _waveEntities:
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
-        - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
-        - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
+        - {fileID: 11400000, guid: 0f1b6167abd07c8438f21e2510b51b69, type: 2}
+        - {fileID: 11400000, guid: b98668c16d7d5b043884f59f7a4f19f4, type: 2}
         _waveMoveSpeed: 3
 --- !u!1001 &1595730579
 PrefabInstance:
