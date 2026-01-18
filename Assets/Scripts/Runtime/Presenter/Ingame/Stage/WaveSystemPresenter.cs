@@ -61,15 +61,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             // 最初のウェーブの敵を生成する。
             WaveEntity nextWave = _waveUseCase.CurrentWave;
             CreateWaveEnemies(nextWave);
-            
-            if (string.IsNullOrEmpty(nextWave.BGMCueName))
-            {
-                Debug.LogWarning($"Wave '{nextWave.name}' にBGMCueNameが設定されていません。");
-            }
-            else
-            {
-                _bgmPlayer.PlayBGM(nextWave.BGMCueName);
-            }
+            _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
             _waveStateReceiver.OnWaveStarted();
         }
@@ -87,14 +79,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
             CreateWaveEnemies(nextWave);
 
-            if (string.IsNullOrEmpty(nextWave.BGMCueName))
-            {
-                Debug.LogWarning($"Wave '{nextWave.name}' にBGMCueNameが設定されていません。");
-            }
-            else
-            {
-                _bgmPlayer.PlayBGM(nextWave.BGMCueName);
-            }
+            _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
             _waveStateReceiver.OnWaveStarted();
         }
