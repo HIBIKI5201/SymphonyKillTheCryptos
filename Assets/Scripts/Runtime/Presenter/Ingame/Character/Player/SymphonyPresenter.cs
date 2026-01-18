@@ -3,6 +3,7 @@ using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.Character;
 using SymphonyFrameWork.Utility;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -12,30 +13,23 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
     /// <summary>
     ///     プレイヤーのマネージャークラス
     /// </summary>
-    public class SymphonyPresenter : MonoBehaviour, ISymphonyPresenter
+    public class SymphonyPresenter : MonoBehaviour, ISymphonyPresenter, ICardAnimationHandler
     {
         public CharacterEntity Self => _self;
 
+        // CardExecutionUseCase への依存を追加
+        private CardExecutionUseCase _cardExecutionUseCase;
+
         /// <summary>
-        ///     カードユースケースに攻撃完了イベントを登録する。
-        ///     自分のキャラクターエンティティも登録する。
+        /// 自分のキャラクターエンティティを登録する。
         /// </summary>
-        /// <param name="cardUseCase"></param>
         /// <param name="self"></param>
-        public void Init(CardUseCase cardUseCase, CharacterEntity self)
+        public void Init(
+            CharacterEntity self,
+            CardExecutionUseCase useCase)
         {
-            cardUseCase.OnCardCompleted += HandleCardComplete;
-
-            destroyCancellationToken.Register(() =>
-            {
-                if (cardUseCase != null)
-                {
-                    cardUseCase.OnCardCompleted -= HandleCardComplete;
-                }
-            });
-
-            _cardUseCase = cardUseCase;
             _self = self;
+            _cardExecutionUseCase = useCase;
         }
 
         /// <summary>
@@ -43,15 +37,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         /// </summary>
         public void ResetUsingCard()
         {
-            _usingCardQueue.Clear();
+            _cardExecutionUseCase?.Reset(); // UseCase の Reset を呼び出す
         }
 
         /// <summary>
         ///    ターゲットのもとへ移動する。
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
         public void MovePosition()
         {
             Vector3 moveVec = _spawnPoint.position - transform.position;
@@ -80,10 +71,22 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         /// <summary>
         ///     攻撃アニメーションが終了するまで待機する。
         /// </summary>
-        /// <returns></returns>
         public async Task WaitForEndAttack()
         {
             await SymphonyTask.WaitUntil(() => !_animeManager.IsAttacking, destroyCancellationToken);
+        }
+
+        // ICardAnimationHandler の実装
+        public event Action<int> OnSkillTriggered;
+        public event Action OnSkillEnded;
+
+        /// <summary>
+        /// 指定されたアニメーションクリップIDでスキルアニメーションをアクティブにする。
+        /// </summary>
+        /// <param name="animationClipID">アクティブにするアニメーションクリップのID。</param>
+        public void ActiveSkill(int animationClipID)
+        {
+            _animeManager.ActiveSkill(animationClipID);
         }
 
         [SerializeField]
@@ -91,10 +94,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 
         private CharacterEntity _self;
         private ISymphonyAnimeManager _animeManager;
-        private CardUseCase _cardUseCase;
-
-
-        private Queue<CardEntity> _usingCardQueue = new();
+        // private CardUseCase _cardUseCase; // 削除
 
         private void Awake()
         {
@@ -109,47 +109,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         {
             if (_animeManager == null) return;
 
-            _animeManager.OnSkillTriggered += HandleSkillTriggered;
-            _animeManager.OnSkillEnded += HandleSkillEnded;
-        }
-
-        private void HandleCardComplete(CardEntity cardEntity)
-        {
-            if (cardEntity == null) return;
-
-            _usingCardQueue.Enqueue(cardEntity);
-
-            if (_usingCardQueue.Count <= 1) //もしスキル中でなければ発動する。
-            {
-                _animeManager.ActiveSkill(cardEntity.AnimationClipID);
-            }
-        }
-
-        private void HandleSkillTriggered(int index)
-        {
-            if (!_usingCardQueue.TryPeek(out var card)) return;
-
-            _cardUseCase.ExecuteCardEffect(card.GetContents(index));
-        }
-
-        private void HandleSkillEnded()
-        {
-            if (!_usingCardQueue.TryDequeue(out _)) return;
-
-            //もし残っていれば発動する。
-            if (_usingCardQueue.TryPeek(out var nextCard))
-            {
-                _animeManager.ActiveSkill(nextCard.AnimationClipID);
-            }
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (_spawnPoint == null) return;
-            Gizmos.color = Color.cyan;
-
-            Vector3 size = new Vector3(1, 2, 1);
-            Gizmos.DrawWireCube(_spawnPoint.position + Vector3.up * size.y / 2, size);
+            // アニメーションマネージャーのイベントを中継
+            _animeManager.OnSkillTriggered += (index) => OnSkillTriggered?.Invoke(index);
+            _animeManager.OnSkillEnded += () => OnSkillEnded?.Invoke();
         }
     }
 }
