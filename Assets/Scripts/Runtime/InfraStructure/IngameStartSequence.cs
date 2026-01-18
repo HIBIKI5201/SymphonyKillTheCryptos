@@ -92,6 +92,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             InputPresenter inputPresenter = 
                 new(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
 
+            // WaveControlUseCaseを作成。
+            var waveControlUseCase = new WaveControlUseCase(charaInitData.EnemyRepository);
+
             // WaveSystemPresenterを作成。
             WavePathPresenter wavePathPresenter = 
                 new(playerPathContainer, symphonyPresenter, _waveMoveSpeed);
@@ -99,9 +102,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 waveUseCase,
                 wavePathPresenter,
                 symphonyPresenter,
-                charaInitData.EnemyRepository,
                 bgmPlayer,
-                inputPresenter
+                inputPresenter,
+                waveControlUseCase
             );
 
             // レベルアップ時のコールバックを定義。
