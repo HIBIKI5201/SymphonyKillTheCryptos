@@ -22,7 +22,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
                 _cardDifficulty,
                 _wordRange,
                 _contentsArray,
-                _priority,
                 _animationClipID);
 
             foreach (var cardContents in data.ContentsArray)
@@ -58,8 +57,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
 
         [SerializeField, Tooltip("このカードが持つ効果の配列。")]
         private CardContents[] _contentsArray = default;
-        [SerializeField, Tooltip("カード優先度")]
-        private int _priority = 0;
 
         [Header("演出設定")]
         [SerializeField, Tooltip("アニメーションのID")]
