@@ -32,6 +32,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         // ... (SerializeField fields are kept)
         [SerializeField, Tooltip("プレイヤーデータ")]
         private CharacterData _symphonyData;
+        [SerializeField, Tooltip("コンボデータ")]
+        private ComboDataAsset _comboDataAsset;
         [SerializeField, Tooltip("ワードのデータベース")]
         private WordDataBase _wordDataBase;
         [SerializeField, Tooltip("レベルアップデータ")]
@@ -68,7 +70,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         {
             // 初期化とインスタンス取得。
             TentativeCharacterData symphonyTentativeData = new(_symphonyData);
-            SymphonyData symphonyData = new(symphonyTentativeData);
+            SymphonyData symphonyData = new(symphonyTentativeData, _comboDataAsset.GetData());
             ComboEntity comboEntity = new(symphonyData);
             var charaInitData = CharacterInitializer.Initialize(symphonyTentativeData);
             var cardInitData = CardInitializer.Initialize(_wordDataBase, comboEntity, charaInitData.Symphony, charaInitData.EnemyRepository);
@@ -139,7 +141,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             // その他の初期化を行う。
             CardPresenter cardPresenter = new(cardInitData.CardUseCase, ingameUIManager);
-            symphonyPresenter.Init(charaInitData.Symphony, cardExecutionUseCase, comboEntity);
+            symphonyPresenter.Init(charaInitData.Symphony, symphonyData, cardExecutionUseCase, comboEntity);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter, new(_combatPipelineAsset.CombatHandler));
