@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Cryptos.Runtime.Entity.Ingame.Character
 {
     /// <summary>
-    /// 敵キャラクターの静的なステータス情報を保持するScriptableObjectです。
+    ///     キャラクターの静的なステータス情報を保持するScriptableObjectです。
     /// </summary>
     [CreateAssetMenu(fileName = nameof(CharacterData), menuName = CryptosPathConstant.ASSET_PATH + nameof(CharacterData), order = 1)]
     public class CharacterData : ScriptableObject, ICharacterData
