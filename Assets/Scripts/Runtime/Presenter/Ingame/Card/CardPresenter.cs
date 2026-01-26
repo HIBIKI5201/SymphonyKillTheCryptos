@@ -18,7 +18,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Card
 
         private void HandleAddCard(CardEntity card)
         {
-
             _cardUIManager.AddCard(new(card));
         }
 
