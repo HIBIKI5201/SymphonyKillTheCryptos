@@ -21,6 +21,7 @@ namespace Cryptos.Runtime.UI.Ingame.Character.Player
         public void SetDirY(float value) => _animator.SetFloat(_animatorHash.DirYHash, value);
         public void SetVelocity(float value) => _animator.SetFloat(_animatorHash.VelocityHash, value);
         public void SetSprint(bool value) => _animator.SetBool(_animatorHash.SprintHash, value);
+        public void ChangeSpeed(float value) => _animator.speed = value;
 
         /// <summary>
         ///     スキルのパラメータをセットした上でトリガーする。
