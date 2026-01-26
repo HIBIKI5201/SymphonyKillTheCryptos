@@ -9,19 +9,20 @@ using UnityEngine;
 namespace Cryptos.Runtime.UseCase.Ingame.Card
 {
     /// <summary>
-    /// カードに関するアプリケーション固有のユースケースを処理するクラスです。
-    /// カードの生成、文字入力の処理、カード効果の実行などを担当します。
+    ///     カードに関するアプリケーション固有のユースケースを処理するクラスです。
+    ///     カードの生成、文字入力の処理、カード効果の実行などを担当します。
     /// </summary>
     public class CardUseCase
     {
         /// <summary>
-        /// CardUseCaseの新しいインスタンスを初期化します。
+        ///     CardUseCaseの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="wordDataBase">ワードデータが格納されたデータベース。</param>
         /// <param name="deck">カードデッキのエンティティ。</param>
-        public CardUseCase(WordDataBase wordDataBase, CardDeckEntity deck)
+        public CardUseCase(WordDataBase wordDataBase, ComboEntity comboEntity)
         {
-            _cardDeckEntity = deck;
+            _cardDeckEntity = new();
+            _comboEntity = comboEntity;
             _cardDrawer = new(wordDataBase, _wordManager);
         }
 
@@ -37,7 +38,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         public event Action<CardEntity> OnCardRemovedFromDeck { add => _cardDeckEntity.OnRemoveCardInstance += value; remove => _cardDeckEntity.OnRemoveCardInstance -= value; }
 
         /// <summary>
-        /// 新しいCardEntityインスタンスを生成し、デッキに追加します。
+        ///     新しいCardEntityインスタンスを生成し、デッキに追加します。
         /// </summary>
         /// <param name="data">生成するカードのデータ。</param>
         /// <returns>生成されたCardEntityインスタンス。</returns>
@@ -56,7 +57,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         }
 
         /// <summary>
-        /// デッキ内の全てのカードに文字入力を試みます。
+        ///     デッキ内の全てのカードに文字入力を試みます。
         /// </summary>
         /// <param name="input">入力された文字。</param>
         public void InputCharToDeck(char input)
@@ -68,7 +69,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         }
 
         /// <summary>
-        /// 指定されたカード効果を実行します。
+        ///     指定されたカード効果を実行します。
         /// </summary>
         /// <param name="contents">実行するICardContentの配列。</param>
         public void ExecuteCardEffect(CardData.CardContents contents)
@@ -87,12 +88,13 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
 
         private readonly CardDeckEntity _cardDeckEntity;
         private readonly CardDrawer _cardDrawer;
+        private readonly ComboEntity _comboEntity;
         private readonly WordManager _wordManager = new();
         private readonly Dictionary<CardEntity, WordData[]> _cardWordCandidates = new();
 
         /// <summary>
-        /// 現在の単語入力が完了した際の処理です。
-        /// 次の単語をセットし、ワードマネージャーを更新します。
+        ///     現在の単語入力が完了した際の処理です。
+        ///     次の単語をセットし、ワードマネージャーを更新します。
         /// </summary>
         /// <param name="cardEntity">処理対象のカードエンティティ。</param>
         private void HandleCurrentWordCompleted(CardEntity cardEntity)
@@ -114,8 +116,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         }
 
         /// <summary>
-        /// カードの全てのワード入力が完了した際の処理です。
-        /// カードをデッキから削除し、関連イベントを発行します。
+        ///     カードの全てのワード入力が完了した際の処理です。
+        ///     カードをデッキから削除し、関連イベントを発行します。
         /// </summary>
         /// <param name="cardEntity">完了したカードエンティティ。</param>
         private void HandleCardCompleted(CardEntity cardEntity)
@@ -124,6 +126,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             _wordManager.RemoveWord(cardEntity.WordEntity.CurrentWord);
             _cardDeckEntity.RemoveCardFromDeck(cardEntity);
             _cardWordCandidates.Remove(cardEntity);
+            _comboEntity.Increment();
 
             // 残りのカードのワードエンティティのインデックスをリセットします。
             foreach (CardEntity card in _cardDeckEntity.DeckCardList)
