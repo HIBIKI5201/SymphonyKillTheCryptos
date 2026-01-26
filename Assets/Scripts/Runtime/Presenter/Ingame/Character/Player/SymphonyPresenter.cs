@@ -129,12 +129,18 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private void ObserbeCombo()
         {
             _comboEntity.OnChangedCounter += HandleComboChanged;
+            _comboEntity.OnComboReset += HandleComboReseted;
         }
 
         private void HandleComboChanged(int combo)
         {
             float speed = _data.GetComboStackSpeed(combo);
             _animeManager.ChangeSpeed(speed);
+        }
+
+        private void HandleComboReseted()
+        {
+            _animeManager.ChangeSpeed(1);
         }
     }
 }
