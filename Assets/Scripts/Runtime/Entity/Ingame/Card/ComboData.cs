@@ -37,6 +37,12 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
     [Serializable]
     public struct ComboStackSpeed
     {
+        public ComboStackSpeed(int requireCombo, float speed)
+        {
+            _requireCombo = requireCombo;
+            _speed = speed;
+        }
+
         public float RequireCombo => _requireCombo;
         public float Speed => _speed;
 
