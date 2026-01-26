@@ -26,10 +26,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         /// <param name="self"></param>
         public void Init(
             CharacterEntity self,
-            CardExecutionUseCase useCase)
+            CardExecutionUseCase useCase,
+            ComboEntity comboEntity)
         {
             _self = self;
             _cardExecutionUseCase = useCase;
+            _comboEntity = comboEntity;
         }
 
         /// <summary>
@@ -94,7 +96,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
 
         private CharacterEntity _self;
         private ISymphonyAnimeManager _animeManager;
-        // private CardUseCase _cardUseCase; // 削除
+        private ComboEntity _comboEntity;
 
         private void Awake()
         {
@@ -112,6 +114,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             // アニメーションマネージャーのイベントを中継
             _animeManager.OnSkillTriggered += (index) => OnSkillTriggered?.Invoke(index);
             _animeManager.OnSkillEnded += () => OnSkillEnded?.Invoke();
+        }
+
+        private void Update()
+        {
+            float delta = Time.deltaTime;
+            _comboEntity.Tick(delta);
         }
     }
 }
