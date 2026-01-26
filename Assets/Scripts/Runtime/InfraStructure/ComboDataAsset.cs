@@ -14,8 +14,13 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
         }
 
         [SerializeField]
-        private float _comboDuration;
+        private float _comboDuration = 5;
         [SerializeField]
-        private ComboStackSpeed[] _comboStackSpeeds;
+        private ComboStackSpeed[] _comboStackSpeeds =
+            {
+                new(3, 1.25f),
+                new(5, 1.5f),
+                new(10, 2f)
+            };
     }
 }
