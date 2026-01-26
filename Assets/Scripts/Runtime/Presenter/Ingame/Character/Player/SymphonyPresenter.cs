@@ -136,11 +136,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         {
             float speed = _data.GetComboStackSpeed(combo);
             _animeManager.ChangeSpeed(speed);
+
+            Debug.Log($"スピード{speed}");
         }
 
         private void HandleComboReseted()
         {
             _animeManager.ChangeSpeed(1);
+            Debug.Log($"スピード リセット");
         }
     }
 }
