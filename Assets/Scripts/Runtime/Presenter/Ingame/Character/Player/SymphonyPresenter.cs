@@ -26,12 +26,16 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         /// <param name="self"></param>
         public void Init(
             CharacterEntity self,
+            SymphonyData data,
             CardExecutionUseCase useCase,
             ComboEntity comboEntity)
         {
             _self = self;
+            _data = data;
             _cardExecutionUseCase = useCase;
             _comboEntity = comboEntity;
+
+            ObserbeCombo();
         }
 
         /// <summary>
@@ -78,7 +82,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
             await SymphonyTask.WaitUntil(() => !_animeManager.IsAttacking, destroyCancellationToken);
         }
 
-        // ICardAnimationHandler の実装
         public event Action<int> OnSkillTriggered;
         public event Action OnSkillEnded;
 
@@ -95,6 +98,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private Transform _spawnPoint;
 
         private CharacterEntity _self;
+        private SymphonyData _data;
         private ISymphonyAnimeManager _animeManager;
         private ComboEntity _comboEntity;
 
@@ -119,7 +123,18 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private void Update()
         {
             float delta = Time.deltaTime;
-            _comboEntity.Tick(delta);
+            _comboEntity?.Tick(delta);
+        }
+
+        private void ObserbeCombo()
+        {
+            _comboEntity.OnChangedCounter += HandleComboChanged;
+        }
+
+        private void HandleComboChanged(int combo)
+        {
+            float speed = _data.GetComboStackSpeed(combo);
+            _animeManager.ChangeSpeed(speed);
         }
     }
 }
