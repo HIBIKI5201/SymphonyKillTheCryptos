@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using Cryptos.Runtime.Entity.Ingame.Word;
@@ -10,10 +11,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Utility
     {
         public static CardInitializationData Initialize(
             WordDataBase wordDataBase,
+            ComboEntity comboEntity,
             CharacterEntity symphony,
             EnemyRepository enemyRepo)
         {
-            CardUseCase cardUseCase = new(wordDataBase, new());
+            CardUseCase cardUseCase = new(wordDataBase, comboEntity);
             cardUseCase.GetPlayer += () => symphony;
             cardUseCase.GetTargets += () => enemyRepo.AllEnemies.ToArray();
 

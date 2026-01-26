@@ -67,11 +67,13 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         public async ValueTask GameInitialize()
         {
             // 初期化とインスタンス取得。
-            TentativeCharacterData symphonyData = new(_symphonyData);
-            var charaInitData = CharacterInitializer.Initialize(symphonyData);
-            var cardInitData = CardInitializer.Initialize(_wordDataBase, charaInitData.Symphony, charaInitData.EnemyRepository);
+            TentativeCharacterData symphonyTentativeData = new(_symphonyData);
+            SymphonyData symphonyData = new(symphonyTentativeData);
+            ComboEntity comboEntity = new(symphonyData);
+            var charaInitData = CharacterInitializer.Initialize(symphonyTentativeData);
+            var cardInitData = CardInitializer.Initialize(_wordDataBase, comboEntity, charaInitData.Symphony, charaInitData.EnemyRepository);
 
-            LevelUseCase levelUseCase = new(_levelUpgradeData, symphonyData);
+            LevelUseCase levelUseCase = new(_levelUpgradeData, symphonyTentativeData);
             ServiceLocator.RegisterInstance(levelUseCase);
 
             WaveUseCase waveUseCase = new(_waveEntities);
@@ -137,7 +139,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             // その他の初期化を行う。
             CardPresenter cardPresenter = new(cardInitData.CardUseCase, ingameUIManager);
-            symphonyPresenter.Init(charaInitData.Symphony, cardExecutionUseCase);
+            symphonyPresenter.Init(charaInitData.Symphony, cardExecutionUseCase, comboEntity);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter, new(_combatPipelineAsset.CombatHandler));
