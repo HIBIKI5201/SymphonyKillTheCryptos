@@ -14,5 +14,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         public void SetVelocity(float value);
         public void SetSprint(bool value);
         public void ActiveSkill(int index);
+        public void ChangeSpeed(float value);
     }
 }
