@@ -1,4 +1,3 @@
-using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Utility;
 using System;
 using UnityEngine;
@@ -17,9 +16,11 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
 
         public float GetComboStackSpeed(int combo)
         {
-            for (int i = 0; i < _comboStackSpeeds.Length; i++)
+            if (combo < _comboStackSpeeds[0].RequireCombo) { return 1; }
+
+            for (int i = 1; i <= _comboStackSpeeds.Length; i++)
             {
-                ComboStackSpeed data = _comboStackSpeeds[i];
+                ComboStackSpeed data = _comboStackSpeeds[^i];
 
                 if (data.RequireCombo < combo)
                 {
