@@ -16,6 +16,7 @@ using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -29,7 +30,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
     [Serializable]
     public class IngameStartSequence : IGameInstaller, IDisposable
     {
-        // ... (SerializeField fields are kept)
         [SerializeField, Tooltip("プレイヤーデータ")]
         private CharacterData _symphonyData;
         [SerializeField, Tooltip("コンボデータ")]
@@ -53,7 +53,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField, Tooltip("ウェーブ移動速度")]
         private float _waveMoveSpeed = 3;
         
-        private IngameUIManager _gameUIManager; // For caching
+        private IngameUIManager _gameUIManager;
         
         /// <summary>
         /// このインスタンスが破棄されるときに呼び出されます。
@@ -68,6 +68,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         /// </summary>
         public async ValueTask GameInitialize()
         {
+            List<IDisposable> disposables = new();
+
             // 初期化とインスタンス取得。
             TentativeCharacterData symphonyTentativeData = new(_symphonyData);
             SymphonyData symphonyData = new(symphonyTentativeData, _comboDataAsset.GetData());
@@ -97,7 +99,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 new(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
 
             // WaveControlUseCaseを作成。
-            var waveControlUseCase = new WaveControlUseCase(charaInitData.EnemyRepository);
+            WaveControlUseCase waveControlUseCase = new(charaInitData.EnemyRepository);
 
             // WaveSystemPresenterを作成。
             WavePathPresenter wavePathPresenter = 
@@ -115,6 +117,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 cardInitData.CardUseCase,
                 symphonyPresenter
             );
+            disposables.Add(cardExecutionUseCase);
 
             // レベルアップ時のコールバックを定義。
             Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = 
@@ -126,7 +129,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             };
 
             // InGameLoopUseCaseを作成し、依存を注入。
-            var inGameLoopUseCase = new InGameLoopUseCase(
+            InGameLoopUseCase inGameLoopUseCase = new(
                 cardInitData.CardUseCase,
                 levelUseCase,
                 waveUseCase,
@@ -134,7 +137,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 symphonyPresenter,
                 waveSystemPresenter,
                 inputPresenter,
-                GoToOutGameScene
+                GoToOutGameScene,
+                disposables.ToArray()
             );
 
             await InitializeUtility.WaitInitialize(_gameUIManager);
