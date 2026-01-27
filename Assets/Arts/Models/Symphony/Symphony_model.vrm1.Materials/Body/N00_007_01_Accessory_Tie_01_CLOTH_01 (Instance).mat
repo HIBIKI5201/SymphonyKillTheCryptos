@@ -834,14 +834,14 @@ Material:
     - _MatCapVRParallaxStrength: 1
     - _MatCapZRotCancel: 1
     - _MaterialID: 1
-    - _Metallic: 0.3
+    - _Metallic: 0.75
     - _MetallicRemapMax: 0
     - _MetallicRemapMin: 0
     - _Mode: 0
     - _MonochromeLighting: 0
     - _Nearest_Distance: 0.5
     - _NormalMapSpace: 0
-    - _NormalScale: 1
+    - _NormalScale: 4.93
     - _OUTLINE: 0
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0

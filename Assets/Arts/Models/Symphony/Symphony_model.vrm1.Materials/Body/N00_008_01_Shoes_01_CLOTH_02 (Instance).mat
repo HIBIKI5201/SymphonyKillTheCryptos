@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5048874106326656424
+--- !u!114 &-2950785521111336099
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -23,7 +23,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: N00_007_01_Tops_01_CLOTH (Instance)
+  m_Name: N00_008_01_Shoes_01_CLOTH_02 (Instance)
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -98,7 +98,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: 764e2c6bfef6cb547a1a7ed7bc81181c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 74a2a580235febf4fa3180abb395defa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -262,7 +262,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 764e2c6bfef6cb547a1a7ed7bc81181c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 74a2a580235febf4fa3180abb395defa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
@@ -390,7 +390,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadeTex:
-        m_Texture: {fileID: 2800000, guid: 764e2c6bfef6cb547a1a7ed7bc81181c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 74a2a580235febf4fa3180abb395defa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadingGradeMap:
@@ -850,14 +850,14 @@ Material:
     - _MatCapVRParallaxStrength: 1
     - _MatCapZRotCancel: 1
     - _MaterialID: 1
-    - _Metallic: 0.3
+    - _Metallic: 0.75
     - _MetallicRemapMax: 0
     - _MetallicRemapMin: 0
     - _Mode: 0
     - _MonochromeLighting: 0
     - _Nearest_Distance: 0.5
     - _NormalMapSpace: 0
-    - _NormalScale: 1
+    - _NormalScale: 4.93
     - _OUTLINE: 0
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
@@ -1248,7 +1248,7 @@ Material:
     - _RimLightMaskColor: {r: 1, g: 0, b: 1, a: 1}
     - _RimShadeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SecondShadeMaskColor: {r: 0, g: 0, b: 1, a: 1}
-    - _ShadeColor: {r: 0.7764706, g: 0.7764706, b: 0.7764706, a: 1}
+    - _ShadeColor: {r: 0.966989, g: 0.9646432, b: 0.97435874, a: 1}
     - _Shadow2ndColor: {r: 0.68, g: 0.65999997, b: 0.78999996, a: 1}
     - _Shadow3rdColor: {r: 0, g: 0, b: 0, a: 0}
     - _ShadowAOShift: {r: 1, g: 0, b: 1, a: 0}
