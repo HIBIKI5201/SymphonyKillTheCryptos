@@ -126,6 +126,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
 --- !u!1 &1415648047567178033
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +253,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
 --- !u!1 &2019844822327601776
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +406,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
 --- !u!1 &4246854636331746491
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 640bcd9207092a94a9f11f56f43517b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
+  _spawnPoint: {fileID: 0}
 --- !u!114 &8717745605084019085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,6 +745,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
 --- !u!1 &8070619594584093384
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,6 +898,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
 --- !u!1001 &871648539904026854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1840,7 +1845,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7213758392126178944}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
   m_Name: 
