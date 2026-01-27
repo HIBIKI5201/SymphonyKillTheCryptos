@@ -14,15 +14,6 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     /// </summary>
     public class InGameLoopUseCase
     {
-        private readonly CardUseCase _cardUseCase;
-        private readonly LevelUseCase _levelUseCase;
-        private readonly WaveUseCase _waveUseCase;
-        private readonly Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> _onLevelUpSelectNodeCallback;
-        private readonly ISymphonyPresenter _symphonyPresenter;
-        private readonly IInGameLoopWaveHandler _inGameLoopWaveHandler;
-        private readonly ILevelUpPhaseHandler _levelUpPhaseHandler;
-        private readonly Action _onGameEndedCallback;
-
         /// <summary>
         ///     InGameLoopUseCaseの新しいインスタンスを初期化する。
         /// </summary>
@@ -34,7 +25,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             ISymphonyPresenter symphonyPresenter,
             IInGameLoopWaveHandler inGameLoopWaveHandler,
             ILevelUpPhaseHandler levelUpPhaseHandler,
-            Action onGameEndedCallback)
+            Action onGameEndedCallback,
+            IDisposable[] disposables)
         {
             _cardUseCase = cardUseCase;
             _levelUseCase = levelUseCase;
@@ -44,6 +36,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             _inGameLoopWaveHandler = inGameLoopWaveHandler;
             _levelUpPhaseHandler = levelUpPhaseHandler;
             _onGameEndedCallback = onGameEndedCallback;
+            _disposables = disposables;
         }
 
         /// <summary>
@@ -59,6 +52,16 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             _ = GameLoopAsync();
         }
 
+        private readonly CardUseCase _cardUseCase;
+        private readonly LevelUseCase _levelUseCase;
+        private readonly WaveUseCase _waveUseCase;
+        private readonly Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> _onLevelUpSelectNodeCallback;
+        private readonly ISymphonyPresenter _symphonyPresenter;
+        private readonly IInGameLoopWaveHandler _inGameLoopWaveHandler;
+        private readonly ILevelUpPhaseHandler _levelUpPhaseHandler;
+        private readonly Action _onGameEndedCallback;
+        private readonly IDisposable[] _disposables;
+
         /// <summary>
         ///     ゲーム開始時の初期化処理を実行する。
         /// </summary>
@@ -73,18 +76,17 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// </summary>
         private async Task GameLoopAsync()
         {
-            // --- 初回ウェーブ ---
+            // 初回ウェーブ処理。
             Task waveCompletionTask = _inGameLoopWaveHandler.OnGameStarted();
             await waveCompletionTask;
 
-            // --- ループ開始 ---
             while (true)
             {
-                // ウェーブ完了後の処理
+                // ウェーブ完了後の処理。
                 _symphonyPresenter.ResetUsingCard();
                 _levelUseCase.AddLevelProgress(_waveUseCase.CurrentWave);
                 
-                // レベルアップ処理
+                // レベルアップ処理。
                 if (_levelUseCase.LevelUpQueue.Any())
                 {
                     _levelUpPhaseHandler.OnLevelUpPhaseStarted();
@@ -96,12 +98,12 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                     _levelUpPhaseHandler.OnLevelUpPhaseEnded();
                 }
 
-                // 次のウェーブへ
+                // 次のウェーブ。
                 WaveEntity nextWave = _waveUseCase.NextWave();
                 if (nextWave == null)
                 {
                     Debug.Log("InGameLoopUseCase: 全てのウェーブが終了しました。");
-                    break; // ループを抜ける
+                    break; // ループを抜ける。
                 }
 
                 Debug.Log($"InGameLoopUseCase: 次のウェーブへ: {nextWave.name}");
@@ -109,9 +111,14 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 await waveCompletionTask;
             }
 
-            // ゲーム終了処理
+            // ゲーム終了処理。
             _inGameLoopWaveHandler.OnGameEnded();
             _onGameEndedCallback?.Invoke();
+
+            foreach (var disposable in _disposables)
+            {
+                disposable.Dispose();
+            }
         }
     }
 }
