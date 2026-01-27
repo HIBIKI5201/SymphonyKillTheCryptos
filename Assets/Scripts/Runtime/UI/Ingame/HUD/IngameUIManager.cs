@@ -2,15 +2,15 @@ using CriWare;
 using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character;
-using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.Presenter.Ingame.System;
+using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.UI.Basis;
 using Cryptos.Runtime.UI.Ingame.Card;
 using Cryptos.Runtime.UI.Ingame.Character;
 using Cryptos.Runtime.UI.Ingame.LevelUp;
-using SymphonyFrameWork.Utility; // SymphonyTask を使用するため追加
+using SymphonyFrameWork.Utility;
 using System;
-using System.Linq; // Select を使用するため追加
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,7 +20,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// <summary>
     ///     インゲームのUIを管理します。
     /// </summary>
-    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager
+    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager
     {
         /// <summary>
         /// レベルアップ時の非同期処理。
@@ -128,13 +128,27 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             _document.rootVisualElement.Add(healthBar);
         }
 
+        public void RegisterComboCountHandler(ComboViewModel vm)
+        {
+            vm.OnChangedCounter += _comboCounter.SetCounter;
+            vm.OnChangedTimer += _comboCounter.SetGuage;
+
+            destroyCancellationToken.Register(() =>
+            {
+                vm.OnChangedCounter -= _comboCounter.SetCounter;
+                vm.OnChangedTimer -= _comboCounter.SetGuage;
+            });
+        }
+
         protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
             _deck = root.Q<UIElementDeck>();
             _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();
+            _comboCounter = root.Q<UIElementComboCounter>();
 
             await _deck.InitializeTask;
             await _levelUpgrade.InitializeTask;
+            await _comboCounter.InitializeTask;
 
             _damageTextPool = new(root);
 
@@ -150,6 +164,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         private UIElementDeck _deck;
         private UIElementLevelUpgradeWindow _levelUpgrade;
         private DamageTextPool _damageTextPool;
+        private UIElementComboCounter _comboCounter;
 
         private void Awake()
         {
