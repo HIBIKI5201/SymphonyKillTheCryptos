@@ -18,6 +18,11 @@ namespace Cryptos.Runtime.UI
             CheckVisibility(value);
         }
 
+        public void ResetCounter()
+        {
+            style.visibility = Visibility.Hidden;
+        }
+
         public void SetGuage(float current, float max)
         {
             float rate = current / max;
