@@ -150,6 +150,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter, new(_combatPipelineAsset.CombatHandler));
             enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
+            ingameUIManager.RegisterComboCountHandler(new(comboEntity));
 
             // ゲーム開始の処理を行う。
             TestCardSpawn(cardInitData.CardUseCase);
