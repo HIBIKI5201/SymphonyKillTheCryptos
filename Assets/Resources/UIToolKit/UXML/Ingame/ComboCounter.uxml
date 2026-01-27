@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="width: 150px; height: 200px; justify-content: center;">
+        <ui:Label text="1" name="counter" style="-unity-text-align: upper-center; font-size: 50px; color: rgb(255, 255, 255); text-shadow: 2px 2px 0.3px rgb(0, 0, 0); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 0.5px;"/>
+        <ui:VisualElement name="guage" style="width: 80%; height: 15px; align-self: center; background-color: rgba(77, 77, 77, 0.5);"/>
+    </ui:VisualElement>
+</ui:UXML>
