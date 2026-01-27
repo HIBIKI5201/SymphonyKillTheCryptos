@@ -131,11 +131,13 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         public void RegisterComboCountHandler(ComboViewModel vm)
         {
             vm.OnChangedCounter += _comboCounter.SetCounter;
+            vm.OnComboReset += _comboCounter.ResetCounter;
             vm.OnChangedTimer += _comboCounter.SetGuage;
 
             destroyCancellationToken.Register(() =>
             {
                 vm.OnChangedCounter -= _comboCounter.SetCounter;
+                vm.OnComboReset -= _comboCounter.ResetCounter;
                 vm.OnChangedTimer -= _comboCounter.SetGuage;
             });
         }
