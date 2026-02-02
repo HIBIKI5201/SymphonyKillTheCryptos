@@ -47,6 +47,16 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
 
             if (selectedNode == null) return;
 
+            // 選択されたノードを記録します。
+            if (_acquiredUpgrades.ContainsKey(selectedNode))
+            {
+                _acquiredUpgrades[selectedNode]++;
+            }
+            else
+            {
+                _acquiredUpgrades[selectedNode] = 1;
+            }
+
             // 選択されたノードの効果を適用します。
             foreach (var effect in selectedNode.Effects)
             {
@@ -61,6 +71,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         private readonly LevelUpgradeData _data;
         private readonly TentativeCharacterData _characterData;
         private readonly Queue<int> _levelUpQueue = new();
+        private readonly Dictionary<LevelUpgradeNode, int> _acquiredUpgrades = new();
 
         /// <summary>
         ///     レベルアップのノード選択を待機します。
@@ -68,7 +79,12 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         private async Task<LevelUpgradeNode> WaitLevelUpSelectAsync(
             Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNode)
         {
-            LevelUpgradeNode[] allNode = _data.LevelCard;
+            // 取得回数が上限に達していないノードを候補とする。
+            LevelUpgradeNode[] allNode = _data.LevelCard
+                .Where(node => 
+                    !_acquiredUpgrades.TryGetValue(node, out int count) || count < node.MaxStack)
+                .ToArray();
+            
             int amount = _data.LevelUpgradeAmount;
 
             //シャッフル用のインデックス配列を作る
