@@ -8,10 +8,6 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
     /// </summary>
     public class CardExecutionUseCase : IDisposable
     {
-        private readonly CardUseCase _cardUseCase;
-        private readonly CardExecutionQueueEntity _cardQueue;
-        private readonly ICardAnimationHandler _cardAnimationHandler;
-
         public CardExecutionUseCase(
             CardUseCase cardUseCase,
             ICardAnimationHandler cardAnimationHandler)
@@ -25,6 +21,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             _cardAnimationHandler.OnSkillTriggered += HandleSkillTriggered;
             _cardAnimationHandler.OnSkillEnded += HandleSkillEnded;
         }
+
+        public event Action<CardEntity> OnCardExecuted;
 
         /// <summary>
         /// 使用キューをリセットする。
@@ -44,6 +42,10 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             _cardAnimationHandler.OnSkillEnded -= HandleSkillEnded;
         }
 
+        private readonly CardUseCase _cardUseCase;
+        private readonly CardExecutionQueueEntity _cardQueue;
+        private readonly ICardAnimationHandler _cardAnimationHandler;
+
         /// <summary>
         ///     カードの入力が完了した際の処理。
         /// </summary>
@@ -56,7 +58,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             // もしスキル中でなければ発動する。
             if (_cardQueue.Count <= 1)
             {
-                _cardAnimationHandler.ActiveSkill(cardEntity.AnimationClipID);
+                ExecuteCard(cardEntity);
             }
         }
 
@@ -80,8 +82,14 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
             // もし残っていれば発動する。
             if (_cardQueue.TryPeek(out var nextCard))
             {
-                _cardAnimationHandler.ActiveSkill(nextCard.AnimationClipID);
+                ExecuteCard(nextCard);
             }
+        }
+
+        private void ExecuteCard(CardEntity card)
+        {
+            _cardAnimationHandler.ActiveSkill(card.AnimationClipID);
+            OnCardExecuted(card);
         }
     }
 }
