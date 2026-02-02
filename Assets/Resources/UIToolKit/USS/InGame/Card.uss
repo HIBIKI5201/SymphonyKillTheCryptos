@@ -1,0 +1,12 @@
+VisualElement {
+}
+
+.card-deck {
+    transition-duration: 1s;
+    rotate: 0;
+}
+
+.card-stack {
+    rotate: 1 1 0 180deg;
+    transition-duration: 1s;
+}
