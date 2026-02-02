@@ -9,6 +9,7 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         public string Description => _description;
         public Texture2D Texture => _texture;
         public ILevelUpgradeEffect[] Effects => _effects;
+        public int MaxStack => _maxStack;
 
         [SerializeField]
         private string _nodeName = "New Node";
@@ -20,5 +21,8 @@ namespace Cryptos.Runtime.Entity.Ingame.System
 
         [SerializeReference, SymphonySubclassSelector]
         private ILevelUpgradeEffect[] _effects;
+
+        [SerializeField, Tooltip("最大取得可能回数")]
+        private int _maxStack = int.MaxValue;
     }
 }
