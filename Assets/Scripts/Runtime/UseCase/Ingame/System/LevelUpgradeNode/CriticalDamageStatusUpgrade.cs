@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Utility;
 using UnityEngine;
 
 namespace Cryptos.Runtime.UseCase.Ingame.System
@@ -7,8 +8,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     {
         public override void ApplyStatusEffect(TentativeCharacterData target)
         {
-            target.SetNewBuff(TentativeCharacterData.BuffType.CriticalDamage,
-                _criticalDamageIncreaseAmount);
+            var modifier = new StatModifier(_criticalDamageIncreaseAmount, StatModType.Multiplier, source: this);
+            target.SetNewBuff(TentativeCharacterData.BuffType.CriticalDamage, modifier);
         }
 
         [SerializeField, Min(0), Tooltip("クリティカル倍率増加量。(%)")]

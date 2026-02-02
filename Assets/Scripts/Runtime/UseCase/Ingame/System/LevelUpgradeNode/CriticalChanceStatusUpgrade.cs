@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Utility;
 using UnityEngine;
 
 namespace Cryptos.Runtime.UseCase.Ingame.System
@@ -7,8 +8,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     {
         public override void ApplyStatusEffect(TentativeCharacterData target)
         {
-            target.SetNewBuff(TentativeCharacterData.BuffType.CriticalChance,
-                _criticalChanceIncreaseAmount);
+            var modifier = new StatModifier(_criticalChanceIncreaseAmount, StatModType.Multiplier, source: this);
+            target.SetNewBuff(TentativeCharacterData.BuffType.CriticalChance, modifier);
         }
 
         [SerializeField, Min(0), Tooltip("クリティカル率増加量。(%)")]
