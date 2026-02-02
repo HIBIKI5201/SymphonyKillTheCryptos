@@ -1,6 +1,5 @@
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using SymphonyFrameWork.Utility;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -48,21 +47,35 @@ namespace Cryptos.Runtime.UI.Ingame.Card
         ///     カードをデッキから削除する
         /// </summary>
         /// <param name="instance"></param>
-        public void HandleRemoveCard(CardViewModel instance)
+        public async void HandleRemoveCard(CardViewModel instance)
         {
             if (_cards.TryGetValue(instance, out UIElementCard card))
             {
-                _deck.Remove(card);
+                await SymphonyTask.WaitUntil(() => _stack.Contains(card));
+                if (_moveTask.TryGetValue(instance, out ValueTask task))
+                {
+                    await task;
+                }
+
+                _stack.Remove(card);
                 _cards.Remove(instance);
             }
         }
 
-        public void MoveCardToStack(CardViewModel instance)
+        public async void MoveCardToStack(CardViewModel instance)
+        {
+            ValueTask valueTask = MoveCardToStackAsync(instance);
+            _moveTask.TryAdd(instance, valueTask);
+            await valueTask;
+            _moveTask.Remove(instance);
+        }
+
+        public async ValueTask MoveCardToStackAsync(CardViewModel instance)
         {
             if (!_cards.TryGetValue(instance, out UIElementCard card)) { return; }
 
             // レイアウト確定後に実行
-            card.schedule.Execute(() =>
+            card.schedule.Execute(async () =>
             {
                 Rect start = card.worldBound;
 
@@ -85,7 +98,8 @@ namespace Cryptos.Runtime.UI.Ingame.Card
                 const float duration = 0.3f;
                 float elapsed = 0f;
 
-                // 毎フレーム補間
+                TaskCompletionSource<bool> taskCompletion = new();
+                // 毎フレーム補間するアニメーション。
                 IVisualElementScheduledItem anim = null;
                 anim = card.schedule.Execute(() =>
                 {
@@ -108,8 +122,13 @@ namespace Cryptos.Runtime.UI.Ingame.Card
                         card.style.top = StyleKeyword.Auto;
                         card.style.width = StyleKeyword.Auto;
                         card.style.height = StyleKeyword.Auto;
+
+                        taskCompletion.SetResult(true);
                     }
                 }).Every(16);
+
+                await taskCompletion.Task;
+                await card.Rotate(duration + 2); // 仮の定数。
             });
         }
 
@@ -120,5 +139,6 @@ namespace Cryptos.Runtime.UI.Ingame.Card
         private VisualElement _stack;
         private VisualElement _overlay;
         private readonly Dictionary<CardViewModel, UIElementCard> _cards = new();
+        private readonly Dictionary<CardViewModel, ValueTask> _moveTask = new();
     }
 }
