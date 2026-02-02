@@ -9,6 +9,7 @@
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Cryptos.UI.csproj" />
   <Project Path="VRM10.MToon10.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="VrmLib.csproj" />
   <Project Path="UniGLTF.Tests.csproj" />
   <Project Path="VRM10.Tests.csproj" />
@@ -24,7 +25,6 @@
   <Project Path="Cryptos.InfraStructure.csproj" />
   <Project Path="CriMw.CriWare.Editor.csproj" />
   <Project Path="VRM10.MToon10.Editor.csproj" />
-  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="FastSpringBone10.csproj" />
   <Project Path="UniGLTF.Utils.csproj" />
   <Project Path="VrmLibTests.csproj" />
