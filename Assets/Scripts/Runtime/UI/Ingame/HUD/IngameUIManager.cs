@@ -23,7 +23,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager
     {
         /// <summary>
-        /// レベルアップ時の非同期処理。
+        ///     レベルアップ時の非同期処理。
         /// </summary>
         /// <param name="nodes">レベルアップ候補のノード。</param>
         /// <returns>選択されたレベルアップノード。</returns>
@@ -46,16 +46,16 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// カードをUIに追加します。
+        ///     カードをUIに追加する。
         /// </summary>
         /// <param name="instance">追加するカードのビューモデル。</param>
-        public void AddCard(CardViewModel instance)
+        public async void AddCard(CardViewModel instance)
         {
             _deck.HandleAddCard(instance);
         }
 
         /// <summary>
-        /// カードをUIから削除します。
+        ///     カードをUIから削除する。
         /// </summary>
         /// <param name="instance">削除するカードのビューモデル。</param>
         public void RemoveCard(CardViewModel instance)
@@ -64,7 +64,16 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// レベルアップウィンドウを開きます。
+        ///     カードをデッキからスタックに移動させる。
+        /// </summary>
+        /// <param name="instance"></param>
+        public void MoveCardToStack(CardViewModel instance)
+        {
+            _deck.MoveCardToStack(instance);
+        }
+
+        /// <summary>
+        ///     レベルアップウィンドウを開きます。
         /// </summary>
         /// <param name="nodes">表示するノード。</param>
         public void OpenLevelUpgradeWindow(Span<LevelUpgradeNodeViewModel> nodes)
@@ -73,7 +82,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// レベルアップウィンドウを閉じます。
+        ///     レベルアップウィンドウを閉じます。
         /// </summary>
         public void CloseLevelUpgradeWindow()
         {
@@ -81,7 +90,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// 選択されたレベルアップノードを取得しようとします。
+        ///     選択されたレベルアップノードを取得しようとします。
         /// </summary>
         /// <param name="nodeVM">選択されたノードのビューモデル。</param>
         /// <returns>ノードが選択されていればtrue、そうでなければfalse。</returns>
@@ -101,7 +110,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// 文字入力を処理します。
+        ///     文字入力を処理します。
         /// </summary>
         /// <param name="c">入力された文字。</param>
         public void OnLevelUpgradeInputChar(char c)
