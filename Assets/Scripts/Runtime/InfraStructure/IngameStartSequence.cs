@@ -16,6 +16,7 @@ using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -29,9 +30,10 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
     [Serializable]
     public class IngameStartSequence : IGameInstaller, IDisposable
     {
-        // ... (SerializeField fields are kept)
         [SerializeField, Tooltip("プレイヤーデータ")]
         private CharacterData _symphonyData;
+        [SerializeField, Tooltip("コンボデータ")]
+        private ComboDataAsset _comboDataAsset;
         [SerializeField, Tooltip("ワードのデータベース")]
         private WordDataBase _wordDataBase;
         [SerializeField, Tooltip("レベルアップデータ")]
@@ -51,7 +53,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField, Tooltip("ウェーブ移動速度")]
         private float _waveMoveSpeed = 3;
         
-        private IngameUIManager _gameUIManager; // For caching
+        private IngameUIManager _gameUIManager;
         
         /// <summary>
         /// このインスタンスが破棄されるときに呼び出されます。
@@ -66,15 +68,19 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         /// </summary>
         public async ValueTask GameInitialize()
         {
-            // --- 1. 初期化とインスタンス取得 ---
-            var symphonyData = new TentativeCharacterData(_symphonyData);
-            var charaInitData = CharacterInitializer.Initialize(symphonyData);
-            var cardInitData = CardInitializer.Initialize(_wordDataBase, charaInitData.Symphony, charaInitData.EnemyRepository);
+            List<IDisposable> disposables = new();
 
-            var levelUseCase = new LevelUseCase(_levelUpgradeData);
+            // 初期化とインスタンス取得。
+            TentativeCharacterData symphonyTentativeData = new(_symphonyData);
+            SymphonyData symphonyData = new(symphonyTentativeData, _comboDataAsset.GetData());
+            ComboEntity comboEntity = new(symphonyData);
+            var charaInitData = CharacterInitializer.Initialize(symphonyTentativeData);
+            var cardInitData = CardInitializer.Initialize(_wordDataBase, comboEntity, charaInitData.Symphony, charaInitData.EnemyRepository);
+
+            LevelUseCase levelUseCase = new(_levelUpgradeData, symphonyTentativeData);
             ServiceLocator.RegisterInstance(levelUseCase);
 
-            var waveUseCase = new WaveUseCase(_waveEntities);
+            WaveUseCase waveUseCase = new(_waveEntities);
             ServiceLocator.RegisterInstance(waveUseCase);
 
             var inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
@@ -86,54 +92,67 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             _gameUIManager = ingameUIManager;
 
-            // --- 2. PresenterとUseCaseのインスタンス生成とDI ---
+            // PresenterとUseCaseのインスタンス生成とDI注入。
 
-            // InputPresenterを作成
-            var inputPresenter = new InputPresenter(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
+            // InputPresenterを作成。
+            InputPresenter inputPresenter = 
+                new(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
 
-            // WaveSystemPresenterを作成
-            var waveSystemPresenter = new WaveSystemPresenter(
+            // WaveControlUseCaseを作成。
+            WaveControlUseCase waveControlUseCase = new(charaInitData.EnemyRepository);
+
+            // WaveSystemPresenterを作成。
+            WavePathPresenter wavePathPresenter = 
+                new(playerPathContainer, symphonyPresenter, _waveMoveSpeed);
+            WaveSystemPresenter waveSystemPresenter = new(
                 waveUseCase,
-                new WavePathPresenter(playerPathContainer, symphonyPresenter, _waveMoveSpeed),
+                wavePathPresenter,
                 symphonyPresenter,
-                charaInitData.EnemyRepository,
                 bgmPlayer,
-                inputPresenter
+                inputPresenter,
+                waveControlUseCase
             );
 
-            // レベルアップ時のコールバックを定義（入力ロジックは削除）
-            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = async (options) =>
+            CardExecutionUseCase cardExecutionUseCase = new(
+                cardInitData.CardUseCase,
+                symphonyPresenter
+            );
+            disposables.Add(cardExecutionUseCase);
+
+            // レベルアップ時のコールバックを定義。
+            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = 
+                async (options) =>
             {
                 var viewModels = options.Select(o => new LevelUpgradeNodeViewModel(o.OriginalNode)).ToArray();
                 var selectedViewModel = await ingameUIManager.LevelUpSelectAsync(viewModels);
                 return options.First(o => o.OriginalNode == selectedViewModel.LevelUpgradeNode);
             };
 
-            // InGameLoopUseCaseを作成し、依存を注入
-            var inGameLoopUseCase = new InGameLoopUseCase(
+            // InGameLoopUseCaseを作成し、依存を注入。
+            InGameLoopUseCase inGameLoopUseCase = new(
                 cardInitData.CardUseCase,
                 levelUseCase,
                 waveUseCase,
                 levelUpSelectCallback,
+                symphonyPresenter,
                 waveSystemPresenter,
                 inputPresenter,
-                GoToOutGameScene 
+                GoToOutGameScene,
+                disposables.ToArray()
             );
-            
-            // セッター注入で循環参照を解決
-            waveSystemPresenter.SetWaveHandler(inGameLoopUseCase);
 
             await InitializeUtility.WaitInitialize(_gameUIManager);
 
-            // --- 3. その他の初期化 ---
-            var cardPresenter = new CardPresenter(cardInitData.CardUseCase, ingameUIManager);
-            symphonyPresenter.Init(cardInitData.CardUseCase, charaInitData.Symphony);
+            // その他の初期化を行う。
+            CardPresenter cardPresenter = new(cardInitData.CardUseCase,cardExecutionUseCase,  ingameUIManager);
+            symphonyPresenter.Init(charaInitData.Symphony, symphonyData, cardExecutionUseCase, comboEntity);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
             enemyPresenter.Init(charaInitData.EnemyRepository, symphonyPresenter, new(_combatPipelineAsset.CombatHandler));
             enemyPresenter.OnCreatedEnemyModel += HandleEnemyCreated;
+            ingameUIManager.RegisterComboCountHandler(new(comboEntity));
 
-            // --- 4. ゲーム開始 ---
+            // ゲーム開始の処理を行う。
             TestCardSpawn(cardInitData.CardUseCase);
             await inGameLoopUseCase.StartGameAsync();
         }

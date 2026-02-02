@@ -25,9 +25,9 @@ namespace Cryptos.Runtime.Presenter
             try
             {
                 await SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
-                _outgameInstaller.GameInitialize();
+                await _outgameInstaller.GameInitialize();
             }
-            catch (Exception ex) { return; }
+            catch (Exception) { return; }
         }
     }
 }

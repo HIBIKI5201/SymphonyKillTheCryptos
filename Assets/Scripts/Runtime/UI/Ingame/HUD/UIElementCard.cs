@@ -29,11 +29,17 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             _iconElement.style.backgroundImage = new(instance.Icon);
         }
 
+        public async ValueTask Rotate(float duration = 1)
+        {
+            _root.AddToClassList(CARD_STACK_STYLE);
+        }
+
         protected override Task Initialize_S(TemplateContainer container)
         {
             style.marginRight = SIDE_MARGIN;
             style.marginLeft = SIDE_MARGIN;
 
+            _root = container.Q<VisualElement>(ROOT_NAME);
             _iconElement = container.Q<VisualElement>(ICON_NAME);
             _wordLabel = container.Q<Label>(WORD_LABEL_NAME);
             _progressBar = container.Q<VisualElement>(PROGRESS_BAR_NAME);
@@ -41,12 +47,16 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             return Task.CompletedTask;
         }
 
+        private const string ROOT_NAME = "root";
         private const string ICON_NAME = "icon";
         private const string WORD_LABEL_NAME = "word";
         private const string PROGRESS_BAR_NAME = "progress-bar";
 
+        private const string CARD_STACK_STYLE = "card-stack";
+
         private const int SIDE_MARGIN = 10;
 
+        private VisualElement _root;
         private VisualElement _iconElement;
         private Label _wordLabel;
         private VisualElement _progressBar;

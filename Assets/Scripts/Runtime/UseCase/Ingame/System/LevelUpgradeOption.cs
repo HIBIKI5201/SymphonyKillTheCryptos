@@ -1,4 +1,4 @@
-using Cryptos.Runtime.Entity.Ingame.System; // ILevelUpgradeEffect のため
+using Cryptos.Runtime.Entity.Ingame.System;
 
 namespace Cryptos.Runtime.UseCase.Ingame.System
 {
@@ -10,8 +10,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     {
         public string NodeName { get; }
         public ILevelUpgradeEffect[] Effects { get; }
-        public LevelUpgradeNode OriginalNode { get; } // 必要に応じて元のエンティティへの参照も持つ
-
+        public LevelUpgradeNode OriginalNode { get; }
         public LevelUpgradeOption(LevelUpgradeNode originalNode)
         {
             NodeName = originalNode.NodeName;

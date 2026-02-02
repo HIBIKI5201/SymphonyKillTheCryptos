@@ -1,8 +1,9 @@
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.UseCase.Ingame.Card;
+using Cryptos.Runtime.UseCase.Ingame.Character;
 using SymphonyFrameWork.Utility;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -11,30 +12,26 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
     /// <summary>
     ///     プレイヤーのマネージャークラス
     /// </summary>
-    public class SymphonyPresenter : MonoBehaviour
+    public class SymphonyPresenter : MonoBehaviour, ISymphonyPresenter, ICardAnimationHandler
     {
         public CharacterEntity Self => _self;
 
         /// <summary>
-        ///     カードユースケースに攻撃完了イベントを登録する。
-        ///     自分のキャラクターエンティティも登録する。
+        /// 自分のキャラクターエンティティを登録する。
         /// </summary>
-        /// <param name="cardUseCase"></param>
         /// <param name="self"></param>
-        public void Init(CardUseCase cardUseCase, CharacterEntity self)
+        public void Init(
+            CharacterEntity self,
+            SymphonyData data,
+            CardExecutionUseCase useCase,
+            ComboEntity comboEntity)
         {
-            cardUseCase.OnCardCompleted += HandleCardComplete;
-
-            destroyCancellationToken.Register(() =>
-            {
-                if (cardUseCase != null)
-                {
-                    cardUseCase.OnCardCompleted -= HandleCardComplete;
-                }
-            });
-
-            _cardUseCase = cardUseCase;
             _self = self;
+            _data = data;
+            _cardExecutionUseCase = useCase;
+            _comboEntity = comboEntity;
+
+            ObserbeCombo();
         }
 
         /// <summary>
@@ -42,15 +39,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         /// </summary>
         public void ResetUsingCard()
         {
-            _usingCardQueue.Clear();
+            _cardExecutionUseCase?.Reset(); // UseCase の Reset を呼び出す
         }
 
         /// <summary>
         ///    ターゲットのもとへ移動する。
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
         public void MovePosition()
         {
             Vector3 moveVec = _spawnPoint.position - transform.position;
@@ -79,21 +73,31 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         /// <summary>
         ///     攻撃アニメーションが終了するまで待機する。
         /// </summary>
-        /// <returns></returns>
         public async Task WaitForEndAttack()
         {
             await SymphonyTask.WaitUntil(() => !_animeManager.IsAttacking, destroyCancellationToken);
+        }
+
+        public event Action<int> OnSkillTriggered;
+        public event Action OnSkillEnded;
+
+        /// <summary>
+        /// 指定されたアニメーションクリップIDでスキルアニメーションをアクティブにする。
+        /// </summary>
+        /// <param name="animationClipID">アクティブにするアニメーションクリップのID。</param>
+        public void ActiveSkill(int animationClipID)
+        {
+            _animeManager.ActiveSkill(animationClipID);
         }
 
         [SerializeField]
         private Transform _spawnPoint;
 
         private CharacterEntity _self;
+        private SymphonyData _data;
         private ISymphonyAnimeManager _animeManager;
-        private CardUseCase _cardUseCase;
-
-
-        private Queue<CardEntity> _usingCardQueue = new();
+        private ComboEntity _comboEntity;
+        private CardExecutionUseCase _cardExecutionUseCase;
 
         private void Awake()
         {
@@ -108,47 +112,35 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         {
             if (_animeManager == null) return;
 
-            _animeManager.OnSkillTriggered += HandleSkillTriggered;
-            _animeManager.OnSkillEnded += HandleSkillEnded;
+            // アニメーションマネージャーのイベントを中継
+            _animeManager.OnSkillTriggered += (index) => OnSkillTriggered?.Invoke(index);
+            _animeManager.OnSkillEnded += () => OnSkillEnded?.Invoke();
         }
 
-        private void HandleCardComplete(CardEntity cardEntity)
+        private void Update()
         {
-            if (cardEntity == null) return;
-
-            _usingCardQueue.Enqueue(cardEntity);
-
-            if (_usingCardQueue.Count <= 1) //もしスキル中でなければ発動する。
-            {
-                _animeManager.ActiveSkill(cardEntity.AnimationClipID);
-            }
+            float delta = Time.deltaTime;
+            _comboEntity?.Tick(delta);
         }
 
-        private void HandleSkillTriggered(int index)
+        private void ObserbeCombo()
         {
-            if (!_usingCardQueue.TryPeek(out var card)) return;
-
-            _cardUseCase.ExecuteCardEffect(card.GetContents(index));
+            _comboEntity.OnChangedCounter += HandleComboChanged;
+            _comboEntity.OnComboReset += HandleComboReseted;
         }
 
-        private void HandleSkillEnded()
+        private void HandleComboChanged(int combo)
         {
-            if (!_usingCardQueue.TryDequeue(out _)) return;
+            float speed = _data.GetComboStackSpeed(combo);
+            _animeManager.ChangeSpeed(speed);
 
-            //もし残っていれば発動する。
-            if (_usingCardQueue.TryPeek(out var nextCard))
-            {
-                _animeManager.ActiveSkill(nextCard.AnimationClipID);
-            }
+            Debug.Log($"スピード{speed}");
         }
 
-        private void OnDrawGizmos()
+        private void HandleComboReseted()
         {
-            if (_spawnPoint == null) return;
-            Gizmos.color = Color.cyan;
-
-            Vector3 size = new Vector3(1, 2, 1);
-            Gizmos.DrawWireCube(_spawnPoint.position + Vector3.up * size.y / 2, size);
+            _animeManager.ChangeSpeed(1);
+            Debug.Log($"スピード リセット");
         }
     }
 }

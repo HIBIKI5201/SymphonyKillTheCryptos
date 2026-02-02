@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-
 
 namespace Cryptos.Runtime.Entity.Utility
 {
@@ -9,83 +7,58 @@ namespace Cryptos.Runtime.Entity.Utility
     ///     バフによる状態変化が可能なfloat変数
     /// </summary>
     public class DynamicFloatVariable
-    {
+    {        
         /// <summary>
         ///     初期の量を決定する
         /// </summary>
         /// <param name="baseValue"></param>
         public DynamicFloatVariable(float baseValue)
         {
-            _baseValue = baseValue;
+            _bsseValue = baseValue;
             _value = baseValue;
         }
 
-        public float BaseValue => _baseValue;
-        public float Value => _value;
+        public float BaseValue => _bsseValue;
+        public float Value => _bsseValue;
 
-        /// <summary>
-        ///     乗算値を追加する
-        /// </summary>
-        /// <param name="multiplier"> バフの値。(%) </param>
-        /// <param name="priority"> バフの優先度。 </param>
-        public void AddMultiplier(float multiplier, int priority)
+        public void AddModifier(StatModifier mod)
         {
-            //リストが存在しない時は生成する。
-            if (!_multipliers.TryGetValue(priority, out var list))
-            {
-                list = new List<float>() { multiplier };
-                _multipliers.Add(priority, list);
-            }
-            else
-            {
-                list.Add(multiplier);
-            }
-
+            _modifiers.Add(mod);
             _value = Recalculate();
         }
 
-        public void RemoveMultiplier(float multiplier, int priority)
+        public void RemoveModifier(StatModifier mod)
         {
-            if (_multipliers.TryGetValue(priority, out var list))
-            {
-                list.Remove(multiplier);
-                _value = Recalculate();
-            }
-            else
-            {
-                Debug.LogWarning("Multiplier not registered");
-            }
-        }
-
-        public void AddAdditive(float value)
-        {
-            _additives.Add(value);
+            _modifiers.Remove(mod);
             _value = Recalculate();
         }
 
-        public void RemoveAdditive(float value)
-        {
-            _additives.Remove(value);
-            _value = Recalculate();
-        }
-
-        private float _baseValue;
+        private readonly float _bsseValue;
         private float _value;
-
-        private SortedList<int, List<float>> _multipliers = new();
-        private List<float> _additives = new();
+        private readonly List<StatModifier> _modifiers = new();
 
         private float Recalculate()
         {
-            float value = _baseValue;
+            float finalValue = BaseValue;
+            
+            // 加算Modifierを先に適用。
+            foreach (var mod in _modifiers.Where(m => m.Type == StatModType.Additive))
+            {
+                finalValue += mod.Value;
+            }
 
-            foreach (var add in _additives)
-                value += add;
+            // 乗算Modifierを優先度順に適用。
+            var multiplierGroups = _modifiers.Where(m => m.Type == StatModType.Multiplier)
+                .GroupBy(m => m.Priority)
+                .OrderBy(g => g.Key);
 
-            foreach (var group in _multipliers)
-                value *= 1 + group.Value.Sum() / 100;
+            foreach (var group in multiplierGroups)
+            {
+                float totalMultiplier = 1f + group.Sum(mod => mod.Value) / 100f;
+                finalValue *= totalMultiplier;
+            }
 
-            return value;
+            return finalValue;
         }
     }
 }

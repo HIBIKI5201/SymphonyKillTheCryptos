@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Utility;
 using UnityEngine;
 
 namespace Cryptos.Runtime.UseCase.Ingame.System
@@ -14,8 +15,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <param name="target">効果を適用する対象。</param>
         public override void ApplyStatusEffect(TentativeCharacterData target)
         {
-            target.SetNewBuff(TentativeCharacterData.BuffType.MaxHealth,
-                _healthIncreaseAmount);
+            var modifier = new StatModifier(_healthIncreaseAmount, StatModType.Multiplier, source: this);
+            target.SetNewBuff(TentativeCharacterData.BuffType.MaxHealth, modifier);
         }
 
         [SerializeField, Min(0), Tooltip("体力増加量。(%)")]

@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,16 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <summary>
         ///     コンストラクタ。
         /// </summary>
-        /// <param name="data">レベルアップに関するデータ。</param>
-        public LevelUseCase(LevelUpgradeData data)
+        public LevelUseCase(LevelUpgradeData data, TentativeCharacterData characterData)
         {
-            LevelEntity levelEntity = new LevelEntity(data.LevelRequirePoints);
+            LevelEntity levelEntity = new(data.LevelRequirePoints);
             levelEntity.OnLevelChanged += newLevel => _levelUpQueue.Enqueue(newLevel);
 
             _data = data;
+            _characterData = characterData;
             _levelEntity = levelEntity;
         }
+
         /// <summary>
         ///     未処理のレベルアップ。
         /// </summary>
@@ -31,27 +33,58 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <summary>
         ///     ウェーブクリア時に経験値を追加します。
         /// </summary>
-        /// <param name="waveEntity"></param>
         public void AddLevelProgress(WaveEntity waveEntity)
         {
             _levelEntity.AddLevelProgress(waveEntity.WaveExperiencePoint);
         }
 
         /// <summary>
+        ///     レベルアップ処理（ノード選択と効果適用）を非同期で行います。
+        /// </summary>
+        public async Task HandleLevelUpAsync(Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNode)
+        {
+            var selectedNode = await WaitLevelUpSelectAsync(onLevelUpSelectNode);
+
+            if (selectedNode == null) return;
+
+            // 選択されたノードを記録します。
+            _acquiredUpgradeEntity.Add(selectedNode);
+
+            // 選択されたノードの効果を適用します。
+            foreach (var effect in selectedNode.Effects)
+            {
+                if (effect is LevelUpgradeStatusEffect statusEffect)
+                {
+                    statusEffect.ApplyStatusEffect(_characterData);
+                }
+            }
+        }
+
+        private readonly LevelEntity _levelEntity;
+        private readonly LevelUpgradeData _data;
+        private readonly TentativeCharacterData _characterData;
+        private readonly AcquiredUpgradeEntity _acquiredUpgradeEntity = new();
+        private readonly Queue<int> _levelUpQueue = new();
+
+        /// <summary>
         ///     レベルアップのノード選択を待機します。
         /// </summary>
-        /// <returns></returns>
-        public async Task<LevelUpgradeNode> WaitLevelUpSelectAsync(Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNode)
+        private async Task<LevelUpgradeNode> WaitLevelUpSelectAsync(
+            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNode)
         {
-            LevelUpgradeNode[] allNode = _data.LevelCard;
-            int amount = _data.LevelUpgradeAmount;
+            // 取得回数が上限に達していないノードを候補とする。
+            LevelUpgradeNode[] allNode = _data.LevelCard
+                .Where(node => _acquiredUpgradeEntity.GetCount(node) < node.MaxStack)
+                .ToArray();
             
+            int amount = _data.LevelUpgradeAmount;
+
             //シャッフル用のインデックス配列を作る
             int[] indices = Enumerable.Range(0, allNode.Length).ToArray();
             var rng = new Random();
 
-            LevelUpgradeNode[] candidates = new LevelUpgradeNode[amount];
-            LevelUpgradeOption[] candidateOptions = new LevelUpgradeOption[amount];
+            var candidates = new LevelUpgradeNode[amount];
+            var candidateOptions = new LevelUpgradeOption[amount];
 
             // F-Y法で部分的にシャッフル。
             for (int i = 0; i < amount; i++)
@@ -68,10 +101,5 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
 
             return selectedOption.OriginalNode;
         }
-
-        private LevelEntity _levelEntity;
-        private LevelUpgradeData _data;
-
-        private Queue<int> _levelUpQueue = new();
     }
 }

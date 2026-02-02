@@ -1,103 +1,103 @@
-using Cryptos.Runtime.Entity.Ingame.Character;
-using Cryptos.Runtime.Entity.Ingame.Character.Repository;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     /// <summary>
-    ///     ウェーブの進行を管理するクラス。
+    ///     ウェーブの進行を管理するクラスである。
     /// </summary>
-    public class WaveSystemPresenter : IInGameLoopHandler
+    public class WaveSystemPresenter : IInGameLoopWaveHandler
     {
         private readonly WaveUseCase _waveUseCase;
         private readonly WavePathPresenter _wavePath;
         private readonly SymphonyPresenter _symphony;
-        private readonly EnemyRepository _enemyRepository;
         private readonly IBGMPlayer _bgmPlayer;
         private readonly IWaveStateReceiver _waveStateReceiver;
-        private IWaveHandler _waveHandler;
+        private readonly WaveControlUseCase _waveControlUseCase;
 
-        private int _enemyCount = 0;
+        private TaskCompletionSource<bool> _waveCompletionSource;
 
+        /// <summary>
+        ///     WaveSystemPresenterの新しいインスタンスを初期化する。
+        /// </summary>
         public WaveSystemPresenter(
             WaveUseCase waveUseCase,
             WavePathPresenter wavePathPresenter,
             SymphonyPresenter player,
-            EnemyRepository enemyRepository,
             IBGMPlayer bgmPlayer,
-            IWaveStateReceiver waveStateReceiver)
+            IWaveStateReceiver waveStateReceiver,
+            WaveControlUseCase waveControlUseCase)
         {
             _waveUseCase = waveUseCase;
             _wavePath = wavePathPresenter;
             _symphony = player;
-            _enemyRepository = enemyRepository;
             _bgmPlayer = bgmPlayer;
             _waveStateReceiver = waveStateReceiver;
+            _waveControlUseCase = waveControlUseCase;
+            
+            _waveControlUseCase.OnWaveCompleted += HandleWaveCompleted;
         }
 
-        public void SetWaveHandler(IWaveHandler waveHandler)
+        /// <summary>
+        ///     ゲーム開始時に最初のウェーブを開始する。
+        /// </summary>
+        public async Task OnGameStarted()
         {
-            _waveHandler = waveHandler;
-        }
+            _waveCompletionSource = new TaskCompletionSource<bool>();
 
-        public async void OnGameStarted()
-        {
-            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex); // 最初のウェーブ位置へ移動。
-
-            // 最初のウェーブの敵を生成。
             WaveEntity nextWave = _waveUseCase.CurrentWave;
-            CreateWaveEnemies(nextWave);
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
+            await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
+
+            _waveControlUseCase.SpawnEnemies(nextWave);
+
             _waveStateReceiver.OnWaveStarted();
+
+            await _waveCompletionSource.Task;
         }
 
-        public async void OnWaveChanged(WaveEntity nextWave)
+        /// <summary>
+        ///     次のウェーブに移行する。
+        /// </summary>
+        /// <param name="nextWave">次のWaveエンティティ。</param>
+        public async Task OnWaveChanged(WaveEntity nextWave)
         {
+            _waveCompletionSource = new TaskCompletionSource<bool>();
+
             _waveStateReceiver.OnWaveCleared();
 
             _symphony.ResetUsingCard();
 
             await _wavePath.NextWave(_waveUseCase.CurrentWaveIndex);
-            CreateWaveEnemies(nextWave);
+
+            _waveControlUseCase.SpawnEnemies(nextWave);
 
             _bgmPlayer.PlayBGM(nextWave.BGMCueName);
 
             _waveStateReceiver.OnWaveStarted();
-        }
 
-        public void OnGameEnded()
-        {
-            // ゲーム終了時の演出などが必要な場合はここに記述
-            _waveStateReceiver.OnWaveCleared(); // 念のため入力を止める
+            await _waveCompletionSource.Task;
         }
 
         /// <summary>
-        ///     敵が倒されたときの処理。
+        ///     ゲーム終了時の処理を実行する。
         /// </summary>
-        private void HandleEnemyDead()
+        public void OnGameEnded()
         {
-            _enemyCount--;
-            if (_enemyCount <= 0)
-            {
-                _waveHandler.OnWaveCompleted(); // ウェーブ完了を通知
-            }
+            _waveControlUseCase.Dispose();
+            _waveControlUseCase.OnWaveCompleted -= HandleWaveCompleted;
+            
+            _waveStateReceiver.OnWaveCleared();
         }
 
-        private void CreateWaveEnemies(WaveEntity waveEntity)
+        private void HandleWaveCompleted()
         {
-            CharacterData[] enemyData = waveEntity.Enemies;
-            _enemyCount = enemyData.Length;
-
-            foreach (var item in enemyData)
-            {
-                CharacterEntity enemy = _enemyRepository.CreateEnemy(item);
-                enemy.OnDead += HandleEnemyDead;
-            }
+            _waveCompletionSource.TrySetResult(true);
         }
     }
 }

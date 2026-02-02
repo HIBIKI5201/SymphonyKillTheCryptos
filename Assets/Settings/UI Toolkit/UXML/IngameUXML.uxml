@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Cryptos.Runtime.UI.Ingame.LevelUp.UIElementLevelUpgradeWindow />
-    <Cryptos.Runtime.UI.Ingame.Card.UIElementDeck />
+    <Cryptos.Runtime.UI.Ingame.LevelUp.UIElementLevelUpgradeWindow/>
+    <Cryptos.Runtime.UI.Ingame.Card.UIElementDeck/>
+    <Cryptos.Runtime.UI.UIElementComboCounter style="right: 0; bottom: 500px;"/>
 </ui:UXML>

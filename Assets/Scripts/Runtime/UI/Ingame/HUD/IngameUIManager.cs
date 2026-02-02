@@ -2,15 +2,15 @@ using CriWare;
 using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character;
-using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.Presenter.Ingame.System;
+using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.UI.Basis;
 using Cryptos.Runtime.UI.Ingame.Card;
 using Cryptos.Runtime.UI.Ingame.Character;
 using Cryptos.Runtime.UI.Ingame.LevelUp;
-using SymphonyFrameWork.Utility; // SymphonyTask を使用するため追加
+using SymphonyFrameWork.Utility;
 using System;
-using System.Linq; // Select を使用するため追加
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,10 +20,10 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// <summary>
     ///     インゲームのUIを管理します。
     /// </summary>
-    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager
+    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager
     {
         /// <summary>
-        /// レベルアップ時の非同期処理。
+        ///     レベルアップ時の非同期処理。
         /// </summary>
         /// <param name="nodes">レベルアップ候補のノード。</param>
         /// <returns>選択されたレベルアップノード。</returns>
@@ -46,16 +46,16 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// カードをUIに追加します。
+        ///     カードをUIに追加する。
         /// </summary>
         /// <param name="instance">追加するカードのビューモデル。</param>
-        public void AddCard(CardViewModel instance)
+        public async void AddCard(CardViewModel instance)
         {
             _deck.HandleAddCard(instance);
         }
 
         /// <summary>
-        /// カードをUIから削除します。
+        ///     カードをUIから削除する。
         /// </summary>
         /// <param name="instance">削除するカードのビューモデル。</param>
         public void RemoveCard(CardViewModel instance)
@@ -64,7 +64,16 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// レベルアップウィンドウを開きます。
+        ///     カードをデッキからスタックに移動させる。
+        /// </summary>
+        /// <param name="instance"></param>
+        public void MoveCardToStack(CardViewModel instance)
+        {
+            _deck.MoveCardToStack(instance);
+        }
+
+        /// <summary>
+        ///     レベルアップウィンドウを開きます。
         /// </summary>
         /// <param name="nodes">表示するノード。</param>
         public void OpenLevelUpgradeWindow(Span<LevelUpgradeNodeViewModel> nodes)
@@ -73,7 +82,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// レベルアップウィンドウを閉じます。
+        ///     レベルアップウィンドウを閉じます。
         /// </summary>
         public void CloseLevelUpgradeWindow()
         {
@@ -81,7 +90,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// 選択されたレベルアップノードを取得しようとします。
+        ///     選択されたレベルアップノードを取得しようとします。
         /// </summary>
         /// <param name="nodeVM">選択されたノードのビューモデル。</param>
         /// <returns>ノードが選択されていればtrue、そうでなければfalse。</returns>
@@ -101,7 +110,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         }
 
         /// <summary>
-        /// 文字入力を処理します。
+        ///     文字入力を処理します。
         /// </summary>
         /// <param name="c">入力された文字。</param>
         public void OnLevelUpgradeInputChar(char c)
@@ -128,13 +137,29 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             _document.rootVisualElement.Add(healthBar);
         }
 
+        public void RegisterComboCountHandler(ComboViewModel vm)
+        {
+            vm.OnChangedCounter += _comboCounter.SetCounter;
+            vm.OnComboReset += _comboCounter.ResetCounter;
+            vm.OnChangedTimer += _comboCounter.SetGuage;
+
+            destroyCancellationToken.Register(() =>
+            {
+                vm.OnChangedCounter -= _comboCounter.SetCounter;
+                vm.OnComboReset -= _comboCounter.ResetCounter;
+                vm.OnChangedTimer -= _comboCounter.SetGuage;
+            });
+        }
+
         protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
             _deck = root.Q<UIElementDeck>();
             _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();
+            _comboCounter = root.Q<UIElementComboCounter>();
 
             await _deck.InitializeTask;
             await _levelUpgrade.InitializeTask;
+            await _comboCounter.InitializeTask;
 
             _damageTextPool = new(root);
 
@@ -150,6 +175,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         private UIElementDeck _deck;
         private UIElementLevelUpgradeWindow _levelUpgrade;
         private DamageTextPool _damageTextPool;
+        private UIElementComboCounter _comboCounter;
 
         private void Awake()
         {

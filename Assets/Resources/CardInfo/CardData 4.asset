@@ -14,13 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardName: All Attack
   _cardExplanation: "\u30B7\u30E7\u30C3\u30C8\u30AC\u30F3\u306E\u5168\u4F53\u653B\u6483"
-  _cardIcon: {fileID: 2800000, guid: 0f6e7aa54403efe4796989b67d95145f, type: 3}
+  _cardIcon: {fileID: 2800000, guid: 91f7e77db16e04747a58e87261af7ffe, type: 3}
   _cardDifficulty: 3
   _wordRange: {x: 0, y: 3}
   _contentsArray:
   - _contents:
     - rid: 7654980637919019014
-  _priority: 0
   _animationClipID: 3
   references:
     version: 2

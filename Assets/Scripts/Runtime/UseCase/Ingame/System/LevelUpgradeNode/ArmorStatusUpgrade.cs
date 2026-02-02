@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Ingame.Character;
+using Cryptos.Runtime.Entity.Utility;
 using UnityEngine;
 
 namespace Cryptos.Runtime.UseCase.Ingame.System
@@ -7,8 +8,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     {
         public override void ApplyStatusEffect(TentativeCharacterData target)
         {
-            target.SetNewBuff(TentativeCharacterData.BuffType.Armor,
-                _armorIncreaseAmount);
+            var modifier = new StatModifier(_armorIncreaseAmount, StatModType.Multiplier, source: this);
+            target.SetNewBuff(TentativeCharacterData.BuffType.Armor, modifier);
         }
 
         [SerializeField, Min(0), Tooltip("装甲増加量。(%)")]

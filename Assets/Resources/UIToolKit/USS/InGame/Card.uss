@@ -1,0 +1,42 @@
+VisualElement {
+}
+
+.card-deck {
+    transition-duration: 1s;
+    rotate: 0;
+}
+
+.card-stack {
+    rotate: -90deg;
+    transition-duration: 1s;
+}
+
+.card-stack .hide {
+    display: none;
+}
+
+.card-stack .icon {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    width: 150px;
+    height: 150px;
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.card-stack .elements {
+    justify-content: center;
+}
+
+.elements {
+    justify-content: flex-start;
+}

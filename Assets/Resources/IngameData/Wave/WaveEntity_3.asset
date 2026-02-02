@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab916905222e6341bb5ad967c477b3e, type: 3}
+  m_Name: WaveEntity_3
+  m_EditorClassIdentifier: 
+  _waveExperiencePoint: 1200
+  _enemies:
+  - {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
+  - {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
+  - {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
+  - {fileID: 11400000, guid: 3a78f56dc59adb34e919ea4dcc9710bd, type: 2}
+  _bgmCueName: Boss
