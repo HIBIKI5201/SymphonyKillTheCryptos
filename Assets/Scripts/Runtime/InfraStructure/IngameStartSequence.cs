@@ -144,7 +144,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             await InitializeUtility.WaitInitialize(_gameUIManager);
 
             // その他の初期化を行う。
-            CardPresenter cardPresenter = new(cardInitData.CardUseCase, ingameUIManager);
+            CardPresenter cardPresenter = new(cardInitData.CardUseCase,cardExecutionUseCase,  ingameUIManager);
             symphonyPresenter.Init(charaInitData.Symphony, symphonyData, cardExecutionUseCase, comboEntity);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
