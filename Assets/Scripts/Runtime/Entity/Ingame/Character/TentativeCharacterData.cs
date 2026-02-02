@@ -68,9 +68,8 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         /// 新しいバフを設定します。
         /// </summary>
         /// <param name="type">バフの種類。</param>
-        /// <param name="value">バフの値。(%) </param>
-        /// <param name="priority"> バフの優先度。 </param>
-        public void SetNewBuff(BuffType type, float value, int priority = 0)
+        /// <param name="modifier">適用するModifierオブジェクト。</param>
+        public void SetNewBuff(BuffType type, StatModifier modifier)
         {
             float oldValue = 0;
             float newValue = 0;
@@ -79,31 +78,31 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
             {
                 case BuffType.AttackPower:
                     oldValue = _attackPower.Value;
-                    _attackPower.AddMultiplier(value, priority);
+                    _attackPower.AddModifier(modifier);
                     newValue = _attackPower.Value;
                     break;
 
                 case BuffType.CriticalChance:
                     oldValue = _criticalChance.Value;
-                    _criticalChance.AddMultiplier(value, priority); 
+                    _criticalChance.AddModifier(modifier); 
                     newValue = _criticalChance.Value;
                     break;
 
                 case BuffType.CriticalDamage:
                     oldValue = _criticalDamage.Value;
-                    _criticalDamage.AddMultiplier(value, priority);
+                    _criticalDamage.AddModifier(modifier);
                     newValue = _criticalDamage.Value;
                     break;
                 
                 case BuffType.MaxHealth: 
                     oldValue = _maxHealth.Value;
-                    _maxHealth.AddMultiplier(value, priority);
+                    _maxHealth.AddModifier(modifier);
                     newValue = _maxHealth.Value;
                     break;
 
                 case BuffType.Armor:
                     oldValue = _armor.Value;
-                    _armor.AddMultiplier(value, priority);
+                    _armor.AddModifier(modifier);
                     newValue = _armor.Value;
                     break;
             }
@@ -151,3 +150,4 @@ namespace Cryptos.Runtime.Entity.Ingame.Character
         }
     }
 }
+
