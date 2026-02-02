@@ -16,9 +16,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
     {
         public CharacterEntity Self => _self;
 
-        // CardExecutionUseCase への依存を追加
-        private CardExecutionUseCase _cardExecutionUseCase;
-
         /// <summary>
         /// 自分のキャラクターエンティティを登録する。
         /// </summary>
@@ -100,6 +97,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
         private SymphonyData _data;
         private ISymphonyAnimeManager _animeManager;
         private ComboEntity _comboEntity;
+        private CardExecutionUseCase _cardExecutionUseCase;
 
         private void Awake()
         {
