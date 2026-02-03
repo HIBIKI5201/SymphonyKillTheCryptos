@@ -73,9 +73,6 @@ namespace Cryptos.Runtime.UI
                     style.width = Length.Percent(100);
                 }
 
-
-                hierarchy.Add(this);
-
                 #endregion
 
                 // UI要素の取得
