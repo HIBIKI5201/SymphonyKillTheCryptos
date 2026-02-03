@@ -5,26 +5,26 @@ using UnityEngine;
 namespace Cryptos.Runtime.Entity.Ingame.Card
 {
     /// <summary>
-    /// カードデッキのエンティティ。
+    ///     カードデッキのエンティティ。
     /// </summary>
-    public class CardDeckEntity
+    public class CardHandEntity
     {
         /// <summary>
-        /// カードがデッキに追加されたときに発行されます。
+        ///     カードがデッキに追加されたときに発行されます。
         /// </summary>
         public event Action<CardEntity> OnAddCardInstance;
         /// <summary>
-        /// カードがデッキから削除されたときに発行されます。
+        ///     カードがデッキから削除されたときに発行されます。
         /// </summary>
         public event Action<CardEntity> OnRemoveCardInstance;
 
         /// <summary>
-        /// デッキ内のカードの読み取り専用リスト。
+        ///     デッキ内のカードの読み取り専用リスト。
         /// </summary>
-        public IReadOnlyList<CardEntity> DeckCardList => _deckCardList;
+        public IReadOnlyList<CardEntity> CardList => _cardList;
 
         /// <summary>
-        /// カードをデッキに追加します。
+        ///     カードをデッキに追加します。
         /// </summary>
         /// <param name="cardEntity">追加するカード。</param>
         public void AddCardToDeck(CardEntity cardEntity)
@@ -34,7 +34,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
                 Debug.LogWarning("カードエンティティがnullです");
                 return;
             }
-            _deckCardList.Add(cardEntity);
+            _cardList.Add(cardEntity);
             OnAddCardInstance?.Invoke(cardEntity);
         }
 
@@ -49,7 +49,7 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
                 Debug.LogWarning("カードエンティティがnullです");
                 return;
             }
-            if (_deckCardList.Remove(cardEntity))
+            if (_cardList.Remove(cardEntity))
             {
                 OnRemoveCardInstance?.Invoke(cardEntity);
             }
@@ -59,6 +59,6 @@ namespace Cryptos.Runtime.Entity.Ingame.Card
             }
         }
 
-        private readonly List<CardEntity> _deckCardList = new();
+        private readonly List<CardEntity> _cardList = new();
     }
 }
