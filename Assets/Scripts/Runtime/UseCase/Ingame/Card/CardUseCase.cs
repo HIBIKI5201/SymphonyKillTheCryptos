@@ -61,9 +61,14 @@ namespace Cryptos.Runtime.UseCase.Ingame.Card
         /// <param name="input">入力された文字。</param>
         public void InputCharToDeck(char input)
         {
-            foreach (var card in _cardHandEntity.CardList)
+            for (int i = _cardHandEntity.CardList.Count - 1; i >= 0; i--)
             {
-                card.WordEntity.OnInputChar(input);
+                // ループ中にリストの要素数が変わる可能性があるため、範囲チェックを行います。
+                if (i < _cardHandEntity.CardList.Count)
+                {
+                    CardEntity card = _cardHandEntity.CardList[i];
+                    card.WordEntity.OnInputChar(input);
+                }
             }
         }
 
