@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30353de3ca85bc64e8ae89fbec1ac382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deadNodeName: Base Layer.Dead
+  _deadAnimation: {fileID: 7400000, guid: 241853b59e9b2c04e9f5c7e67622acaa, type: 3}
 --- !u!114 &1962441570470932821
 MonoBehaviour:
   m_ObjectHideFlags: 0
