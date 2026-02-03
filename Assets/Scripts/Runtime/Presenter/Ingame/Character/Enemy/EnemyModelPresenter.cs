@@ -39,17 +39,19 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
                 _self.OnTakedDamage -= HandleTakeDamage;
             });
 
-            if (TryGetComponent<BehaviorGraphAgent>(out var agent))
+            if (_behaviorAgent != null)
             {
-                BlackboardReference blackboard = agent.BlackboardReference;
+                BlackboardReference blackboard = _behaviorAgent.BlackboardReference;
                 blackboard.SetVariableValue(_behavorSelfParameter, this);
                 blackboard.SetVariableValue(_behaviorTargetParameter, target);
                 blackboard.SetVariableValue(_behaviorPipelineParameter, combatPipeline);
             }
         }
 
-        public void Dead()
+        public async void Dead()
         {
+            _behaviorAgent.End();
+            await _animeManager.Dead();
             Destroy(gameObject);
         }
 
@@ -62,6 +64,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
 
         private CharacterEntity _self;
         private Transform _target;
+        private BehaviorGraphAgent _behaviorAgent;
         private IEnemyAnimeManager _animeManager;
 
         private void Awake()
@@ -70,6 +73,10 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             if (_animeManager == null)
             {
                 Debug.LogError("SymphonyAnimeManager is not found on the GameObject.");
+            }
+            if (TryGetComponent(out _behaviorAgent))
+            {
+                Debug.LogError("BehaviorAgent is null");
             }
         }
 
