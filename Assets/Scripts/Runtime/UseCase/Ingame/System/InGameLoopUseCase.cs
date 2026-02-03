@@ -46,7 +46,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         {
             Debug.Log("InGameLoopUseCase: ゲーム開始！");
 
-            await InitializeGame();
+            InitializeGame();
             
             // Fire and forget
             _ = GameLoopAsync();
@@ -65,7 +65,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <summary>
         ///     ゲーム開始時の初期化処理を実行する。
         /// </summary>
-        private async ValueTask InitializeGame()
+        private void InitializeGame()
         {
             // プレイヤーデータロード、カードデッキ初期化、最初のウェーブ設定などの初期化処理を行う。
             Debug.Log("InGameLoopUseCase: ゲーム初期化完了。");
