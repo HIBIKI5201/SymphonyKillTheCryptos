@@ -17,9 +17,9 @@ namespace Cryptos.Runtime.UI
         {
             None = 0,
             Absolute = 1 << 0,
-            FullRangth = 1 << 1,
+            FullLength = 1 << 1,
             PickModeIgnore = 1 << 2,
-            All = Absolute | FullRangth | PickModeIgnore
+            All = Absolute | FullLength | PickModeIgnore
         }
 
         public VisualElementBase(string path, InitializeType initializeType = InitializeType.All)
@@ -67,7 +67,7 @@ namespace Cryptos.Runtime.UI
                     style.position = Position.Absolute;
                 }
 
-                if ((type & InitializeType.FullRangth) != 0)
+                if ((type & InitializeType.FullLength) != 0)
                 {
                     style.height = Length.Percent(100);
                     style.width = Length.Percent(100);
