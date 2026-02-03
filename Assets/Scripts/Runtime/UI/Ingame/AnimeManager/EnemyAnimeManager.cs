@@ -1,3 +1,5 @@
+using Cryptos.Runtime.UI;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
@@ -10,8 +12,17 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             _animator?.SetTrigger(_hitHash);
         }
 
-        private readonly int _hitHash = Animator.StringToHash("Hit");
+        public async ValueTask Dead()
+        {
+            _animator.SetTrigger(_deadHash);
+            await Awaitable.WaitForSecondsAsync(_deadAnimation.length);
+        }
 
+        private readonly int _hitHash = Animator.StringToHash("Hit");
+        private readonly int _deadHash = Animator.StringToHash("Dead");
+
+        [SerializeField]
+        private AnimationClip _deadAnimation;
         private Animator _animator;
 
         private void Awake()

@@ -117,6 +117,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
 --- !u!1 &4589234490198651425
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,6 +186,7 @@ MonoBehaviour:
   - rid: 7654980637919019316
   - rid: 7654980637919019907
   - rid: 7654980640459719606
+  m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -532,6 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30353de3ca85bc64e8ae89fbec1ac382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deadNodeName: Base Layer.Dead
 --- !u!114 &1962441570470932821
 MonoBehaviour:
   m_ObjectHideFlags: 0
