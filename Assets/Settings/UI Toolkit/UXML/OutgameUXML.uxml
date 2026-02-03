@@ -1,8 +1,20 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Resources/UIToolKit/USS/MainMenu.uss?fileID=7433441132597879392&amp;guid=3dc41e362b91dcf44a8155b1d853907a&amp;type=3#MainMenu" />
+    <Style src="project://database/Assets/Resources/UIToolKit/USS/OutGame/MainMenu.uss?fileID=7433441132597879392&amp;guid=3dc41e362b91dcf44a8155b1d853907a&amp;type=3#MainMenu"/>
     <ui:VisualElement name="buttons" style="position: absolute; width: 300px; height: 400px; justify-content: space-between; right: 100px; bottom: 50px;">
-        <ui:Button text="Game Start" name="start" class="main-button" />
-        <ui:Button text="Button" class="main-button" />
-        <ui:Button text="Button" class="main-button" />
+        <ui:Button text="Game Start" name="start" class="main-button">
+            <Bindings>
+                <UnityEngine.Localization.LocalizedString property="text" table="GUID:191e795130515b04693eb667ec7b92a6" entry="Id(23857758208)"/>
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Setting" class="main-button">
+            <Bindings>
+                <UnityEngine.Localization.LocalizedString property="text" table="GUID:191e795130515b04693eb667ec7b92a6" entry="Id(140170002432)"/>
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Quit" class="main-button">
+            <Bindings>
+                <UnityEngine.Localization.LocalizedString property="text" table="GUID:191e795130515b04693eb667ec7b92a6" entry="Id(180632453120)"/>
+            </Bindings>
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

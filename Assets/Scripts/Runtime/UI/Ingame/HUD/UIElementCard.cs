@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using SymphonyFrameWork.Utility;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
@@ -9,20 +10,22 @@ namespace Cryptos.Runtime.UI.Ingame.Card
     ///     カードのUI要素
     /// </summary>
     [UxmlElement]
-    public partial class UIElementCard : SymphonyVisualElement
+    public partial class UIElementCard : VisualElementBase
     {
-        public UIElementCard() : base("UIToolKit/UXML/InGame/Card", InitializeType.PickModeIgnore) { }
+        public UIElementCard() : base("Card", InitializeType.PickModeIgnore) { }
 
         /// <summary>
-        ///     データをセットする
+        ///     データをセットする。
         /// </summary>
         /// <param name="data"></param>
-        public void SetData(CardViewModel instance)
+        public async ValueTask SetData(CardViewModel instance)
         {
             instance.OnWordUpdated += HandleWordUpdate;
             instance.OnProgressUpdate += HandleProgressBarUpdate;
 
-            //初期値を入れる
+            await InitializeTask;
+
+            //初期値を入れる。
             HandleWordUpdate(instance.CurrentWord, 0);
             HandleProgressBarUpdate(0);
 
@@ -34,17 +37,17 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             _root.AddToClassList(CARD_STACK_STYLE);
         }
 
-        protected override Task Initialize_S(TemplateContainer container)
+        protected override ValueTask Initialize_S(VisualElement root)
         {
             style.marginRight = SIDE_MARGIN;
             style.marginLeft = SIDE_MARGIN;
 
-            _root = container.Q<VisualElement>(ROOT_NAME);
-            _iconElement = container.Q<VisualElement>(ICON_NAME);
-            _wordLabel = container.Q<Label>(WORD_LABEL_NAME);
-            _progressBar = container.Q<VisualElement>(PROGRESS_BAR_NAME);
+            _root = root.Q<VisualElement>(ROOT_NAME);
+            _iconElement = root.Q<VisualElement>(ICON_NAME);
+            _wordLabel = root.Q<Label>(WORD_LABEL_NAME);
+            _progressBar = root.Q<VisualElement>(PROGRESS_BAR_NAME);
 
-            return Task.CompletedTask;
+            return default;
         }
 
         private const string ROOT_NAME = "root";
@@ -61,13 +64,16 @@ namespace Cryptos.Runtime.UI.Ingame.Card
         private Label _wordLabel;
         private VisualElement _progressBar;
 
+        private CancellationTokenSource _progressTaskToken;
+
         /// <summary>
         ///     ワードを更新する
         /// </summary>
         /// <param name="word"></param>
         /// <param name="index"></param>
-        private void HandleWordUpdate(string word, int index)
+        private async void HandleWordUpdate(string word, int index)
         {
+            await InitializeTask;
             string newText = $"<b><color=green>{word[..index]}</color></b>{word[index..]}";
             _wordLabel.text = newText;
         }
@@ -76,10 +82,34 @@ namespace Cryptos.Runtime.UI.Ingame.Card
         ///     進捗率を更新する
         /// </summary>
         /// <param name="progress"></param>
-        private void HandleProgressBarUpdate(float progress)
+        private async void HandleProgressBarUpdate(float progress)
         {
+            await InitializeTask;
+
+            if (_progressTaskToken != null
+                && !_progressTaskToken.IsCancellationRequested)
+            {
+                _progressTaskToken.Cancel();
+                _progressTaskToken.Dispose();
+                _progressTaskToken = null;
+            }
+
+            Length length = _progressBar.style.width.value;
             progress = progress * 100;
-            _progressBar.style.width = Length.Percent(progress);
+
+            _progressTaskToken = new();
+            try
+            {
+                await SymphonyTween.Tweening(length.value,
+                    n => _progressBar.style.width = Length.Percent(progress),
+                    progress,
+                    0.5f, // 仮の値。
+                    token: _progressTaskToken.Token);
+            }
+            catch
+            {
+                _progressBar.style.width = Length.Percent(progress);
+            }
         }
     }
 }
