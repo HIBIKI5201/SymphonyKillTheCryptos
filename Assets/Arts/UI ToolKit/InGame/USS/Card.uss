@@ -8,11 +8,13 @@ VisualElement {
 
 .card-stack {
     rotate: -90deg;
-    transition-duration: 1s;
+    transition-duration: 0.3s;
 }
 
 .card-stack .hide {
-    display: none;
+    display: flex;
+    opacity: 0;
+    transition-duration: 0.2s;
 }
 
 .card-stack .icon {
@@ -20,8 +22,11 @@ VisualElement {
     margin-right: 0;
     margin-bottom: 0;
     margin-left: 0;
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-position-y: center;
+    -unity-background-scale-mode: scale-and-crop;
 }
 
 .icon {
