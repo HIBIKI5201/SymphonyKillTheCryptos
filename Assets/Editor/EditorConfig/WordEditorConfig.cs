@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Cryptos.Editor.ProjectSetting
 {
-    [FilePath(CryptosSettingProviderUtility.EDITOR_CONFIG_PAHT + nameof(WordEditorConfig) + ".asset",
+    [FilePath(CryptosSettingProviderUtility.EDITOR_CONFIG_PATH + nameof(WordEditorConfig) + ".asset",
         FilePathAttribute.Location.ProjectFolder)]
     public class WordEditorConfig : ScriptableSingleton<WordEditorConfig>
     {
