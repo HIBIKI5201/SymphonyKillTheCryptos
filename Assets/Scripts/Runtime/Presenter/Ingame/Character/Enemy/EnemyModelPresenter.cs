@@ -50,8 +50,8 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
 
         public async void Dead()
         {
-            _behaviorAgent.End();
-            await _animeManager.Dead();
+            _behaviorAgent?.End();
+            if (_animeManager != null) { await _animeManager.Dead(); }
             Destroy(gameObject);
         }
 
