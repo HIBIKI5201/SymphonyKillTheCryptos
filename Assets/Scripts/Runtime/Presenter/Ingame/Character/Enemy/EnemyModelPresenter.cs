@@ -74,7 +74,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Enemy
             {
                 Debug.LogError("SymphonyAnimeManager is not found on the GameObject.");
             }
-            if (TryGetComponent(out _behaviorAgent))
+            if (!TryGetComponent(out _behaviorAgent))
             {
                 Debug.LogError("BehaviorAgent is null");
             }
