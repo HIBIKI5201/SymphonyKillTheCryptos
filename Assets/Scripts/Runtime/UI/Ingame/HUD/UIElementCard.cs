@@ -101,9 +101,9 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             try
             {
                 await SymphonyTween.Tweening(length.value,
-                    n => _progressBar.style.width = Length.Percent(progress),
+                    n => _progressBar.style.width = Length.Percent(n),
                     progress,
-                    0.5f, // 仮の値。
+                    0.2f, // 仮の値。
                     token: _progressTaskToken.Token);
             }
             catch
