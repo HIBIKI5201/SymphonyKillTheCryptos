@@ -338,3 +338,61 @@ UseCase層はPresenter層のViewModelを知るべきではありません。`InG
     *   `LevelUpPresenter` のDI注入を調整。
 
 この計画に基づき、ToDoリストを更新し、作業を進めます。
+
+## 10. ユーザーの意図の再確認と修正計画 (アップグレードのレベルの反映)
+
+ユーザーからのフィードバックにより、私が「UIに渡したいのはプレイヤーのレベルではなく、アップグレードのレベル」という点を誤解していたことが判明しました。また、その修正中に `IngameUIManager` が `ILevelUpUIManager` インターフェースを正しく実装していないエラーが発生しているとのことです。
+
+このエラーは、`ILevelUpUIManager.LevelUpSelectAsync` のシグネチャが `ReadOnlySpan<LevelUpgradeNodeViewModel>` を引数に取るのに対し、`IngameUIManager.LevelUpSelectAsync` が `LevelUpScreenViewModel` を受け取っていたために発生しました。
+
+**修正の要点**:
+1*  ユーザーの「アップグレードのレベル」の意図を汲み、`LevelUpgradeNodeViewModel` に `int UpgradeLevel` プロパティを追加し、`LevelUseCase` の `GetUpgradeLevel` メソッドからこの情報を取得するようにします。
+2*  `LevelUpScreenViewModel` は、ユーザーの意図とエラーの原因から、今回のタスクでは不要と判断し、削除します。
+3*  `ILevelUpUIManager` インターフェース、`IngameUIManager`、`UIElementLevelUpgradeWindow`、`LevelUpPresenter` の各シグネチャを `ReadOnlySpan<LevelUpgradeNodeViewModel>` を引数に取るように統一します。
+4*  DIの整合性を保つため、`IngameStartSequence` で `LevelUpPresenter` を初期化する際に、`IngameUIManager` を `ILevelUpUIManager` 型として正しく注入します。
+
+**具体的な修正手順**:
+
+1.  **`LevelUseCase` に `GetUpgradeLevel(LevelUpgradeNode node)` メソッドが存在することを確認**:
+    *   これは既に `_acquiredUpgradeEntity.GetCount(node)` を返す形で存在することを確認済みです。
+2.  **`LevelUpgradeNodeViewModel.cs` の変更**:
+    *   `int UpgradeLevel` プロパティを追加します。
+    *   コンストラクタを `LevelUpgradeNode node, int upgradeLevel` を受け取るように変更します。
+3.  **`LevelUpPresenter.cs` の変更**:
+    *   `HandleLevelUpSelectAsync` メソッド内で `LevelUpgradeNodeViewModel` を生成する際に、`options` と `_levelUseCase.GetUpgradeLevel(o.OriginalNode)` を用いて `LevelUpgradeNodeViewModel` の配列を作成します。
+    *   `_levelUpUIManager.LevelUpSelectAsync` にこの `LevelUpgradeNodeViewModel[]` を `AsSpan()` して渡します。
+    *   `LevelUpScreenViewModel` の生成と `_levelUseCase.GetCurrentLevel()` の呼び出しを削除します。
+4.  **`ILevelUpUIManager.cs` の変更**:
+    *   `LevelUpSelectAsync` メソッドの引数を `ReadOnlySpan<LevelUpgradeNodeViewModel> vm` に変更します。
+5.  **`IngameUIManager.cs` の変更**:
+    *   `LevelUpSelectAsync` メソッドの引数を `ReadOnlySpan<LevelUpgradeNodeViewModel> nodes` に変更します。
+    *   `OpenLevelUpgradeWindow` メソッドの引数を `ReadOnlySpan<LevelUpgradeNodeViewModel> nodes` に変更します。
+    *   `ILevelUpUIManager` インターフェースを実装します。
+6.  **`UIElementLevelUpgradeWindow.cs` の変更**:
+    *   `OpenWindow` メソッドの引数を `ReadOnlySpan<LevelUpgradeNodeViewModel> nodes` に変更します。
+7.  **`IngameStartSequence.cs` の変更**:
+    *   `LevelUpPresenter` のインスタンスを生成する際に、`ingameUIManager` を `ILevelUpUIManager` 型として `LevelUpPresenter` のコンストラクタにDI注入します。
+8.  **`LevelUpScreenViewModel.cs` の削除**:
+    *   このファイルは今回の修正で不要になるため削除します。
+
+**変更されるファイルと内容**:
+*   **`Assets/Scripts/Runtime/UseCase/Ingame/System/LevelUseCase.cs`**:
+    *   `GetUpgradeLevel` メソッドが存在することを確認済み。
+*   **`Assets/Scripts/Runtime/Presenter/Ingame/System/LevelUpgradeNodeViewModel.cs`**:
+    *   `UpgradeLevel` プロパティを追加、コンストラクタを修正。
+*   **`Assets/Scripts/Runtime/Presenter/Ingame/System/LevelUpPresenter.cs`**:
+    *   `HandleLevelUpSelectAsync` の実装を修正。
+    *   コンストラクタの引数を `ILevelUpUIManager` に変更。
+*   **`Assets/Scripts/Runtime/Presenter/Ingame/System/ILevelUpUIManager.cs`**:
+    *   `LevelUpSelectAsync` の引数を `ReadOnlySpan<LevelUpgradeNodeViewModel>` に変更。
+*   **`Assets/Scripts/Runtime/UI/Ingame/HUD/IngameUIManager.cs`**:
+    *   `ILevelUpUIManager` を実装。
+    *   `LevelUpSelectAsync` と `OpenLevelUpgradeWindow` のシグネチャを修正。
+*   **`Assets/Scripts/Runtime/UI/Ingame/HUD/UIElementLevelUpgradeWindow.cs`**:
+    *   `OpenWindow` のシグネチャを修正。
+*   **`Assets/Scripts/Runtime/InfraStructure/IngameStartSequence.cs`**:
+    *   `LevelUpPresenter` のDI注入を調整。
+*   **`Assets/Scripts/Runtime/Presenter/Ingame/System/LevelUpScreenViewModel.cs`**:
+    *   削除。
+
+この計画に基づき、ToDoリストを更新し、作業を進めます。
