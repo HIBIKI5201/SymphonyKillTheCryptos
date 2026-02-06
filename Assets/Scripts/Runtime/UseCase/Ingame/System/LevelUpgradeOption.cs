@@ -6,7 +6,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     /// レベルアップ選択肢の抽象的な表現。
     /// UseCase層がPresenter層のViewModelに直接依存しないようにするために使用されます。
     /// </summary>
-    public class LevelUpgradeOption
+    public struct LevelUpgradeOption
     {
         public string NodeName { get; }
         public ILevelUpgradeEffect[] Effects { get; }

@@ -18,11 +18,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         public async Task<LevelUpgradeOption> HandleLevelUpSelectAsync(LevelUpgradeOption[] options)
         {
             // LevelUpgradeOption[] を LevelUpgradeNodeViewModel[] に変換
-            var nodeViewModels = options.Select(o => new LevelUpgradeNodeViewModel(o.OriginalNode)).ToArray();
-            // 現在のプレイヤーレベルを取得
-            int currentPlayerLevel = _levelUseCase.GetCurrentLevel();
-            // LevelUpScreenViewModel を生成
-            var screenViewModel = new LevelUpScreenViewModel(nodeViewModels, currentPlayerLevel);
+            var nodeViewModels = options.Select(o => new LevelUpgradeNodeViewModel(
+                o.OriginalNode,
+                _levelUseCase.GetUpgradeLevel(o.OriginalNode))).ToArray();
 
             // IngameUIManager に LevelUpScreenViewModel を渡す
             var selectedNodeVM = await _levelUpUIManager.LevelUpSelectAsync(screenViewModel);

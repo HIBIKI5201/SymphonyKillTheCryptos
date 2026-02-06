@@ -60,9 +60,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             }
         }
 
-        public int GetCurrentLevel()
+        public int GetUpgradeLevel(LevelUpgradeNode node)
         {
-            return _levelEntity.CurrentLevel;
+            return _acquiredUpgradeEntity.GetCount(node);
         }
 
         private readonly LevelEntity _levelEntity;

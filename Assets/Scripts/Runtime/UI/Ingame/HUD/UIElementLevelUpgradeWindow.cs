@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Presenter.Ingame.System;
 using SymphonyFrameWork.Utility;
+using System;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
@@ -38,16 +39,16 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         /// ウィンドウを開き、レベルアップノードを表示します。
         /// </summary>
         /// <param name="nodeVMs">表示するノードのビューモデル。</param>
-        public void OpenWindow(LevelUpScreenViewModel vm)
+        public void OpenWindow(ReadOnlySpan<LevelUpgradeNodeViewModel> vm)
         {
             _nodes = new UIElementLevelUpgradeNode[NODE_MAX];
 
             for (int i = 0; i < NODE_MAX; i++)
             {
-                if (vm.LevelUpgradeNodes.Length <= i) { break; }
+                if (vm.Length <= i) { break; }
 
                 UIElementLevelUpgradeNode node = new();
-                LevelUpgradeNodeViewModel nodeVM = vm.LevelUpgradeNodes[i];
+                LevelUpgradeNodeViewModel nodeVM = vm[i];
 
                 node.SetData(nodeVM);
 

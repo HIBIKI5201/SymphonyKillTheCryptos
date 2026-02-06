@@ -120,21 +120,13 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             disposables.Add(cardExecutionUseCase);
 
             // レベルアップ時のコールバックを定義。
-            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = 
-                async (options) =>
-            {
-                // LevelUpgradeOption[] を LevelUpgradeNodeViewModel[] に変換
-                var nodeViewModels = options.Select(o => new LevelUpgradeNodeViewModel(o.OriginalNode)).ToArray();
-                // 現在のプレイヤーレベルを取得
-                int currentPlayerLevel = levelUseCase.GetCurrentLevel(); 
-                // LevelUpScreenViewModel を生成
-                var screenViewModel = new LevelUpScreenViewModel(nodeViewModels, currentPlayerLevel);
+            // Presenter層にレベルアップ時のUI連携処理を委譲。
+            // ILevelUpUIManager として ingameUIManager をDI注入。
+            LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager as ILevelUpUIManager);
 
-                // IngameUIManager に LevelUpScreenViewModel を渡す
-                var selectedNodeVM = await ingameUIManager.LevelUpSelectAsync(screenViewModel);
-                // 選択された LevelUpgradeNodeViewModel に含まれる LevelUpgradeNode を元に新しい LevelUpgradeOption を生成して返す
-                return new LevelUpgradeOption(selectedNodeVM.LevelUpgradeNode);
-            };
+            // レベルアップ時のコールバックを定義。
+            Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = 
+                levelUpPresenter.HandleLevelUpSelectAsync;
 
             // InGameLoopUseCaseを作成し、依存を注入。
             InGameLoopUseCase inGameLoopUseCase = new(
