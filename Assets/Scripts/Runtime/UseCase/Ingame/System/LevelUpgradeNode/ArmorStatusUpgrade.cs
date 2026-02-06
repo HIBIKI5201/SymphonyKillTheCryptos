@@ -8,7 +8,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     {
         public override void ApplyStatusEffect(TentativeCharacterData target)
         {
-            var modifier = new StatModifier(_armorIncreaseAmount, StatModType.Multiplier, source: this);
+            StatModifier modifier = new(_armorIncreaseAmount, StatModType.Multiplier);
             target.SetNewBuff(TentativeCharacterData.BuffType.Armor, modifier);
         }
 

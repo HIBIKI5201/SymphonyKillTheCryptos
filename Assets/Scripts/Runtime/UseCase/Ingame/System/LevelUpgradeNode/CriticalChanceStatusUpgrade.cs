@@ -8,7 +8,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     {
         public override void ApplyStatusEffect(TentativeCharacterData target)
         {
-            var modifier = new StatModifier(_criticalChanceIncreaseAmount, StatModType.Multiplier, source: this);
+            StatModifier modifier = new(_criticalChanceIncreaseAmount, StatModType.Multiplier);
             target.SetNewBuff(TentativeCharacterData.BuffType.CriticalChance, modifier);
         }
 
