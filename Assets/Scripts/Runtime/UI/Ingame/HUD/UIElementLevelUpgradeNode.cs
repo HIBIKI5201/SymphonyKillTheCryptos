@@ -74,6 +74,8 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         private const string ICON_ELEMENT_NAME = "icon";
         private const string NAME_ELEMENT_NAME = "name";
         private const string EXPLANATION_ELEMENT_NAME = "explanation";
+        private const string RANK_ROOT_NAME = "rank-root";
+        private const string RANK_ELEMENT_NAME = "rank-element";
 
         private Label _wordLabel;
         private VisualElement _iconElement;

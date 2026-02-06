@@ -60,6 +60,11 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             }
         }
 
+        public int GetCurrentLevel()
+        {
+            return _levelEntity.CurrentLevel;
+        }
+
         private readonly LevelEntity _levelEntity;
         private readonly LevelUpgradeData _data;
         private readonly TentativeCharacterData _characterData;

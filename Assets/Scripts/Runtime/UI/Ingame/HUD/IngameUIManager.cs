@@ -27,12 +27,12 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         /// </summary>
         /// <param name="nodes">レベルアップ候補のノード。</param>
         /// <returns>選択されたレベルアップノード。</returns>
-        public async Task<LevelUpgradeNodeViewModel> LevelUpSelectAsync(LevelUpgradeNodeViewModel[] nodes)
+        public async Task<LevelUpgradeNodeViewModel> LevelUpSelectAsync(LevelUpScreenViewModel vm)
         {
-            Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
+            Debug.Log($"候補カード {string.Join(", ", vm.LevelUpgradeNodes.Select(n => n.NodeName))}");
 
             // ウィンドウを出現させて待機。
-            OpenLevelUpgradeWindow(nodes.AsSpan());
+            OpenLevelUpgradeWindow(vm);
 
             LevelUpgradeNodeViewModel selectedNodeVM = default;
             await SymphonyTask.WaitUntil(
@@ -76,9 +76,9 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         ///     レベルアップウィンドウを開きます。
         /// </summary>
         /// <param name="nodes">表示するノード。</param>
-        public void OpenLevelUpgradeWindow(Span<LevelUpgradeNodeViewModel> nodes)
+        public void OpenLevelUpgradeWindow(LevelUpScreenViewModel vm)
         {
-            _levelUpgrade.OpenWindow(nodes);
+            _levelUpgrade.OpenWindow(vm);
         }
 
         /// <summary>

@@ -39,16 +39,16 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         /// ウィンドウを開き、レベルアップノードを表示します。
         /// </summary>
         /// <param name="nodeVMs">表示するノードのビューモデル。</param>
-        public void OpenWindow(Span<LevelUpgradeNodeViewModel> nodeVMs)
+        public void OpenWindow(LevelUpScreenViewModel vm)
         {
             _nodes = new UIElementLevelUpgradeNode[NODE_MAX];
 
             for (int i = 0; i < NODE_MAX; i++)
             {
-                if (nodeVMs.Length <= i) break;
+                if (vm.LevelUpgradeNodes.Length <= i) break;
 
                 UIElementLevelUpgradeNode node = new();
-                LevelUpgradeNodeViewModel nodeVM = nodeVMs[i];
+                LevelUpgradeNodeViewModel nodeVM = vm.LevelUpgradeNodes[i];
 
                 node.SetData(nodeVM);
 

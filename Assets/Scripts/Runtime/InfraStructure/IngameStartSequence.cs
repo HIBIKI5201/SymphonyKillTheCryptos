@@ -123,9 +123,17 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = 
                 async (options) =>
             {
-                var viewModels = options.Select(o => new LevelUpgradeNodeViewModel(o.OriginalNode)).ToArray();
-                var selectedViewModel = await ingameUIManager.LevelUpSelectAsync(viewModels);
-                return options.First(o => o.OriginalNode == selectedViewModel.LevelUpgradeNode);
+                // LevelUpgradeOption[] を LevelUpgradeNodeViewModel[] に変換
+                var nodeViewModels = options.Select(o => new LevelUpgradeNodeViewModel(o.OriginalNode)).ToArray();
+                // 現在のプレイヤーレベルを取得
+                int currentPlayerLevel = levelUseCase.GetCurrentLevel(); 
+                // LevelUpScreenViewModel を生成
+                var screenViewModel = new LevelUpScreenViewModel(nodeViewModels, currentPlayerLevel);
+
+                // IngameUIManager に LevelUpScreenViewModel を渡す
+                var selectedNodeVM = await ingameUIManager.LevelUpSelectAsync(screenViewModel);
+                // 選択された LevelUpgradeNodeViewModel に含まれる LevelUpgradeNode を元に新しい LevelUpgradeOption を生成して返す
+                return new LevelUpgradeOption(selectedNodeVM.LevelUpgradeNode);
             };
 
             // InGameLoopUseCaseを作成し、依存を注入。

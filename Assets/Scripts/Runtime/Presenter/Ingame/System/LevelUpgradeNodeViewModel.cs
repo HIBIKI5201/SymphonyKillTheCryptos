@@ -9,29 +9,26 @@ namespace Cryptos.Runtime.Presenter.System
     public readonly struct LevelUpgradeNodeViewModel
     {
         /// <summary>
-        /// コンストラクタ。
+        ///     コンストラクタ。
         /// </summary>
         /// <param name="node">ビューモデルがラップするノード。</param>
         public LevelUpgradeNodeViewModel(LevelUpgradeNode node)
         {
             _node = node;
+            // TODO 現在レベルの情報を追加する。
         }
 
-                /// <summary>
-        /// ノード名。
-        /// </summary>
+        /// <summary> ノード名。 </summary>
         public string NodeName => _node.NodeName;
-        /// <summary>
-        /// ノードのテクスチャ。
-        /// </summary>
+        /// <summary> ノードのテクスチャ。 </summary>
         public Texture2D Texture => _node.Texture;
-        /// <summary>
-        /// ノードの説明。
-        /// </summary>
+        /// <summary> ノードの説明。 </summary>
         public string Description => _node.Description;
+        /// <summary> ノードの最大ランク。 </summary>
+        public int MaxRank => _node.MaxStack;
 
         /// <summary>
-        /// このビューモデルがラップするノード。
+        ///     このビューモデルがラップするノード。
         /// </summary>
         public LevelUpgradeNode LevelUpgradeNode => _node;
 
