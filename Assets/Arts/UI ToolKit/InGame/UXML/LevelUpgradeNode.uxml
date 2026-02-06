@@ -4,8 +4,6 @@
         <ui:VisualElement name="icon" style="width: 200px; height: 200px;"/>
         <ui:Label text="Label" name="name" style="font-size: 30px;"/>
         <ui:Label text="Label&#10;Label&#10;Label" name="explanation" style="font-size: 20px; margin-top: 5px;"/>
-        <ui:VisualElement name="rank-root" style="flex-grow: 1; width: 200px; height: 200px; flex-direction: row;">
-            <ui:VisualElement name="rank-element" style="flex-grow: 1;"/>
-        </ui:VisualElement>
+        <ui:VisualElement name="rank-root" style="width: 200px; height: 25px; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px; flex-direction: row; justify-content: space-evenly;"/>
     </ui:VisualElement>
 </ui:UXML>
