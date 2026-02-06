@@ -45,7 +45,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.Word
         ///     文字を入力する。
         /// </summary>
         /// <param name="c">入力する文字。</param>
-        public void InputChar(char c) => _entity.OnInputChar(c);
+        public void InputChar(char c) => _entity?.OnInputChar(c);
 
         private readonly WordEntity _entity;
     }
