@@ -19,7 +19,7 @@ namespace Cryptos.Runtime.Entity.Utility
         }
 
         public float BaseValue => _bsseValue;
-        public float Value => _bsseValue;
+        public float Value => _value;
 
         public void AddModifier(StatModifier mod)
         {
@@ -39,26 +39,38 @@ namespace Cryptos.Runtime.Entity.Utility
 
         private float Recalculate()
         {
-            float finalValue = BaseValue;
-            
-            // 加算Modifierを先に適用。
-            foreach (var mod in _modifiers.Where(m => m.Type == StatModType.Additive))
-            {
-                finalValue += mod.Value;
-            }
+            float result = 0f;
 
-            // 乗算Modifierを優先度順に適用。
-            var multiplierGroups = _modifiers.Where(m => m.Type == StatModType.Multiplier)
+            IOrderedEnumerable<IGrouping<int, StatModifier>> groups = _modifiers
                 .GroupBy(m => m.Priority)
                 .OrderBy(g => g.Key);
 
-            foreach (var group in multiplierGroups)
+            foreach (IGrouping<int, StatModifier> group in groups)
             {
-                float totalMultiplier = 1f + group.Sum(mod => mod.Value) / 100f;
-                finalValue *= totalMultiplier;
+                float value = 0f;
+
+                // Priority0 はBaseValueを起点にする。
+                if (group.Key == 0)
+                {
+                    value = BaseValue;
+                }
+
+                // Additive を加算
+                foreach (StatModifier add in group.Where(m => m.Type == StatModType.Additive))
+                {
+                    value += add.Value;
+                }
+
+                // Multiplier をすべて掛ける
+                foreach (StatModifier multi in group.Where(m => m.Type == StatModType.Multiplier))
+                {
+                    value *= 1f + multi.Value / 100f;
+                }
+
+                result += value;
             }
 
-            return finalValue;
+            return result;
         }
     }
 }

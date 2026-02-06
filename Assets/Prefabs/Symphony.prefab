@@ -935,6 +935,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Symphony_model
       objectReference: {fileID: 0}
+    - target: {fileID: -1728013695380148634, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2953604236389334553, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
       propertyPath: m_DirtyAABB
       value: 0

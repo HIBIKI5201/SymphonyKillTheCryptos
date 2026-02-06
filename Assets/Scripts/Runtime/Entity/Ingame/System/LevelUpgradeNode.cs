@@ -23,6 +23,6 @@ namespace Cryptos.Runtime.Entity.Ingame.System
         private ILevelUpgradeEffect[] _effects;
 
         [SerializeField, Tooltip("最大取得可能回数")]
-        private int _maxStack = int.MaxValue;
+        private int _maxStack = 5;
     }
 }

@@ -1,8 +1,11 @@
+using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.Presenter.Ingame.Word;
-using Cryptos.Runtime.Presenter.System;
-using SymphonyFrameWork.Utility;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UIElements;
 
 namespace Cryptos.Runtime.UI.Ingame.LevelUp
@@ -11,12 +14,12 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
     /// レベルアップノードのUI要素。
     /// </summary>
     [UxmlElement]
-    public partial class UIElementLevelUpgradeNode : SymphonyVisualElement
+    public partial class UIElementLevelUpgradeNode : VisualElementBase
     {
         /// <summary>
         /// コンストラクタ。
         /// </summary>
-        public UIElementLevelUpgradeNode() : base("UIToolKit/UXML/InGame/LevelUpgradeNode", 0)
+        public UIElementLevelUpgradeNode() : base(LEVEL_UPGRADE_NODE_NAME, 0)
         {
         }
 
@@ -42,8 +45,10 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         /// このノードにデータを設定します。
         /// </summary>
         /// <param name="vm">設定するデータを含むビューモデル。</param>
-        public void SetData(LevelUpgradeNodeViewModel vm)
+        public async void SetData(LevelUpgradeNodeViewModel vm)
         {
+            await InitializeTask;
+
             _iconElement.style.backgroundImage = new StyleBackground(vm.Texture);
             _nameLabel.text = vm.NodeName;
             _descriptionLabel.text = vm.Description;
@@ -58,27 +63,44 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
 
             HandleWordUpdated(_wordEntity.Word, 0);
             _wordEntity.OnWordUpdated += HandleWordUpdated;
+
+            RankElementActivate(vm.CurrentRank, vm.MaxRank);
+
         }
 
-        protected override Task Initialize_S(TemplateContainer container)
+        protected override async ValueTask Initialize_S(VisualElement root)
         {
-            _wordLabel = container.Q<Label>(WORD_ELEMENT_NAME);
-            _iconElement = container.Q<VisualElement>(ICON_ELEMENT_NAME);
-            _nameLabel = container.Q<Label>(NAME_ELEMENT_NAME);
-            _descriptionLabel = container.Q<Label>(EXPLANATION_ELEMENT_NAME);
+            _wordLabel = root.Q<Label>(WORD_ELEMENT_NAME);
+            _iconElement = root.Q<VisualElement>(ICON_ELEMENT_NAME);
+            _nameLabel = root.Q<Label>(NAME_ELEMENT_NAME);
+            _descriptionLabel = root.Q<Label>(EXPLANATION_ELEMENT_NAME);
+            _rankRoot = root.Q<VisualElement>(RANK_ROOT_NAME);
 
-            return Task.CompletedTask;
+            AsyncOperationHandle<VisualTreeAsset> rankElement
+                = Addressables.LoadAssetAsync<VisualTreeAsset>(LEVEL_UPGRADE_NODE_RANK_ELEMENT_NAME);
+            await rankElement.Task;
+            _rankElement = rankElement.Result;
+            rankElement.Release();
         }
+
+        private const string LEVEL_UPGRADE_NODE_NAME = "LevelUpgradeNode";
+        private const string LEVEL_UPGRADE_NODE_RANK_ELEMENT_NAME = "LevelUpgradeNodeRankElement";
 
         private const string WORD_ELEMENT_NAME = "word";
         private const string ICON_ELEMENT_NAME = "icon";
         private const string NAME_ELEMENT_NAME = "name";
         private const string EXPLANATION_ELEMENT_NAME = "explanation";
+        private const string RANK_ROOT_NAME = "rank-root";
+
+        private const string ACTIVE_CLASS_NAME = "active";
+
+        private VisualTreeAsset _rankElement;
 
         private Label _wordLabel;
         private VisualElement _iconElement;
         private Label _nameLabel;
         private Label _descriptionLabel;
+        private VisualElement _rankRoot;
 
         private LevelUpgradeNodeViewModel _nodeViewModel;
         private WordEntityViewModel _wordEntity;
@@ -92,6 +114,23 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         private void HandleWordUpdated(string word, int index)
         {
             _wordLabel.text = $"<b><color=green>{word[..index]}</color></b>{word[index..]}";
+        }
+
+        private void RankElementActivate(int current, int max)
+        {
+            Debug.Log($"{current} {max}");
+
+            for (int i = 0; i < max; i++)
+            {
+                VisualElement e = _rankElement.Instantiate();
+                _rankRoot.Add(e);
+
+                if (i < current)
+                {
+                    e.AddToClassList(ACTIVE_CLASS_NAME);
+                }
+
+            }
         }
     }
 }

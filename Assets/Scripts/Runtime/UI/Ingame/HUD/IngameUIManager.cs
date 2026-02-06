@@ -3,7 +3,6 @@ using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character;
 using Cryptos.Runtime.Presenter.Ingame.System;
-using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.UI.Basis;
 using Cryptos.Runtime.UI.Ingame.Card;
 using Cryptos.Runtime.UI.Ingame.Character;
@@ -20,25 +19,22 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// <summary>
     ///     インゲームのUIを管理します。
     /// </summary>
-    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager
+    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager, ILevelUpUIManager
     {
         /// <summary>
         ///     レベルアップ時の非同期処理。
         /// </summary>
         /// <param name="nodes">レベルアップ候補のノード。</param>
         /// <returns>選択されたレベルアップノード。</returns>
-        public async Task<LevelUpgradeNodeViewModel> LevelUpSelectAsync(LevelUpgradeNodeViewModel[] nodes)
+        public async Task<LevelUpgradeNodeViewModel> LevelUpSelectAsync(Memory<LevelUpgradeNodeViewModel> nodes)
         {
-            Debug.Log($"候補カード {string.Join(", ", nodes.Select(n => n.NodeName))}");
-
             // ウィンドウを出現させて待機。
-            OpenLevelUpgradeWindow(nodes.AsSpan());
-
+            await OpenLevelUpgradeWindow(nodes);
             LevelUpgradeNodeViewModel selectedNodeVM = default;
             await SymphonyTask.WaitUntil(
                 () => TryGetSelectedLevelUpgradeNode(out selectedNodeVM));
 
-            Debug.Log($"レベルアップカードを選択しました。{selectedNodeVM.NodeName}"); // NodeName に変更
+            Debug.Log($"レベルアップカードを選択しました。{selectedNodeVM.NodeName}");
 
             CloseLevelUpgradeWindow();
 
@@ -76,9 +72,9 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         ///     レベルアップウィンドウを開きます。
         /// </summary>
         /// <param name="nodes">表示するノード。</param>
-        public void OpenLevelUpgradeWindow(Span<LevelUpgradeNodeViewModel> nodes)
+        public async ValueTask OpenLevelUpgradeWindow(Memory<LevelUpgradeNodeViewModel> nodes)
         {
-            _levelUpgrade.OpenWindow(nodes);
+           await _levelUpgrade.OpenWindow(nodes);
         }
 
         /// <summary>

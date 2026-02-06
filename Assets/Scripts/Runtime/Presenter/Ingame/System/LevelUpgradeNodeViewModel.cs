@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.System;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter.System
+namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     /// <summary>
     /// レベルアップノードのビューモデル。
@@ -9,32 +9,31 @@ namespace Cryptos.Runtime.Presenter.System
     public readonly struct LevelUpgradeNodeViewModel
     {
         /// <summary>
-        /// コンストラクタ。
+        ///     コンストラクタ。
         /// </summary>
         /// <param name="node">ビューモデルがラップするノード。</param>
-        public LevelUpgradeNodeViewModel(LevelUpgradeNode node)
+        public LevelUpgradeNodeViewModel(LevelUpgradeNode node, int upgradeLevel)
         {
             _node = node;
+            _upgradeLevel = upgradeLevel;
         }
 
-                /// <summary>
-        /// ノード名。
-        /// </summary>
+        /// <summary> ノード名。 </summary>
         public string NodeName => _node.NodeName;
-        /// <summary>
-        /// ノードのテクスチャ。
-        /// </summary>
+        /// <summary> ノードのテクスチャ。 </summary>
         public Texture2D Texture => _node.Texture;
-        /// <summary>
-        /// ノードの説明。
-        /// </summary>
+        /// <summary> ノードの説明。 </summary>
         public string Description => _node.Description;
+        /// <summary> ノードの最大ランク。 </summary>
+        public int MaxRank => _node.MaxStack;
 
         /// <summary>
-        /// このビューモデルがラップするノード。
+        ///     このビューモデルがラップするノード。
         /// </summary>
         public LevelUpgradeNode LevelUpgradeNode => _node;
+        public int CurrentRank => _upgradeLevel;
 
         private readonly LevelUpgradeNode _node;
+        private readonly int _upgradeLevel;
     }
 }

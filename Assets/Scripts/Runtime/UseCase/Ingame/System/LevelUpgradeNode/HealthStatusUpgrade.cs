@@ -15,7 +15,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <param name="target">効果を適用する対象。</param>
         public override void ApplyStatusEffect(TentativeCharacterData target)
         {
-            var modifier = new StatModifier(_healthIncreaseAmount, StatModType.Multiplier, source: this);
+            StatModifier modifier = new(_healthIncreaseAmount, StatModType.Multiplier);
             target.SetNewBuff(TentativeCharacterData.BuffType.MaxHealth, modifier);
         }
 

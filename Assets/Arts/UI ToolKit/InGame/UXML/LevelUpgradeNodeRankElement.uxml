@@ -1,0 +1,4 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Arts/UI%20ToolKit/InGame/USS/LevelUpgradeNodeRankElement.uss?fileID=7433441132597879392&amp;guid=cd21b4ded94727a47b5f03f7e33cb1bb&amp;type=3#LevelUpgradeNodeRankElement"/>
+    <ui:VisualElement class="child inactive" style="width: 25px; height: 25px;"/>
+</ui:UXML>

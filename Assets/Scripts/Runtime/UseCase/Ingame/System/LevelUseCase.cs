@@ -41,7 +41,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         /// <summary>
         ///     レベルアップ処理（ノード選択と効果適用）を非同期で行います。
         /// </summary>
-        public async Task HandleLevelUpAsync(Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNode)
+        public async ValueTask HandleLevelUpAsync(Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> onLevelUpSelectNode)
         {
             var selectedNode = await WaitLevelUpSelectAsync(onLevelUpSelectNode);
 
@@ -58,6 +58,11 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                     statusEffect.ApplyStatusEffect(_characterData);
                 }
             }
+        }
+
+        public int GetUpgradeLevel(LevelUpgradeNode node)
+        {
+            return _acquiredUpgradeEntity.GetCount(node);
         }
 
         private readonly LevelEntity _levelEntity;
