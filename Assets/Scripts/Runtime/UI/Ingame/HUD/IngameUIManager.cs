@@ -37,7 +37,6 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             Debug.Log($"レベルアップカードを選択しました。{selectedNodeVM.NodeName}");
 
             CloseLevelUpgradeWindow();
-            Debug.Log("IngameUIManager: CloseLevelUpgradeWindow を呼び出しました。"); // 追加
 
             return selectedNodeVM;
         }
