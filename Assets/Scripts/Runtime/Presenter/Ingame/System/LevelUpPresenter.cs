@@ -23,7 +23,7 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
                 _levelUseCase.GetUpgradeLevel(o.OriginalNode))).ToArray();
 
             // IngameUIManager に LevelUpScreenViewModel を渡す
-            var selectedNodeVM = await _levelUpUIManager.LevelUpSelectAsync(screenViewModel);
+            var selectedNodeVM = await _levelUpUIManager.LevelUpSelectAsync(nodeViewModels);
             // 選択された LevelUpgradeNodeViewModel に含まれる LevelUpgradeNode を元に新しい LevelUpgradeOption を生成して返す
             return new LevelUpgradeOption(selectedNodeVM.LevelUpgradeNode);
         }

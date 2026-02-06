@@ -122,7 +122,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             // レベルアップ時のコールバックを定義。
             // Presenter層にレベルアップ時のUI連携処理を委譲。
             // ILevelUpUIManager として ingameUIManager をDI注入。
-            LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager as ILevelUpUIManager);
+            LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager);
 
             // レベルアップ時のコールバックを定義。
             Func<LevelUpgradeOption[], Task<LevelUpgradeOption>> levelUpSelectCallback = 
