@@ -30,7 +30,7 @@ namespace Cryptos.Runtime.UI
         /// <summary>
         ///     初期化処理のタスク
         /// </summary>
-        public ValueTask InitializeTask { get; private set; }
+        public Task InitializeTask { get; private set; }
 
         /// <summary>
         ///     初期化処理
@@ -38,7 +38,7 @@ namespace Cryptos.Runtime.UI
         /// <param name="address">UXMLのパス</param>
         /// <param name="type">初期化のタイプ</param>
         /// <returns></returns>
-        private async ValueTask Initialize(string address, InitializeType type)
+        private async Task Initialize(string address, InitializeType type)
         {
             if (string.IsNullOrEmpty(address))
             {
