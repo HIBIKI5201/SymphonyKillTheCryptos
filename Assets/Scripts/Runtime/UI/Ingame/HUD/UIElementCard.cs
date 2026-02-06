@@ -32,7 +32,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             _iconElement.style.backgroundImage = new(instance.Icon);
         }
 
-        public async ValueTask Rotate(float duration = 1)
+        public async ValueTask Rotate()
         {
             _root.AddToClassList(CARD_STACK_STYLE);
         }

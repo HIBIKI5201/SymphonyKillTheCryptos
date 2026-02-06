@@ -128,7 +128,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
                 }).Every(16);
 
                 await taskCompletion.Task;
-                await card.Rotate(duration + 2); // 仮の定数。
+                await card.Rotate();
             });
         }
 
