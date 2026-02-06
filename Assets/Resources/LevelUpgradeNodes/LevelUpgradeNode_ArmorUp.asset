@@ -17,6 +17,7 @@ MonoBehaviour:
   _texture: {fileID: 2800000, guid: d6e0c61226318b64db8f2ca9069b2dae, type: 3}
   _effects:
   - rid: 7654980604480717316
+  _maxStack: 5
   references:
     version: 2
     RefIds:
