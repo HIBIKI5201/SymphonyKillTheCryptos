@@ -20,7 +20,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// <summary>
     ///     インゲームのUIを管理します。
     /// </summary>
-    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager
+    public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager, ILevelUpUIManager
     {
         /// <summary>
         ///     レベルアップ時の非同期処理。
