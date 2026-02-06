@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Entity.Ingame.System;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Presenter.System
+namespace Cryptos.Runtime.Presenter.Ingame.System
 {
     /// <summary>
     /// レベルアップノードのビューモデル。
