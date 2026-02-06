@@ -29,7 +29,7 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
             foreach (var node in _nodes)
             {
                 // 非表示なら更新しない。
-                if (node.style.display == DisplayStyle.None) return;
+                if (node.style.display == DisplayStyle.None) { return; }
 
                 node.OnInputChar(c);
             }
@@ -39,21 +39,26 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         /// ウィンドウを開き、レベルアップノードを表示します。
         /// </summary>
         /// <param name="nodeVMs">表示するノードのビューモデル。</param>
-        public void OpenWindow(ReadOnlySpan<LevelUpgradeNodeViewModel> vm)
+        public async ValueTask OpenWindow(Memory<LevelUpgradeNodeViewModel> nodes)
         {
             _nodes = new UIElementLevelUpgradeNode[NODE_MAX];
 
             for (int i = 0; i < NODE_MAX; i++)
             {
-                if (vm.Length <= i) { break; }
+                if (nodes.Length <= i) { break; }
 
                 UIElementLevelUpgradeNode node = new();
-                LevelUpgradeNodeViewModel nodeVM = vm[i];
+                LevelUpgradeNodeViewModel nodeVM = nodes.Span[i];
 
                 node.SetData(nodeVM);
 
                 _nodeContainer.Add(node);
                 _nodes[i] = node;
+            }
+
+            foreach (var item in _nodes)
+            {
+                await item.InitializeTask;
             }
 
             style.display = DisplayStyle.Flex;
