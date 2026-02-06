@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: UIToolKit-InGame
   m_GUID: 805be5c267a91734681cebf2782d8691
   m_SerializeEntries:
+  - m_GUID: 4b7e0a568a5a9c7419caa1322ba9a576
+    m_Address: LevelUpgradeNodeRankElement
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 646659af472c4f3449f052ec33313c03
+    m_Address: LevelUpgradeNode
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6d0f42d6a6b7b444975f1a9799a9d20
     m_Address: Card
     m_ReadOnly: 0
