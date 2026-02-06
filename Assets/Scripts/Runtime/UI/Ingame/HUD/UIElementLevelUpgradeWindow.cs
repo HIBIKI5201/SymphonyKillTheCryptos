@@ -44,7 +44,7 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
 
             for (int i = 0; i < NODE_MAX; i++)
             {
-                if (vm.LevelUpgradeNodes.Length <= i) break;
+                if (vm.LevelUpgradeNodes.Length <= i) { break; }
 
                 UIElementLevelUpgradeNode node = new();
                 LevelUpgradeNodeViewModel nodeVM = vm.LevelUpgradeNodes[i];
