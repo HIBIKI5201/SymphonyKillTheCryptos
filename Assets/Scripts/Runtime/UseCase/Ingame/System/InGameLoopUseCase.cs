@@ -89,15 +89,13 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 // レベルアップ処理。
                 if (_levelUseCase.LevelUpQueue.Any())
                 {
-                    Debug.Log("InGameLoopUseCase: レベルアップフェーズ開始"); // 追加
                     _levelUpPhaseHandler.OnLevelUpPhaseStarted();
                     while (_levelUseCase.LevelUpQueue.TryDequeue(out var newLevel))
                     {
-                        Debug.Log($"InGameLoopUseCase: レベルアップ処理中: Level {newLevel}"); // 変更
+                        Debug.Log($"InGameLoopUseCase: レベルアップ！ 新しいレベル: {newLevel}");
                         await _levelUseCase.HandleLevelUpAsync(_onLevelUpSelectNodeCallback);
                     }
                     _levelUpPhaseHandler.OnLevelUpPhaseEnded();
-                    Debug.Log("InGameLoopUseCase: レベルアップフェーズ終了"); // 追加
                 }
 
                 // 次のウェーブ。
