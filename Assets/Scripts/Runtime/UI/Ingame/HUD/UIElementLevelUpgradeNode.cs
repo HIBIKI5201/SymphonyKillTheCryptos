@@ -1,6 +1,6 @@
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.Presenter.Ingame.Word;
-using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -45,8 +45,10 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         /// このノードにデータを設定します。
         /// </summary>
         /// <param name="vm">設定するデータを含むビューモデル。</param>
-        public void SetData(LevelUpgradeNodeViewModel vm)
+        public async void SetData(LevelUpgradeNodeViewModel vm)
         {
+            await InitializeTask;
+
             _iconElement.style.backgroundImage = new StyleBackground(vm.Texture);
             _nameLabel.text = vm.NodeName;
             _descriptionLabel.text = vm.Description;
@@ -62,7 +64,7 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
             HandleWordUpdated(_wordEntity.Word, 0);
             _wordEntity.OnWordUpdated += HandleWordUpdated;
 
-            RankElementActivate(vm.MaxRank);
+            RankElementActivate(vm.CurrentRank, vm.MaxRank);
 
         }
 
@@ -77,7 +79,8 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
             AsyncOperationHandle<VisualTreeAsset> rankElement
                 = Addressables.LoadAssetAsync<VisualTreeAsset>(LEVEL_UPGRADE_NODE_RANK_ELEMENT_NAME);
             await rankElement.Task;
-            _rankeElement = rankElement.Result;
+            _rankElement = rankElement.Result;
+            rankElement.Release();
         }
 
         private const string LEVEL_UPGRADE_NODE_NAME = "LevelUpgradeNode";
@@ -89,14 +92,15 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
         private const string EXPLANATION_ELEMENT_NAME = "explanation";
         private const string RANK_ROOT_NAME = "rank-root";
 
-        private VisualTreeAsset _rankeElement;
+        private const string ACTIVE_CLASS_NAME = "active";
+
+        private VisualTreeAsset _rankElement;
 
         private Label _wordLabel;
         private VisualElement _iconElement;
         private Label _nameLabel;
         private Label _descriptionLabel;
         private VisualElement _rankRoot;
-        private VisualElement _rankElement;
 
         private LevelUpgradeNodeViewModel _nodeViewModel;
         private WordEntityViewModel _wordEntity;
@@ -112,17 +116,20 @@ namespace Cryptos.Runtime.UI.Ingame.LevelUp
             _wordLabel.text = $"<b><color=green>{word[..index]}</color></b>{word[index..]}";
         }
 
-        private void RankElementActivate(int count)
+        private void RankElementActivate(int current, int max)
         {
-            for (int i = 0; i < count; i++)
+            Debug.Log($"{current} {max}");
+
+            for (int i = 0; i < max; i++)
             {
-                VisualElement e = _rankeElement.Instantiate();
+                VisualElement e = _rankElement.Instantiate();
                 _rankRoot.Add(e);
 
-                if (i < _nodeViewModel.CurrentRank)
+                if (i < current)
                 {
-                    e.style.backgroundColor = Color.blue;
+                    e.AddToClassList(ACTIVE_CLASS_NAME);
                 }
+
             }
         }
     }
