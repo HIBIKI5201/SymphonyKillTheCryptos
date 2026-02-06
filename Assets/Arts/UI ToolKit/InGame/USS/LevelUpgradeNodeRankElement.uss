@@ -1,0 +1,13 @@
+VisualElement {
+}
+
+.inactive {
+    background-color: rgb(255, 0, 0);
+}
+
+.active .child {
+    background-color: rgb(13, 0, 255);
+}
+
+.active {
+}
