@@ -12,10 +12,10 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         ///     コンストラクタ。
         /// </summary>
         /// <param name="node">ビューモデルがラップするノード。</param>
-        public LevelUpgradeNodeViewModel(LevelUpgradeNode node)
+        public LevelUpgradeNodeViewModel(LevelUpgradeNode node, int currentLevel)
         {
             _node = node;
-            // TODO 現在レベルの情報を追加する。
+            _currentLevel = currentLevel;
         }
 
         /// <summary> ノード名。 </summary>
@@ -31,7 +31,9 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         ///     このビューモデルがラップするノード。
         /// </summary>
         public LevelUpgradeNode LevelUpgradeNode => _node;
+        public int CurrentLevel => _currentLevel;
 
         private readonly LevelUpgradeNode _node;
+        private readonly int _currentLevel;
     }
 }
