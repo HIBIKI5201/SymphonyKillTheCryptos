@@ -124,6 +124,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             // ILevelUpUIManager として ingameUIManager をDI注入。
             LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager as ILevelUpUIManager);
 
+            // IngameLoopPresenterを作成し、DI注入
+            IngameLoopPresenter ingameLoopPresenter = new(ingameUIManager);
+            ServiceLocator.RegisterInstance<IIngameLoopPresenter>(ingameLoopPresenter);
+            disposables.Add(ingameLoopPresenter as IDisposable); // IDisposable を実装していれば追加
+
             // InGameLoopUseCaseを作成し、依存を注入。
             InGameLoopUseCase inGameLoopUseCase = new(
                 cardInitData.CardUseCase,
@@ -133,9 +138,12 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 symphonyPresenter,
                 waveSystemPresenter,
                 inputPresenter,
-                OnGameEndedCallback,
+                ingameLoopPresenter, // OnGameEndedCallback の代わりに ingameLoopPresenter を渡す
                 disposables.ToArray()
             );
+
+            // リザルト画面の「メインメニューに戻る」ボタンが押されたらアウトゲームへ遷移
+            ingameLoopPresenter.OnResultWindowReturnButtonClicked += GoToOutGameSceneInternal;
 
             await InitializeUtility.WaitInitialize(_gameUIManager);
 
@@ -189,17 +197,14 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             _gameUIManager.CreateHealthBar(new(enemy, model.transform, model.destroyCancellationToken));
         }
 
-        private async void OnGameEndedCallback(string title, int score)
-        {
-            _gameUIManager.OpenResultWindow(title, score, GoToOutGameSceneInternal);
-        }
+
 
         private async void GoToOutGameSceneInternal()
         {
             if (_isTransitioning) return;
             _isTransitioning = true;
 
-            _gameUIManager.CloseResultWindow(GoToOutGameSceneInternal);
+            _gameUIManager.CloseResultWindow();
 
             await SceneLoader.UnloadScene(SceneListEnum.Stage.ToString());
             await SceneLoader.UnloadScene(SceneListEnum.Ingame.ToString());
