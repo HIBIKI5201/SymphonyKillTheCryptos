@@ -168,7 +168,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             _deck = root.Q<UIElementDeck>();
             _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();
             _comboCounter = root.Q<UIElementComboCounter>();
-            _resultWindow = new UIElementResultWindow();
+            _resultWindow = root.Q<UIElementResultWindow>();
 
             root.Add(_resultWindow);
 
