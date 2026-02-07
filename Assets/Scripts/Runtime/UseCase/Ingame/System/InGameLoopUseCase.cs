@@ -14,6 +14,8 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     /// </summary>
     public class InGameLoopUseCase
     {
+        private bool _isGameEnded; // ゲーム終了状態を管理するフラグ
+
         /// <summary>
         ///     InGameLoopUseCaseの新しいインスタンスを初期化する。
         /// </summary>
@@ -25,7 +27,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             ISymphonyPresenter symphonyPresenter,
             IInGameLoopWaveHandler inGameLoopWaveHandler,
             ILevelUpPhaseHandler levelUpPhaseHandler,
-            Action onGameEndedCallback,
+            IIngameLoopPresenter ingameLoopPresenter,
             IDisposable[] disposables)
         {
             _cardUseCase = cardUseCase;
@@ -35,7 +37,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             _symphonyPresenter = symphonyPresenter;
             _inGameLoopWaveHandler = inGameLoopWaveHandler;
             _levelUpPhaseHandler = levelUpPhaseHandler;
-            _onGameEndedCallback = onGameEndedCallback;
+            _ingameLoopPresenter = ingameLoopPresenter;
             _disposables = disposables;
         }
 
@@ -47,7 +49,10 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             Debug.Log("InGameLoopUseCase: ゲーム開始！");
 
             InitializeGame();
-            
+
+            // プレイヤーの死亡イベントを購読
+            _symphonyPresenter.OnDead += HandlePlayerDead;
+
             // Fire and forget
             _ = GameLoopAsync();
         }
@@ -59,8 +64,10 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         private readonly ISymphonyPresenter _symphonyPresenter;
         private readonly IInGameLoopWaveHandler _inGameLoopWaveHandler;
         private readonly ILevelUpPhaseHandler _levelUpPhaseHandler;
-        private readonly Action _onGameEndedCallback;
+        private readonly IIngameLoopPresenter _ingameLoopPresenter;
         private readonly IDisposable[] _disposables;
+
+        private int _getSkillTreePoint;
 
         /// <summary>
         ///     ゲーム開始時の初期化処理を実行する。
@@ -69,8 +76,9 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         {
             // プレイヤーデータロード、カードデッキ初期化、最初のウェーブ設定などの初期化処理を行う。
             Debug.Log("InGameLoopUseCase: ゲーム初期化完了。");
+            _isGameEnded = false;
         }
-        
+
         /// <summary>
         /// ゲームのメインループ。ウェーブの完了を待ち、レベルアップ処理を挟んで次のウェーブへ進む。
         /// </summary>
@@ -82,10 +90,12 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
 
             while (true)
             {
+                if (_isGameEnded) break; // プレイヤー死亡でゲーム終了した場合、ループを抜ける
+
                 // ウェーブ完了後の処理。
                 _symphonyPresenter.ResetUsingCard();
                 _levelUseCase.AddLevelProgress(_waveUseCase.CurrentWave);
-                
+
                 // レベルアップ処理。
                 if (_levelUseCase.LevelUpQueue.Any())
                 {
@@ -103,17 +113,51 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 if (nextWave == null)
                 {
                     Debug.Log("InGameLoopUseCase: 全てのウェーブが終了しました。");
+                    EndGame("Game Clear!", _levelUseCase.CurrentLevel);
                     break; // ループを抜ける。
                 }
 
                 Debug.Log($"InGameLoopUseCase: 次のウェーブへ: {nextWave.name}");
                 waveCompletionTask = _inGameLoopWaveHandler.OnWaveChanged(nextWave);
                 await waveCompletionTask;
+                _getSkillTreePoint += nextWave.SkillTreePoint;
             }
 
-            // ゲーム終了処理。
+            // ゲーム終了時のクリーンアップ
+            CleanupGame();
+        }
+
+        /// <summary>
+        /// プレイヤー死亡時の処理
+        /// </summary>
+        private void HandlePlayerDead()
+        {
+            if (_isGameEnded) return; // 既にゲーム終了状態の場合、重複して処理しない
+            Debug.Log("InGameLoopUseCase: プレイヤーが死亡しました。");
+            EndGame("Game Over!", _levelUseCase.CurrentLevel); // ゲームオーバーとして終了
+        }
+
+        /// <summary>
+        /// ゲーム終了処理をまとめたメソッド
+        /// </summary>
+        /// <param name="resultTitle"></param>
+        /// <param name="score"></param>
+        private void EndGame(string resultTitle, int score)
+        {
+            if (_isGameEnded) return;
+            _isGameEnded = true;
+
             _inGameLoopWaveHandler.OnGameEnded();
-            _onGameEndedCallback?.Invoke();
+            _ingameLoopPresenter.RequestShowResult(resultTitle, score);
+        }
+
+        /// <summary>
+        /// ゲーム終了時のクリーンアップ処理
+        /// </summary>
+        private void CleanupGame()
+        {
+            // プレイヤーの死亡イベント購読解除
+            _symphonyPresenter.OnDead -= HandlePlayerDead;
 
             foreach (var disposable in _disposables)
             {

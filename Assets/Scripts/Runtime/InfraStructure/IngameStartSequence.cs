@@ -9,7 +9,6 @@ using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character.Enemy;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.System;
-using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.UI.Ingame.Manager;
 using Cryptos.Runtime.UI.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.Card;
@@ -17,7 +16,6 @@ using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -52,9 +50,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [Space]
         [SerializeField, Tooltip("ウェーブ移動速度")]
         private float _waveMoveSpeed = 3;
-        
+
         private IngameUIManager _gameUIManager;
-        
+
         /// <summary>
         /// このインスタンスが破棄されるときに呼び出されます。
         /// </summary>
@@ -89,20 +87,21 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             var symphonyPresenter = await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
             var enemyPresenter = await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
             var bgmPlayer = await ServiceLocator.GetInstanceAsync<BGMManager>();
+            await InitializeUtility.WaitInitialize(ingameUIManager);
 
             _gameUIManager = ingameUIManager;
 
             // PresenterとUseCaseのインスタンス生成とDI注入。
 
             // InputPresenterを作成。
-            InputPresenter inputPresenter = 
+            InputPresenter inputPresenter =
                 new(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
 
             // WaveControlUseCaseを作成。
             WaveControlUseCase waveControlUseCase = new(charaInitData.EnemyRepository);
 
             // WaveSystemPresenterを作成。
-            WavePathPresenter wavePathPresenter = 
+            WavePathPresenter wavePathPresenter =
                 new(playerPathContainer, symphonyPresenter, _waveMoveSpeed);
             WaveSystemPresenter waveSystemPresenter = new(
                 waveUseCase,
@@ -119,12 +118,10 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             );
             disposables.Add(cardExecutionUseCase);
 
-            // レベルアップ時のコールバックを定義。
-            // Presenter層にレベルアップ時のUI連携処理を委譲。
-            // ILevelUpUIManager として ingameUIManager をDI注入。
-            LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager as ILevelUpUIManager);
+            LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager);
 
-            // InGameLoopUseCaseを作成し、依存を注入。
+            IngameLoopPresenter ingameLoopPresenter = new(ingameUIManager);
+
             InGameLoopUseCase inGameLoopUseCase = new(
                 cardInitData.CardUseCase,
                 levelUseCase,
@@ -133,14 +130,13 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 symphonyPresenter,
                 waveSystemPresenter,
                 inputPresenter,
-                GoToOutGameScene,
+                ingameLoopPresenter,
                 disposables.ToArray()
             );
 
-            await InitializeUtility.WaitInitialize(_gameUIManager);
+            ingameLoopPresenter.OnResultWindowReturnButtonClicked += GoToOutGameSceneInternal;
 
-            // その他の初期化を行う。
-            CardPresenter cardPresenter = new(cardInitData.CardUseCase,cardExecutionUseCase,  ingameUIManager);
+            CardPresenter cardPresenter = new(cardInitData.CardUseCase, cardExecutionUseCase, ingameUIManager);
             symphonyPresenter.Init(charaInitData.Symphony, symphonyData, cardExecutionUseCase, comboEntity);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
@@ -152,7 +148,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             TestCardSpawn(cardInitData.CardUseCase);
             await inGameLoopUseCase.StartGameAsync();
         }
-        
+
         private void TestCardSpawn(CardUseCase cardUseCase)
         {
             if (_cardDatas == null || _cardDatas.Length == 0)
@@ -189,10 +185,14 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             _gameUIManager.CreateHealthBar(new(enemy, model.transform, model.destroyCancellationToken));
         }
 
-        private async void GoToOutGameScene()
+
+
+        private async void GoToOutGameSceneInternal()
         {
             if (_isTransitioning) return;
             _isTransitioning = true;
+
+            _gameUIManager.CloseResultWindow();
 
             await SceneLoader.UnloadScene(SceneListEnum.Stage.ToString());
             await SceneLoader.UnloadScene(SceneListEnum.Ingame.ToString());

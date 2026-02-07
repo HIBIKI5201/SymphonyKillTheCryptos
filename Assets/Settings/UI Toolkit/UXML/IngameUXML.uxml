@@ -2,4 +2,5 @@
     <Cryptos.Runtime.UI.Ingame.LevelUp.UIElementLevelUpgradeWindow/>
     <Cryptos.Runtime.UI.Ingame.Card.UIElementDeck/>
     <Cryptos.Runtime.UI.UIElementComboCounter style="right: 0; bottom: 500px;"/>
+    <Cryptos.Runtime.UI.Ingame.Manager.UIElementResultWindow/>
 </ui:UXML>

@@ -9,7 +9,6 @@ using Cryptos.Runtime.UI.Ingame.Character;
 using Cryptos.Runtime.UI.Ingame.LevelUp;
 using SymphonyFrameWork.Utility;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,6 +20,12 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// </summary>
     public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager, ILevelUpUIManager
     {
+        public event Action OnResultWindowReturnButtonClicked
+        {
+            add => _resultWindow.OnReturnButtonClicked += value;
+            remove => _resultWindow.OnReturnButtonClicked -= value;
+        }
+
         /// <summary>
         ///     レベルアップ時の非同期処理。
         /// </summary>
@@ -74,7 +79,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         /// <param name="nodes">表示するノード。</param>
         public async ValueTask OpenLevelUpgradeWindow(Memory<LevelUpgradeNodeViewModel> nodes)
         {
-           await _levelUpgrade.OpenWindow(nodes);
+            await _levelUpgrade.OpenWindow(nodes);
         }
 
         /// <summary>
@@ -147,19 +152,35 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             });
         }
 
+        public void OpenResultWindow(string title, int score)
+        {
+            _resultWindow.SetResult(title, score);
+            _resultWindow.Open();
+        }
+
+        public void CloseResultWindow()
+        {
+            _resultWindow.Close();
+        }
+
         protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
             _deck = root.Q<UIElementDeck>();
             _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();
             _comboCounter = root.Q<UIElementComboCounter>();
+            _resultWindow = root.Q<UIElementResultWindow>();
+
+            root.Add(_resultWindow);
 
             await _deck.InitializeTask;
             await _levelUpgrade.InitializeTask;
             await _comboCounter.InitializeTask;
+            await _resultWindow.InitializeTask;
 
             _damageTextPool = new(root);
 
             _levelUpgrade.CloseWindow(); // 念のためにクローズする。
+            _resultWindow.Close(); // 念のためにクローズする。
         }
 
 
@@ -172,6 +193,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         private UIElementLevelUpgradeWindow _levelUpgrade;
         private DamageTextPool _damageTextPool;
         private UIElementComboCounter _comboCounter;
+        private UIElementResultWindow _resultWindow;
 
         private void Awake()
         {

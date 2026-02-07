@@ -29,6 +29,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         ///     未処理のレベルアップ。
         /// </summary>
         public Queue<int> LevelUpQueue => _levelUpQueue;
+        public int CurrentLevel => _levelEntity.CurrentLevel;
 
         /// <summary>
         ///     ウェーブクリア時に経験値を追加します。
