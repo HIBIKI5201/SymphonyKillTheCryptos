@@ -152,9 +152,9 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             });
         }
 
-        public void OpenResultWindow(string title, int score)
+        public void OpenResultWindow(ResultViewModel vm)
         {
-            _resultWindow.SetResult(title, score);
+            _resultWindow.SetResult(vm);
             _resultWindow.Open();
         }
 
