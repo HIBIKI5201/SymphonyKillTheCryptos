@@ -27,7 +27,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             ISymphonyPresenter symphonyPresenter,
             IInGameLoopWaveHandler inGameLoopWaveHandler,
             ILevelUpPhaseHandler levelUpPhaseHandler,
-            Action<string, int> onGameEndedCallback,
+            IIngameLoopPresenter ingameLoopPresenter,
             IDisposable[] disposables)
         {
             _cardUseCase = cardUseCase;
@@ -37,7 +37,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             _symphonyPresenter = symphonyPresenter;
             _inGameLoopWaveHandler = inGameLoopWaveHandler;
             _levelUpPhaseHandler = levelUpPhaseHandler;
-            _onGameEndedCallback = onGameEndedCallback;
+            _ingameLoopPresenter = ingameLoopPresenter;
             _disposables = disposables;
         }
 
@@ -64,8 +64,10 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         private readonly ISymphonyPresenter _symphonyPresenter;
         private readonly IInGameLoopWaveHandler _inGameLoopWaveHandler;
         private readonly ILevelUpPhaseHandler _levelUpPhaseHandler;
-        private readonly Action<string, int> _onGameEndedCallback;
+        private readonly IIngameLoopPresenter _ingameLoopPresenter;
         private readonly IDisposable[] _disposables;
+
+        private int _getSkillTreePoint;
 
         /// <summary>
         ///     ゲーム開始時の初期化処理を実行する。
@@ -118,6 +120,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 Debug.Log($"InGameLoopUseCase: 次のウェーブへ: {nextWave.name}");
                 waveCompletionTask = _inGameLoopWaveHandler.OnWaveChanged(nextWave);
                 await waveCompletionTask;
+                _getSkillTreePoint += nextWave.SkillTreePoint;
             }
 
             // ゲーム終了時のクリーンアップ
@@ -145,7 +148,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
             _isGameEnded = true;
 
             _inGameLoopWaveHandler.OnGameEnded();
-            _onGameEndedCallback?.Invoke(resultTitle, score);
+            _ingameLoopPresenter.RequestShowResult(resultTitle, score);
         }
 
         /// <summary>
