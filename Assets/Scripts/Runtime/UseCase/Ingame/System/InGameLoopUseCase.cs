@@ -113,7 +113,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
                 if (nextWave == null)
                 {
                     Debug.Log("InGameLoopUseCase: 全てのウェーブが終了しました。");
-                    EndGame("Game Clear!", _levelUseCase.CurrentLevel);
+                    EndGame();
                     break; // ループを抜ける。
                 }
 
@@ -134,21 +134,25 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         {
             if (_isGameEnded) return; // 既にゲーム終了状態の場合、重複して処理しない
             Debug.Log("InGameLoopUseCase: プレイヤーが死亡しました。");
-            EndGame("Game Over!", _levelUseCase.CurrentLevel); // ゲームオーバーとして終了
+            EndGame();
         }
 
         /// <summary>
         /// ゲーム終了処理をまとめたメソッド
         /// </summary>
         /// <param name="resultTitle"></param>
-        /// <param name="score"></param>
-        private void EndGame(string resultTitle, int score)
+        /// <param name="level"></param>
+        private void EndGame()
         {
-            if (_isGameEnded) return;
+            if (_isGameEnded) { return; }
             _isGameEnded = true;
 
             _inGameLoopWaveHandler.OnGameEnded();
-            _ingameLoopPresenter.RequestShowResult(resultTitle, score);
+            _ingameLoopPresenter.RequestShowResult(
+               _levelUseCase.CurrentLevel,
+               _waveUseCase.CurrentWaveIndex,
+               _getSkillTreePoint
+               );
         }
 
         /// <summary>
