@@ -1,10 +1,14 @@
+using SinfoniaOperator.API.Discord;
+
 namespace SinfoniaOperator.Main
 {
     public static class SinfoniaOperator
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("a");
+            DiscordEnvironmentVariables dicsordVariables = new();
+
+            DiscordCommandClient discordClient = new(dicsordVariables);
         }
     }
 }
