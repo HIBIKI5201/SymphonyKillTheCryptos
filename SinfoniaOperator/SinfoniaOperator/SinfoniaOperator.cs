@@ -6,8 +6,7 @@ namespace SinfoniaOperator.Main
     {
         public static void Main(string[] args)
         {
-            DiscordEnvironmentVariables dicsordVariables = new();
-
+            DiscordEnvironmentVariables dicsordVariables = VariableProvider.GetDiscordVariables();
             DiscordCommandClient discordClient = new(dicsordVariables);
         }
     }
