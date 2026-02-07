@@ -133,7 +133,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 symphonyPresenter,
                 waveSystemPresenter,
                 inputPresenter,
-                GoToOutGameScene,
+                OnGameEndedCallback,
                 disposables.ToArray()
             );
 
@@ -189,10 +189,17 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             _gameUIManager.CreateHealthBar(new(enemy, model.transform, model.destroyCancellationToken));
         }
 
-        private async void GoToOutGameScene()
+        private async void OnGameEndedCallback(string title, int score)
+        {
+            _gameUIManager.OpenResultWindow(title, score, GoToOutGameSceneInternal);
+        }
+
+        private async void GoToOutGameSceneInternal()
         {
             if (_isTransitioning) return;
             _isTransitioning = true;
+
+            _gameUIManager.CloseResultWindow(GoToOutGameSceneInternal);
 
             await SceneLoader.UnloadScene(SceneListEnum.Stage.ToString());
             await SceneLoader.UnloadScene(SceneListEnum.Ingame.ToString());
