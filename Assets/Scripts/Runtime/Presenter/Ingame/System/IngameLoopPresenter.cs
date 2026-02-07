@@ -15,9 +15,12 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             _ingameUIManager.OnResultWindowReturnButtonClicked += () => OnResultWindowReturnButtonClicked?.Invoke();
         }
 
-        public void RequestShowResult(string title, int score)
+        public void RequestShowResult(int level, int wave, int skillPoint)
         {
-            _ingameUIManager.OpenResultWindow(title, score);
+            int time = -1; //TODO:一旦放置。
+
+            ResultViewModel resultViewModel = new(level, wave, time, skillPoint);
+            _ingameUIManager.OpenResultWindow(resultViewModel);
         }
     }
 }
