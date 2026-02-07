@@ -89,6 +89,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             var symphonyPresenter = await ServiceLocator.GetInstanceAsync<SymphonyPresenter>();
             var enemyPresenter = await ServiceLocator.GetInstanceAsync<EnemyPresenter>();
             var bgmPlayer = await ServiceLocator.GetInstanceAsync<BGMManager>();
+            await InitializeUtility.WaitInitialize(ingameUIManager);
 
             _gameUIManager = ingameUIManager;
 
@@ -119,15 +120,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             );
             disposables.Add(cardExecutionUseCase);
 
-            // レベルアップ時のコールバックを定義。
-            // Presenter層にレベルアップ時のUI連携処理を委譲。
-            // ILevelUpUIManager として ingameUIManager をDI注入。
-            LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager as ILevelUpUIManager);
+            LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager);
 
             // IngameLoopPresenterを作成し、DI注入
             IngameLoopPresenter ingameLoopPresenter = new(ingameUIManager);
             ServiceLocator.RegisterInstance<IIngameLoopPresenter>(ingameLoopPresenter);
-            disposables.Add(ingameLoopPresenter as IDisposable); // IDisposable を実装していれば追加
 
             // InGameLoopUseCaseを作成し、依存を注入。
             InGameLoopUseCase inGameLoopUseCase = new(
@@ -144,8 +141,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             // リザルト画面の「メインメニューに戻る」ボタンが押されたらアウトゲームへ遷移
             ingameLoopPresenter.OnResultWindowReturnButtonClicked += GoToOutGameSceneInternal;
-
-            await InitializeUtility.WaitInitialize(_gameUIManager);
 
             // その他の初期化を行う。
             CardPresenter cardPresenter = new(cardInitData.CardUseCase,cardExecutionUseCase,  ingameUIManager);
