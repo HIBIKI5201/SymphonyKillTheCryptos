@@ -2,6 +2,7 @@ using Cryptos.Runtime.Presenter.Ingame.Card;
 using SymphonyFrameWork.Utility;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Cryptos.Runtime.UI.Ingame.Card
@@ -14,6 +15,10 @@ namespace Cryptos.Runtime.UI.Ingame.Card
     {
         public UIElementCard() : base("Card", InitializeType.PickModeIgnore) { }
 
+        public Vector2 GetSize() => new(150, 200);
+            // 不明な問題で大きさが取得できないため一旦定数で代用。
+            //new(_root.style.width.value.value, _root.style.height.value.value);
+        
         /// <summary>
         ///     データをセットする。
         /// </summary>
