@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Cryptos.Runtime.UI.Ingame.Manager
 {
+    [UxmlElement]
     public partial class UIElementResultWindow : VisualElementBase
     {
         public event Action OnReturnButtonClicked;
