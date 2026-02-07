@@ -7,6 +7,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
         public event Action OnResultWindowReturnButtonClicked;
         public void OnLevelUpgradeInputChar(char c);
         public void CardInputChar(char c);
-        public void OpenResultWindow(string title, int score);
+        public void OpenResultWindow(ResultViewModel vm);
     }
 }
