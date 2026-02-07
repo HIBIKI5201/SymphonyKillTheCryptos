@@ -191,8 +191,6 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             float cardVisualWidth = GetCardTotalWidth(firstCard);
             float cardHeight = firstCard.GetSize().y;
 
-            Debug.Log($"\n{cardVisualWidth}, {cardHeight}");
-
             float spacing = 30f; // 仮の値。
 
             float totalCardsWidth =
@@ -218,7 +216,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
 
             UIElementCard[] stackCardsToLayout =
                 _cards.Values
-                .Where(card => _cardModes.TryGetValue(card, out Mode mode) && mode == Mode.Stack) // _cardModesにキーが存在するか確認
+                .Where(card => _cardModes.TryGetValue(card, out Mode mode) && mode == Mode.Stack)
                 .ToArray();
 
             if (stackCardsToLayout.Length == 0) { return; }
