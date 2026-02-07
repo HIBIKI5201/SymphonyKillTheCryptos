@@ -45,12 +45,13 @@ namespace Cryptos.Runtime.Entity.Utility
                 .GroupBy(m => m.Priority)
                 .OrderBy(g => g.Key);
 
+            int i = 0;
             foreach (IGrouping<int, StatModifier> group in groups)
             {
                 float value = 0f;
 
                 // Priority0 はBaseValueを起点にする。
-                if (group.Key == 0)
+                if (i == 0)
                 {
                     value = BaseValue;
                 }
@@ -61,13 +62,11 @@ namespace Cryptos.Runtime.Entity.Utility
                     value += add.Value;
                 }
 
-                // Multiplier をすべて掛ける
-                foreach (StatModifier multi in group.Where(m => m.Type == StatModType.Multiplier))
-                {
-                    value *= 1f + multi.Value / 100f;
-                }
+                float sum = group.Where(m => m.Type == StatModType.Multiplier).Sum(m => m.Value);
+                value *= 1 + sum / 100;
 
                 result += value;
+                i++;
             }
 
             return result;
