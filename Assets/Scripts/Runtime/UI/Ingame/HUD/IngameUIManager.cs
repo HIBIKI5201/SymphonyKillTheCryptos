@@ -147,19 +147,37 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             });
         }
 
+        public void OpenResultWindow(string title, int score, Action onReturnButtonClicked)
+        {
+            _resultWindow.SetResult(title, score);
+            _resultWindow.OnReturnButtonClicked += onReturnButtonClicked;
+            _resultWindow.Open();
+        }
+
+        public void CloseResultWindow(Action onReturnButtonClicked)
+        {
+            _resultWindow.OnReturnButtonClicked -= onReturnButtonClicked;
+            _resultWindow.Close();
+        }
+
         protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
             _deck = root.Q<UIElementDeck>();
             _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();
             _comboCounter = root.Q<UIElementComboCounter>();
+            _resultWindow = new UIElementResultWindow();
+
+            root.Add(_resultWindow);
 
             await _deck.InitializeTask;
             await _levelUpgrade.InitializeTask;
             await _comboCounter.InitializeTask;
+            await _resultWindow.InitializeTask;
 
             _damageTextPool = new(root);
 
             _levelUpgrade.CloseWindow(); // 念のためにクローズする。
+            _resultWindow.Close(); // 念のためにクローズする。
         }
 
 
@@ -172,6 +190,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         private UIElementLevelUpgradeWindow _levelUpgrade;
         private DamageTextPool _damageTextPool;
         private UIElementComboCounter _comboCounter;
+        private UIElementResultWindow _resultWindow;
 
         private void Awake()
         {
