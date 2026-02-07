@@ -9,7 +9,6 @@ using Cryptos.Runtime.UI.Ingame.Character;
 using Cryptos.Runtime.UI.Ingame.LevelUp;
 using SymphonyFrameWork.Utility;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,6 +20,12 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
     /// </summary>
     public class IngameUIManager : UIManagerBase, ICardUIManager, IIngameUIManager, IComboUIManager, ILevelUpUIManager
     {
+        public event Action OnResultWindowReturnButtonClicked
+        {
+            add => _resultWindow.OnReturnButtonClicked += value;
+            remove => _resultWindow.OnReturnButtonClicked -= value;
+        }
+
         /// <summary>
         ///     レベルアップ時の非同期処理。
         /// </summary>
@@ -74,7 +79,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         /// <param name="nodes">表示するノード。</param>
         public async ValueTask OpenLevelUpgradeWindow(Memory<LevelUpgradeNodeViewModel> nodes)
         {
-           await _levelUpgrade.OpenWindow(nodes);
+            await _levelUpgrade.OpenWindow(nodes);
         }
 
         /// <summary>
@@ -147,16 +152,14 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             });
         }
 
-        public void OpenResultWindow(string title, int score, Action onReturnButtonClicked)
+        public void OpenResultWindow(string title, int score)
         {
             _resultWindow.SetResult(title, score);
-            _resultWindow.OnReturnButtonClicked += onReturnButtonClicked;
             _resultWindow.Open();
         }
 
-        public void CloseResultWindow(Action onReturnButtonClicked)
+        public void CloseResultWindow()
         {
-            _resultWindow.OnReturnButtonClicked -= onReturnButtonClicked;
             _resultWindow.Close();
         }
 
