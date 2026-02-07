@@ -14,8 +14,14 @@ namespace Cryptos.Runtime.Presenter.Ingame.Character.Player
     /// </summary>
     public class SymphonyPresenter : MonoBehaviour, ISymphonyPresenter, ICardAnimationHandler
     {
-        public CharacterEntity Self => _self;
+        public event Action OnDead 
+        {
+            add => _self.OnDead += value; 
+            remove => _self.OnDead -= value;
+        }
 
+        public CharacterEntity Self => _self;
+        
         /// <summary>
         /// 自分のキャラクターエンティティを登録する。
         /// </summary>
