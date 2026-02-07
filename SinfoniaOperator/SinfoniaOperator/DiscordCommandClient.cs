@@ -9,11 +9,11 @@ namespace SinfoniaOperator.API.Discord
         public DiscordCommandClient(DiscordEnvironmentVariables variables)
         {
             _variables = variables;
-            var config = new DiscordSocketConfig
+            DiscordSocketConfig config = new()
             {
                 GatewayIntents = GatewayIntents.Guilds | GatewayIntents.GuildMessages | GatewayIntents.DirectMessages
             };
-            _client = new DiscordSocketClient(config);
+            _client = new(config);
         }
 
         public async Task Awake()
@@ -26,18 +26,23 @@ namespace SinfoniaOperator.API.Discord
                 return Task.CompletedTask;
             };
 
+            _client.Log += msg =>
+            {
+                Console.WriteLine(msg.ToString());
+                return Task.CompletedTask;
+            };
+
             try
             {
                 await _client.LoginAsync(TokenType.Bot, _variables.BotToken);
                 await _client.StartAsync();
+                await readyTcs.Task;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Discordボットの起動に失敗しました: {ex.Message}");
                 throw;
             }
-
-            await readyTcs.Task;
         }
 
         /// <summary>
@@ -55,12 +60,9 @@ namespace SinfoniaOperator.API.Discord
             }
 
             await channel.SendMessageAsync(content);
-            Console.WriteLine("メッセージ送信完了");
         }
 
         private readonly DiscordEnvironmentVariables _variables;
         private readonly DiscordSocketClient _client;
     }
-}
-
 }
