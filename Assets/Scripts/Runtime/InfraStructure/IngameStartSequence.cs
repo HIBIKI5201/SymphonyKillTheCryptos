@@ -9,7 +9,6 @@ using Cryptos.Runtime.Presenter.Ingame.Card;
 using Cryptos.Runtime.Presenter.Ingame.Character.Enemy;
 using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.System;
-using Cryptos.Runtime.Presenter.System;
 using Cryptos.Runtime.UI.Ingame.Manager;
 using Cryptos.Runtime.UI.System.Audio;
 using Cryptos.Runtime.UseCase.Ingame.Card;
@@ -17,7 +16,6 @@ using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -52,9 +50,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [Space]
         [SerializeField, Tooltip("ウェーブ移動速度")]
         private float _waveMoveSpeed = 3;
-        
+
         private IngameUIManager _gameUIManager;
-        
+
         /// <summary>
         /// このインスタンスが破棄されるときに呼び出されます。
         /// </summary>
@@ -96,14 +94,14 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             // PresenterとUseCaseのインスタンス生成とDI注入。
 
             // InputPresenterを作成。
-            InputPresenter inputPresenter = 
+            InputPresenter inputPresenter =
                 new(inputBuffer, cardInitData.CardUseCase, ingameUIManager);
 
             // WaveControlUseCaseを作成。
             WaveControlUseCase waveControlUseCase = new(charaInitData.EnemyRepository);
 
             // WaveSystemPresenterを作成。
-            WavePathPresenter wavePathPresenter = 
+            WavePathPresenter wavePathPresenter =
                 new(playerPathContainer, symphonyPresenter, _waveMoveSpeed);
             WaveSystemPresenter waveSystemPresenter = new(
                 waveUseCase,
@@ -122,11 +120,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             LevelUpPresenter levelUpPresenter = new(levelUseCase, ingameUIManager);
 
-            // IngameLoopPresenterを作成し、DI注入
             IngameLoopPresenter ingameLoopPresenter = new(ingameUIManager);
-            ServiceLocator.RegisterInstance<IIngameLoopPresenter>(ingameLoopPresenter);
 
-            // InGameLoopUseCaseを作成し、依存を注入。
             InGameLoopUseCase inGameLoopUseCase = new(
                 cardInitData.CardUseCase,
                 levelUseCase,
@@ -135,15 +130,13 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 symphonyPresenter,
                 waveSystemPresenter,
                 inputPresenter,
-                ingameLoopPresenter, // OnGameEndedCallback の代わりに ingameLoopPresenter を渡す
+                ingameLoopPresenter,
                 disposables.ToArray()
             );
 
-            // リザルト画面の「メインメニューに戻る」ボタンが押されたらアウトゲームへ遷移
             ingameLoopPresenter.OnResultWindowReturnButtonClicked += GoToOutGameSceneInternal;
 
-            // その他の初期化を行う。
-            CardPresenter cardPresenter = new(cardInitData.CardUseCase,cardExecutionUseCase,  ingameUIManager);
+            CardPresenter cardPresenter = new(cardInitData.CardUseCase, cardExecutionUseCase, ingameUIManager);
             symphonyPresenter.Init(charaInitData.Symphony, symphonyData, cardExecutionUseCase, comboEntity);
             ingameUIManager.CreateHealthBar(new(charaInitData.Symphony, symphonyPresenter.transform, symphonyPresenter.destroyCancellationToken));
             charaInitData.Symphony.OnTakedDamage += c => ingameUIManager.ShowDamageText(new(c), symphonyPresenter.transform.position);
@@ -155,7 +148,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             TestCardSpawn(cardInitData.CardUseCase);
             await inGameLoopUseCase.StartGameAsync();
         }
-        
+
         private void TestCardSpawn(CardUseCase cardUseCase)
         {
             if (_cardDatas == null || _cardDatas.Length == 0)
