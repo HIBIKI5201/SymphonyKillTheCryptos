@@ -35,7 +35,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             {
                 _cachedDeckRect = _deck.worldBound;
                 _cachedStackRect = _stack.worldBound;
-                cacheRectTask.SetResult(true);
+                cacheRectTask.TrySetResult(true);
             });
 
             await cacheRectTask.Task;
