@@ -297,11 +297,7 @@ MonoBehaviour:
         _wordDataBase: {fileID: 11400000, guid: e5c4e3d36388c9f499594322d5368a45, type: 2}
         _levelUpgradeData: {fileID: 11400000, guid: dd172b20880f1164bb428439fc1d1cdd, type: 2}
         _combatPipelineAsset: {fileID: 11400000, guid: eaba6afa10e16a54d95f9e2675e85248, type: 2}
-        _cardDatas:
-        - {fileID: 11400000, guid: 5f133e15ad993d141ad05589ec0d0163, type: 2}
-        - {fileID: 11400000, guid: db05b835f35190a4bbfa52a418b4a8fb, type: 2}
-        - {fileID: 11400000, guid: fca1eac7d2164c34a9dc8d88cfa90679, type: 2}
-        - {fileID: 11400000, guid: 4f81ac41041ba54418d48356df7b134e, type: 2}
+        _cardDeckAsset: {fileID: 11400000, guid: 7787ad48eab22b74c880f2f942b61f7c, type: 2}
         _cardAmount: 3
         _waveEntities:
         - {fileID: 11400000, guid: 39d89d1c485a5da4e985265a5a5a947d, type: 2}
