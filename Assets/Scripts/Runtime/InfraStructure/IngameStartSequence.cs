@@ -11,6 +11,7 @@ using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UI.Ingame.Manager;
 using Cryptos.Runtime.UI.System.Audio;
+using Cryptos.Runtime.UseCase;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
@@ -41,7 +42,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         private CombatPipelineAsset _combatPipelineAsset;
         [Header("テストコード")]
         [SerializeField, Tooltip("テスト用のカードデータ")]
-        private CardDataAsset[] _cardDatas;
+        private CardDeckAsset _cardDeckAsset;
         [SerializeField, Min(1), Tooltip("テスト用に生成するカードの数")]
         private int _cardAmount = 3;
         [Space]
@@ -112,6 +113,9 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 waveControlUseCase
             );
 
+            CardDeckEntity deckEntity = _cardDeckAsset.GetCardDeck(_combatPipelineAsset);
+            CardDeckUseCase deckUseCase = new(deckEntity, cardInitData.CardUseCase);
+
             CardExecutionUseCase cardExecutionUseCase = new(
                 cardInitData.CardUseCase,
                 symphonyPresenter
@@ -145,31 +149,15 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             ingameUIManager.RegisterComboCountHandler(new(comboEntity));
 
             // ゲーム開始の処理を行う。
-            TestCardSpawn(cardInitData.CardUseCase);
+            TestCardSpawn(deckUseCase);
             await inGameLoopUseCase.StartGameAsync();
         }
 
-        private void TestCardSpawn(CardUseCase cardUseCase)
+        private void TestCardSpawn(CardDeckUseCase cardUseCase)
         {
-            if (_cardDatas == null || _cardDatas.Length == 0)
-            {
-                Debug.LogWarning("カードデータが設定されていません。");
-                return;
-            }
-
             for (int i = 0; i < _cardAmount; i++)
             {
-                RandomDraw();
-            }
-
-            void RandomDraw()
-            {
-                Debug.Log("draw");
-                CardDataAsset cardDataAsset = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
-                CardData cardData = cardDataAsset.CreateCardData(_combatPipelineAsset);
-                CardEntity instance = cardUseCase.CreateCard(cardData);
-
-                instance.OnComplete += RandomDraw;
+                cardUseCase.DrawCard();
             }
         }
 
