@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561311b4d38509a49b7f30d47b8a850d, type: 3}
+  m_Name: CardDeckAsset
+  m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.Ingame.DataAsset.CardDeckAsset
+  _cardDataAssets:
+  - {fileID: 11400000, guid: 5f133e15ad993d141ad05589ec0d0163, type: 2}
+  - {fileID: 11400000, guid: db05b835f35190a4bbfa52a418b4a8fb, type: 2}
+  - {fileID: 11400000, guid: fca1eac7d2164c34a9dc8d88cfa90679, type: 2}
+  - {fileID: 11400000, guid: 4f81ac41041ba54418d48356df7b134e, type: 2}
