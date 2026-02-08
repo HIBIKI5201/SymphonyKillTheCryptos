@@ -41,8 +41,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField, Tooltip("戦闘パイプライン")]
         private CombatPipelineAsset _combatPipelineAsset;
         [Header("テストコード")]
-        [SerializeField, Tooltip("テスト用のカードデータ")]
-        private CardDeckAsset _cardDeckAsset;
+        [SerializeField, Tooltip("デフォルトのデータ")]
+        private DefaultInGamePlayerData _defaultPlayerDataAsset;
         [SerializeField, Min(1), Tooltip("テスト用に生成するカードの数")]
         private int _cardAmount = 3;
         [Space]
@@ -113,7 +113,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 waveControlUseCase
             );
 
-            CardDeckEntity deckEntity = _cardDeckAsset.GetCardDeck(_combatPipelineAsset);
+            CardDeckEntity deckEntity = _defaultPlayerDataAsset.CardDeckAsset.GetCardDeck(_combatPipelineAsset);
             CardDeckUseCase deckUseCase = new(deckEntity, cardInitData.CardUseCase);
 
             CardExecutionUseCase cardExecutionUseCase = new(
