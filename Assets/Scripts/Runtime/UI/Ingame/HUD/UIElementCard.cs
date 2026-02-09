@@ -13,7 +13,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
     [UxmlElement]
     public partial class UIElementCard : VisualElementBase
     {
-        public UIElementCard() : base("Card", InitializeType.PickModeIgnore) { }
+        public UIElementCard() : base("InGameCard", InitializeType.PickModeIgnore) { }
 
         public Vector2 GetSize() => new(150, 200);
             // 不明な問題で大きさが取得できないため一旦定数で代用。
