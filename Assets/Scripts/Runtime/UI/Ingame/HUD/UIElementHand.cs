@@ -12,13 +12,13 @@ namespace Cryptos.Runtime.UI.Ingame.Card
     ///     デッキのUI
     /// </summary>
     [UxmlElement]
-    public partial class UIElementDeck : VisualElementBase
+    public partial class UIElementHand : VisualElementBase
     {
-        public UIElementDeck() : base("Hand") { }
+        public UIElementHand() : base("Hand") { }
 
         protected override async ValueTask Initialize_S(VisualElement root)
         {
-            _deck = root.Q<VisualElement>(DECK_NAME);
+            _hand = root.Q<VisualElement>(HAND_NAME);
             _stack = root.Q<VisualElement>(STACK_NAME);
 
             VisualElement overlay = new();
@@ -33,7 +33,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
 
             _overlay.RegisterCallback<GeometryChangedEvent>(evt =>
             {
-                _cachedDeckRect = _deck.worldBound;
+                _cachedHandRect = _hand.worldBound;
                 _cachedStackRect = _stack.worldBound;
                 cacheRectTask.TrySetResult(true);
             });
@@ -58,8 +58,8 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             _overlay.schedule.Execute(() =>
             {
                 card.style.position = Position.Absolute;
-                _cardModes[card] = Mode.Deck;
-                LayoutDeckCards();
+                _cardModes[card] = Mode.Hand;
+                LayoutHandCards();
             });
         }
 
@@ -82,7 +82,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
                 _overlay.Remove(card);
 
 
-                LayoutDeckCards();
+                LayoutHandCards();
                 ReLayoutStackCards();
             }
         }
@@ -103,7 +103,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
 
             if (!_cards.TryGetValue(instance, out UIElementCard card)) { return; }
             _cardModes[card] = Mode.Stack;
-            LayoutDeckCards();
+            LayoutHandCards();
 
             TaskCompletionSource<bool> taskCompletion = new();
 
@@ -148,13 +148,13 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             await taskCompletion.Task;
         }
 
-        private const string DECK_NAME = "deck";
+        private const string HAND_NAME = "hand";
         private const string STACK_NAME = "stack";
 
-        private VisualElement _deck;
+        private VisualElement _hand;
         private VisualElement _stack;
         private VisualElement _overlay;
-        private Rect _cachedDeckRect;
+        private Rect _cachedHandRect;
         private Rect _cachedStackRect;
         private readonly Dictionary<CardViewModel, UIElementCard> _cards = new();
         private readonly Dictionary<CardViewModel, ValueTask> _moveTask = new();
@@ -162,28 +162,28 @@ namespace Cryptos.Runtime.UI.Ingame.Card
 
         private enum Mode
         {
-            Deck,
+            Hand,
             Stack
         }
 
-        private async void LayoutDeckCards()
+        private async void LayoutHandCards()
         {
             await InitializeTask;
 
             UIElementCard[] cardsToLayout =
                 _cards.Values
-                .Where(card => _cardModes.TryGetValue(card, out Mode mode) && mode == Mode.Deck)
+                .Where(card => _cardModes.TryGetValue(card, out Mode mode) && mode == Mode.Hand)
                 .ToArray();
 
             if (cardsToLayout.Length == 0) { return; }
 
 
-            Rect deckWorld = _cachedDeckRect;
+            Rect handWorld = _cachedHandRect;
             Rect overlayWorld = _overlay.worldBound;
-            Debug.Log($"overlay {overlayWorld}, deck {deckWorld}");
+            Debug.Log($"overlay {overlayWorld}, hand {handWorld}");
 
-            float deckRelativeX = deckWorld.x - overlayWorld.x;
-            float deckRelativeY = deckWorld.y - overlayWorld.y;
+            float handRelativeX = handWorld.x - overlayWorld.x;
+            float handRelativeY = handWorld.y - overlayWorld.y;
 
             UIElementCard firstCard = cardsToLayout[0];
             await WaitGeometoryAsync(firstCard);
@@ -197,8 +197,8 @@ namespace Cryptos.Runtime.UI.Ingame.Card
                 (cardsToLayout.Length * cardVisualWidth)
                 + ((cardsToLayout.Length - 1) * spacing);
 
-            float startX = deckRelativeX + (deckWorld.width - totalCardsWidth) * 0.5f;
-            float cardY = deckRelativeY + (deckWorld.height - cardHeight) * 0.5f;
+            float startX = handRelativeX + (handWorld.width - totalCardsWidth) * 0.5f;
+            float cardY = handRelativeY + (handWorld.height - cardHeight) * 0.5f;
 
             float currentX = startX;
 
