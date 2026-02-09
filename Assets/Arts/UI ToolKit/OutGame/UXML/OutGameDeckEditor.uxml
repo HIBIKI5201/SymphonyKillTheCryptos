@@ -1,0 +1,37 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Arts/UI%20ToolKit/Master/USS/Button.uss?fileID=7433441132597879392&amp;guid=f6c5a6a5d6b3d404ab97217ac666a298&amp;type=3#Button"/>
+    <ui:VisualElement style="position: absolute; width: 100%; height: 100%; align-items: center; justify-content: center;">
+        <ui:VisualElement style="width: 1800px; height: 800px; background-color: rgba(0, 0, 0, 0.7); border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px;">
+            <ui:VisualElement name="card-holder" style="flex-grow: 1;">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: space-evenly;">
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: space-evenly;">
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                    <Cryptos.Runtime.UI.Ingame.Card.UIElementCard/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement style="width: 100%; height: 100px; flex-direction: row-reverse; align-items: center;">
+                <ui:Button text="Quit" name="Quit" class="button" style="width: 180px; height: 60px; font-size: 30px;"/>
+                <ui:Button text="Save" name="Save" class="button" style="width: 180px; height: 60px; right: 50px; font-size: 30px;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
