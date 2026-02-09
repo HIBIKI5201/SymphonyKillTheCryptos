@@ -12,21 +12,21 @@ namespace Cryptos.Runtime.UI.Ingame.Card
     ///     デッキのUI
     /// </summary>
     [UxmlElement]
-    public partial class UIElementDeck : SymphonyVisualElement
+    public partial class UIElementDeck : VisualElementBase
     {
-        public UIElementDeck() : base("UIToolKit/UXML/InGame/Deck") { }
+        public UIElementDeck() : base("Hand") { }
 
-        protected override async Task Initialize_S(TemplateContainer container)
+        protected override async ValueTask Initialize_S(VisualElement root)
         {
-            _deck = container.Q<VisualElement>(DECK_NAME);
-            _stack = container.Q<VisualElement>(STACK_NAME);
+            _deck = root.Q<VisualElement>(DECK_NAME);
+            _stack = root.Q<VisualElement>(STACK_NAME);
 
             VisualElement overlay = new();
             overlay.style.position = Position.Absolute;
             overlay.style.flexGrow = 1;
             overlay.style.width = Length.Percent(100);
             overlay.style.height = Length.Percent(100);
-            container.Add(overlay);
+            root.Add(overlay);
             _overlay = overlay;
 
             TaskCompletionSource<bool> cacheRectTask = new();
