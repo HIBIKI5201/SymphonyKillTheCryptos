@@ -1,6 +1,6 @@
-using UnityEngine;
-using SymphonyFrameWork.System;
 using Cryptos.Runtime.Entity;
+using Cryptos.Runtime.Entity.System.SaveData;
+using SymphonyFrameWork.System;
 
 namespace Cryptos.Runtime.UseCase
 {
@@ -9,6 +9,14 @@ namespace Cryptos.Runtime.UseCase
         public static void DeckSave()
         {
             SaveDataSystem<PlayerDeckSaveData>.Save();
+        }
+
+        /// <summary>
+        ///     プレイヤーのマスターデータを保存する。
+        /// </summary>
+        public static void SavePlayerMasterData()
+        {
+            SaveDataSystem<PlayerMasterSaveData>.Save();
         }
     }
 }
