@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cryptos.Runtime.Entity
+namespace Cryptos.Runtime.Entity.System.SaveData
 {
     [Serializable]
     public class PlayerDeckSaveData
