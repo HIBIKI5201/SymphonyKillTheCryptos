@@ -2,6 +2,9 @@ using UnityEngine;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.Entity.Ingame.Card;
 using System;
+using Cryptos.Runtime.InfraStructure.Ingame.Card;
+using Cryptos.Runtime.Entity;
+using System.Threading.Tasks;
 
 namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
 {
@@ -9,20 +12,16 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
         menuName = CryptosPathConstant.ASSET_PATH + nameof(CardDeckAsset))]
     public class CardDeckAsset : ScriptableObject
     {
-        public CardDeckEntity GetCardDeck(CombatPipelineAsset combatPipeline)
+        public async Task<CardDeckEntity> GetCardDeck(CombatPipelineAsset combatPipeline)
         {
-            CardData[] cards = new CardData[_cardDataAssets.Length];
-
-            for (int i = 0; i < cards.Length; i++)
-            {
-                cards[i] = _cardDataAssets[i].CreateCardData(combatPipeline);
-            }
+            CardAddressValueObject[] addresses = CardDeckLoader.GetAddress(_cardDataAddresses);
+            CardData[] cards = await CardDeckLoader.LoadDeck(addresses, combatPipeline);
 
             CardDeckEntity deck = new(cards);
             return deck;
         }
 
         [SerializeField]
-        private CardDataAsset[] _cardDataAssets;
+        private string[] _cardDataAddresses;
     }
 }
