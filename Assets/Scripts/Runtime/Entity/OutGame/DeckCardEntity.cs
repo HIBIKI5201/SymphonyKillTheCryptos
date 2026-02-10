@@ -17,6 +17,12 @@ namespace Cryptos.Runtime.Entity.Outgame.Card
             _cardDifficulty = cardDifficulty;
         }
 
+        public CardAddressValueObject Address => _address;
+        public string CardName => _cardName;
+        public string CardExplanation => _cardExplanation;
+        public Texture2D CardIcon => _cardIcon;
+        public int CardDifficulty => _cardDifficulty;
+
         private readonly CardAddressValueObject _address;
         private readonly string _cardName;
         private readonly string _cardExplanation;
