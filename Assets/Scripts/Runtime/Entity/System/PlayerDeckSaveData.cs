@@ -9,6 +9,6 @@ namespace Cryptos.Runtime.Entity
     public class PlayerDeckSaveData
     {
         [SerializeField]
-        private Dictionary<string, CardDeckEntity> _attackDeck;
+        private Dictionary<string, CardAddressValueObject[]> _attackDeck;
     }
 }
