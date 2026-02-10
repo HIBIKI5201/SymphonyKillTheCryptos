@@ -113,7 +113,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 waveControlUseCase
             );
 
-            CardDeckEntity deckEntity = _defaultPlayerDataAsset.CardDeckAsset.GetCardDeck(_combatPipelineAsset);
+            CardDeckEntity deckEntity = await _defaultPlayerDataAsset.CardDeckAsset.GetCardDeck(_combatPipelineAsset);
             CardDeckUseCase deckUseCase = new(deckEntity, cardInitData.CardUseCase);
 
             CardExecutionUseCase cardExecutionUseCase = new(
