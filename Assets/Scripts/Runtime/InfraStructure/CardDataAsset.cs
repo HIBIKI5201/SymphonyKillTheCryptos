@@ -13,6 +13,11 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
     menuName = CryptosPathConstant.ASSET_PATH + nameof(CardData))]
     public class CardDataAsset : ScriptableObject
     {
+        public string CardName => _cardName;
+        public string CardExplanation => _cardExplanation;
+        public Texture2D CardIcon => _cardIcon;
+        public int CardDifficulty => _cardDifficulty;
+
         public CardData CreateCardData(CombatPipelineAsset combatPipelineAsset)
         {
             CardData data = new(
