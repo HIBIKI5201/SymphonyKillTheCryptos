@@ -3,7 +3,7 @@ using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
 using UnityEngine;
 
-namespace Cryptos.Runtime.InfraStructure
+namespace Cryptos.Runtime.InfraStructure.OutGame.Card
 {
     [CreateAssetMenu(fileName = nameof(RoleAsset),
         menuName = CryptosPathConstant.ASSET_PATH + nameof(RoleAsset))]
