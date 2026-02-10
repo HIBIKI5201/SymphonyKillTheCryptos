@@ -14,8 +14,6 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
     /// </summary>
     public class InGameLoopUseCase
     {
-        private bool _isGameEnded; // ゲーム終了状態を管理するフラグ
-
         /// <summary>
         ///     InGameLoopUseCaseの新しいインスタンスを初期化する。
         /// </summary>
@@ -67,6 +65,7 @@ namespace Cryptos.Runtime.UseCase.Ingame.System
         private readonly IIngameLoopPresenter _ingameLoopPresenter;
         private readonly IDisposable[] _disposables;
 
+        private bool _isGameEnded;
         private int _getSkillTreePoint;
 
         /// <summary>
