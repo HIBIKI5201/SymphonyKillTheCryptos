@@ -1,10 +1,10 @@
-using Cryptos.Runtime.Entity.Ingame.Card; // For CardAddressValueObject and DeckCardEntity
-using Cryptos.Runtime.Entity.Outgame.Card; // For DeckNameValueObject
+using Cryptos.Runtime.Entity;
+using Cryptos.Runtime.Entity.Outgame.Card;
 using Cryptos.Runtime.UseCase.OutGame;
+using System;
 using System.Collections.Generic;
-using System; // For Array.Empty
 using System.Linq;
-using Cryptos.Runtime.Entity; // For .Select().ToArray()
+using System.Threading.Tasks;
 
 namespace Cryptos.Runtime.Presenter.OutGame
 {
@@ -14,7 +14,7 @@ namespace Cryptos.Runtime.Presenter.OutGame
     public class DeckEditorPresenter
     {
         private readonly PlayerDeckUseCase _playerDeckUseCase;
-        private readonly PlayerMasterUseCase _playerMasterUseCase; // Added
+        private readonly PlayerMasterUseCase _playerMasterUseCase;
         private IDeckEditorUI _deckEditorUI;
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Cryptos.Runtime.Presenter.OutGame
         public DeckEditorPresenter(PlayerDeckUseCase playerDeckUseCase, PlayerMasterUseCase playerMasterUseCase)
         {
             _playerDeckUseCase = playerDeckUseCase;
-            _playerMasterUseCase = playerMasterUseCase; // Added
+            _playerMasterUseCase = playerMasterUseCase;
         }
 
         /// <summary>
@@ -40,17 +40,17 @@ namespace Cryptos.Runtime.Presenter.OutGame
         /// <summary>
         ///     すべてのデッキ名をUIに表示する。
         /// </summary>
-        public void DisplayAllDeckNames()
+        public async Task DisplayAllDeckNames()
         {
-            IReadOnlyCollection<string> deckNames = _playerDeckUseCase.GetAllDeckNames();
-            _deckEditorUI.ShowDeckNames(deckNames);
-            
+            IReadOnlyCollection<DeckNameValueObject> deckNames = _playerDeckUseCase.GetAllDeckNames();
+            _deckEditorUI.ShowDeckNames(deckNames.Select(dn => dn.Value).ToList());
+
             // 現在選択されているデッキがあれば、それをUIに反映
             DeckNameValueObject selectedDeckNameVO = _playerMasterUseCase.GetSelectedDeckName();
-            if (!string.IsNullOrEmpty(selectedDeckNameVO.Value) && deckNames.Contains(selectedDeckNameVO.Value))
+            if (!string.IsNullOrEmpty(selectedDeckNameVO.Value) && deckNames.Any(dn => dn.Value == selectedDeckNameVO.Value))
             {
                 _deckEditorUI.SetSelectedDeckInDropdown(selectedDeckNameVO.Value);
-                LoadAndDisplayDeck(selectedDeckNameVO.Value); // 選択されているデッキをロード
+                await LoadAndDisplayDeck(selectedDeckNameVO.Value);
             }
         }
 
@@ -58,41 +58,46 @@ namespace Cryptos.Runtime.Presenter.OutGame
         ///     指定された名前のデッキをロードし、UIに表示する。
         /// </summary>
         /// <param name="deckName">ロードするデッキの名前。</param>
-        public void LoadAndDisplayDeck(string deckName)
+        public async Task LoadAndDisplayDeck(string name)
         {
+            DeckNameValueObject deckName = new(name);
+
             CardAddressValueObject[] deck = _playerDeckUseCase.GetDeck(deckName);
             if (deck != null)
             {
                 // DeckViewModelに変換してUIに渡す。
-                DeckCardEntity[] deckCardEntities = deck.Select(cardAddress => new DeckCardEntity(cardAddress.Value)).ToArray();
-                DeckViewModel deckViewModel = new(new DeckNameValueObject(deckName), deckCardEntities);
+                var deckCardEntityTasks = deck.Select(async cardAddress => await _playerDeckUseCase.CreateDeckCardEntity(cardAddress));
+                DeckCardEntity[] deckCardEntities = await Task.WhenAll(deckCardEntityTasks);
+
+                DeckViewModel deckViewModel = new(deckName, deckCardEntities);
                 _deckEditorUI.ShowDeck(deckViewModel);
-                _playerMasterUseCase.SetSelectedDeckName(new DeckNameValueObject(deckName)); // 選択中のデッキをマスターデータに保存
+                _playerMasterUseCase.SetSelectedDeckName(deckName);
             }
             else
             {
-                _deckEditorUI.ShowErrorMessage($"デッキ '{deckName}' が見つかりませんでした。");
+                _deckEditorUI.ShowErrorMessage($"デッキ '{deckName.Value}' が見つかりませんでした。");
             }
         }
 
         /// <summary>
         ///     新しいデッキを作成し、UIに表示する。
         /// </summary>
-        /// <param name="newDeckName">新しいデッキの名前。</param>
-        public void CreateNewDeck(string newDeckName)
+        /// <param name="deckNameVO">新しいデッキの名前。</param>
+        public async void CreateNewDeck(string name)
         {
-            // ロール名であるため、既に存在するかのチェックは不要（上書きされるため）
-            // ただし、UI側で重複作成を制限するべき
-            // ここでは空のデッキを登録し、選択状態にする
+            DeckNameValueObject deckNameVO = new(name);
+
             CardAddressValueObject[] emptyDeck = Array.Empty<CardAddressValueObject>();
-            _playerDeckUseCase.RegisterDeck(newDeckName, emptyDeck);
-            
-            DeckCardEntity[] deckCardEntities = emptyDeck.Select(cardAddress => new DeckCardEntity(cardAddress.Address)).ToArray(); // Updated
-            DeckViewModel deckViewModel = new(new DeckNameValueObject(newDeckName), deckCardEntities);
+            _playerDeckUseCase.RegisterDeck(deckNameVO, emptyDeck);
+
+            var deckCardEntityTasks = emptyDeck.Select(async cardAddress => await _playerDeckUseCase.CreateDeckCardEntity(cardAddress));
+            DeckCardEntity[] deckCardEntities = await Task.WhenAll(deckCardEntityTasks);
+
+            DeckViewModel deckViewModel = new(deckNameVO, deckCardEntities);
             _deckEditorUI.ShowDeck(deckViewModel);
-            _deckEditorUI.ShowSuccessMessage($"デッキ '{newDeckName}' を作成しました。");
-            _playerMasterUseCase.SetSelectedDeckName(new DeckNameValueObject(newDeckName)); // 新しく作成したデッキを選択状態にする
-            DisplayAllDeckNames(); // デッキリストを更新
+            _deckEditorUI.ShowSuccessMessage($"デッキ '{deckNameVO.Value}' を作成しました。");
+            _playerMasterUseCase.SetSelectedDeckName(deckNameVO);
+            await DisplayAllDeckNames();
         }
 
         /// <summary>
@@ -100,12 +105,12 @@ namespace Cryptos.Runtime.Presenter.OutGame
         /// </summary>
         /// <param name="deckName">保存するデッキの名前。</param>
         /// <param name="deck">保存するカードアドレスの配列。</param>
-        public void SaveDeck(string deckName, CardAddressValueObject[] deck)
+        public async void SaveDeck(DeckNameValueObject deckName, CardAddressValueObject[] deck) // async に変更
         {
             _playerDeckUseCase.RegisterDeck(deckName, deck);
-            _playerMasterUseCase.SetSelectedDeckName(new DeckNameValueObject(deckName)); // 選択中のデッキをマスターデータに保存
-            _deckEditorUI.ShowSuccessMessage($"デッキ '{deckName}' を保存しました。");
-            DisplayAllDeckNames(); // デッキリストを更新
+            _playerMasterUseCase.SetSelectedDeckName(deckName);
+            _deckEditorUI.ShowSuccessMessage($"デッキ '{deckName.Value}' を保存しました。");
+            await DisplayAllDeckNames();
         }
     }
 }
