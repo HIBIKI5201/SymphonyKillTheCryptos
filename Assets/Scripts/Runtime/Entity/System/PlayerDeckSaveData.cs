@@ -1,7 +1,6 @@
+using Cryptos.Runtime.Entity.Outgame.Card;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Cryptos.Runtime.Entity.Outgame.Card;
 
 namespace Cryptos.Runtime.Entity.System.SaveData
 {
