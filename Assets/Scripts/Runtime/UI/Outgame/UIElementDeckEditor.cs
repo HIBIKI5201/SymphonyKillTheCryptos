@@ -1,7 +1,7 @@
 using Cryptos.Runtime.Presenter.OutGame;
 using System;
 using System.Collections.Generic;
-using System.Linq; // 追加
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
@@ -16,49 +16,18 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         public UIElementDeckEditor() : base("DeckEditor") { }
 
         // IDeckEditorUIのイベント実装
-        event Action IDeckEditorUI.OnEditButtonClicked { add { _onEditButtonClicked += value; } remove { _onEditButtonClicked -= value; } }
-        event Action IDeckEditorUI.OnSaveButtonClicked { add { _onSaveButtonClicked += value; } remove { _onSaveButtonClicked -= value; } }
-        event Action IDeckEditorUI.OnRoleSelected { add { _onRoleSelected += value; } remove { _onRoleSelected -= value; } }
-        event Action IDeckEditorUI.OnCancelButtonClicked { add { _onCancelButtonClicked += value; } remove { _onCancelButtonClicked -= value; } }
-        event Action<CardViewModel> IDeckEditorUI.OnOwnedCardSelected { add { _onOwnedCardSelected += value; } remove { _onOwnedCardSelected -= value; } }
-        event Action IDeckEditorUI.OnCardSwapRequested { add { _onCardSwapRequested += value; } remove { _onCardSwapRequested -= value; } }
-        event Action<UnityEngine.UIElements.NavigationMoveEvent.Direction> IDeckEditorUI.OnNavigateDeckCard { add { _onNavigateDeckCard += value; } remove { _onNavigateDeckCard -= value; } }
-
-        private DeckEditorPresenter _presenter;
-        // UI要素への参照
-        private VisualElement _statusElement;
-        private Button _editButton;
-        private Button _saveButton;
-        private VisualElement _roleSelectionArea;
-        private VisualElement _deckElement;
-        private UIElementOutGameDeckEditorCard _adjacentCardLeft;
-        private UIElementOutGameDeckEditorCard _currentCard;
-        private UIElementOutGameDeckEditorCard _adjacentCardRight;
-        private VisualElement _cardSelectElement;
-        private VisualElement _ownedCardList;
-
-        // フォーカス制御用
-        private Focusable _currentFocusedElement;
-        private List<Focusable> _focusableElements;
-        private List<Focusable> _leftAreaFocusables;
-        private List<Focusable> _rightAreaTopFocusables; // カード表示エリア
-        private List<Focusable> _rightAreaBottomFocusables; // カード選択エリア
-        private enum FocusArea { LeftArea, RightAreaTop, RightAreaBottom }
-        private FocusArea _currentFocusArea = FocusArea.LeftArea;
-        private UIElementOutGameDeckEditorCard _selectedDeckCardForSwapUI; // デッキ内の交換対象カード
-
-        /// <summary>
-        ///     プレゼンターを設定する。
-        /// </summary>
-        /// <param name="presenter">デッキエディタプレゼンター。</param>
-        public void SetPresenter(DeckEditorPresenter presenter)
-        {
-            _presenter = presenter;
-        }
+        public event Action OnEditButtonClicked;
+        public event Action OnSaveButtonClicked;
+        public event Action OnRoleSelected;
+        public event Action OnCancelButtonClicked;
+        public event Action<CardViewModel> OnOwnedCardSelected;
+        public event Action OnCardSwapRequested;
+        public event Action<NavigationMoveEvent.Direction> OnNavigateDeckCard;
 
         public void Show()
         {
             style.visibility = Visibility.Visible;
+            _saveButton.Focus();
         }
 
 
@@ -77,8 +46,8 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             _ownedCardList = root.Q<VisualElement>(OWNED_CARD_LIST_NAME);
 
             // イベントハンドラの設定
-            _editButton.clicked += () => _onEditButtonClicked?.Invoke();
-            _saveButton.clicked += () => _onSaveButtonClicked?.Invoke();
+            _editButton.clicked += () => OnEditButtonClicked?.Invoke();
+            _saveButton.clicked += () => OnSaveButtonClicked?.Invoke();
 
             // フォーカス可能な要素を初期化
             _leftAreaFocusables = new List<Focusable> { _editButton, _saveButton, _roleSelectionArea };
@@ -98,15 +67,6 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             await Task.CompletedTask;
         }
 
-        // IDeckEditorUIイベントのバッキングフィールド
-        private Action _onEditButtonClicked;
-        private Action _onSaveButtonClicked;
-        private Action _onRoleSelected;
-        private Action _onCancelButtonClicked;
-        private Action<CardViewModel> _onOwnedCardSelected;
-        private Action _onCardSwapRequested;
-        private Action<UnityEngine.UIElements.NavigationMoveEvent.Direction> _onNavigateDeckCard;
-
         // UI要素の定数
         private const string STATUS_ELEMENT_NAME = "status";
         private const string EDIT_BUTTON_NAME = "Edit";
@@ -118,6 +78,33 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         private const string ADJACENT_CARD_RIGHT_NAME = "adjacent-card-right";
         private const string CARD_SELECT_ELEMENT_NAME = "card-select";
         private const string OWNED_CARD_LIST_NAME = "owned-card-list";
+
+        private VisualElement _statusElement;
+        private Button _editButton;
+        private Button _saveButton;
+        private VisualElement _roleSelectionArea;
+        private VisualElement _deckElement;
+        private UIElementOutGameDeckEditorCard _adjacentCardLeft;
+        private UIElementOutGameDeckEditorCard _currentCard;
+        private UIElementOutGameDeckEditorCard _adjacentCardRight;
+        private VisualElement _cardSelectElement;
+        private VisualElement _ownedCardList;
+
+        private Focusable _currentFocusedElement;
+        private List<Focusable> _focusableElements;
+        private List<Focusable> _leftAreaFocusables;
+        private List<Focusable> _rightAreaTopFocusables;
+        private List<Focusable> _rightAreaBottomFocusables;
+
+        private FocusArea _currentFocusArea = FocusArea.LeftArea;
+        private UIElementOutGameDeckEditorCard _selectedDeckCardForSwapUI;
+
+        private enum FocusArea
+        { 
+            LeftArea, 
+            RightAreaTop, 
+            RightAreaBottom 
+        }
 
         private void SetFocus(Focusable newFocus)
         {
@@ -195,7 +182,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
                 if (nextIndex != currentIndex)
                 {
                     SetFocus(_rightAreaTopFocusables[nextIndex]);
-                    _onNavigateDeckCard?.Invoke(evt.direction); // イベントを発火
+                    OnNavigateDeckCard?.Invoke(evt.direction); // イベントを発火
                     evt.StopPropagation();
                 }
             }
@@ -258,12 +245,12 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             }
             else if (_currentFocusedElement == _saveButton)
             {
-                _onSaveButtonClicked?.Invoke(); // 保存処理を実行
+                OnSaveButtonClicked?.Invoke(); // 保存処理を実行
                 evt.StopPropagation();
             }
             else if (_currentFocusedElement == _roleSelectionArea)
             {
-                _onRoleSelected?.Invoke(); // ロール切り替えイベントを発火
+                OnRoleSelected?.Invoke(); // ロール切り替えイベントを発火
                 evt.StopPropagation();
             }
             // 右エリアでの決定入力ロジック
@@ -293,7 +280,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
                     if (_selectedDeckCardForSwapUI != null)
                     {
                         // 交換リクエストを発火
-                        _onCardSwapRequested?.Invoke(); // このイベントでPresenterに交換処理を依頼
+                        OnCardSwapRequested?.Invoke(); // このイベントでPresenterに交換処理を依頼
 
                         // 交換後、選択状態をクリア
                         _selectedDeckCardForSwapUI.RemoveFromClassList("selected-deck-card");
@@ -305,7 +292,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
                     else
                     {
                         // 上部のカードが選択されていない場合は、所持カードを選択状態にする
-                        _onOwnedCardSelected?.Invoke(selectedCard.CardData);
+                        OnOwnedCardSelected?.Invoke(selectedCard.CardData);
                     }
 
                     UnityEngine.Debug.Log($"Owned card selected: {selectedCard.CardData.CardExplanation}");
