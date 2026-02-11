@@ -1,3 +1,4 @@
+using Codice.Client.Common.FsNodeReaders;
 using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Outgame.Card;
 using Cryptos.Runtime.UseCase.OutGame;
@@ -14,6 +15,7 @@ namespace Cryptos.Runtime.Presenter.OutGame
     /// </summary>
     public readonly struct CardViewModel
     {
+        public readonly string Name;
         public readonly Texture2D CardIcon;
         public readonly string CardExplanation;
         public readonly CardAddressValueObject Address; // Add Address property
@@ -28,13 +30,15 @@ namespace Cryptos.Runtime.Presenter.OutGame
 
         public CardViewModel(DeckCardEntity entity) // New constructor
         {
+            Name = entity.CardName;
             Address = entity.Address;
             CardIcon = entity.CardIcon;
             CardExplanation = entity.CardExplanation;
         }
 
-        public CardViewModel(CardAddressValueObject address, Texture2D cardIcon, string cardExplanation) // Modified constructor
+        public CardViewModel(string name, CardAddressValueObject address, Texture2D cardIcon, string cardExplanation) // Modified constructor
         {
+            Name = name;
             Address = address;
             CardIcon = cardIcon;
             CardExplanation = cardExplanation;
@@ -66,8 +70,10 @@ namespace Cryptos.Runtime.Presenter.OutGame
 
         private List<CardViewModel> _currentDeckCards = new List<CardViewModel>(); // 現在のデッキのスロットごとのカード
         private List<CardViewModel> _ownedCards = new List<CardViewModel>(); // 所持している全カード
-        private CardViewModel? _selectedCardForSwap; // 交換のために選択されたカード
+
         private int _currentDeckCardIndex = 0; // 現在デッキ内で選択されているカードのインデックス
+        private CardViewModel? _selectedOwnedCard;
+        private CardViewModel? _selectedOwnedCardForSwap; // 交換のために選択された所持カード
 
         /// <summary>
         ///     DeckEditorPresenterの新しいインスタンスを生成する。
@@ -104,19 +110,19 @@ namespace Cryptos.Runtime.Presenter.OutGame
             _deckEditorUI.SetRoleCharacter(_roles[_currentRoleIndex]);
 
             // ダミーカードデータ
-            var dummyCard1 = new CardViewModel(new CardAddressValueObject("card001"), Texture2D.redTexture, "Description for Card A");
-            var dummyCard2 = new CardViewModel(new CardAddressValueObject("card002"), Texture2D.blackTexture, "Description for Card B");
-            var dummyCard3 = new CardViewModel(new CardAddressValueObject("card003"), Texture2D.grayTexture, "Description for Card C");
-            var dummyCard4 = new CardViewModel(new CardAddressValueObject("card004"), Texture2D.whiteTexture, "Description for Card D");
+            var dummyCard1 = new CardViewModel("a", new CardAddressValueObject("card001"), Texture2D.redTexture, "Description for Card A");
+            var dummyCard2 = new CardViewModel("b", new CardAddressValueObject("card002"), Texture2D.blackTexture, "Description for Card B");
+            var dummyCard3 = new CardViewModel("c", new CardAddressValueObject("card003"), Texture2D.grayTexture, "Description for Card C");
+            var dummyCard4 = new CardViewModel("d", new CardAddressValueObject("card004"), Texture2D.whiteTexture, "Description for Card D");
 
             _currentDeckCards = new List<CardViewModel> { dummyCard1, dummyCard2, dummyCard3 }; // デッキ内のカード
             _ownedCards = new List<CardViewModel> { dummyCard1, dummyCard2, dummyCard3, dummyCard4 }; // 所持カード
 
             // UIを更新
-            _deckEditorUI.SetCurrentCard(_currentDeckCards[0]); // 仮でデッキの最初のカードを中央に表示
-            _deckEditorUI.SetAdjacentCards(dummyCard3, _currentDeckCards[1]); // 仮で左右のカードを設定
+            _deckEditorUI.SetCurrentCard(_currentDeckCards[0]);
+            _deckEditorUI.SetAdjacentCards(dummyCard3, _currentDeckCards[1]);
             _deckEditorUI.SetOwnedCards(_ownedCards);
-            UpdateDeckCardDisplay(); // 初期表示を更新
+            UpdateDeckCardDisplay();
         }
 
         private void OnEdit()
@@ -159,14 +165,14 @@ namespace Cryptos.Runtime.Presenter.OutGame
 
         private void OnOwnedCardSelected(CardViewModel card)
         {
-            _selectedCardForSwap = card;
+            _selectedOwnedCard = card;
             _deckEditorUI.SetSelectedOwnedCard(card);
             UnityEngine.Debug.Log($"Presenter: Owned card selected for swap: {card.CardExplanation}");
         }
 
         private void OnRequestCardSwap()
         {
-            if (_selectedCardForSwap == null || _currentDeckCards.Count == 0)
+            if (_selectedOwnedCard == null || _currentDeckCards.Count == 0)
             {
                 UnityEngine.Debug.LogWarning("Presenter: Cannot swap cards. No card selected for swap or deck is empty.");
                 return;
@@ -176,20 +182,20 @@ namespace Cryptos.Runtime.Presenter.OutGame
             CardViewModel targetDeckCard = _currentDeckCards[_currentDeckCardIndex];
 
             // _ownedCards から _selectedCardForSwap を削除し、targetDeckCard を追加
-            _ownedCards.Remove(_selectedCardForSwap.Value);
+            _ownedCards.Remove(_selectedOwnedCard.Value);
             _ownedCards.Add(targetDeckCard);
 
             // _currentDeckCards の該当位置を _selectedCardForSwap で置き換える
-            _currentDeckCards[_currentDeckCardIndex] = _selectedCardForSwap.Value;
+            _currentDeckCards[_currentDeckCardIndex] = _selectedOwnedCard.Value;
 
             // UIを更新
             UpdateDeckCardDisplay();
             _deckEditorUI.SetOwnedCards(_ownedCards);
             _deckEditorUI.ClearSelectedOwnedCard(); // 選択状態をクリア
 
-            _selectedCardForSwap = null; // 交換完了後、選択カードをクリア
+            _selectedOwnedCard = null; // 交換完了後、選択カードをクリア
 
-            UnityEngine.Debug.Log($"Presenter: Cards swapped! Deck card {_currentDeckCardIndex} replaced with {_selectedCardForSwap.Value.CardExplanation}");
+            UnityEngine.Debug.Log($"Presenter: Cards swapped! Deck card {_currentDeckCardIndex} replaced with {_selectedOwnedCard.Value.CardExplanation}");
         }
 
         private void OnNavigateDeckCard(UnityEngine.UIElements.NavigationMoveEvent.Direction direction)
