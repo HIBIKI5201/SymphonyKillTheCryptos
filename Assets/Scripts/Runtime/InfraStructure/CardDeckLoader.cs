@@ -76,5 +76,12 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Card
 
             return cards;
         }
+        public static async Task<CardDataAsset> LoadCardDataAsset(CardAddressValueObject address)
+        {
+            AsyncOperationHandle<CardDataAsset> handle = Addressables.LoadAssetAsync<CardDataAsset>(address.Value);
+            await handle.Task;
+            return handle.Result;
+        }
+
     }
 }
