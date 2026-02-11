@@ -1,6 +1,8 @@
+using Cryptos.Runtime.Presenter.OutGame;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+
 
 namespace Cryptos.Runtime.UI.Outgame.Deck
 {
@@ -9,10 +11,13 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
     {
         public UIElementOutGameDeckEditorCard() : base("DeckEditorCard", InitializeType.Absolute) { }
 
-        public void BindCardData(Texture2D texture, string explanation)
+        public CardViewModel CardData { get; private set; }
+
+        public void BindCardData(CardViewModel card)
         {
-            _icon.style.backgroundImage = texture;
-            _explanation.text = explanation;
+            CardData = card; // プロパティに設定
+            _icon.style.backgroundImage = card.CardIcon;
+            _explanation.text = card.CardExplanation;
         }
 
         protected override ValueTask Initialize_S(VisualElement root)
