@@ -54,8 +54,13 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         public void SetPresenter(DeckEditorPresenter presenter)
         {
             _presenter = presenter;
-            // _presenter.RegisterUI(this); // ここは後で修正
         }
+
+        public void Show()
+        {
+            style.visibility = Visibility.Visible;
+        }
+
 
         protected override async ValueTask Initialize_S(VisualElement root)
         {
@@ -83,6 +88,8 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             // 初期フォーカスを設定
             SetFocus(_editButton);
             _currentFocusArea = FocusArea.LeftArea;
+
+            style.visibility = Visibility.Hidden;
 
             // Navigationイベントの登録
             RegisterCallback<NavigationMoveEvent>(OnNavigationMove);
