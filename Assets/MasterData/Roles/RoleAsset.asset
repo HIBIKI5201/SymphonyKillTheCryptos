@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f7f8ab3eb23ddb47a6d9040dfb0cb80, type: 3}
   m_Name: RoleAsset
   m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.OutGame.Deck.RoleAsset
-  _name: 
-  _deck: {fileID: 0}
-  _status: {fileID: 0}
+  _name: Attack
+  _deck: {fileID: 11400000, guid: 7787ad48eab22b74c880f2f942b61f7c, type: 2}
+  _status: {fileID: 11400000, guid: fcf3f1f413c8c4348987e4dadd1102f0, type: 2}
