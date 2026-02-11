@@ -1,8 +1,12 @@
+using Cryptos.Runtime.Entity; // Add this using statement
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
+using Cryptos.Runtime.Entity.Outgame.Card;
+using Cryptos.Runtime.Entity.System.SaveData;
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.InfraStructure.Ingame.Card;
 using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
 using Cryptos.Runtime.InfraStructure.Ingame.Utility;
 using Cryptos.Runtime.Presenter.Ingame.Card;
@@ -113,7 +117,27 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 waveControlUseCase
             );
 
-            CardDeckEntity deckEntity = await _defaultPlayerDataAsset.CardDeckAsset.GetCardDeck(_combatPipelineAsset);
+            PlayerDeckSaveData playerDeckSaveData = SaveDataSystem<PlayerDeckSaveData>.Data;
+            PlayerMasterSaveData masterData = SaveDataSystem< PlayerMasterSaveData>.Data;
+            // TODO: OutgameStartSequienceからplayerDeckSaveDataをDIで受け取るように修正
+            
+            // 選択されたデッキ名をPlayerDeckSaveDataから取得
+            DeckNameValueObject selectedDeckName = masterData.DeckName;
+            CardAddressValueObject[] selectedDeckAddresses = playerDeckSaveData.GetDeck(selectedDeckName);
+
+            CardDeckEntity deckEntity;
+            if (selectedDeckAddresses != null && selectedDeckAddresses.Length > 0)
+            {
+                // 選択されたデッキのアドレスからCardDeckEntityを生成
+                CardData[] cardDatas = await CardDeckLoader.LoadDeck(selectedDeckAddresses, _combatPipelineAsset);
+                  deckEntity = new CardDeckEntity(cardDatas);
+            }
+            else
+            {
+                // 選択されたデッキがない、または空の場合、デフォルトのデッキをロード
+                Debug.LogWarning($"選択されたデッキ '{selectedDeckName}' が見つからないか空です。デフォルトデッキをロードします。");
+                deckEntity = await _defaultPlayerDataAsset.CardDeckAsset.GetCardDeck(_combatPipelineAsset);
+            }
             CardDeckUseCase deckUseCase = new(deckEntity, cardInitData.CardUseCase);
 
             CardExecutionUseCase cardExecutionUseCase = new(
