@@ -37,9 +37,10 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             _iconElement.style.backgroundImage = new(instance.Icon);
         }
 
-        public async ValueTask Rotate()
+        public ValueTask Rotate()
         {
             _root.AddToClassList(CARD_STACK_STYLE);
+            return default;
         }
 
         protected override ValueTask Initialize_S(VisualElement root)

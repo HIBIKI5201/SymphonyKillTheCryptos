@@ -50,7 +50,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         ///     カードをUIに追加する。
         /// </summary>
         /// <param name="instance">追加するカードのビューモデル。</param>
-        public async void AddCard(CardViewModel instance)
+        public void AddCard(CardViewModel instance)
         {
             _hand.HandleAddCard(instance);
         }
