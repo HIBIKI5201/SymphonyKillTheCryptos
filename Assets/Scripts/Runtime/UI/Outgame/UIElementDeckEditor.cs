@@ -27,7 +27,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         public void Show()
         {
             style.visibility = Visibility.Visible;
-            _saveButton.Focus();
+            SetFocus(_saveButton);
         }
 
 
@@ -48,11 +48,11 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             // イベントハンドラの設定
             _editButton.clicked += () => OnEditButtonClicked?.Invoke();
             _saveButton.clicked += () => OnSaveButtonClicked?.Invoke();
+            _saveButton.clicked += () => style.visibility = Visibility.Hidden;
 
             // フォーカス可能な要素を初期化
             _leftAreaFocusables = new List<Focusable> { _editButton, _saveButton, _roleSelectionArea };
             _rightAreaTopFocusables = new List<Focusable> { _adjacentCardLeft, _currentCard, _adjacentCardRight };
-            // _rightAreaBottomFocusables は、動的に生成されるカードに対応するため、後で実装
 
             // 初期フォーカスを設定
             SetFocus(_editButton);
@@ -98,6 +98,8 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
 
         private FocusArea _currentFocusArea = FocusArea.LeftArea;
         private UIElementOutGameDeckEditorCard _selectedDeckCardForSwapUI;
+        private UIElementOutGameDeckEditorCard _selectedOwnedCardUI;
+
 
         private enum FocusArea
         { 
@@ -131,16 +133,8 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
                 {
                     nextIndex = (currentIndex + 1) % _leftAreaFocusables.Count;
                 }
-                else if (evt.direction == NavigationMoveEvent.Direction.Right) // 右入力で右エリアへ
+                else if (evt.direction == NavigationMoveEvent.Direction.Right)
                 {
-                    // 編集ボタンがフォーカスされている場合のみ右エリアへ移動可能にする
-                    if (_currentFocusedElement == _editButton)
-                    {
-                        _currentFocusArea = FocusArea.RightAreaTop;
-                        SetFocus(_rightAreaTopFocusables[0]); // 右エリアの最初の要素にフォーカス
-                        evt.StopPropagation();
-                        return;
-                    }
                 }
 
                 if (nextIndex != currentIndex)
@@ -188,7 +182,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             }
             else if (_currentFocusArea == FocusArea.RightAreaBottom)
             {
-                if (!_rightAreaBottomFocusables.Any()) return; // カードがない場合は何もしない
+                if (!_rightAreaBottomFocusables.Any()) return;
 
                 int currentIndex = _rightAreaBottomFocusables.IndexOf(_currentFocusedElement);
                 if (currentIndex == -1) // 現在フォーカスされている要素が見つからない場合、最初の要素にフォーカス
@@ -301,8 +295,6 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             }
         }
 
-
-
         public void SetStatusText(string text)
         {
             // TODO: _statusElementにテキストを設定するロジック
@@ -343,7 +335,12 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             UnityEngine.Debug.Log($"Owned Cards Count: {cards.Count}");
         }
 
-        private UIElementOutGameDeckEditorCard _selectedOwnedCardUI; // 選択された所持カードのUI要素
+        private void SelectedRightUpper()
+        {
+            _currentFocusArea = FocusArea.RightAreaTop;
+            SetFocus(_rightAreaTopFocusables[0]);
+        }
+
 
         public void SetSelectedOwnedCard(CardViewModel card)
         {
