@@ -11,6 +11,12 @@ namespace Cryptos.Runtime.Presenter.OutGame
     public interface IDeckEditorUI
     {
         /// <summary>
+        ///     プレゼンターをバインドする。
+        /// </summary>
+        /// <param name="presenter"></param>
+        public void SetPresenter(DeckEditorPresenter presenter);
+
+        /// <summary>
         ///     デッキ名のリストを表示する。
         /// </summary>
         /// <param name="deckNames">表示するデッキ名のコレクション。</param>
