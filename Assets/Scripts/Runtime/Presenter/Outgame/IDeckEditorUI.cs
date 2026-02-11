@@ -16,12 +16,6 @@ namespace Cryptos.Runtime.Presenter.OutGame
         event Action OnCardSwapRequested;
         event Action<UnityEngine.UIElements.NavigationMoveEvent.Direction> OnNavigateDeckCard;
 
-        /// <summary>
-        ///     プレゼンターをバインドする。
-        /// </summary>
-        /// <param name="presenter"></param>
-        public void SetPresenter(DeckEditorPresenter presenter);
-
         void SetStatusText(string text);
         void SetRoleCharacter(string characterName);
 

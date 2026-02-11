@@ -31,9 +31,6 @@ namespace Cryptos.Runtime.InfraStructure
             PlayerDeckUseCase playerDeckUseCase = new(playerDeckSaveData, cardRepositoryImpl);
             DeckEditorPresenter deckEditorPresenter = new(playerDeckUseCase, playerMasterUseCase);
 
-            IDeckEditorUI deckEditorUI = uiManager.DeckEditor;
-            deckEditorUI.SetPresenter(deckEditorPresenter);
-
             // スタートボタンが押された際のイベントハンドラを設定
             uiManager.OnPressedStartButton += HandlePressedStartButton;
 
