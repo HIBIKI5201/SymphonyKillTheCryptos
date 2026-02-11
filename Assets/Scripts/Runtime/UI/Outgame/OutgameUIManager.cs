@@ -27,6 +27,7 @@ namespace Cryptos.Runtime.UI.Outgame
             _deckEditor = root.Q<UIElementDeckEditor>();
 
             VisualElement buttonContainer = root.Q<VisualElement>(BUTTONS_NAME);
+            _buttonContainer = buttonContainer;
            if (buttonContainer == null) { return; }
 
             _startButton = buttonContainer.Q<Button>(START_BUTTON_NAME);
@@ -37,6 +38,8 @@ namespace Cryptos.Runtime.UI.Outgame
             
             _editButton = buttonContainer.Q<Button>(EDIT_BUTTON_NAME);
             _editButton.clicked += _deckEditor.Show;
+            _editButton.clicked += ButtonsHide;
+            _deckEditor.OnSaveButtonClicked += ButtonsShow;
 
             destroyCancellationToken.Register(() =>
             {
@@ -53,10 +56,20 @@ namespace Cryptos.Runtime.UI.Outgame
         private const string START_BUTTON_NAME = "start";
         private const string EDIT_BUTTON_NAME = "edit";
 
+        private VisualElement _buttonContainer;
         private Button _startButton;
         private Button _editButton;
 
         private event Action _onStartButtonPressed;
         private UIElementDeckEditor _deckEditor;
+
+        private void ButtonsShow()
+        {
+            _buttonContainer.style.visibility = Visibility.Visible;
+        }
+        private void ButtonsHide()
+        {
+            _buttonContainer.style.visibility = Visibility.Hidden;
+        }
     }
 }
