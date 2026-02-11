@@ -17,4 +17,5 @@
             </Bindings>
         </ui:Button>
     </ui:VisualElement>
+    <Cryptos.Runtime.UI.Outgame.Deck.UIElementDeckEditor picking-mode="Ignore"/>
 </ui:UXML>
