@@ -274,8 +274,6 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             IStyle style = card.style;
             style.left = pos.x;
             style.top = pos.y;
-
-            Debug.Log($"[card] {pos}");
         }
 
         private float GetCardTotalWidth(UIElementCard ve)
