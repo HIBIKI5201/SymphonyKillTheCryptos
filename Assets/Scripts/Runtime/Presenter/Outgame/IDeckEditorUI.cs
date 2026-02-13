@@ -12,8 +12,7 @@ namespace Cryptos.Runtime.Presenter.OutGame
         event Action OnSaveButtonClicked;
         event Action OnRoleSelected;
         event Action OnCancelButtonClicked;
-        event Action<CardViewModel> OnOwnedCardSelected;
-        event Action OnCardSwapRequested;
+        event Action<int, CardViewModel> OnOwnedCardSelected;
         
         void SetStatusText(string text);
         void SetRoleCharacter(string characterName);

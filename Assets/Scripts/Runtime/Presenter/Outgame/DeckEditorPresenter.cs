@@ -74,13 +74,11 @@ namespace Cryptos.Runtime.Presenter.OutGame
         {
             _deckEditorUI = ui;
 
-            // UIからのイベントを購読
             _deckEditorUI.OnEditButtonClicked += OnEdit;
             _deckEditorUI.OnSaveButtonClicked += OnSave;
             _deckEditorUI.OnRoleSelected += OnRoleChange;
             _deckEditorUI.OnCancelButtonClicked += OnCancel;
             _deckEditorUI.OnOwnedCardSelected += OnOwnedCardSelected;
-            _deckEditorUI.OnCardSwapRequested += OnRequestCardSwap;
         }
 
         /// <summary>
@@ -88,17 +86,52 @@ namespace Cryptos.Runtime.Presenter.OutGame
         /// </summary>
         public void InitializeDeckEditor()
         {
-            // ロール情報や初期デッキ情報などをUIに渡す。
+            InitializeRoleUI();
+            InitializeOwnedCards();
+            InitializeDeckCards(); 
+        }
+
+        private void InitializeRoleUI()
+        {
             _deckEditorUI.SetStatusText($"現在のロール: {_roles[_currentRoleIndex].Name}");
             _deckEditorUI.SetRoleCharacter(_roles[_currentRoleIndex].Name);
+        }
 
+        private void InitializeOwnedCards()
+        {
             _ownedCards = _allCard.Select(entity => new CardViewModel(entity)).ToList();
+            _deckEditorUI.SetOwnedCards(_ownedCards);
+        }
 
-            // デッキ内のカードは、所持カードの最初の3枚を暫定的に設定
-            _currentDeckCards = _ownedCards.Take(3).ToList();
+        private void InitializeDeckCards() // async Task にする必要はない
+        {
+            // UseCase層からCardAddressValueObject[]を取得
+            DeckNameValueObject deckName = _playerMasterUseCase.GetSelectedDeckName();
+            CardAddressValueObject[] savedDeckAddresses = _playerDeckUseCase.GetDeck(deckName);
+
+            // CardAddressValueObject[] を DeckCardEntity[] に変換し、さらに CardViewModel[] に変換
+            _currentDeckCards = new List<CardViewModel>();
+            foreach (CardAddressValueObject address in savedDeckAddresses)
+            {
+                DeckCardEntity cardEntity = _allCard.FirstOrDefault(card => card.Address.Equals(address));
+                if (cardEntity != null)
+                {
+                    _currentDeckCards.Add(new CardViewModel(cardEntity));
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning($"Card entity not found for address: {address.Value} in _allCard.");
+                }
+            }
+
+            // デッキ内のカードが空の場合のデフォルト処理（必要であれば）
+            if (_currentDeckCards == null || _currentDeckCards.Count == 0)
+            {
+                // 例えば、_ownedCardsから最初のN枚をデフォルトデッキとする
+                _currentDeckCards = _ownedCards.Take(3).ToList();
+            }
 
             _deckEditorUI.SetDeckCards(_currentDeckCards);
-            _deckEditorUI.SetOwnedCards(_ownedCards);
         }
 
         private event Action OnDeckSavedAndClosed; // デッキ保存後、画面を閉じるためのイベント
@@ -126,7 +159,7 @@ namespace Cryptos.Runtime.Presenter.OutGame
         private void OnSave()
         {
             // デッキを保存
-            DeckNameValueObject deckName = new("DefaultDeck"); // 仮のデッキ名
+            DeckNameValueObject deckName = new(_roles[_currentRoleIndex].Name);
             CardAddressValueObject[] deckAddresses = _currentDeckCards.Select(card => card.Address).ToArray();
             _playerDeckUseCase.RegisterDeck(deckName, deckAddresses);
 
@@ -153,33 +186,11 @@ namespace Cryptos.Runtime.Presenter.OutGame
             // TODO: キャンセル処理ロジック
         }
 
-        private void OnOwnedCardSelected(CardViewModel card)
+        private void OnOwnedCardSelected(int index, CardViewModel card)
         {
             _selectedOwnedCard = card;
             UnityEngine.Debug.Log($"Presenter: Owned card selected for swap: {card.CardExplanation}");
-        }
-
-        private void OnRequestCardSwap()
-        {
-            if (_selectedOwnedCard == null || _currentDeckCards.Count == 0)
-            {
-                UnityEngine.Debug.LogWarning("Presenter: Cannot swap cards. No card selected for swap or deck is empty.");
-                return;
-            }
-
-            // 現在デッキで選択されているカード
-            CardViewModel targetDeckCard = _currentDeckCards[_currentDeckCardIndex];
-
-            // _ownedCards から _selectedCardForSwap を削除し、targetDeckCard を追加
-            _ownedCards.Remove(_selectedOwnedCard.Value);
-            _ownedCards.Add(targetDeckCard);
-
-            // _currentDeckCards の該当位置を _selectedCardForSwap で置き換える
-            _currentDeckCards[_currentDeckCardIndex] = _selectedOwnedCard.Value;
-
-            _selectedOwnedCard = null; // 交換完了後、選択カードをクリア
-
-            UnityEngine.Debug.Log($"Presenter: Cards swapped! Deck card {_currentDeckCardIndex} replaced with {_selectedOwnedCard.Value.CardExplanation}");
+            _currentDeckCards[index] = card;
         }
     }
 }
