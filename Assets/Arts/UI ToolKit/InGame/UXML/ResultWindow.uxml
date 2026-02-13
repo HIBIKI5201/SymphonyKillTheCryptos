@@ -1,7 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-manual-of-usx="true" editor-extension-mode="False">
-    <ui:VisualElement name="result-window" style="align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.7); position: absolute; width: 100%; height: 100%;">
+    <Style src="project://database/Assets/Arts/UI%20ToolKit/Button.uss?fileID=7433441132597879392&amp;guid=f6c5a6a5d6b3d404ab97217ac666a298&amp;type=3#Button"/>
+    <ui:VisualElement name="result-window" class="button" style="align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.7); position: absolute; width: 100%; height: 100%;">
         <ui:Label text="Game Clear!" name="result-title" style="font-size: 50px; color: white; margin-bottom: 20px;"/>
-        <ui:Label text="Score: 12345" name="score-text" style="font-size: 30px; color: white; margin-bottom: 30px;"/>
+        <ui:VisualElement style="margin-bottom: 30px;">
+            <ui:Label text="Wave: 12345" name="score-text-wave" style="font-size: 30px; color: white;"/>
+            <ui:Label text="Time: 12345" name="score-text-time" style="font-size: 30px; color: white;"/>
+            <ui:Label text="Get Skill Point: 12345" name="score-text-skill" style="font-size: 30px; color: white;"/>
+        </ui:VisualElement>
         <ui:Button name="return-button" text="Return to Main Menu" style="width: 200px; height: 50px; font-size: 20px;"/>
     </ui:VisualElement>
 </ui:UXML>

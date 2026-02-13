@@ -78,9 +78,14 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# SinfoniaOperator
+SinfoniaOperator/SinfoniaOperator/obj/
+SinfoniaOperator/SinfoniaOperator/bin/
+
 # Visual Scripting auto-generated files
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
 Assets/Arts/Models/Symphony/Symphony_model.vrm
+SinfoniaOperator/SinfoniaOperator/Properties/launchSettings.json

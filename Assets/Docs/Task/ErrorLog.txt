@@ -1,0 +1,15 @@
+'UIElementDeckEditor' はインターフェイス メンバー 'IDeckEditorUI.OnCardSwapRequested' を実装しません
+現在のコンテキストに '_deckEditorUI' という名前は存在しません
+演算子 '==' を 'CardViewModel' と 'CardViewModel' 型のオペランドに適用することはできません
+構文エラーです。'(' が必要です
+引数 2 を指定するメソッド 'BindCardData' のオーバーロードはありません
+引数 2 を指定するメソッド 'BindCardData' のオーバーロードはありません
+引数 2 を指定するメソッド 'BindCardData' のオーバーロードはありません
+引数 2 を指定するメソッド 'BindCardData' のオーバーロードはありません
+型または名前空間の名前 'await' が見つかりませんでした (using ディレクティブまたはアセンブリ参照が指定されていることを確認してください)
+} が必要です
+Invalid token '}' in a member declaration
+) が必要です
+'明示的インターフェイス宣言の中の 'Task' はインターフェイスではありません
+'UIElementDeckEditor.CompletedTask()' は abstract、extern、または partial に指定されていないため、本体を宣言する必要があります
+'UIElementDeckEditor' はインターフェイス メンバー 'IDeckEditorUI.OnNavigateDeckCard' を実装しません

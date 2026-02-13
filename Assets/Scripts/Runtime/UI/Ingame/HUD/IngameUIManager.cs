@@ -50,9 +50,9 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         ///     カードをUIに追加する。
         /// </summary>
         /// <param name="instance">追加するカードのビューモデル。</param>
-        public async void AddCard(CardViewModel instance)
+        public void AddCard(CardViewModel instance)
         {
-            _deck.HandleAddCard(instance);
+            _hand.HandleAddCard(instance);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         /// <param name="instance">削除するカードのビューモデル。</param>
         public void RemoveCard(CardViewModel instance)
         {
-            _deck.HandleRemoveCard(instance);
+            _hand.HandleRemoveCard(instance);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
         /// <param name="instance"></param>
         public void MoveCardToStack(CardViewModel instance)
         {
-            _deck.MoveCardToStack(instance);
+            _hand.MoveCardToStack(instance);
         }
 
         /// <summary>
@@ -138,8 +138,10 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             _document.rootVisualElement.Add(healthBar);
         }
 
-        public void RegisterComboCountHandler(ComboViewModel vm)
+        public async void RegisterComboCountHandler(ComboViewModel vm)
         {
+            await _comboCounter.InitializeTask;
+
             vm.OnChangedCounter += _comboCounter.SetCounter;
             vm.OnComboReset += _comboCounter.ResetCounter;
             vm.OnChangedTimer += _comboCounter.SetGuage;
@@ -152,9 +154,10 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             });
         }
 
-        public void OpenResultWindow(string title, int score)
+
+        public void OpenResultWindow(ResultViewModel vm)
         {
-            _resultWindow.SetResult(title, score);
+            _resultWindow.SetResult(vm);
             _resultWindow.Open();
         }
 
@@ -165,14 +168,14 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
 
         protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
-            _deck = root.Q<UIElementDeck>();
+            _hand = root.Q<UIElementHand>();
             _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();
             _comboCounter = root.Q<UIElementComboCounter>();
             _resultWindow = root.Q<UIElementResultWindow>();
 
             root.Add(_resultWindow);
 
-            await _deck.InitializeTask;
+            await _hand.InitializeTask;
             await _levelUpgrade.InitializeTask;
             await _comboCounter.InitializeTask;
             await _resultWindow.InitializeTask;
@@ -189,7 +192,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
 
         private CriAtomSource _typingSoundSource;
 
-        private UIElementDeck _deck;
+        private UIElementHand _hand;
         private UIElementLevelUpgradeWindow _levelUpgrade;
         private DamageTextPool _damageTextPool;
         private UIElementComboCounter _comboCounter;

@@ -2,7 +2,7 @@ using SymphonyFrameWork.Utility;
 using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.UI
+namespace Cryptos.Runtime.UI.Ingame.Card
 {
     [UxmlElement]
     public partial class UIElementComboCounter : SymphonyVisualElement

@@ -12,8 +12,8 @@
   <Project Path="VRM10.MToon10.csproj" />
   <Project Path="VrmLib.csproj" />
   <Project Path="UniGLTF.Tests.csproj" />
-  <Project Path="VRM10.Tests.csproj" />
   <Project Path="Cryptos.UseCase.csproj" />
+  <Project Path="VRM10.Tests.csproj" />
   <Project Path="Cryptos.Ingame.Entity.csproj" />
   <Project Path="Cryptos.Utility.csproj" />
   <Project Path="UniHumanoid.csproj" />

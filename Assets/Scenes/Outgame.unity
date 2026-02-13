@@ -217,7 +217,9 @@ MonoBehaviour:
     RefIds:
     - rid: 7747501085857677691
       type: {class: OutgameStartSequience, ns: Cryptos.Runtime.InfraStructure, asm: Cryptos.InfraStructure}
-      data: 
+      data:
+        _roleData: {fileID: 11400000, guid: b9e3153b14366684a827cbadce8823ba, type: 2}
+        _cardData: {fileID: 11400000, guid: 1ce70a17e13835043b236cc77f628f23, type: 2}
 --- !u!4 &1963193919
 Transform:
   m_ObjectHideFlags: 0

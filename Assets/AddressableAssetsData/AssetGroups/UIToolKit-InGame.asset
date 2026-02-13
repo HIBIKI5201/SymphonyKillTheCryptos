@@ -25,13 +25,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64789b35ecd455944a0f7b43cd649bae
+    m_Address: Hand
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9aea4e9ef497a614bb7053aeb4db1b8c
     m_Address: ResultWindow
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6d0f42d6a6b7b444975f1a9799a9d20
-    m_Address: Card
+    m_Address: InGameCard
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

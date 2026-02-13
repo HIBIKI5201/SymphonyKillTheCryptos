@@ -1,8 +1,12 @@
+using Cryptos.Runtime.Entity; // Add this using statement
 using Cryptos.Runtime.Entity.Ingame.Card;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Entity.Ingame.System;
 using Cryptos.Runtime.Entity.Ingame.Word;
+using Cryptos.Runtime.Entity.Outgame.Card;
+using Cryptos.Runtime.Entity.System.SaveData;
 using Cryptos.Runtime.Framework;
+using Cryptos.Runtime.InfraStructure.Ingame.Card;
 using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
 using Cryptos.Runtime.InfraStructure.Ingame.Utility;
 using Cryptos.Runtime.Presenter.Ingame.Card;
@@ -11,6 +15,7 @@ using Cryptos.Runtime.Presenter.Ingame.Character.Player;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.UI.Ingame.Manager;
 using Cryptos.Runtime.UI.System.Audio;
+using Cryptos.Runtime.UseCase;
 using Cryptos.Runtime.UseCase.Ingame.Card;
 using Cryptos.Runtime.UseCase.Ingame.System;
 using SymphonyFrameWork.System;
@@ -40,8 +45,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
         [SerializeField, Tooltip("戦闘パイプライン")]
         private CombatPipelineAsset _combatPipelineAsset;
         [Header("テストコード")]
-        [SerializeField, Tooltip("テスト用のカードデータ")]
-        private CardDataAsset[] _cardDatas;
+        [SerializeField, Tooltip("デフォルトのデータ")]
+        private DefaultInGamePlayerData _defaultPlayerDataAsset;
         [SerializeField, Min(1), Tooltip("テスト用に生成するカードの数")]
         private int _cardAmount = 3;
         [Space]
@@ -112,6 +117,28 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 waveControlUseCase
             );
 
+            PlayerDeckSaveData playerDeckSaveData = PlayerDeckSaveData.Data;
+            PlayerMasterSaveData masterData = SaveDataSystem<PlayerMasterSaveData>.Data;
+
+            // 選択されたデッキ名をPlayerDeckSaveDataから取得
+            DeckNameValueObject selectedDeckName = masterData.DeckName;
+            CardAddressValueObject[] selectedDeckAddresses = playerDeckSaveData.GetDeck(selectedDeckName);
+
+            CardDeckEntity deckEntity;
+            if (selectedDeckAddresses != null && selectedDeckAddresses.Length > 0)
+            {
+                // 選択されたデッキのアドレスからCardDeckEntityを生成
+                CardData[] cardDatas = await CardDeckLoader.LoadDeck(selectedDeckAddresses, _combatPipelineAsset);
+                deckEntity = new CardDeckEntity(cardDatas);
+            }
+            else
+            {
+                // 選択されたデッキがない、または空の場合、デフォルトのデッキをロード
+                Debug.LogWarning($"選択されたデッキ '{selectedDeckName}' が見つからないか空です。デフォルトデッキをロードします。");
+                deckEntity = await _defaultPlayerDataAsset.CardDeckAsset.GetCardDeck(_combatPipelineAsset);
+            }
+            CardDeckUseCase deckUseCase = new(deckEntity, cardInitData.CardUseCase);
+
             CardExecutionUseCase cardExecutionUseCase = new(
                 cardInitData.CardUseCase,
                 symphonyPresenter
@@ -145,31 +172,15 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             ingameUIManager.RegisterComboCountHandler(new(comboEntity));
 
             // ゲーム開始の処理を行う。
-            TestCardSpawn(cardInitData.CardUseCase);
+            TestCardSpawn(deckUseCase);
             await inGameLoopUseCase.StartGameAsync();
         }
 
-        private void TestCardSpawn(CardUseCase cardUseCase)
+        private void TestCardSpawn(CardDeckUseCase cardUseCase)
         {
-            if (_cardDatas == null || _cardDatas.Length == 0)
-            {
-                Debug.LogWarning("カードデータが設定されていません。");
-                return;
-            }
-
             for (int i = 0; i < _cardAmount; i++)
             {
-                RandomDraw();
-            }
-
-            void RandomDraw()
-            {
-                Debug.Log("draw");
-                CardDataAsset cardDataAsset = _cardDatas[UnityEngine.Random.Range(0, _cardDatas.Length)];
-                CardData cardData = cardDataAsset.CreateCardData(_combatPipelineAsset);
-                CardEntity instance = cardUseCase.CreateCard(cardData);
-
-                instance.OnComplete += RandomDraw;
+                cardUseCase.DrawCard();
             }
         }
 

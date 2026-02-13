@@ -1,0 +1,25 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:deck="Cryptos.Runtime.UI.Outgame.Deck" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Arts/UI%20ToolKit/OutGame/USS/Focusable.uss?fileID=7433441132597879392&amp;guid=1ecd03a6120462846b8f44551280c63a&amp;type=3#Focusable"/>
+    <Style src="project://database/Assets/Arts/UI%20ToolKit/OutGame/USS/DeckEditor.uss?fileID=7433441132597879392&amp;guid=2137f377fc87dc34d926136475f2e5f4&amp;type=3#DeckEditor"/>
+    <ui:VisualElement style="position: absolute; width: 100%; height: 100%; align-items: center; justify-content: center;">
+        <ui:VisualElement style="width: 1800px; height: 950px; background-color: rgba(0, 0, 0, 0.7); border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; flex-direction: row;">
+            <ui:VisualElement style="width: 20%; height: 100%; align-items: center; justify-content: space-evenly;">
+                <ui:VisualElement name="status" style="height: 500px; width: 100%;"/>
+                <ui:VisualElement name="buttons" style="margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; justify-content: space-evenly;">
+                    <ui:Button text="Edit" name="Edit" class="button focus" style="width: 180px; height: 60px; font-size: 30px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;"/>
+                    <ui:Button text="Save" name="Save" class="button focus" style="width: 180px; height: 60px; font-size: 30px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="role-selection-area" focusable="true" class="focus" style="height: 200px; width: 100%; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.3);">
+                    <ui:Label text="Character Icon Area" style="color: white; font-size: 20px;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:VisualElement name="deck" focusable="true" class="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center; border-top-left-radius: 40px; border-top-right-radius: 40px; border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;"/>
+                <ui:VisualElement style="height: 30%; padding: 10px;">
+                    <ui:Label text="Owned Cards" style="color: white; font-size: 20px; margin-bottom: 5px;"/>
+                    <ui:VisualElement name="card-select" class="own" style="flex-grow: 1;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
