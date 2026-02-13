@@ -157,11 +157,13 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             {
                 style.visibility = Visibility.Visible;
                 _deckElement.style.display = DisplayStyle.Flex;
+                _cardSelectElement.style.display = DisplayStyle.Flex;
             }
             else
             {
                 style.visibility = Visibility.Hidden;
                 _deckElement.style.display = DisplayStyle.None;
+                _cardSelectElement.style.display = DisplayStyle.None;
             }
         }
 
