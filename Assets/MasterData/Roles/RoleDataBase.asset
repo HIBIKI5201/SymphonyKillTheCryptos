@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9235830d91b6c4ab35acd47cb99144, type: 3}
+  m_Name: RoleDataBase
+  m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.RoleDataBase
+  _roleAssets:
+  - {fileID: 11400000, guid: 0f211aa60cc1bbf4da2bf8b3e7083399, type: 2}
+  - {fileID: 11400000, guid: dd0a15f2ff7ac3847aac0a8bddbb1d94, type: 2}
