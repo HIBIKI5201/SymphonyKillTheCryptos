@@ -1,3 +1,5 @@
+using Cryptos.Runtime.Entity;
+using Cryptos.Runtime.Entity.Outgame.Card;
 using Cryptos.Runtime.Entity.System.SaveData;
 using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.System;
@@ -5,8 +7,9 @@ using Cryptos.Runtime.Presenter.OutGame;
 using Cryptos.Runtime.UI.Outgame;
 using Cryptos.Runtime.UseCase.OutGame;
 using SymphonyFrameWork.System;
+using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine; // For Debug.Log (temporary)
+using UnityEngine;
 
 namespace Cryptos.Runtime.InfraStructure
 {
@@ -15,6 +18,11 @@ namespace Cryptos.Runtime.InfraStructure
     /// </summary>
     public class OutgameStartSequience : IGameInstaller
     {
+        [SerializeField]
+        private RoleDataBase _roleData;
+        [SerializeField]
+        private CardDataBase _cardData;
+
         public async ValueTask GameInitialize()
         {
             // サービスロケーターから必要なインスタンスを取得。
@@ -22,14 +30,18 @@ namespace Cryptos.Runtime.InfraStructure
             OutgameManager outgameManager = await ServiceLocator.GetInstanceAsync<OutgameManager>();
             await InitializeUtility.WaitInitialize(uiManager);
 
+            RoleEntity[] roles = _roleData.RoleAssets.Select(a => a.GetEntity()).ToArray();
             // プレイヤーデッキデータをロード。
             PlayerDeckSaveData playerDeckSaveData = SaveDataSystem<PlayerDeckSaveData>.Data;
             PlayerMasterSaveData playerMasterData = SaveDataSystem<PlayerMasterSaveData>.Data;
 
             CardRepositoryImpl cardRepositoryImpl = new CardRepositoryImpl();
             PlayerMasterUseCase playerMasterUseCase = new(playerMasterData);
-            PlayerDeckUseCase playerDeckUseCase = new(playerDeckSaveData, cardRepositoryImpl);
-            DeckEditorPresenter deckEditorPresenter = new(playerDeckUseCase, playerMasterUseCase);
+            PlayerDeckUseCase playerDeckUseCase = new(playerDeckSaveData);
+            DeckCardEntity[] allCard = await _cardData.GetDeckCards();
+            DeckEditorPresenter deckEditorPresenter = new(playerDeckUseCase, playerMasterUseCase, allCard, roles);
+            deckEditorPresenter.RegisterUI(uiManager.DeckEditor);
+            deckEditorPresenter.InitializeDeckEditor();
 
             // スタートボタンが押された際のイベントハンドラを設定
             uiManager.OnPressedStartButton += HandlePressedStartButton;

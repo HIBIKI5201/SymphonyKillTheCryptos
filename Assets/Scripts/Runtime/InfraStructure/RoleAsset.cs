@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity;
 using Cryptos.Runtime.Entity.Ingame.Character;
 using Cryptos.Runtime.Framework;
 using Cryptos.Runtime.InfraStructure.Ingame.DataAsset;
@@ -12,6 +13,14 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Card
         public string Name => _name;
         public CardDeckAsset Deck => _deck;
         public CharacterData Status => _status;
+        public RoleEntity GetEntity()
+        {
+            return new(
+                _name,
+                new(_name),
+                _status
+                );
+        }
 
         [SerializeField]
         private string _name;
