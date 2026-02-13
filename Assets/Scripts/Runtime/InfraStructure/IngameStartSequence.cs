@@ -117,10 +117,10 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
                 waveControlUseCase
             );
 
-            PlayerDeckSaveData playerDeckSaveData = SaveDataSystem<PlayerDeckSaveData>.Data;
-            PlayerMasterSaveData masterData = SaveDataSystem< PlayerMasterSaveData>.Data;
+            PlayerDeckSaveData playerDeckSaveData = PlayerDeckSaveData.Data;
+            PlayerMasterSaveData masterData = SaveDataSystem<PlayerMasterSaveData>.Data;
             // TODO: OutgameStartSequienceからplayerDeckSaveDataをDIで受け取るように修正
-            
+
             // 選択されたデッキ名をPlayerDeckSaveDataから取得
             DeckNameValueObject selectedDeckName = masterData.DeckName;
             CardAddressValueObject[] selectedDeckAddresses = playerDeckSaveData.GetDeck(selectedDeckName);
@@ -130,7 +130,7 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             {
                 // 選択されたデッキのアドレスからCardDeckEntityを生成
                 CardData[] cardDatas = await CardDeckLoader.LoadDeck(selectedDeckAddresses, _combatPipelineAsset);
-                  deckEntity = new CardDeckEntity(cardDatas);
+                deckEntity = new CardDeckEntity(cardDatas);
             }
             else
             {

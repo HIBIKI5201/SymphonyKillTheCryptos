@@ -32,12 +32,20 @@ namespace Cryptos.Runtime.InfraStructure
 
             RoleEntity[] roles = _roleData.RoleAssets.Select(a => a.GetEntity()).ToArray();
             // プレイヤーデッキデータをロード。
-            PlayerDeckSaveData playerDeckSaveData = SaveDataSystem<PlayerDeckSaveData>.Data;
-            PlayerMasterSaveData playerMasterData = SaveDataSystem<PlayerMasterSaveData>.Data;
+            PlayerDeckSaveData.Load();
+            PlayerDeckSaveData playerDeckSaveData = PlayerDeckSaveData.Data;
+            PlayerDeckUseCase playerDeckUseCase = new(playerDeckSaveData);
+            playerDeckUseCase.Initialize
+                (_roleData.RoleAssets
+                .Select(ra => new PlayerDeckUseCase.DeckData(new(ra.Name), ra.Deck.CardDataAddresses))
+                .ToArray());
+            PlayerDeckSaveData.Save();
 
             CardRepositoryImpl cardRepositoryImpl = new CardRepositoryImpl();
+            PlayerMasterSaveData playerMasterData = SaveDataSystem<PlayerMasterSaveData>.Data;
             PlayerMasterUseCase playerMasterUseCase = new(playerMasterData);
-            PlayerDeckUseCase playerDeckUseCase = new(playerDeckSaveData);
+            playerMasterUseCase.Initialize(_roleData.RoleAssets[0].GetEntity());
+
             DeckCardEntity[] allCard = await _cardData.GetDeckCards();
             DeckEditorPresenter deckEditorPresenter = new(playerDeckUseCase, playerMasterUseCase, allCard, roles);
             deckEditorPresenter.RegisterUI(uiManager.DeckEditor);

@@ -12,6 +12,8 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.DataAsset
         menuName = CryptosPathConstant.ASSET_PATH + nameof(CardDeckAsset))]
     public class CardDeckAsset : ScriptableObject
     {
+        public CardAddressValueObject[] CardDataAddresses => CardDeckLoader.GetAddress(_cardDataAddresses);
+
         public async Task<CardDeckEntity> GetCardDeck(CombatPipelineAsset combatPipeline)
         {
             CardAddressValueObject[] addresses = CardDeckLoader.GetAddress(_cardDataAddresses);
