@@ -7,11 +7,6 @@ namespace Cryptos.Runtime.Entity.System.SaveData
     [Serializable]
     public class PlayerDeckSaveData
     {
-        public PlayerDeckSaveData()
-        {
-            _attackDeck = new Dictionary<DeckNameValueObject, CardAddressValueObject[]>();
-        }
-
         /// <summary>
         ///     デッキを登録または更新する。
         /// </summary>
@@ -42,6 +37,6 @@ namespace Cryptos.Runtime.Entity.System.SaveData
             return _attackDeck.Keys;
         }
 
-        private Dictionary<DeckNameValueObject, CardAddressValueObject[]> _attackDeck;
+        private Dictionary<DeckNameValueObject, CardAddressValueObject[]> _attackDeck = new();
     }
 }
