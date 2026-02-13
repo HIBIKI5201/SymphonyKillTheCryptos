@@ -202,19 +202,15 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         /// <param name="evt"></param>
         private void OnNavigationMove(InputAction.CallbackContext context)
         {
-            Debug.Log($"move focus area {_currentFocusArea}");
-
             // 右エリアのフォーカス移動ロジック
             if (_currentFocusArea == FocusArea.RightAreaTop)
             {
                 int dir = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
-                Debug.Log($"right top select {dir}  index {_currentDeckCardIndex}");
                 DeckScroll(dir);
             }
             else if (_currentFocusArea == FocusArea.RightAreaBottom)
             {
                 int dir = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
-                Debug.Log($"right bottom select {dir}");
                 OwnScroll(dir);
             }
         }
@@ -227,13 +223,10 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             }
             else if (_currentFocusArea == FocusArea.RightAreaTop)
             {
-                Debug.Log("right area top clicked");
                 SelectedRightLower();
             }
             else if (_currentFocusArea == FocusArea.RightAreaBottom)
             {
-                Debug.Log($"Owned card selected: {_currentOwnedCardIndex}");
-
                 UIElementOutGameDeckEditorCard selectedCard = _ownCardElements[_currentOwnedCardIndex];
                 OnOwnedCardSelected?.Invoke(_currentDeckCardIndex, selectedCard.CardData);
 
