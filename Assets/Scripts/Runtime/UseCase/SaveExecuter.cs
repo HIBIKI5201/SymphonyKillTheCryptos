@@ -8,7 +8,7 @@ namespace Cryptos.Runtime.UseCase
     {
         public static void DeckSave()
         {
-            SaveDataSystem<PlayerDeckSaveData>.Save();
+            PlayerDeckSaveData.Save();
         }
 
         /// <summary>

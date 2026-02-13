@@ -38,6 +38,9 @@ namespace Cryptos.Runtime.UseCase.OutGame
             }
         }
 
+        public void Save() => PlayerDeckSaveData.Save();
+
+
         /// <summary>
         ///     指定された名前のデッキを取得する。
         /// </summary>
