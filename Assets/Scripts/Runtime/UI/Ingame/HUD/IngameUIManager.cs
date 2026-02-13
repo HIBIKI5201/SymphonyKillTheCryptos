@@ -138,8 +138,10 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             _document.rootVisualElement.Add(healthBar);
         }
 
-        public void RegisterComboCountHandler(ComboViewModel vm)
+        public async void RegisterComboCountHandler(ComboViewModel vm)
         {
+            await _comboCounter.InitializeTask;
+
             vm.OnChangedCounter += _comboCounter.SetCounter;
             vm.OnComboReset += _comboCounter.ResetCounter;
             vm.OnChangedTimer += _comboCounter.SetGuage;
@@ -151,6 +153,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
                 vm.OnChangedTimer -= _comboCounter.SetGuage;
             });
         }
+
 
         public void OpenResultWindow(ResultViewModel vm)
         {
