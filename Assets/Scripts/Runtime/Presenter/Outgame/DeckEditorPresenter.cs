@@ -163,10 +163,7 @@ namespace Cryptos.Runtime.Presenter.OutGame
             CardAddressValueObject[] deckAddresses = _currentDeckCards.Select(card => card.Address).ToArray();
             _playerDeckUseCase.RegisterDeck(deckName, deckAddresses);
 
-            // 保存成功メッセージをUIに表示
-            // _deckEditorUI.ShowSuccessMessage($"デッキ '{deckName.Value}' を保存しました。");
-
-            OnDeckSavedAndClosed?.Invoke(); // デッキ保存後、画面を閉じるイベントを発火
+            OnDeckSavedAndClosed?.Invoke();
             Debug.Log("Presenter: Deck saved!");
         }
 
@@ -177,7 +174,6 @@ namespace Cryptos.Runtime.Presenter.OutGame
             _deckEditorUI.SetStatusText($"現在のロール: {newRole}");
             _deckEditorUI.SetRoleCharacter(newRole);
             Debug.Log($"Presenter: Role changed to {newRole}!");
-            // TODO: ロール変更に伴うデッキ制限やUIの更新ロジック
         }
 
         private void OnCancel()
