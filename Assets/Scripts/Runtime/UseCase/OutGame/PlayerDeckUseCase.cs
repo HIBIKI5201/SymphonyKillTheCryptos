@@ -14,17 +14,14 @@ namespace Cryptos.Runtime.UseCase.OutGame
     public class PlayerDeckUseCase
     {
         private readonly PlayerDeckSaveData _playerDeckSaveData;
-        private readonly ICardRepository _cardRepository; // 追加
 
         /// <summary>
         ///     PlayerDeckUseCaseの新しいインスタンスを生成する。
         /// </summary>
         /// <param name="playerDeckSaveData">プレイヤーのデッキ保存データ。</param>
-        /// <param name="cardRepository">カードリポジトリ。</param> // 追加
-        public PlayerDeckUseCase(PlayerDeckSaveData playerDeckSaveData, ICardRepository cardRepository) // 引数追加
+        public PlayerDeckUseCase(PlayerDeckSaveData playerDeckSaveData)
         {
             _playerDeckSaveData = playerDeckSaveData;
-            _cardRepository = cardRepository; // 追加
         }
 
         /// <summary>
@@ -55,24 +52,6 @@ namespace Cryptos.Runtime.UseCase.OutGame
         {
             _playerDeckSaveData.RegisterDeck(deckName, deck);
             SaveExecuter.DeckSave(); // 保存処理を呼び出す
-        }
-
-        /// <summary>
-        ///     カードアドレスからDeckCardEntityを生成する。
-        /// </summary>
-        /// <param name="cardAddress">カードアドレス。</param>
-        /// <returns>生成されたDeckCardEntity。</returns>
-        public async Task<DeckCardEntity> CreateDeckCardEntity(CardAddressValueObject cardAddress)
-        {
-            var deckCardEntity = await _cardRepository.GetDeckCardEntityAsync(cardAddress); // GetDeckCardEntityAsync を呼び出す
-
-            if (deckCardEntity == null)
-            {
-                Debug.LogError($"DeckCardEntity not found or invalid for address: {cardAddress.Value}");
-                return null;
-            }
-
-            return deckCardEntity;
         }
     }
 }
