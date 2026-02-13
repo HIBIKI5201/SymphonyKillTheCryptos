@@ -2,6 +2,7 @@ using Cryptos.Runtime.Entity.System.SaveData;
 using Cryptos.Runtime.Entity.Outgame.Card;
 using Cryptos.Runtime.UseCase; // For SaveExecuter.SavePlayerMasterData()
 using System;
+using Cryptos.Runtime.Entity;
 
 namespace Cryptos.Runtime.UseCase.OutGame
 {
@@ -19,6 +20,16 @@ namespace Cryptos.Runtime.UseCase.OutGame
         public PlayerMasterUseCase(PlayerMasterSaveData playerMasterSaveData)
         {
             _playerMasterSaveData = playerMasterSaveData;
+        }
+
+        public void Initialize(RoleEntity defaultRole)
+        {
+            DeckNameValueObject deckName = _playerMasterSaveData.DeckName;
+            if (string.IsNullOrEmpty(deckName.Value))
+            {
+                _playerMasterSaveData.SaveDeckName(defaultRole.Deck);
+            }
+
         }
 
         /// <summary>

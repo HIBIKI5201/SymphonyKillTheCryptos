@@ -24,6 +24,20 @@ namespace Cryptos.Runtime.UseCase.OutGame
             _playerDeckSaveData = playerDeckSaveData;
         }
 
+        public void Initialize(DeckData[] datas)
+        {
+            if (_playerDeckSaveData == null) { return; }
+
+            for (int i = 0; i < datas.Length; i++)
+            {
+                DeckData data = datas[i];
+                if (!_playerDeckSaveData.IsExist(data.name))
+                {
+                    RegisterDeck(data.name, data.cardAddressValues);
+                }
+            }
+        }
+
         /// <summary>
         ///     指定された名前のデッキを取得する。
         /// </summary>
@@ -51,7 +65,19 @@ namespace Cryptos.Runtime.UseCase.OutGame
         public void RegisterDeck(DeckNameValueObject deckName, CardAddressValueObject[] deck)
         {
             _playerDeckSaveData.RegisterDeck(deckName, deck);
-            SaveExecuter.DeckSave(); // 保存処理を呼び出す
+            SaveExecuter.DeckSave();
+        }
+
+        public struct DeckData
+        {
+            public DeckData(DeckNameValueObject name, CardAddressValueObject[] cardAddressValues)
+            {
+                this.name = name;
+                this.cardAddressValues = cardAddressValues;
+            }
+
+            public DeckNameValueObject name;
+            public CardAddressValueObject[] cardAddressValues;
         }
     }
 }
