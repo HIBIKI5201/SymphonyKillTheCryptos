@@ -8,21 +8,15 @@
                     <ui:Button text="Edit" name="Edit" class="button focus" style="width: 180px; height: 60px; font-size: 30px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;"/>
                     <ui:Button text="Save" name="Save" class="button focus" style="width: 180px; height: 60px; font-size: 30px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="role-selection-area" class="focus" style="height: 200px; width: 100%; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.3);">
+                <ui:VisualElement name="role-selection-area" focusable="true" class="focus" style="height: 200px; width: 100%; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.3);">
                     <ui:Label text="Character Icon Area" style="color: white; font-size: 20px;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1;">
-                <ui:VisualElement name="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center;">
-                    <deck:UIElementOutGameDeckEditorCard name="adjacent-card-left" class="focus" style="width: 20%; height: 80%; margin: 10px;"/>
-                    <deck:UIElementOutGameDeckEditorCard name="current-card" class="focus" style="width: 40%; height: 100%; margin: 10px;"/>
-                    <deck:UIElementOutGameDeckEditorCard name="adjacent-card-right" class="focus" style="width: 20%; height: 80%; margin: 10px;"/>
-                </ui:VisualElement>
-                <ui:VisualElement name="card-select" style="height: 30%; padding: 10px;">
+                <ui:VisualElement name="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center;"/>
+                <ui:VisualElement style="height: 30%; padding: 10px;">
                     <ui:Label text="Owned Cards" style="color: white; font-size: 20px; margin-bottom: 5px;"/>
-                    <ui:ScrollView style="flex-grow: 1; border-color: gray; border-width: 1px;">
-                        <ui:VisualElement name="owned-card-list" style="flex-direction: row;"/>
-                    </ui:ScrollView>
+                    <ui:VisualElement name="card-select" style="flex-grow: 1;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
