@@ -22,8 +22,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         public event Action OnSaveButtonClicked;
         public event Action OnRoleSelected;
         public event Action OnCancelButtonClicked;
-        public event Action<CardViewModel> OnOwnedCardSelected;
-        public event Action OnCardSwapRequested;
+        public event Action<int, CardViewModel> OnOwnedCardSelected;
 
         public void Show()
         {
@@ -33,7 +32,6 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
 
         public void SetRoleCharacter(string characterName)
         {
-            // TODO: _roleSelectionAreaにキャラクターアイコンを設定するロジック
             UnityEngine.Debug.Log($"Role Character: {characterName}");
         }
 
@@ -237,9 +235,12 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
                 Debug.Log($"Owned card selected: {_currentOwnedCardIndex}");
 
                 UIElementOutGameDeckEditorCard selectedCard = _ownCardElements[_currentOwnedCardIndex];
-                OnOwnedCardSelected?.Invoke(selectedCard.CardData);
+                OnOwnedCardSelected?.Invoke(_currentDeckCardIndex, selectedCard.CardData);
 
                 SelectedRightUpper();
+                _currentOwnedCardIndex = 0;
+                OwnScrollTo(0);
+                DeckScrollTo(_currentDeckCardIndex); // デッキのカードを更新するため。
             }
         }
 
@@ -253,6 +254,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             {
                 LeftButtonsFocusable(true);
                 SetFocus(_editButton);
+                _currentFocusArea = FocusArea.LeftArea;
             }
         }
 
@@ -304,7 +306,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
                 {
                     case 0: ChangeCardStyle(card, 100, 0, 1); break;
                     case 1: ChangeCardStyle(card, 300, 0, 1); break;
-                    case 2: ChangeCardStyle(card, 0, 0, 3); break;
+                    case 2: ChangeCardStyle(card, 0, 0, 2.5f); break;
                     case 3: ChangeCardStyle(card, 0, 300, 1); break;
                     case 4: ChangeCardStyle(card, 0, 100, 1); break;
                 }
