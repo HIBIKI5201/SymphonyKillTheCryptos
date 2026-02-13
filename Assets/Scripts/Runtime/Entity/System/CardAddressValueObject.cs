@@ -1,12 +1,15 @@
 using System;
+using Newtonsoft.Json; // 追加
 
 namespace Cryptos.Runtime.Entity
 {
     [Serializable]
     public readonly struct CardAddressValueObject
     {
+        [JsonConstructor]
         public CardAddressValueObject(string value) => _value = value;
 
+        [JsonProperty("Value")]
         public string Value => _value;
 
         public bool Equals(CardAddressValueObject other)
@@ -27,3 +30,4 @@ namespace Cryptos.Runtime.Entity
         private readonly string _value;
     }
 }
+
