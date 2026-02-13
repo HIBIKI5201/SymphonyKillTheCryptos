@@ -1,5 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:deck="Cryptos.Runtime.UI.Outgame.Deck" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Arts/UI%20ToolKit/OutGame/USS/Focusable.uss?fileID=7433441132597879392&amp;guid=1ecd03a6120462846b8f44551280c63a&amp;type=3#Focusable"/>
+    <Style src="project://database/Assets/Arts/UI%20ToolKit/OutGame/USS/DeckEditor.uss?fileID=7433441132597879392&amp;guid=2137f377fc87dc34d926136475f2e5f4&amp;type=3#DeckEditor"/>
     <ui:VisualElement style="position: absolute; width: 100%; height: 100%; align-items: center; justify-content: center;">
         <ui:VisualElement style="width: 1800px; height: 950px; background-color: rgba(0, 0, 0, 0.7); border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; flex-direction: row;">
             <ui:VisualElement style="width: 20%; height: 100%; align-items: center; justify-content: space-evenly;">
@@ -13,10 +14,10 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1;">
-                <ui:VisualElement name="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center;"/>
+                <ui:VisualElement name="deck" focusable="true" class="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center; border-top-left-radius: 40px; border-top-right-radius: 40px; border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;"/>
                 <ui:VisualElement style="height: 30%; padding: 10px;">
                     <ui:Label text="Owned Cards" style="color: white; font-size: 20px; margin-bottom: 5px;"/>
-                    <ui:VisualElement name="card-select" style="flex-grow: 1;"/>
+                    <ui:VisualElement name="card-select" class="own" style="flex-grow: 1;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
