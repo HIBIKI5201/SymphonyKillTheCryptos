@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f7f8ab3eb23ddb47a6d9040dfb0cb80, type: 3}
+  m_Name: RoleAsset_Deffence
+  m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.OutGame.Deck.RoleAsset
+  _name: Deffence
+  _deck: {fileID: 11400000, guid: 7787ad48eab22b74c880f2f942b61f7c, type: 2}
+  _status: {fileID: 11400000, guid: fcf3f1f413c8c4348987e4dadd1102f0, type: 2}
