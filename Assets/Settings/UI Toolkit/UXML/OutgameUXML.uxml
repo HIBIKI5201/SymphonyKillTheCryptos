@@ -6,7 +6,7 @@
                 <UnityEngine.Localization.LocalizedString property="text" table="GUID:191e795130515b04693eb667ec7b92a6" entry="Id(23857758208)"/>
             </Bindings>
         </ui:Button>
-        <ui:Button text="Setting" class="main-button">
+        <ui:Button text="Setting" name="edit" class="main-button">
             <Bindings>
                 <UnityEngine.Localization.LocalizedString property="text" table="GUID:191e795130515b04693eb667ec7b92a6" entry="Id(140170002432)"/>
             </Bindings>
