@@ -119,7 +119,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
 
             PlayerDeckSaveData playerDeckSaveData = PlayerDeckSaveData.Data;
             PlayerMasterSaveData masterData = SaveDataSystem<PlayerMasterSaveData>.Data;
-            // TODO: OutgameStartSequienceからplayerDeckSaveDataをDIで受け取るように修正
 
             // 選択されたデッキ名をPlayerDeckSaveDataから取得
             DeckNameValueObject selectedDeckName = masterData.DeckName;
