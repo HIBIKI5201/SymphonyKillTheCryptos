@@ -99,7 +99,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
 
             // 初期フォーカスを設定
             SetFocus(_editButton);
-            _currentFocusArea = FocusArea.LeftArea;
+            ChangeArea(FocusArea.LeftArea);
 
             Visible(false);
 
@@ -121,6 +121,9 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         private const string ROLE_SELECTION_AREA_NAME = "role-selection-area";
         private const string DECK_ELEMENT_NAME = "deck";
         private const string CARD_SELECT_ELEMENT_NAME = "card-select";
+
+        private const string DECK_FOCUS_CLASS_NAME = "deck-focus";
+        private const string OWN_FOCUS_CLASS_NAME = "own-focus";
 
         private VisualElement _statusElement;
         private Button _editButton;
@@ -164,6 +167,22 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
                 style.visibility = Visibility.Hidden;
                 _deckElement.style.display = DisplayStyle.None;
                 _cardSelectElement.style.display = DisplayStyle.None;
+            }
+        }
+
+        private void ChangeArea(FocusArea area)
+        {
+            _currentFocusArea = area;
+
+            _deckElement.RemoveFromClassList(DECK_FOCUS_CLASS_NAME);
+            _cardSelectElement.RemoveFromClassList(OWN_FOCUS_CLASS_NAME);
+            if (area == FocusArea.RightAreaTop)
+            {
+                _deckElement.AddToClassList(DECK_FOCUS_CLASS_NAME);
+            }
+            else if (area == FocusArea.RightAreaBottom)
+            {
+                _cardSelectElement.AddToClassList(OWN_FOCUS_CLASS_NAME);
             }
         }
 
@@ -249,20 +268,22 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             {
                 LeftButtonsFocusable(true);
                 SetFocus(_editButton);
-                _currentFocusArea = FocusArea.LeftArea;
+                ChangeArea(FocusArea.LeftArea);
             }
         }
 
         private void SelectedRightUpper()
         {
-            _currentFocusArea = FocusArea.RightAreaTop;
+            ChangeArea(FocusArea.RightAreaTop);
+            _deckElement.AddToClassList(DECK_FOCUS_CLASS_NAME);
             SetFocus(_deckElement);
             LeftButtonsFocusable(false);
         }
 
         private void SelectedRightLower()
         {
-            _currentFocusArea = FocusArea.RightAreaBottom;
+            ChangeArea(FocusArea.RightAreaBottom);
+            _deckElement.focusable = false;
             SetFocus(_cardSelectElement);
         }
 
