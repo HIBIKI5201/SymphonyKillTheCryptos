@@ -1,8 +1,11 @@
 using Cryptos.Runtime.Presenter.OutGame;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UIElements;
 
 namespace Cryptos.Runtime.UI.Outgame.Deck
@@ -15,18 +18,16 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
     {
         public UIElementDeckEditor() : base("DeckEditor") { }
 
-        // IDeckEditorUIのイベント実装
         public event Action OnEditButtonClicked;
         public event Action OnSaveButtonClicked;
         public event Action OnRoleSelected;
         public event Action OnCancelButtonClicked;
         public event Action<CardViewModel> OnOwnedCardSelected;
         public event Action OnCardSwapRequested;
-        public event Action<NavigationMoveEvent.Direction> OnNavigateDeckCard;
 
         public void Show()
         {
-            style.visibility = Visibility.Visible;
+            Visible(true);
             SetFocus(_saveButton);
         }
 
@@ -36,10 +37,20 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             UnityEngine.Debug.Log($"Role Character: {characterName}");
         }
 
-        public void SetCurrentCard(CardViewModel card)
+        public void SetDeckCards(IReadOnlyList<CardViewModel> cards)
         {
-            _currentCard.BindCardData(card);
-            UnityEngine.Debug.Log($"Current Card: {card.CardExplanation}");
+            // カードの一覧を計算。
+            _deckCards = cards;
+
+            const int DECK_CARD_ELEMENTS_LENGTH = 5;
+            _deckCardElements = new UIElementOutGameDeckEditorCard[DECK_CARD_ELEMENTS_LENGTH];
+            for (int i = 0; i < DECK_CARD_ELEMENTS_LENGTH; i++)
+            {
+                UIElementOutGameDeckEditorCard card = new();
+                _deckElement.Add(card);
+                _deckCardElements[i] = card;
+            }
+            DeckScrollTo(0);
         }
 
         public void SetStatusText(string text)
@@ -48,55 +59,26 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             UnityEngine.Debug.Log($"Status Text: {text}");
         }
 
-        public void SetAdjacentCards(CardViewModel leftCard, CardViewModel rightCard)
+        public async void SetOwnedCards(IReadOnlyList<CardViewModel> cards)
         {
-            _adjacentCardLeft.BindCardData(leftCard);
-            _adjacentCardRight.BindCardData(rightCard);
-            UnityEngine.Debug.Log($"Adjacent Cards: Left - {leftCard.CardExplanation}, Right - {rightCard.CardExplanation}");
-        }
-
-        public void SetOwnedCards(IReadOnlyList<CardViewModel> cards)
-        {
-            _ownedCardList.Clear();
-            foreach (var card in cards)
+            _ownCards = cards;
+            _ownCardElements = new UIElementOutGameDeckEditorCard[_ownCards.Count];
+            for (int i = 0; i < _ownCards.Count; i++)
             {
-                UIElementOutGameDeckEditorCard cardUI = new();
-                cardUI.BindCardData(card);
-                _ownedCardList.Add(cardUI);
-                _ownedCardList.Add(cardUI);
-            }
-            UnityEngine.Debug.Log($"Owned Cards Count: {cards.Count}");
-        }
-
-        public void SetSelectedOwnedCard(CardViewModel card)
-        {
-            // 以前選択されていたカードがあればハイライトを解除
-            if (_selectedOwnedCardUI != null)
-            {
-                _selectedOwnedCardUI.RemoveFromClassList("selected-owned-card");
+                UIElementOutGameDeckEditorCard card = new();
+                _cardSelectElement.Add(card);
+                _ownCardElements[i] = card;
             }
 
-            // 新しく選択されたカードを特定し、ハイライト
-            _selectedOwnedCardUI =
-                _ownedCardList
-                .Children()
-                .OfType<UIElementOutGameDeckEditorCard>()
-                .FirstOrDefault(c => c.CardData.AddressStr == card.AddressStr);
-
-            if (_selectedOwnedCardUI != null)
+            for (int i = 0; i < _ownCardElements.Length; i++)
             {
-                _selectedOwnedCardUI.AddToClassList("selected-owned-card");
-                ScrollTo(_selectedOwnedCardUI); // 選択されたカードまでスクロール
+                UIElementOutGameDeckEditorCard card = _ownCardElements[i];
+                await card.InitializeTask;
+                CardViewModel cardVM = _ownCards[i];
+                card.BindCardData(cardVM);
             }
-        }
 
-        public void ClearSelectedOwnedCard()
-        {
-            if (_selectedOwnedCardUI != null)
-            {
-                _selectedOwnedCardUI.RemoveFromClassList("selected-owned-card");
-                _selectedOwnedCardUI = null;
-            }
+            OwnScroll(0);
         }
 
 
@@ -108,11 +90,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             _saveButton = root.Q<Button>(SAVE_BUTTON_NAME);
             _roleSelectionArea = root.Q<VisualElement>(ROLE_SELECTION_AREA_NAME);
             _deckElement = root.Q<VisualElement>(DECK_ELEMENT_NAME);
-            _adjacentCardLeft = root.Q<UIElementOutGameDeckEditorCard>(ADJACENT_CARD_LEFT_NAME);
-            _currentCard = root.Q<UIElementOutGameDeckEditorCard>(CURRENT_CARD_NAME);
-            _adjacentCardRight = root.Q<UIElementOutGameDeckEditorCard>(ADJACENT_CARD_RIGHT_NAME);
             _cardSelectElement = root.Q<VisualElement>(CARD_SELECT_ELEMENT_NAME);
-            _ownedCardList = root.Q<VisualElement>(OWNED_CARD_LIST_NAME);
 
             // イベントハンドラの設定
             _editButton.clicked += ClickedEditButton;
@@ -125,12 +103,16 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             SetFocus(_editButton);
             _currentFocusArea = FocusArea.LeftArea;
 
-            style.visibility = Visibility.Hidden;
+            Visible(false);
 
-            // Navigationイベントの登録
-            RegisterCallback<NavigationMoveEvent>(OnNavigationMove);
-            RegisterCallback<NavigationSubmitEvent>(OnNavigationSubmit);
-
+            if (EventSystem.current.TryGetComponent(out InputSystemUIInputModule module))
+            {
+                _uiInputModule = module;
+                module.move.action.performed += OnNavigationMove;
+                module.submit.action.started += OnNavigationSubmit;
+                module.cancel.action.started += OnNavigationCancel;
+            }
+            Debug.Log($"initialize deck editor{this.GetHashCode()}");
             return default;
         }
 
@@ -140,53 +122,73 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         private const string SAVE_BUTTON_NAME = "Save";
         private const string ROLE_SELECTION_AREA_NAME = "role-selection-area";
         private const string DECK_ELEMENT_NAME = "deck";
-        private const string ADJACENT_CARD_LEFT_NAME = "adjacent-card-left";
-        private const string CURRENT_CARD_NAME = "current-card";
-        private const string ADJACENT_CARD_RIGHT_NAME = "adjacent-card-right";
         private const string CARD_SELECT_ELEMENT_NAME = "card-select";
-        private const string OWNED_CARD_LIST_NAME = "owned-card-list";
 
         private VisualElement _statusElement;
         private Button _editButton;
         private Button _saveButton;
         private VisualElement _roleSelectionArea;
         private VisualElement _deckElement;
-        private UIElementOutGameDeckEditorCard _adjacentCardLeft;
-        private UIElementOutGameDeckEditorCard _currentCard;
-        private UIElementOutGameDeckEditorCard _adjacentCardRight;
         private VisualElement _cardSelectElement;
-        private VisualElement _ownedCardList;
+        private InputSystemUIInputModule _uiInputModule;
 
         private Focusable _currentFocusedElement;
-        private List<Focusable> _focusableElements;
         private List<Focusable> _leftAreaFocusables;
+
+        private UIElementOutGameDeckEditorCard[] _deckCardElements;
+        private UIElementOutGameDeckEditorCard[] _ownCardElements;
 
         private FocusArea _currentFocusArea = FocusArea.LeftArea;
 
+        private IReadOnlyList<CardViewModel> _deckCards;
+        private IReadOnlyList<CardViewModel> _ownCards;
         private int _currentDeckCardIndex;
         private int _currentOwnedCardIndex;
-        private UIElementOutGameDeckEditorCard _selectedOwnedCardUI;
 
 
         private enum FocusArea
-        { 
-            LeftArea, 
-            RightAreaTop, 
-            RightAreaBottom 
+        {
+            LeftArea,
+            RightAreaTop,
+            RightAreaBottom
         }
 
+        private void Visible(bool enable)
+        {
+            if (enable)
+            {
+                style.visibility = Visibility.Visible;
+                _deckElement.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                style.visibility = Visibility.Hidden;
+                _deckElement.style.display = DisplayStyle.None;
+            }
+        }
+
+        /// <summary>
+        ///     デッキ画面に移行する。
+        /// </summary>
         private void ClickedEditButton()
         {
             SelectedRightUpper();
             OnEditButtonClicked?.Invoke();
         }
 
+        /// <summary>
+        ///     ウィンドウを閉じる。
+        /// </summary>
         private void ClickedSaveButton()
         {
-            style.visibility = Visibility.Hidden;
+            Visible(false);
             OnSaveButtonClicked?.Invoke();
         }
 
+        /// <summary>
+        ///     フォーカス対象を更新する。
+        /// </summary>
+        /// <param name="newFocus"></param>
         private void SetFocus(Focusable newFocus)
         {
             _currentFocusedElement = newFocus;
@@ -196,124 +198,176 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             }
         }
 
-        private void OnNavigationMove(NavigationMoveEvent evt)
+        /// <summary>
+        ///     ナビゲーションを手動で行う。
+        /// </summary>
+        /// <param name="evt"></param>
+        private void OnNavigationMove(InputAction.CallbackContext context)
         {
-            // 左エリアのフォーカス移動ロジック
-            if (_currentFocusArea == FocusArea.LeftArea)
-            {
-                int currentIndex = _leftAreaFocusables.IndexOf(_currentFocusedElement);
-                int nextIndex = currentIndex;
+            Debug.Log($"move focus area {_currentFocusArea}");
 
-                if (evt.direction == NavigationMoveEvent.Direction.Up)
-                {
-                    nextIndex = (currentIndex - 1 + _leftAreaFocusables.Count) % _leftAreaFocusables.Count;
-                }
-                else if (evt.direction == NavigationMoveEvent.Direction.Down)
-                {
-                    nextIndex = (currentIndex + 1) % _leftAreaFocusables.Count;
-                }
-                else if (evt.direction == NavigationMoveEvent.Direction.Right)
-                {
-                }
-
-                if (nextIndex != currentIndex)
-                {
-                    SetFocus(_leftAreaFocusables[nextIndex]);
-                    evt.StopPropagation();
-                }
-            }
             // 右エリアのフォーカス移動ロジック
-            else if (_currentFocusArea == FocusArea.RightAreaTop)
+            if (_currentFocusArea == FocusArea.RightAreaTop)
             {
-                int currentIndex = _currentDeckCardIndex;
-                int nextIndex = currentIndex;
-
-                if (evt.direction == NavigationMoveEvent.Direction.Left)
-                {
-                    nextIndex = (currentIndex - 1);
-                }
-                else if (evt.direction == NavigationMoveEvent.Direction.Right)
-                {
-                    nextIndex = (currentIndex + 1);
-                }
-
-                if (nextIndex != currentIndex)
-                {
-                    OnNavigateDeckCard?.Invoke(evt.direction);
-                    evt.StopPropagation();
-                }
+                int dir = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
+                Debug.Log($"right top select {dir}  index {_currentDeckCardIndex}");
+                DeckScroll(dir);
             }
             else if (_currentFocusArea == FocusArea.RightAreaBottom)
             {
-                if (!_ownedCardList.Children().Any()) return; // カードがない場合は何もしない
-
-                int totalCards = _ownedCardList.Children().Count();
-                int previousIndex = _currentOwnedCardIndex;
-
-                if (evt.direction == NavigationMoveEvent.Direction.Left)
-                {
-                    _currentOwnedCardIndex = (_currentOwnedCardIndex - 1 + totalCards) % totalCards;
-                }
-                else if (evt.direction == NavigationMoveEvent.Direction.Right)
-                {
-                    _currentOwnedCardIndex = (_currentOwnedCardIndex + 1) % totalCards;
-                }
-
-                if (previousIndex != _currentOwnedCardIndex)
-                {
-                    // 選択されたカードの情報をPresenterに通知し、スクロール位置を調整してもらう
-                    var selectedCardUI = _ownedCardList.Children().ElementAt(_currentOwnedCardIndex) as UIElementOutGameDeckEditorCard;
-                    if (selectedCardUI != null)
-                    {
-                        OnOwnedCardSelected?.Invoke(selectedCardUI.CardData);
-                    }
-                    evt.StopPropagation();
-                }
+                int dir = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
+                Debug.Log($"right bottom select {dir}");
+                OwnScroll(dir);
             }
         }
 
-        private void OnNavigationSubmit(NavigationSubmitEvent evt)
+        private void OnNavigationSubmit(InputAction.CallbackContext context)
         {
-            if (_currentFocusedElement == _editButton)
+            if (_currentFocusedElement == _roleSelectionArea)
             {
-                evt.StopPropagation();
+                OnRoleSelected?.Invoke();
             }
-            else if (_currentFocusedElement == _saveButton)
-            {
-                OnSaveButtonClicked?.Invoke(); // 保存処理を実行
-                evt.StopPropagation();
-            }
-            else if (_currentFocusedElement == _roleSelectionArea)
-            {
-                OnRoleSelected?.Invoke(); // ロール切り替えイベントを発火
-                evt.StopPropagation();
-            }
-            // 右エリアでの決定入力ロジック
             else if (_currentFocusArea == FocusArea.RightAreaTop)
             {
-                evt.StopPropagation();
+                Debug.Log("right area top clicked");
+                SelectedRightLower();
             }
             else if (_currentFocusArea == FocusArea.RightAreaBottom)
             {
-                // 下部の所持カードが選択された場合
-                if (_currentFocusedElement is UIElementOutGameDeckEditorCard selectedCard)
-                {
-                    OnOwnedCardSelected?.Invoke(selectedCard.CardData); // 所持カードを選択状態にする
-                    UnityEngine.Debug.Log($"Owned card selected: {selectedCard.CardData.CardExplanation}");
-                    evt.StopPropagation();
-                }
+                Debug.Log($"Owned card selected: {_currentOwnedCardIndex}");
+
+                UIElementOutGameDeckEditorCard selectedCard = _ownCardElements[_currentOwnedCardIndex];
+                OnOwnedCardSelected?.Invoke(selectedCard.CardData);
+
+                SelectedRightUpper();
+            }
+        }
+
+        private void OnNavigationCancel(InputAction.CallbackContext context)
+        {
+            if (_currentFocusArea == FocusArea.LeftArea)
+            {
+                ClickedSaveButton();
+            }
+            else
+            {
+                LeftButtonsFocusable(true);
+                SetFocus(_editButton);
             }
         }
 
         private void SelectedRightUpper()
         {
             _currentFocusArea = FocusArea.RightAreaTop;
-            _ownedCardList.Focus();
+            SetFocus(_deckElement);
+            LeftButtonsFocusable(false);
         }
 
-        private void ScrollTo(UIElementOutGameDeckEditorCard card)
+        private void SelectedRightLower()
         {
+            _currentFocusArea = FocusArea.RightAreaBottom;
+            SetFocus(_cardSelectElement);
+        }
 
+        private void DeckScroll(int dir)
+        {
+            int nextIndex = _currentDeckCardIndex + dir;
+            nextIndex = Math.Clamp(nextIndex, 0, _deckCards.Count - 1);
+            DeckScrollTo(nextIndex);
+            _currentDeckCardIndex = nextIndex;
+        }
+
+        private async void DeckScrollTo(int index)
+        {
+            int center = _deckCardElements.Length / 2;
+
+            for (int i = 0; i < _deckCardElements.Length; i++)
+            {
+                UIElementOutGameDeckEditorCard card = _deckCardElements[i];
+                await card.InitializeTask;
+                int deckIndex = index + i - center;
+
+                if (deckIndex < 0 || _deckCards.Count <= deckIndex)
+                {
+                    card.visible = false;
+                    continue;
+                }
+                else
+                {
+                    card.visible = true;
+                }
+
+                CardViewModel cardVM = _deckCards[deckIndex];
+                card.BindCardData(cardVM);
+
+                switch (i) // ※5個の時しか動かない。
+                {
+                    case 0: ChangeCardStyle(card, 100, 0, 1); break;
+                    case 1: ChangeCardStyle(card, 300, 0, 1); break;
+                    case 2: ChangeCardStyle(card, 0, 0, 3); break;
+                    case 3: ChangeCardStyle(card, 0, 300, 1); break;
+                    case 4: ChangeCardStyle(card, 0, 100, 1); break;
+                }
+
+                void ChangeCardStyle(UIElementOutGameDeckEditorCard card,
+                    float left, float right, float scale)
+                {
+                    StyleLength rightStyle = 0 < right ? new(right) : new(StyleKeyword.Auto);
+                    StyleLength leftStyle = 0 < left ? new(left) : new(StyleKeyword.Auto);
+
+                    card.style.right = rightStyle;
+                    card.style.left = leftStyle;
+                    card.style.scale = new StyleScale(new Scale(new Vector2(scale, scale)));
+                }
+            }
+        }
+
+        private void OwnScroll(int dir)
+        {
+            int nextIndex = _currentOwnedCardIndex + dir;
+            nextIndex = Math.Clamp(nextIndex, 0, _ownCardElements.Length - 1);
+            OwnScrollTo(nextIndex);
+            _currentOwnedCardIndex = nextIndex;
+        }
+
+        private async void OwnScrollTo(int index)
+        {
+            for (int i = 0; i < _ownCardElements.Length; i++)
+            {
+                UIElementOutGameDeckEditorCard card = _ownCardElements[i];
+                await card.InitializeTask;
+                int ownIndex = i - index;
+
+                if (ownIndex < 0 || _ownCards.Count <= ownIndex)
+                {
+                    card.visible = false;
+                    continue;
+                }
+                else
+                {
+                    card.visible = true;
+                }
+
+                const int MARGIN = 100;
+                card.style.left = new(MARGIN * ownIndex);
+
+                if (ownIndex == 0)
+                {
+                    card.style.scale = new StyleScale(new Scale(Vector2.one * 1.15f));
+                }
+                else
+                {
+                    card.style.scale = new StyleScale(new Scale(Vector2.one));
+                }
+            }
+        }
+
+        private void LeftButtonsFocusable(bool enable)
+        {
+            foreach (var item in _leftAreaFocusables)
+            {
+                item.focusable = enable;
+            }
         }
     }
 }
