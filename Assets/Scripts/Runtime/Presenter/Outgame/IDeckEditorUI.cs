@@ -14,15 +14,11 @@ namespace Cryptos.Runtime.Presenter.OutGame
         event Action OnCancelButtonClicked;
         event Action<CardViewModel> OnOwnedCardSelected;
         event Action OnCardSwapRequested;
-        event Action<UnityEngine.UIElements.NavigationMoveEvent.Direction> OnNavigateDeckCard;
-
+        
         void SetStatusText(string text);
         void SetRoleCharacter(string characterName);
 
-        void SetCurrentCard(CardViewModel card);
-        void SetAdjacentCards(CardViewModel leftCard, CardViewModel rightCard);
+        void SetDeckCards(IReadOnlyList<CardViewModel> card);
         void SetOwnedCards(IReadOnlyList<CardViewModel> cards);
-        void SetSelectedOwnedCard(CardViewModel card);
-        void ClearSelectedOwnedCard();
     }
 }
