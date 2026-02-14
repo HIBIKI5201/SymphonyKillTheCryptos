@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.LightingExplorerTableColumn;
 
 namespace Cryptos.Runtime.Entity.System.SaveData
 {
@@ -96,7 +95,7 @@ namespace Cryptos.Runtime.Entity.System.SaveData
                 Value = value;
             }
 
-            public string Name; 
+            public string Name;
             public string[] Value;
         }
     }

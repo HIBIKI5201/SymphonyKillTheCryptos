@@ -259,8 +259,6 @@ namespace Cryptos.Runtime.UI.Ingame.Card
 
                 float targetY = stackRelativeY + stackWorld.height - ((i + 1) * (cardHeight + stackSpacing));
 
-                Debug.Log($"ReLayoutStackCards: Card {(_cards.FirstOrDefault(x => x.Value == card).Key.CurrentWord ?? "N/A")} - Calculated Left: {stackRelativeX + (stackWorld.width - cardWidth) / 2f}, Top: {targetY}, Width: {cardWidth}, Height: {cardHeight}");
-
                 Vector2 pos = new(stackRelativeX + (stackWorld.width - cardWidth) / 2f, targetY);
                 MoveCard(card, pos);
 

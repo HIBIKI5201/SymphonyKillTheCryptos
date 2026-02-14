@@ -209,8 +209,6 @@ namespace Cryptos.Runtime.InfraStructure.Ingame.Sequence
             await SceneLoader.UnloadScene(SceneListEnum.Ingame.ToString());
 
             await SceneLoader.LoadScene(SceneListEnum.Outgame.ToString());
-            await SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
-            SceneLoader.SetActiveScene(SceneListEnum.Stage.ToString());
         }
 
         private bool _isTransitioning;
