@@ -18,6 +18,6 @@ namespace Cryptos.Runtime.UI.Basis
 
         protected UIDocument _document;
 
-        protected abstract Task InitializeDocumentAsync(UIDocument document, VisualElement root);
+        protected abstract ValueTask InitializeDocumentAsync(UIDocument document, VisualElement root);
     }
 }
