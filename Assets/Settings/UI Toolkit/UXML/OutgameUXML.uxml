@@ -1,5 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Resources/UIToolKit/USS/OutGame/MainMenu.uss?fileID=7433441132597879392&amp;guid=3dc41e362b91dcf44a8155b1d853907a&amp;type=3#MainMenu"/>
+    <Style src="project://database/Assets/Resources/UIToolKit/USS/OutGame/MainMenu.uss?fileID=7433441132597879392&amp;guid=3dc41e362b91dcf44a8155b1d853907a&amp;type=3"/>
     <ui:VisualElement name="buttons" style="position: absolute; width: 300px; height: 400px; justify-content: space-between; right: 100px; bottom: 50px;">
         <ui:Button text="Game Start" name="start" class="main-button">
             <Bindings>
@@ -17,5 +17,5 @@
             </Bindings>
         </ui:Button>
     </ui:VisualElement>
-    <Cryptos.Runtime.UI.Outgame.Deck.UIElementDeckEditor picking-mode="Ignore"/>
+    <Cryptos.Runtime.UI.Outgame.Deck.UIElementDeckEditor picking-mode="Ignore" visibility="Visible"/>
 </ui:UXML>
