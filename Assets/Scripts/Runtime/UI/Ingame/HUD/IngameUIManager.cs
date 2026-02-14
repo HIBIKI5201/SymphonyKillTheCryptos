@@ -166,7 +166,7 @@ namespace Cryptos.Runtime.UI.Ingame.Manager
             _resultWindow.Close();
         }
 
-        protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
+        protected override async ValueTask InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
             _hand = root.Q<UIElementHand>();
             _levelUpgrade = root.Q<UIElementLevelUpgradeWindow>();

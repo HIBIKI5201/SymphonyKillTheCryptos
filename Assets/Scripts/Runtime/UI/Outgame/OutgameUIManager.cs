@@ -22,7 +22,7 @@ namespace Cryptos.Runtime.UI.Outgame
 
         public IDeckEditorUI DeckEditor => _deckEditor;
 
-        protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
+        protected override async ValueTask InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
             _deckEditor = root.Q<UIElementDeckEditor>();
 
