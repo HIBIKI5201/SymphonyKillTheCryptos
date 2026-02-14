@@ -2,7 +2,7 @@ using SymphonyFrameWork.Utility;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Cryptos.Runtime.Entity
+namespace Cryptos.Runtime.Entity.Outgame.Story
 {
     public interface IPauseSubject
     {

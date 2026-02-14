@@ -1,9 +1,8 @@
 using Cryptos.Runtime.UI.Basis;
 using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Cryptos.Runtime.UI
+namespace Cryptos.Runtime.UI.Outgame.Story
 {
     public class StoryUIManager : UIManagerBase
     {
