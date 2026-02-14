@@ -146,7 +146,6 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         private int _currentDeckCardIndex;
         private int _currentOwnedCardIndex;
 
-
         private enum FocusArea
         {
             LeftArea,
@@ -156,18 +155,9 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
 
         private void Visible(bool enable)
         {
-            if (enable)
-            {
-                style.visibility = Visibility.Visible;
-                _deckElement.style.display = DisplayStyle.Flex;
-                _cardSelectElement.style.display = DisplayStyle.Flex;
-            }
-            else
-            {
-                style.visibility = Visibility.Hidden;
-                _deckElement.style.display = DisplayStyle.None;
-                _cardSelectElement.style.display = DisplayStyle.None;
-            }
+            style.display = enable
+                ? DisplayStyle.Flex
+                : DisplayStyle.None;
         }
 
         private void ChangeArea(FocusArea area)
@@ -366,7 +356,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
                     card.visible = true;
                 }
 
-                const int MARGIN = 100;
+                const int MARGIN = 200;
                 card.style.left = new(MARGIN * ownIndex);
 
                 if (ownIndex == 0)
