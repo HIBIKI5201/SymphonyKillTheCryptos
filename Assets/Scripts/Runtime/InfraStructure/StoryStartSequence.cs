@@ -1,4 +1,5 @@
 using Cryptos.Runtime.Entity.Outgame.Story;
+using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.Presenter.OutGame.Story;
 using Cryptos.Runtime.UseCase.OutGame.Story;
@@ -17,12 +18,17 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
 
             ScenarioData scenario = _scenarioDataBase.GetScenarioData(data.PlayIndex);
 
+            StoryPauseSubject ps = new StoryPauseSubject();
+            StoryMessageViewModel vm = new(setting, ps);
+
             ScenarioActionRepository actionRepository =
                 new ScenarioActionRepository(
                 _cameraRep);
             ScenarioPlayer player = new(
-                scenario);
-
+                scenario,
+                actionRepository,
+                vm,
+                ps);
         }
 
         [SerializeField]
