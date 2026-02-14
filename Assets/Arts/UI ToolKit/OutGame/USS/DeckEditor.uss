@@ -38,3 +38,7 @@
     border-bottom-color: rgba(255, 255, 255, 0.5);
     transition-duration: 0.2s;
 }
+
+.left-area-disabled {
+    display: none;
+}
