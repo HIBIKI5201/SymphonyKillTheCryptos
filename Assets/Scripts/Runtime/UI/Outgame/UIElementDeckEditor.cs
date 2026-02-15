@@ -41,6 +41,8 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         /// </summary>
         public async void SetDeckCards(IReadOnlyList<CardViewModel> cards)
         {
+            await InitializeTask;
+
             _deckCards = cards;
 
             const int DECK_CARD_ELEMENTS_LENGTH = 5;
@@ -72,6 +74,8 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         /// </summary>
         public async void SetOwnedCards(IReadOnlyList<CardViewModel> cards)
         {
+            await InitializeTask;
+
             _ownCards = cards;
             _ownCardElements = new UIElementOutGameDeckEditorCard[_ownCards.Count];
             for (int i = 0; i < _ownCards.Count; i++)
