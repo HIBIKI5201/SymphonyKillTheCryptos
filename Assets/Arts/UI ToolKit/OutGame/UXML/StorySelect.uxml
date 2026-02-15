@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Arts/UI%20ToolKit/OutGame/USS/StorySelect.uss?fileID=7433441132597879392&amp;guid=735462c192784f74e940d660a12e0a0f&amp;type=3#StorySelect"/>
+    <ui:VisualElement style="width: 100%; height: 100%; position: absolute; justify-content: center; align-items: center;">
+        <ui:VisualElement name="button-container" style="width: 90%; height: 50%; background-color: rgba(0, 0, 0, 0.7); justify-content: space-evenly; flex-direction: row; align-items: center;">
+            <ui:Button text="Button" class="story-button"/>
+            <ui:Button text="Button" class="story-button"/>
+            <ui:Button text="Button" class="story-button"/>
+            <ui:Button text="Button" class="story-button"/>
+            <ui:Button text="Button" class="story-button"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
