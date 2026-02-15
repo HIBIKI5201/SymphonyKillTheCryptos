@@ -23,11 +23,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 140170002432
-    m_Localized: Setting
+    m_Localized: Deck
     m_Metadata:
       m_Items: []
   - m_Id: 180632453120
     m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4519600987418624
+    m_Localized: Story
     m_Metadata:
       m_Items: []
   references:
