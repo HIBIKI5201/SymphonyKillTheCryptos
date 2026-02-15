@@ -1,0 +1,17 @@
+:root {
+}
+
+.story-button {
+    width: 200px;
+    height: 100px;
+    font-size: 200%;
+    transition-duration: 0.1s;
+}
+
+.story-button:focus {
+    width: 200px;
+    height: 100px;
+    font-size: 200%;
+    transition-duration: 0.1s;
+    scale: 1.1 1.1;
+}
