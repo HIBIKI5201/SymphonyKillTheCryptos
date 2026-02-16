@@ -12,3 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f93af99ab0e904b8cbe932c62448c3, type: 3}
   m_Name: ScenarioDataAsset
   m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.OutGame.Story.ScenarioDataAsset
+  _scenarioNodes:
+  - _name: "\u4E3B\u4EBA\u516C"
+    _text: "\u3053\u3093\u306B\u3061\u306F"
+    _isWaitForInput: 1
+    _scenarioActions: []
+  - _name: "\u4E3B\u4EBA\u516C"
+    _text: "\u3055\u3088\u3046\u306A\u3089"
+    _isWaitForInput: 1
+    _scenarioActions: []
+  references:
+    version: 2
+    RefIds: []
