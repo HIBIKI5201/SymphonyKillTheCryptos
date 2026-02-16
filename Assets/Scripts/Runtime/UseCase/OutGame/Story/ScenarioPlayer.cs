@@ -22,6 +22,11 @@ namespace Cryptos.Runtime.UseCase.OutGame.Story
 
         public event Action<int> OnMoveNext;
 
+        public void MoveNext()
+        {
+            _ = MoveNextAsync();
+        }
+
         public ValueTask<bool> MoveNextAsync()
         {
             if (TryCancel())
