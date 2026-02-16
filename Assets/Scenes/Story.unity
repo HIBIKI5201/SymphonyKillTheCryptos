@@ -156,7 +156,10 @@ MonoBehaviour:
     RefIds:
     - rid: 6921726191731212444
       type: {class: StoryStartSequence, ns: Cryptos.Runtime.InfraStructure.OutGame.Story, asm: Cryptos.InfraStructure}
-      data: 
+      data:
+        _settingAsset: {fileID: 11400000, guid: 782a94b118043db498bdc235e0b34adf, type: 2}
+        _cameraRep: {fileID: 1678378053}
+        _scenarioDataBase: {fileID: 11400000, guid: 04cf9b3f6735aef4596e37714c213cc3, type: 2}
 --- !u!4 &56899134
 Transform:
   m_ObjectHideFlags: 0
@@ -322,6 +325,91 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1678378052}
   m_LocalEulerAnglesHint: {x: -9.5, y: 395, z: 0}
+--- !u!1 &1335222576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1335222580}
+  - component: {fileID: 1335222579}
+  - component: {fileID: 1335222578}
+  - component: {fileID: 1335222577}
+  m_Layer: 5
+  m_Name: StoryUIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1335222577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335222576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SymphonyFrameWork::SymphonyFrameWork.Utility.SymphonyLocate
+  _target: {fileID: 1335222578}
+  _locateType: 1
+  _autoRegister: 1
+  _autoUnregister: 1
+--- !u!114 &1335222578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335222576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30dfd3b646cdae341a78312a27537edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Cryptos.UI::Cryptos.Runtime.UI.Outgame.Story.StoryUIManager
+--- !u!114 &1335222579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335222576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: c43af6ef09b09514c89ec2e6b07c853d, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 69f07879d016bce4dacc8f99c85d0f6b, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &1335222580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335222576}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1678378051
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,4 +464,5 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 56899134}
+  - {fileID: 1335222580}
   - {fileID: 1678378052}
