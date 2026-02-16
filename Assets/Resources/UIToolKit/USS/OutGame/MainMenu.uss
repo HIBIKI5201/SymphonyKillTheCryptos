@@ -6,6 +6,7 @@
     font-size: 40px;
     transition-timing-function: ease-in;
     transition-duration: 0.2s;
+    width: 300px;
 }
 
 .main-button:focus {
