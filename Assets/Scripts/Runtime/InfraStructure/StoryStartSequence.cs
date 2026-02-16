@@ -17,20 +17,22 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
             NovelSettingEntity setting = _settingAsset.Create();
             ScenarioDataEntity data = await ServiceLocator.GetInstanceAsync<ScenarioDataEntity>();
             StoryUIManager UIManager = await ServiceLocator.GetInstanceAsync<StoryUIManager>();
+            await InitializeUtility.WaitInitialize(UIManager);
 
             ScenarioData scenario = _scenarioDataBase.GetScenarioData(data.PlayIndex);
 
-            StoryPauseSubject ps = new StoryPauseSubject();
+            StoryPauseSubject ps = new();
             StoryMessageViewModel vm = new(setting, ps);
+            UIManager.MessageWindow.BindViewModel(vm);
 
-            ScenarioActionRepository actionRepository =
-                new ScenarioActionRepository(
-                _cameraRep);
+            ScenarioActionRepository actionRepository = new(_cameraRep);
             ScenarioPlayer player = new(
                 scenario,
                 actionRepository,
                 vm,
                 ps);
+
+            UIManager.OnNextClicked += player.MoveNext;
         }
 
         [SerializeField]
