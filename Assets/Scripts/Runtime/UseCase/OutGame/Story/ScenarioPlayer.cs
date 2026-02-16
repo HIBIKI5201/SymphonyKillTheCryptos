@@ -21,6 +21,7 @@ namespace Cryptos.Runtime.UseCase.OutGame.Story
         }
 
         public event Action<int> OnMoveNext;
+        public event Action OnScenarioEnd;
 
         public void MoveNext()
         {
@@ -82,8 +83,10 @@ namespace Cryptos.Runtime.UseCase.OutGame.Story
             {
                 _currentNodeIndex++;
 
+                // シナリオが終了しているかどうか。
                 if (_scenario.Length <= _currentNodeIndex)
                 {
+                    OnScenarioEnd?.Invoke();
                     return false;
                 }
 
