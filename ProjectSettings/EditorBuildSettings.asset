@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stage.unity
     guid: 1a7edba2f718d2549b6c4d3bdda60227
+  - enabled: 1
+    path: Assets/Scenes/Story.unity
+    guid: 99195591c3c24934f9a66cad2136094a
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4a89a99d7cb983b4290128282a52fc7a, type: 2}
     com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}
