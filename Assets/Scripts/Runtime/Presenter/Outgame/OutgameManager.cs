@@ -1,3 +1,4 @@
+using Cryptos.Runtime.Entity.Outgame.Story;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.Presenter.System;
 using SymphonyFrameWork.System;
@@ -15,6 +16,15 @@ namespace Cryptos.Runtime.Presenter
 
             await SceneLoader.UnloadScene(SceneListEnum.Outgame.ToString());
             await SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
+        }
+
+        public async void StartStory(int index)
+        {
+            ScenarioDataEntity scenario = new(index);
+            ServiceLocator.RegisterInstance(scenario);
+
+            await SceneLoader.UnloadScene(SceneListEnum.Outgame.ToString());
+            await SceneLoader.LoadScene(SceneListEnum.Story.ToString());
         }
 
         [SerializeReference, SymphonySubclassSelector]
