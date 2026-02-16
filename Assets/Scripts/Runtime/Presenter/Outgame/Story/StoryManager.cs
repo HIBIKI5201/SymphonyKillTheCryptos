@@ -11,6 +11,16 @@ namespace Cryptos.Runtime.Presenter.OutGame.Story
 {
     public class StoryManager : MonoBehaviour, IInitializeAsync
     {
+        public async void StartOutGameScene()
+        {
+            IMasterUIManager ui = await ServiceLocator.GetInstanceAsync<IMasterUIManager>();
+            await ui.FadeOut(FADE_DURATION);
+            await SceneLoader.UnloadScene(SceneListEnum.Story.ToString());
+            await SceneLoader.LoadScene(SceneListEnum.Outgame.ToString());
+            await ui.FadeIn(FADE_DURATION);
+        }
+
+
         Task IInitializeAsync.InitializeTask { get; set; }
 
         async Task IInitializeAsync.InitializeAsync()
@@ -26,10 +36,9 @@ namespace Cryptos.Runtime.Presenter.OutGame.Story
             {
                 Debug.LogError($"Failed to load scene: {SceneListEnum.Stage}");
             }
-
-            IMasterUIManager masterUI = await ServiceLocator.GetInstanceAsync<IMasterUIManager>();
-            await masterUI.FadeIn(2, destroyCancellationToken);
         }
+
+        private const float FADE_DURATION = 1f;
 
         [SerializeField, Tooltip("依存しているシーン。")]
         private SceneListEnum[] _requireScenes = { SceneListEnum.Stage };
