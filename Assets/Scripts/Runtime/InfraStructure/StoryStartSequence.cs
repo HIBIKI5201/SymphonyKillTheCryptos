@@ -15,6 +15,7 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
         public async ValueTask GameInitialize()
         {
             NovelSettingEntity setting = _settingAsset.Create();
+            StoryManager manager = await ServiceLocator.GetInstanceAsync<StoryManager>();
             ScenarioDataEntity data = await ServiceLocator.GetInstanceAsync<ScenarioDataEntity>();
             StoryUIManager UIManager = await ServiceLocator.GetInstanceAsync<StoryUIManager>();
             await InitializeUtility.WaitInitialize(UIManager);
@@ -33,6 +34,9 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
                 ps);
 
             UIManager.OnNextClicked += player.MoveNext;
+            player.OnScenarioEnd += manager.StartOutGameScene;
+
+            player.MoveNext();
         }
 
         [SerializeField]
