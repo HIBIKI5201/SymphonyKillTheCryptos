@@ -1,8 +1,10 @@
 using SymphonyFrameWork.Attribute;
+using System;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Outgame.Story
 {
+    [Serializable]
     public class ScenarioNode
     {
         public ScenarioNode(string text, string name,
