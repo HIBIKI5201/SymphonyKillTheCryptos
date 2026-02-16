@@ -2,6 +2,7 @@ using Cryptos.Runtime.Entity.Outgame.Story;
 using Cryptos.Runtime.Presenter;
 using Cryptos.Runtime.Presenter.Ingame.System;
 using Cryptos.Runtime.Presenter.OutGame.Story;
+using Cryptos.Runtime.UI.Outgame.Story;
 using Cryptos.Runtime.UseCase.OutGame.Story;
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
         {
             NovelSettingEntity setting = _settingAsset.Create();
             ScenarioDataEntity data = await ServiceLocator.GetInstanceAsync<ScenarioDataEntity>();
+            StoryUIManager UIManager = await ServiceLocator.GetInstanceAsync<StoryUIManager>();
 
             ScenarioData scenario = _scenarioDataBase.GetScenarioData(data.PlayIndex);
 
