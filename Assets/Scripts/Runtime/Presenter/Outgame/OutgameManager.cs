@@ -12,10 +12,10 @@ namespace Cryptos.Runtime.Presenter
         public async void StartIngame()
         {
             IMasterUIManager masterUI = await ServiceLocator.GetInstanceAsync<IMasterUIManager>();
-            await masterUI.FadeOut(2, destroyCancellationToken);
-
+            await masterUI.FadeOut(FADE_DURATION);
             await SceneLoader.UnloadScene(SceneListEnum.Outgame.ToString());
             await SceneLoader.LoadScene(SceneListEnum.Ingame.ToString());
+            await masterUI.FadeIn(FADE_DURATION);
         }
 
         public async void StartStory(int index)
@@ -23,9 +23,14 @@ namespace Cryptos.Runtime.Presenter
             ScenarioDataEntity scenario = new(index);
             ServiceLocator.RegisterInstance(scenario);
 
+            IMasterUIManager masterUI = await ServiceLocator.GetInstanceAsync<IMasterUIManager>();
+            await masterUI.FadeOut(FADE_DURATION);
             await SceneLoader.UnloadScene(SceneListEnum.Outgame.ToString());
             await SceneLoader.LoadScene(SceneListEnum.Story.ToString());
+            await masterUI.FadeIn(FADE_DURATION);
         }
+
+        private const float FADE_DURATION = 2f;
 
         [SerializeReference, SymphonySubclassSelector]
         private IGameInstaller _outgameInstaller;
