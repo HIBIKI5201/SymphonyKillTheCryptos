@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="position: absolute; width: 100%; height: 100%; align-items: center; justify-content: flex-end;">
+        <ui:VisualElement style="bottom: 50px; width: 1450px; height: 350px; background-color: rgba(0, 0, 0, 0.7);">
+            <ui:VisualElement style="height: 100px;">
+                <ui:Label text="なまえ" name="name" style="-unity-text-auto-size: best-fit 10px 100px; width: 100%; height: 100%; color: rgb(255, 255, 255); font-size: 80%;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label text="本&#10;文&#10;テキスト" name="text" style="width: 100%; height: 100%; font-size: 70%; color: rgb(255, 255, 255); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

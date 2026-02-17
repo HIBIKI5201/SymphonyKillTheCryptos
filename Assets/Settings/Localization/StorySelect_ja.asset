@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: StorySelect_ja
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: ja
+  m_SharedData: {fileID: 11400000, guid: 48c8f261de56da64dafd1d5f2ec5072e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 5453152256
+    m_Localized: "\u7B2C\u4E00\u8A71\n\u30C1\u30A7\u30C1\u30A7\u30F3\u7D1B\u4E89
+      \u958B\u6226"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142040662016
+    m_Localized: "\u7B2C\u4E8C\u8A71\nZero Divide"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156280324096
+    m_Localized: "\u7B2C\u4E09\u8A71\n\u30A8\u30F3\u30AB\u30A6\u30F3\u30BF\u30FC "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160604651520
+    m_Localized: "\u7B2C\u56DB\u8A71\n\u6148\u60B2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 190052859904
+    m_Localized: "\u7B2C\u4E94\u8A71\n\u5F37\u8972"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 237989560320
+    m_Localized: "\u7B2C\u516D\u8A71\n\u899A\u9192"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -30,7 +30,6 @@ namespace Cryptos.Runtime.Presenter.Ingame.System
             }
 
             IMasterUIManager masterUI = await ServiceLocator.GetInstanceAsync<IMasterUIManager>();
-            await masterUI.FadeIn(2, destroyCancellationToken);
         }
 
         [SerializeField, Tooltip("依存しているシーン。")]

@@ -1,5 +1,5 @@
 using System;
-using Newtonsoft.Json; // 追加
+using Newtonsoft.Json;
 
 namespace Cryptos.Runtime.Entity
 {

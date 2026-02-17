@@ -6396,31 +6396,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -512.6825
+      value: -790.2
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -30.295029
+      value: 2.1
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 418.1044
+      value: -369.1
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99686295
+      value: -0.9504414
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.035200484
+      value: 0.07897557
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.070844874
+      value: -0.29967296
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0025016214
+      value: -0.024900896
       objectReference: {fileID: 0}
     - target: {fileID: 1425202309093654341, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6444,7 +6444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2262141092822937957, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: field of view
-      value: 50
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 2262141092822937957, guid: 15acaf7792f1f30458b6692739201271, type: 3}
       propertyPath: far clip plane

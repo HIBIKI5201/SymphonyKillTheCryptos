@@ -51,13 +51,20 @@ namespace Cryptos.Runtime.InfraStructure
             deckEditorPresenter.RegisterUI(uiManager.DeckEditor);
             deckEditorPresenter.InitializeDeckEditor();
 
-            // スタートボタンが押された際のイベントハンドラを設定
+            // ボタンが押された際のイベントハンドラを設定
             uiManager.OnPressedStartButton += HandlePressedStartButton;
+            uiManager.OnStoryButtonClicked += HandlePressedStoryButton;
 
             void HandlePressedStartButton()
             {
                 outgameManager.StartIngame();
                 uiManager.OnPressedStartButton -= HandlePressedStartButton;
+            }
+
+            void HandlePressedStoryButton(int index)
+            {
+                outgameManager.StartStory(index);
+                uiManager.OnStoryButtonClicked -= HandlePressedStoryButton;
             }
         }
     }

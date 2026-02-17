@@ -1,0 +1,3 @@
+VisualElement {
+    -unity-font-definition: url("project://database/Assets/Arts/Font/font_1_kokugl_1.15_rls.ttf?fileID=12800000&guid=9f8f11a069a05e94fbaf1fdfbd9ac7e4&type=3#font_1_kokugl_1.15_rls");
+}

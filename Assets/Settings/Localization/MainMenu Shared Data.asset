@@ -20,7 +20,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 140170002432
-    m_Key: Setting
+    m_Key: Deck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4519600987418624
+    m_Key: Story
     m_Metadata:
       m_Items: []
   - m_Id: 180632453120

@@ -17,7 +17,7 @@
                 <ui:VisualElement name="deck" focusable="true" class="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center; border-top-left-radius: 40px; border-top-right-radius: 40px; border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;"/>
                 <ui:VisualElement style="height: 30%; padding: 10px;">
                     <ui:Label text="Owned Cards" style="color: white; font-size: 20px; margin-bottom: 5px;"/>
-                    <ui:VisualElement name="card-select" class="own" style="flex-grow: 1;"/>
+                    <ui:VisualElement name="card-select" class="own" style="flex-grow: 1; flex-direction: row;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f93af99ab0e904b8cbe932c62448c3, type: 3}
+  m_Name: ScenarioDataAsset_1
+  m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.OutGame.Story.ScenarioDataAsset
+  _scenarioNodes:
+  - _name: "\u4E3B\u4EBA\u516C"
+    _text: "\u3053\u3093\u306B\u3061\u306F"
+    _isWaitForInput: 1
+    _scenarioActions:
+    - rid: 6921726249560965384
+  - _name: "\u4E3B\u4EBA\u516C"
+    _text: "\u79FB\u52D5"
+    _isWaitForInput: 1
+    _scenarioActions:
+    - rid: 6921726253097287680
+    - rid: 6921726253297828219
+  - _name: "\u4E3B\u4EBA\u516C"
+    _text: "\u3055\u3088\u3046\u306A\u3089"
+    _isWaitForInput: 1
+    _scenarioActions: []
+  - _name: "\u4E3B\u4EBA\u516C"
+    _text: "\u3070\u3044\u3070\u3044"
+    _isWaitForInput: 1
+    _scenarioActions: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6921726249560965384
+      type: {class: CharacterShow, ns: Cryptos.Runtime.UseCase, asm: Cryptos.UseCase}
+      data:
+        _name: Symphony
+        _position: {x: 0, y: -1}
+    - rid: 6921726253097287680
+      type: {class: CharacterShow, ns: Cryptos.Runtime.UseCase, asm: Cryptos.UseCase}
+      data:
+        _name: WT
+        _position: {x: 0.5, y: 0}
+    - rid: 6921726253297828219
+      type: {class: CharacterMove, ns: Cryptos.Runtime.UseCase, asm: Cryptos.UseCase}
+      data:
+        _name: Symphony
+        _position: {x: -0.5, y: -1, z: 0}
+        _duration: 0.5

@@ -20,11 +20,18 @@ namespace Cryptos.Runtime.UI.Outgame
             remove => _onStartButtonPressed -= value;
         }
 
+        public event Action<int> OnStoryButtonClicked
+        {
+            add => _storySelect.OnButtonClicked += value;
+            remove => _storySelect.OnButtonClicked -= value;
+        }
+
         public IDeckEditorUI DeckEditor => _deckEditor;
 
-        protected override async Task InitializeDocumentAsync(UIDocument document, VisualElement root)
+        protected override async ValueTask InitializeDocumentAsync(UIDocument document, VisualElement root)
         {
             _deckEditor = root.Q<UIElementDeckEditor>();
+            _storySelect = root.Q<UIElementStorySelect>();
 
             VisualElement buttonContainer = root.Q<VisualElement>(BUTTONS_NAME);
             _buttonContainer = buttonContainer;
@@ -50,18 +57,29 @@ namespace Cryptos.Runtime.UI.Outgame
             {
                 _onStartButtonPressed?.Invoke();
             }
+
+            _storyButton = root.Q<Button>(STORY_BUTTON_NAME);
+            _storyButton.clicked += _storySelect.Show;
+
+            _quitButton = root.Q<Button>(QUIT_BUTTON_NAME);
+            _quitButton.clicked += Application.Quit;
         }
 
         private const string BUTTONS_NAME = "buttons";
         private const string START_BUTTON_NAME = "start";
         private const string EDIT_BUTTON_NAME = "edit";
+        private const string STORY_BUTTON_NAME = "story";
+        private const string QUIT_BUTTON_NAME = "quit";
 
         private VisualElement _buttonContainer;
         private Button _startButton;
         private Button _editButton;
+        private Button _storyButton;
+        private Button _quitButton;
 
         private event Action _onStartButtonPressed;
         private UIElementDeckEditor _deckEditor;
+        private UIElementStorySelect _storySelect;
 
         private void ButtonsShow()
         {

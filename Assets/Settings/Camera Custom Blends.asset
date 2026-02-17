@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Camera Custom Blends
   m_EditorClassIdentifier: 
   CustomBlends:
-  - From: 
-    To: 
+  - From: '**ANY CAMERA**'
+    To: '**ANY CAMERA**'
     Blend:
       Style: 0
       Time: 0
