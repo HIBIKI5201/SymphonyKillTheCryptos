@@ -160,6 +160,7 @@ MonoBehaviour:
       data:
         _settingAsset: {fileID: 11400000, guid: 782a94b118043db498bdc235e0b34adf, type: 2}
         _cameraRep: {fileID: 1678378053}
+        _characterRep: {fileID: 0}
         _scenarioDataBase: {fileID: 11400000, guid: 04cf9b3f6735aef4596e37714c213cc3, type: 2}
 --- !u!4 &56899134
 Transform:
@@ -342,6 +343,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1678378052}
   m_LocalEulerAnglesHint: {x: -9.5, y: 395, z: 0}
+--- !u!1 &881452944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 881452945}
+  - component: {fileID: 881452946}
+  m_Layer: 0
+  m_Name: Characters
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &881452945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881452944}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &881452946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881452944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66819ba674301d04495ec68cdc249970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.StoryCharacterRepository
+  _characters:
+  - {fileID: -1728013695380148634, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
 --- !u!1 &1335222576
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,3 +530,4 @@ SceneRoots:
   - {fileID: 56899134}
   - {fileID: 1335222580}
   - {fileID: 1678378052}
+  - {fileID: 881452945}
