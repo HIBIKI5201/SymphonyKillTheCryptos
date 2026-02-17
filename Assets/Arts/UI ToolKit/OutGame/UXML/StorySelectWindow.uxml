@@ -1,0 +1,37 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Arts/UI%20ToolKit/OutGame/USS/StorySelect.uss?fileID=7433441132597879392&amp;guid=735462c192784f74e940d660a12e0a0f&amp;type=3#StorySelect"/>
+    <ui:VisualElement style="width: 100%; height: 100%; position: absolute; justify-content: center; align-items: center;">
+        <ui:VisualElement name="button-container" style="width: 90%; height: 50%; background-color: rgba(0, 0, 0, 0.7); justify-content: space-evenly; flex-direction: row; align-items: center;">
+            <ui:Button text="Button" class="story-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:48c8f261de56da64dafd1d5f2ec5072e" entry="Id(5453152256)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Button text="Button" class="story-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:48c8f261de56da64dafd1d5f2ec5072e" entry="Id(142040662016)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Button text="Button" class="story-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:48c8f261de56da64dafd1d5f2ec5072e" entry="Id(156280324096)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Button text="Button" class="story-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:48c8f261de56da64dafd1d5f2ec5072e" entry="Id(160604651520)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Button text="Button" class="story-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:48c8f261de56da64dafd1d5f2ec5072e" entry="Id(190052859904)"/>
+                </Bindings>
+            </ui:Button>
+            <ui:Button text="Button" class="story-button">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:48c8f261de56da64dafd1d5f2ec5072e" entry="Id(237989560320)"/>
+                </Bindings>
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
