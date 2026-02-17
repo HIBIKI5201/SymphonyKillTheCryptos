@@ -10,7 +10,7 @@ namespace Cryptos.Runtime.UI
     [UxmlElement]
     public partial class UIElementStorySelect : VisualElementBase
     {
-        public UIElementStorySelect() : base("StorySelect") { }
+        public UIElementStorySelect() : base("StorySelectWindow") { }
 
         public event Action<int> OnButtonClicked;
 
@@ -41,6 +41,8 @@ namespace Cryptos.Runtime.UI
                 _uiInputModule = module;
                 module.cancel.action.started += OnNavigationCancel;
             }
+
+            Close();
         }
 
         private const string BUTTON_CONTAINER_NAME = "button-container";
