@@ -17,7 +17,43 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 48c8f261de56da64dafd1d5f2ec5072e, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 5453152256
+    m_Localized: 'Episode 1
+
+      Chechen conflict beginning'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142040662016
+    m_Localized: 'Episode 2
+
+      Zero Divide'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156280324096
+    m_Localized: 'Episode 3
+
+      Encounter'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160604651520
+    m_Localized: 'Episode 4
+
+      Mercy'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 190052859904
+    m_Localized: 'Episode 5
+
+      Assault Raid'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 237989560320
+    m_Localized: 'Episode 6
+
+      Awakening'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

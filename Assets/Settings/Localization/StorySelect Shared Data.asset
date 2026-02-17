@@ -13,16 +13,40 @@ MonoBehaviour:
   m_Name: StorySelect Shared Data
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
   m_TableCollectionName: StorySelect
-  m_TableCollectionNameGuidString: 00000000000000000000000000000000
-  m_Entries: []
+  m_TableCollectionNameGuidString: 48c8f261de56da64dafd1d5f2ec5072e
+  m_Entries:
+  - m_Id: 5453152256
+    m_Key: Episode_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142040662016
+    m_Key: Episode_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156280324096
+    m_Key: Episode_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160604651520
+    m_Key: Episode_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 190052859904
+    m_Key: Episode_5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 237989560320
+    m_Key: Episode_6
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 6921726249560965519
+    rid: 6921726251796004875
   references:
     version: 2
     RefIds:
-    - rid: 6921726249560965519
+    - rid: 6921726251796004875
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1771297929441
+        m_CustomEpoch: 1771298746927
