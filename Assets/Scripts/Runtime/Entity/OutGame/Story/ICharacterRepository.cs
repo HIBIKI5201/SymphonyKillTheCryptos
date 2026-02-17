@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cryptos.Runtime.Entity.Outgame.Story
@@ -6,6 +7,7 @@ namespace Cryptos.Runtime.Entity.Outgame.Story
     {
         public void Show(string name);
         public void Hide(string name);
-        public void Move(string name, Vector2 position, float duration);
+        public ValueTask Move(string name, Vector2 position, float duration);
+        public ValueTask Rotate(string name, float degree, float duration);
     }
 }
