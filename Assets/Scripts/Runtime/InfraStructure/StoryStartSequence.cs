@@ -18,6 +18,7 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
             StoryManager manager = await ServiceLocator.GetInstanceAsync<StoryManager>();
             ScenarioDataEntity data = await ServiceLocator.GetInstanceAsync<ScenarioDataEntity>();
             StoryUIManager UIManager = await ServiceLocator.GetInstanceAsync<StoryUIManager>();
+            ServiceLocator.UnregisterInstance(data);
             await InitializeUtility.WaitInitialize(UIManager);
 
             ScenarioData scenario = _scenarioDataBase.GetScenarioData(data.PlayIndex);
@@ -26,7 +27,10 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
             StoryMessageViewModel vm = new(setting, ps);
             UIManager.MessageWindow.BindViewModel(vm);
 
-            ScenarioActionRepository actionRepository = new(_cameraRep);
+            ScenarioActionRepository actionRepository = new(
+                _cameraRep,
+                _characterRep);
+
             ScenarioPlayer player = new(
                 scenario,
                 actionRepository,
@@ -43,6 +47,8 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
         private NovelSettingAsset _settingAsset;
         [SerializeField]
         private StoryCameraRepository _cameraRep;
+        [SerializeField]
+        private StoryCharacterRepository _characterRep;
         [SerializeField]
         private ScenarioDataBase _scenarioDataBase;
     }
