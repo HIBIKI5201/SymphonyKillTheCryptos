@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.OutGame.Story.ScenarioDataBase
   _assets:
   - {fileID: 11400000, guid: 558ba1a90c8390542903defc4f331ac5, type: 2}
+  - {fileID: 11400000, guid: 7d26c9ebaacf7a44cb2c17e64c47891d, type: 2}
