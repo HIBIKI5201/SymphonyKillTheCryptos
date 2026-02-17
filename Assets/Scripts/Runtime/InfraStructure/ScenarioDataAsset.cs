@@ -13,6 +13,8 @@ namespace Cryptos.Runtime.InfraStructure.OutGame.Story
             return new(_scenarioNodes);
         }
 
+        public void Initialize(ScenarioNode[] nodes) => _scenarioNodes = nodes;
+
         [SerializeField]
         private ScenarioNode[] _scenarioNodes;
     }
