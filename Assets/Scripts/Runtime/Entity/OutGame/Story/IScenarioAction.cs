@@ -6,7 +6,7 @@ namespace Cryptos.Runtime.Entity.Outgame.Story
     public interface IScenarioAction
     {
         public ValueTask ExecuteAsync(IScenarioActionRepository repository,
-    IPauseSubject pauseHandler,
-    CancellationToken token = default);
+            IPauseSubject pauseHandler,
+            CancellationToken token = default);
     }
 }
