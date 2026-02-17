@@ -1,5 +1,6 @@
 using Cryptos.Runtime.Entity.Outgame.Story;
 using SymphonyFrameWork.Utility;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -19,15 +20,16 @@ namespace Cryptos.Runtime.InfraStructure
             GameObject target = null;
             for (int i = 0; i < _characters.Length; i++)
             {
-                GameObject chara = _characters[i];
-                if (chara.name == name)
+                CharacterInfo chara = _characters[i];
+                if (chara.Name == name)
                 {
-                    target = chara;
+                    target = chara.Prefab;
                     break;
                 }
             }
 
             target = Instantiate(target);
+            target.transform.SetParent(transform);
             _showCharacters.Add(name, target);
         }
 
@@ -46,7 +48,8 @@ namespace Cryptos.Runtime.InfraStructure
             }
         }
 
-        private GameObject[] _characters;
+        [SerializeField]
+        private CharacterInfo[] _characters;
 
         private Dictionary<string, GameObject> _showCharacters = new();
 
@@ -57,6 +60,18 @@ namespace Cryptos.Runtime.InfraStructure
             await SymphonyTween.Tweening<Vector2>(target.position,
                 p => target.position = p,
                 pos, d);
+        }
+
+        [Serializable]
+        private struct CharacterInfo
+        {
+            public string Name => _name;
+            public GameObject Prefab => _prefab;
+
+            [SerializeField]
+            private string _name;
+            [SerializeField]
+            private GameObject _prefab;
         }
     }
 }
