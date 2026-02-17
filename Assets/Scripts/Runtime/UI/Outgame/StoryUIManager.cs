@@ -29,7 +29,7 @@ namespace Cryptos.Runtime.UI.Outgame.Story
         private InputSystemUIInputModule _uiModule;
         private StoryMessageWindow _messageWindow;
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (_uiModule == null) { return; }
 
