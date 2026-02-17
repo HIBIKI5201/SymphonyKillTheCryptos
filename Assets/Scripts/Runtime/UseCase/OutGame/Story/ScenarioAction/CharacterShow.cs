@@ -14,12 +14,10 @@ namespace Cryptos.Runtime.UseCase
             _position = new(x, y);
         }
 
-        public override ValueTask ExecuteAsync(IScenarioActionRepository repository, IPauseSubject pauseHandler, CancellationToken token = default)
+        public override async ValueTask ExecuteAsync(IScenarioActionRepository repository, IPauseSubject pauseHandler, CancellationToken token = default)
         {
             repository.CharacterRepository.Show(_name);
-            repository.CharacterRepository.Move(_name, _position, 0f);
-
-            return default;
+            await repository.CharacterRepository.Move(_name, _position, 0f);
         }
 
         [SerializeField]
