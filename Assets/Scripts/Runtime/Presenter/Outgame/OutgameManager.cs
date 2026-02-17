@@ -30,7 +30,7 @@ namespace Cryptos.Runtime.Presenter
             await masterUI.FadeIn(FADE_DURATION);
         }
 
-        private const float FADE_DURATION = 2f;
+        private const float FADE_DURATION = 1f;
 
         [SerializeReference, SymphonySubclassSelector]
         private IGameInstaller _outgameInstaller;
