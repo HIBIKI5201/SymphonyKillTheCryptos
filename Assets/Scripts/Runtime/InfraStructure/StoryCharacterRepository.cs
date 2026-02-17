@@ -30,7 +30,7 @@ namespace Cryptos.Runtime.InfraStructure
 
             GameObject target = Instantiate(prefab);
             target.transform.SetParent(transform);
-            Rotate(target.transform, Vector3.back);
+            _ = RotateAsync(target.transform, 0, 0);
             _showCharacters.Add(name, target);
         }
 
@@ -41,11 +41,19 @@ namespace Cryptos.Runtime.InfraStructure
             c.SetActive(false);
         }
 
-        public async void Move(string name, Vector2 position, float duration)
+        public async ValueTask Move(string name, Vector2 position, float duration)
         {
             if (_showCharacters.TryGetValue(name, out GameObject character))
             {
                 await MoveAsync(character.transform, position, duration);
+            }
+        }
+
+        public async ValueTask Rotate(string name, float degree, float duration)
+        {
+            if (_showCharacters.TryGetValue(name, out GameObject character))
+            {
+                await RotateAsync(character.transform, degree, duration);
             }
         }
 
@@ -61,9 +69,9 @@ namespace Cryptos.Runtime.InfraStructure
             // カメラからの相対座標にする。
             Transform camera = Camera.main.transform;
             Vector3 targetPos = camera.TransformPoint(new Vector3(pos.x, pos.y, _zDistance));
-            
+
             if (d <= 0)
-            { 
+            {
                 target.position = targetPos;
                 return;
             }
@@ -73,14 +81,41 @@ namespace Cryptos.Runtime.InfraStructure
                 targetPos, d);
         }
 
-        private void Rotate(Transform target, Vector3 dir)
+        private async ValueTask RotateAsync(Transform target, float degree, float d)
         {
-            Transform camera = Camera.main.transform;
-            Vector3 targetDir = camera.TransformDirection(dir);
-            targetDir.y = 0f;
-            targetDir.Normalize();
+            // 入力が0の時に180°になる。
+            degree = (degree + 180) % 360;
 
-            target.rotation = Quaternion.LookRotation(targetDir);
+            Transform camera = Camera.main.transform;
+
+            Vector3 camForward = camera.forward;
+            camForward.y = 0f;
+            camForward.Normalize();
+
+            Vector3 worldDir =
+                Quaternion.AngleAxis(degree, Vector3.up) * camForward;
+
+            worldDir.y = 0f;
+            worldDir.Normalize();
+            Quaternion yawRotation = Quaternion.LookRotation(worldDir);
+
+            Vector3 currentEuler = target.eulerAngles;
+            Quaternion finalRotation =
+                Quaternion.Euler(currentEuler.x,
+                                 yawRotation.eulerAngles.y,
+                                 currentEuler.z);
+
+            if (d <= 0f)
+            {
+                target.rotation = finalRotation;
+                return;
+            }
+
+            await SymphonyTween.Tweening(
+                target.rotation,
+                q => target.rotation = q,
+                finalRotation,
+                d);
         }
 
         [Serializable]
