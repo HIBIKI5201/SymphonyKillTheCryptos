@@ -389,7 +389,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Cryptos.InfraStructure::Cryptos.Runtime.InfraStructure.StoryCharacterRepository
   _characters:
   - _name: Symphony
-    _prefab: {fileID: 4685152523309388290, guid: ba5eabb8a70a7084cbd943afa4c28059, type: 3}
+    _prefab: {fileID: 6317674916209487205, guid: ba5eabb8a70a7084cbd943afa4c28059, type: 3}
+  - _name: WT
+    _prefab: {fileID: 2081626958702531836, guid: c330ace81c72a2e4b933362beaf559a4, type: 3}
   _zDistance: 0.7
 --- !u!1 &1335222576
 GameObject:
