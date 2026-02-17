@@ -22,6 +22,7 @@ namespace Cryptos.Runtime.UseCase
             return default;
         }
 
+        [SerializeField]
         private Vector2 _position;
     }
 }
