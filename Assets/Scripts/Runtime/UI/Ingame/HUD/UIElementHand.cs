@@ -235,7 +235,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             float stackRelativeX = stackWorld.x - overlayWorld.x;
             float stackRelativeY = stackWorld.y - overlayWorld.y;
 
-            const float stackSpacing = 8f;
+            const float STACK_SPACING = -5f;
 
             float cardWidth = 0, cardHeight = 0;
             if (0 < stackCardsToLayout.Length)
@@ -257,7 +257,7 @@ namespace Cryptos.Runtime.UI.Ingame.Card
             {
                 UIElementCard card = stackCardsToLayout[cardCountInStack - 1 - i];
 
-                float targetY = stackRelativeY + stackWorld.height - ((i + 1) * (cardHeight + stackSpacing));
+                float targetY = stackRelativeY + stackWorld.height - ((i + 1) * (cardHeight + STACK_SPACING));
 
                 Vector2 pos = new(stackRelativeX + (stackWorld.width - cardWidth) / 2f, targetY);
                 MoveCard(card, pos);
