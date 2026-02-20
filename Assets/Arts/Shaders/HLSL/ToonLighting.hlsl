@@ -31,7 +31,13 @@ void ToonLighting_float(
 
     float rim = pow(1 - saturate(dot(NormalWS, ViewDirWS)), RimPower);
 
-    OutColor = diffuse + spec + rim;
+    float3 specColor = spec * LightColor;
+    float3 rimColor  = rim * LightColor;
+
+    OutColor = diffuse;
+    OutColor += specColor * 0.5;
+    OutColor += rimColor * 0.5;
+    OutColor = saturate(OutColor);
 }
 
 #endif
