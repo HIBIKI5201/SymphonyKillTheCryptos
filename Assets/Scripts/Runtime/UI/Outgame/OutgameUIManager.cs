@@ -60,6 +60,8 @@ namespace Cryptos.Runtime.UI.Outgame
 
             _storyButton = root.Q<Button>(STORY_BUTTON_NAME);
             _storyButton.clicked += _storySelect.Show;
+            _storyButton.clicked += ButtonsHide;
+            _storySelect.OnClosed += ButtonsShow;
 
             _quitButton = root.Q<Button>(QUIT_BUTTON_NAME);
             _quitButton.clicked += Application.Quit;
