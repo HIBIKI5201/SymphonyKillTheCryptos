@@ -9,12 +9,14 @@
                     <ui:Button text="Edit" name="Edit" class="button focus" style="width: 180px; height: 60px; font-size: 30px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;"/>
                     <ui:Button text="Save" name="Save" class="button focus" style="width: 180px; height: 60px; font-size: 30px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="role-selection-area" focusable="true" class="focus" style="height: 200px; width: 100%; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.3);">
+                <ui:VisualElement name="role-selection-area" focusable="true" enabled="true" class="focus" style="height: 200px; width: 100%; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.3); display: none;">
                     <ui:Label text="Character Icon Area" style="color: white; font-size: 20px;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1;">
-                <ui:VisualElement name="deck" focusable="true" class="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center; border-top-left-radius: 40px; border-top-right-radius: 40px; border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;"/>
+                <ui:VisualElement name="deck" focusable="true" class="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center; border-top-left-radius: 40px; border-top-right-radius: 40px; border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;">
+                    <ui:Label text="Deck" style="position: absolute; left: 0; top: 0; color: rgb(255, 255, 255); font-size: 40px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;"/>
+                </ui:VisualElement>
                 <ui:VisualElement style="height: 30%; padding: 10px;">
                     <ui:Label text="Owned Cards" style="color: white; font-size: 20px; margin-bottom: 5px;"/>
                     <ui:VisualElement name="card-select" class="own" style="flex-grow: 1; flex-direction: row;"/>
