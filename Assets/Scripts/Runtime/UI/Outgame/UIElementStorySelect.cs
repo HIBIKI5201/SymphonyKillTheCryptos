@@ -12,6 +12,7 @@ namespace Cryptos.Runtime.UI
     {
         public UIElementStorySelect() : base("StorySelectWindow") { }
 
+        public event Action OnClosed;
         public event Action<int> OnButtonClicked;
 
         public void Show()
@@ -23,6 +24,7 @@ namespace Cryptos.Runtime.UI
         public void Close()
         {
             style.display = DisplayStyle.None;
+            OnClosed?.Invoke();
         }
 
         protected override async ValueTask Initialize_S(VisualElement root)
