@@ -7,8 +7,8 @@ void ToonLighting_float(
     float3 LightDirWS,
     float3 LightColor,
     float3 BaseColor,
-    Texture2D RampTex,
-    SamplerState RampSampler,
+    UnityTexture2D RampTex,
+    float2 RampUV,
     float RimPower,
     float SpecPower,
     out float3 OutColor)
@@ -19,8 +19,10 @@ void ToonLighting_float(
 
     float NdotL = saturate(dot(NormalWS, LightDirWS));
 
-    float2 rampUV = float2(NdotL, 0.5);
-    float3 ramp = RampTex.Sample(RampSampler, rampUV).rgb;
+    float2 uv = float2(NdotL, RampUV.y);
+
+    float4 rampSample = SAMPLE_TEXTURE2D(RampTex, RampTex.samplerstate, uv);
+    float3 ramp = rampSample.rgb;
 
     float3 diffuse = BaseColor * ramp * LightColor;
 
