@@ -110,7 +110,7 @@ MonoBehaviour:
   - rid: 7654980637919019699
   - rid: 7654980637919019721
   - rid: 7654980640459719542
-  m_VersionTimestamp: 638997342810636583
+  m_VersionTimestamp: 639125051979087117
   m_SerializedVersion: 1
   m_DebugInfo: {fileID: -3710647277250974251}
   m_RuntimeGraph: {fileID: 1484543632468465082}
@@ -693,7 +693,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 773299208670412800
+    - rid: 1992203433355247616
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -704,10 +704,10 @@ MonoBehaviour:
         m_Parent:
           rid: -2
         m_Child:
-          rid: 773299208670412801
+          rid: 1992203433355247617
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
-    - rid: 773299208670412801
+    - rid: 1992203433355247617
       type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -716,11 +716,11 @@ MonoBehaviour:
         Graph:
           rid: 7654980640459719588
         m_Parent:
-          rid: 773299208670412800
+          rid: 1992203433355247616
         m_Children:
-        - rid: 773299208670412802
-        - rid: 773299208670412803
-    - rid: 773299208670412802
+        - rid: 1992203433355247618
+        - rid: 1992203433355247619
+    - rid: 1992203433355247618
       type: {class: WaitRangeAction, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -729,12 +729,12 @@ MonoBehaviour:
         Graph:
           rid: 7654980640459719588
         m_Parent:
-          rid: 773299208670412801
+          rid: 1992203433355247617
         Min:
-          rid: 773299208670412804
+          rid: 1992203433355247620
         Max:
-          rid: 773299208670412805
-    - rid: 773299208670412803
+          rid: 1992203433355247621
+    - rid: 1992203433355247619
       type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -743,12 +743,12 @@ MonoBehaviour:
         Graph:
           rid: 7654980640459719588
         m_Parent:
-          rid: 773299208670412801
+          rid: 1992203433355247617
         m_Children:
-        - rid: 773299208670412806
-        - rid: 773299208670412807
-        - rid: 773299208670412808
-    - rid: 773299208670412804
+        - rid: 1992203433355247622
+        - rid: 1992203433355247623
+        - rid: 1992203433355247624
+    - rid: 1992203433355247620
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -756,7 +756,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 5
-    - rid: 773299208670412805
+    - rid: 1992203433355247621
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -764,7 +764,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 8
-    - rid: 773299208670412806
+    - rid: 1992203433355247622
       type: {class: NearAttackAction, ns: , asm: Cryptos.Presenter}
       data:
         ID:
@@ -773,14 +773,14 @@ MonoBehaviour:
         Graph:
           rid: 7654980640459719588
         m_Parent:
-          rid: 773299208670412803
+          rid: 1992203433355247619
         Self:
           rid: 7654980640459719596
         Target:
           rid: 7654980640459719597
         Pipeline:
           rid: 7654980640459719598
-    - rid: 773299208670412807
+    - rid: 1992203433355247623
       type: {class: SetAnimatorTriggerAction, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -789,14 +789,14 @@ MonoBehaviour:
         Graph:
           rid: 7654980640459719588
         m_Parent:
-          rid: 773299208670412803
+          rid: 1992203433355247619
         Trigger:
-          rid: 773299208670412809
+          rid: 1992203433355247625
         Animator:
           rid: 7654980640459719599
         TriggerState:
-          rid: 773299208670412810
-    - rid: 773299208670412808
+          rid: 1992203433355247626
+    - rid: 1992203433355247624
       type: {class: FirearmInvokerAction, ns: , asm: Cryptos.UI}
       data:
         ID:
@@ -805,10 +805,10 @@ MonoBehaviour:
         Graph:
           rid: 7654980640459719588
         m_Parent:
-          rid: 773299208670412803
+          rid: 1992203433355247619
         Firearm:
           rid: 7654980640459719600
-    - rid: 773299208670412809
+    - rid: 1992203433355247625
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -816,7 +816,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: Fire
-    - rid: 773299208670412810
+    - rid: 1992203433355247626
       type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -835,14 +835,14 @@ MonoBehaviour:
           rid: 7654980640459719589
         BlackboardGroupReferences: []
         Root:
-          rid: 773299208670412800
+          rid: 1992203433355247616
         m_ActiveNodes: []
         m_NodesToTick: []
         m_NodesToEnd:
           rid: 7654980640459719591
         m_EndedNodes:
           rid: 7654980640459719592
-        m_VersionTimestamp: 638997342810636583
+        m_VersionTimestamp: 639125051979087117
     - rid: 7654980640459719589
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
