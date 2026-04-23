@@ -20,7 +20,7 @@ namespace Cryptos.Runtime.Framework
             //初期シーンをロードする
             await SceneLoader.LoadScene(sceneName);
 
-            Destroy(gameObject); //終了したら自己破棄する
+            Destroy(gameObject); //終了したら自己破棄する。
         }
     }
 }
