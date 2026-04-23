@@ -967,6 +967,10 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 0.1379152
       objectReference: {fileID: 0}
+    - target: {fileID: 2953604236389334553, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 39d7d21269438654fa1c465258f4e42c, type: 2}
     - target: {fileID: 4870552773557632513, guid: a03a7982969ce5f498f2700d8f4c80ba, type: 3}
       propertyPath: m_Controller
       value: 
