@@ -80,7 +80,9 @@ namespace Cryptos.Runtime.UI.Ingame.Card
         private async void HandleWordUpdate(string word, int index)
         {
             await InitializeTask;
-            string newText = $"<b><color=green>{word[..index]}</color></b>{word[index..]}";
+            string newText = index > 0
+                ? $"<color=green>{word[..index]}</color>{word[index..]}"
+                : word;
             _wordLabel.text = newText;
         }
 

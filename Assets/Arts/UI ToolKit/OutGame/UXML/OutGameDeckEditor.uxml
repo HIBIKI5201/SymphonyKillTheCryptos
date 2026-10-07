@@ -14,12 +14,15 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1;">
-                <ui:VisualElement name="deck" focusable="true" class="deck" style="height: 70%; flex-direction: row; justify-content: center; align-items: center; border-top-left-radius: 40px; border-top-right-radius: 40px; border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;">
-                    <ui:Label text="Deck" style="position: absolute; left: 0; top: 0; color: rgb(255, 255, 255); font-size: 40px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;"/>
+                <!-- デッキ表示エリア: ラッパー(name="deck")でフォーカス管理、内部のScrollViewでカード横スクロール -->
+                <ui:VisualElement name="deck" focusable="true" class="deck" style="height: 665px; border-top-left-radius: 40px; border-top-right-radius: 40px; border-bottom-right-radius: 40px; border-bottom-left-radius: 40px; overflow: hidden;">
+                    <ui:Label text="Deck" style="position: absolute; left: 0; top: 0; color: rgb(255, 255, 255); font-size: 40px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; z-index: 1;"/>
+                    <ui:ScrollView name="deck-scroll" mode="Horizontal" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="flex-grow: 1; height: 100%;"/>
                 </ui:VisualElement>
-                <ui:VisualElement style="height: 30%; padding: 10px;">
+                <!-- 所持カードエリア: ScrollViewで横スクロール -->
+                <ui:VisualElement style="height: 285px; padding: 10px;">
                     <ui:Label text="Owned Cards" style="color: white; font-size: 20px; margin-bottom: 5px;"/>
-                    <ui:VisualElement name="card-select" class="own" style="flex-grow: 1; flex-direction: row;"/>
+                    <ui:ScrollView name="card-select" class="own" mode="Horizontal" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="flex-grow: 1;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

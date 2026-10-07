@@ -12,6 +12,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
 {
     /// <summary>
     ///     デッキエディタのUI要素を管理するクラスである。
+    ///     カード表示は ScrollView の自動レイアウトで行い、resolvedStyle への依存を排除している。
     /// </summary>
     [UxmlElement]
     public partial class UIElementDeckEditor : VisualElementBase, IDeckEditorUI
@@ -37,7 +38,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
 
         /// <summary>
         ///     デッキカードを設定する。
-        ///     全カードの初期化完了を待ってからレイアウトを適用する。
+        ///     デッキ内の全カード分の要素を生成し ScrollView に追加する。
         /// </summary>
         public async void SetDeckCards(IReadOnlyList<CardViewModel> cards)
         {
@@ -45,18 +46,28 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
 
             _deckCards = cards;
 
-            const int DECK_CARD_ELEMENTS_LENGTH = 5;
-            _deckCardElements = new UIElementOutGameDeckEditorCard[DECK_CARD_ELEMENTS_LENGTH];
-            for (int i = 0; i < DECK_CARD_ELEMENTS_LENGTH; i++)
+            // 既存カードをクリア
+            _deckScrollView.Clear();
+
+            // デッキ内の全カード分の要素を生成
+            _deckCardElements = new UIElementOutGameDeckEditorCard[cards.Count];
+            for (int i = 0; i < cards.Count; i++)
             {
-                UIElementOutGameDeckEditorCard card = new();
-                _deckElement.Add(card);
+                UIElementOutGameDeckEditorCard card = new(InitializeType.None);
+                _deckScrollView.Add(card);
                 _deckCardElements[i] = card;
             }
 
+            // 全カードの初期化完了を待つ
             foreach (var card in _deckCardElements)
             {
                 await card.InitializeTask;
+            }
+
+            // カードデータをバインド
+            for (int i = 0; i < _deckCardElements.Length; i++)
+            {
+                _deckCardElements[i].BindCardData(_deckCards[i]);
             }
 
             DeckScrollTo(0);
@@ -70,18 +81,22 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
 
         /// <summary>
         ///     所持カードを設定する。
-        ///     全カードの初期化完了を待ってからレイアウトを適用する。
+        ///     全カードの初期化完了を待ってから ScrollView に追加する。
         /// </summary>
         public async void SetOwnedCards(IReadOnlyList<CardViewModel> cards)
         {
             await InitializeTask;
 
             _ownCards = cards;
+
+            // 既存カードをクリア
+            _ownScrollView.Clear();
+
             _ownCardElements = new UIElementOutGameDeckEditorCard[_ownCards.Count];
             for (int i = 0; i < _ownCards.Count; i++)
             {
-                UIElementOutGameDeckEditorCard card = new();
-                _cardSelectElement.Add(card);
+                UIElementOutGameDeckEditorCard card = new(InitializeType.None);
+                _ownScrollView.Add(card);
                 _ownCardElements[i] = card;
             }
 
@@ -90,9 +105,7 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             {
                 UIElementOutGameDeckEditorCard card = _ownCardElements[i];
                 await card.InitializeTask;
-                CardViewModel cardVM = _ownCards[i];
-                card.BindCardData(cardVM);
-                card.style.position = Position.Relative;
+                card.BindCardData(_ownCards[i]);
             }
 
             OwnScrollTo(0);
@@ -106,7 +119,20 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             _saveButton = root.Q<Button>(SAVE_BUTTON_NAME);
             _roleSelectionArea = root.Q<VisualElement>(ROLE_SELECTION_AREA_NAME);
             _deckElement = root.Q<VisualElement>(DECK_ELEMENT_NAME);
-            _cardSelectElement = root.Q<VisualElement>(CARD_SELECT_ELEMENT_NAME);
+            _deckScrollView = root.Q<ScrollView>(DECK_SCROLL_NAME);
+            _ownScrollView = root.Q<ScrollView>(CARD_SELECT_ELEMENT_NAME);
+
+            // ScrollView のコンテンツコンテナをカード横並び配置に設定
+            _deckScrollView.contentContainer.style.flexDirection = FlexDirection.Row;
+            _deckScrollView.contentContainer.style.alignItems = Align.Center;
+            _deckScrollView.contentContainer.style.paddingLeft = 20;
+            _deckScrollView.contentContainer.style.paddingRight = 20;
+            _deckScrollView.contentContainer.style.height = Length.Percent(100);
+
+            _ownScrollView.contentContainer.style.flexDirection = FlexDirection.Row;
+            _ownScrollView.contentContainer.style.alignItems = Align.Center;
+            _ownScrollView.contentContainer.style.paddingLeft = 10;
+            _ownScrollView.contentContainer.style.paddingRight = 10;
 
             // イベントハンドラの設定。
             _editButton.clicked += ClickedEditButton;
@@ -140,18 +166,22 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         private const string SAVE_BUTTON_NAME = "Save";
         private const string ROLE_SELECTION_AREA_NAME = "role-selection-area";
         private const string DECK_ELEMENT_NAME = "deck";
+        private const string DECK_SCROLL_NAME = "deck-scroll";
         private const string CARD_SELECT_ELEMENT_NAME = "card-select";
 
         private const string DECK_FOCUS_CLASS_NAME = "deck-focus";
         private const string OWN_FOCUS_CLASS_NAME = "own-focus";
         private const string LEFT_AREA_DISABLED_CLASS = "left-area-disabled";
+        private const string DECK_CARD_SELECTED_CLASS = "deck-card-selected";
+        private const string OWN_CARD_SELECTED_CLASS = "own-card-selected";
 
         private VisualElement _statusElement;
         private Button _editButton;
         private Button _saveButton;
         private VisualElement _roleSelectionArea;
-        private VisualElement _deckElement;
-        private VisualElement _cardSelectElement;
+        private VisualElement _deckElement;       // フォーカス・クラス管理用ラッパー
+        private ScrollView _deckScrollView;        // カードスクロール用
+        private ScrollView _ownScrollView;         // 所持カードスクロール用
         private InputSystemUIInputModule _uiInputModule;
 
         private Focusable _currentFocusedElement;
@@ -196,14 +226,14 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
             _currentFocusArea = area;
 
             _deckElement.RemoveFromClassList(DECK_FOCUS_CLASS_NAME);
-            _cardSelectElement.RemoveFromClassList(OWN_FOCUS_CLASS_NAME);
+            _ownScrollView.RemoveFromClassList(OWN_FOCUS_CLASS_NAME);
             if (area == FocusArea.RightAreaTop)
             {
                 _deckElement.AddToClassList(DECK_FOCUS_CLASS_NAME);
             }
             else if (area == FocusArea.RightAreaBottom)
             {
-                _cardSelectElement.AddToClassList(OWN_FOCUS_CLASS_NAME);
+                _ownScrollView.AddToClassList(OWN_FOCUS_CLASS_NAME);
             }
         }
 
@@ -304,110 +334,69 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
         {
             ChangeArea(FocusArea.RightAreaBottom);
             _deckElement.pickingMode = PickingMode.Ignore;
-            SetFocus(_cardSelectElement);
+            SetFocus(_ownScrollView);
         }
 
         private void DeckScroll(int dir)
         {
+            if (_deckCards == null || _deckCardElements == null) return;
             int nextIndex = Math.Clamp(_currentDeckCardIndex + dir, 0, _deckCards.Count - 1);
             _currentDeckCardIndex = nextIndex;
             DeckScrollTo(nextIndex);
         }
 
+        /// <summary>
+        ///     指定インデックスのカードをハイライトし、ScrollView でスクロール表示する。
+        ///     resolvedStyle.width への依存を排除し、ScrollTo API のみで制御する。
+        /// </summary>
         private void DeckScrollTo(int index)
         {
             if (_deckCardElements == null || _deckCards == null) return;
 
-            int center = _deckCardElements.Length / 2;
-
-
-            float parentWidth = _deckElement.resolvedStyle.width;
-            if (parentWidth <= 0 || float.IsNaN(parentWidth)) parentWidth = 1440f;
-
+            // 選択クラスを更新
             for (int i = 0; i < _deckCardElements.Length; i++)
             {
-                UIElementOutGameDeckEditorCard card = _deckCardElements[i];
-                int deckIndex = index + i - center;
-
-                if (deckIndex < 0 || _deckCards.Count <= deckIndex)
-                {
-                    card.style.display = DisplayStyle.None;
-                    continue;
-                }
-
-                card.style.display = DisplayStyle.Flex;
-
-                CardViewModel cardVM = _deckCards[deckIndex];
-                card.BindCardData(cardVM);
-
-                switch (i) // ※5個の時しか動かない。
-                {
-                    case 0: ChangeCardStyle(card, parentWidth * 0.055f, 0f, 1f); break;
-                    case 1: ChangeCardStyle(card, parentWidth * 0.166f, 0f, 1f); break;
-                    case 2: ChangeCardStyleCenter(card, 2.5f); break;
-                    case 3: ChangeCardStyle(card, 0f, parentWidth * 0.166f, 1f); break;
-                    case 4: ChangeCardStyle(card, 0f, parentWidth * 0.055f, 1f); break;
-                }
+                if (i == index)
+                    _deckCardElements[i].AddToClassList(DECK_CARD_SELECTED_CLASS);
+                else
+                    _deckCardElements[i].RemoveFromClassList(DECK_CARD_SELECTED_CLASS);
             }
-        }
 
-        /// <summary>
-        ///     左右どちらかにオフセットするカードのスタイルを設定する。
-        /// </summary>
-        private void ChangeCardStyle(UIElementOutGameDeckEditorCard card,
-            float left, float right, float scale)
-        {
-            card.style.position = Position.Absolute;
-            card.style.left = left > 0 ? new StyleLength(left) : new StyleLength(StyleKeyword.Auto);
-            card.style.right = right > 0 ? new StyleLength(right) : new StyleLength(StyleKeyword.Auto);
-            card.style.top = new StyleLength(StyleKeyword.Auto);
-            card.style.bottom = new StyleLength(StyleKeyword.Auto);
-            card.style.alignSelf = Align.Auto;
-            card.style.scale = new StyleScale(new Scale(new Vector2(scale, scale)));
-        }
-
-        private void ChangeCardStyleCenter(UIElementOutGameDeckEditorCard card, float scale)
-        {
-            card.style.position = Position.Absolute;
-            card.style.left = new StyleLength(StyleKeyword.Auto);
-            card.style.right = new StyleLength(StyleKeyword.Auto);
-            card.style.top = new StyleLength(StyleKeyword.Auto);
-            card.style.bottom = new StyleLength(StyleKeyword.Auto);
-            card.style.alignSelf = Align.Center;
-            card.style.scale = new StyleScale(new Scale(new Vector2(scale, scale)));
+            // ScrollView で選択カードが見えるようにスクロール
+            if (index >= 0 && index < _deckCardElements.Length)
+            {
+                _deckScrollView.ScrollTo(_deckCardElements[index]);
+            }
         }
 
         private void OwnScroll(int dir)
         {
+            if (_ownCardElements == null) return;
             int nextIndex = Math.Clamp(_currentOwnedCardIndex + dir, 0, _ownCardElements.Length - 1);
             _currentOwnedCardIndex = nextIndex;
             OwnScrollTo(nextIndex);
         }
 
+        /// <summary>
+        ///     指定インデックスの所持カードをハイライトし、ScrollView でスクロール表示する。
+        /// </summary>
         private void OwnScrollTo(int index)
         {
             if (_ownCardElements == null || _ownCards == null) return;
 
+            // 選択クラスを更新
             for (int i = 0; i < _ownCardElements.Length; i++)
             {
-                UIElementOutGameDeckEditorCard card = _ownCardElements[i];
-                int ownIndex = i - index;
+                if (i == index)
+                    _ownCardElements[i].AddToClassList(OWN_CARD_SELECTED_CLASS);
+                else
+                    _ownCardElements[i].RemoveFromClassList(OWN_CARD_SELECTED_CLASS);
+            }
 
-                // 表示範囲外のカードは display=None で非表示にする。
-                if (ownIndex < 0 || _ownCards.Count <= ownIndex)
-                {
-                    card.style.display = DisplayStyle.None;
-                    continue;
-                }
-
-                card.style.display = DisplayStyle.Flex;
-
-                const int MARGIN = 20;
-                card.style.marginLeft = ownIndex == 0 ? 0 : MARGIN;
-
-                // 先頭カードのみ拡大してフォーカスを示す。
-                card.style.scale = new StyleScale(new Scale(
-                    ownIndex == 0 ? Vector2.one * 1.1f : Vector2.one * 0.9f));
+            // ScrollView で選択カードが見えるようにスクロール
+            if (index >= 0 && index < _ownCardElements.Length)
+            {
+                _ownScrollView.ScrollTo(_ownCardElements[index]);
             }
         }
 

@@ -9,7 +9,10 @@ namespace Cryptos.Runtime.UI.Outgame.Deck
     [UxmlElement]
     public partial class UIElementOutGameDeckEditorCard : VisualElementBase
     {
-        public UIElementOutGameDeckEditorCard() : base("DeckEditorCard", InitializeType.Absolute) { }
+        public UIElementOutGameDeckEditorCard() : this(InitializeType.None) { }
+
+        public UIElementOutGameDeckEditorCard(InitializeType initializeType) 
+            : base("DeckEditorCard", initializeType) { }
 
         public CardViewModel CardData { get; private set; }
 

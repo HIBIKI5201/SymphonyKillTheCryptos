@@ -42,3 +42,31 @@
 .left-area-disabled {
     display: none;
 }
+
+/* デッキエリアの選択中カードハイライト */
+.deck-card-selected {
+    border-left-color: rgba(255, 220, 50, 0.95);
+    border-right-color: rgba(255, 220, 50, 0.95);
+    border-top-color: rgba(255, 220, 50, 0.95);
+    border-bottom-color: rgba(255, 220, 50, 0.95);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    scale: 1.1 1.1;
+    transition-duration: 0.15s;
+}
+
+/* 所持カードエリアの選択中カードハイライト */
+.own-card-selected {
+    border-left-color: rgba(100, 200, 255, 0.95);
+    border-right-color: rgba(100, 200, 255, 0.95);
+    border-top-color: rgba(100, 200, 255, 0.95);
+    border-bottom-color: rgba(100, 200, 255, 0.95);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    scale: 1.1 1.1;
+    transition-duration: 0.15s;
+}
